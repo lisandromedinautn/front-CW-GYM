@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "ask": [
+      "Edit(**/*.test.ts)",
+      "Edit(**/*.test.tsx)",
+      "Edit(e2e/**)",
+      "Edit(**/playwright.config*)",
+      "Edit(**/FICHAS-TEST.md)",
+      "Edit(**/vite.config*)",
+      "Edit(**/vitest.config*)",
+      "Bash(yarn add:*)",
+      "Bash(yarn upgrade:*)",
+      "Bash(yarn global add:*)",
+      "Bash(npm install:*)",
+      "Bash(npm i:*)",
+      "Bash(npx:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(git merge:*)"
+    ]
+  }
+}
