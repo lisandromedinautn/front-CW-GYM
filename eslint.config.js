@@ -1,0 +1,114 @@
+import js from '@eslint/js';
+import prettier from 'eslint-config-prettier';
+import reactHooks from 'eslint-plugin-react-hooks';
+import reactRefresh from 'eslint-plugin-react-refresh';
+import globals from 'globals';
+import tseslint from 'typescript-eslint';
+
+const MODULOS = ['identidad', 'catalogo', 'planificacion', 'entrenamiento'];
+const CAPAS = 'dominio|aplicacion|infraestructura|presentacion';
+
+// CLAUDE.md, regla de dependencia 2: un módulo no importa el interior de otro.
+const sinInteriorDeOtrosModulos = (modulo) =>
+  MODULOS.filter((otro) => otro !== modulo).map((otro) => ({
+    regex: `(^|/)${otro}/(${CAPAS})(/|$)`,
+    message: `El módulo ${modulo} no importa el interior de ${otro}: lo compartido va a src/compartido (CLAUDE.md, regla 2).`,
+  }));
+
+// docs/TESTING.md: está prohibido debilitar o saltear tests.
+const PROHIBIDO_EN_TESTS = ['describe', 'it', 'test'].flatMap((objeto) =>
+  ['only', 'skip', 'todo', 'skipIf', 'runIf', 'fixme'].map((propiedad) => ({
+    object: objeto,
+    property: propiedad,
+    message: 'Prohibido saltear o aislar tests (docs/TESTING.md).',
+  })),
+);
+
+// CLAUDE.md, regla 1: ningún componente hace fetch directo; la red pasa por infraestructura.
+const SIN_FETCH = {
+  name: 'fetch',
+  message: 'Solo la capa infraestructura llama a la API (CLAUDE.md, regla 1).',
+};
+
+export default tseslint.config(
+  { ignores: ['dist/', 'coverage/', 'node_modules/', 'test-results/', 'playwright-report/'] },
+  js.configs.recommended,
+  ...tseslint.configs.recommended,
+  reactHooks.configs.flat['recommended-latest'],
+  reactRefresh.configs.vite,
+  {
+    languageOptions: { globals: { ...globals.browser, ...globals.node } },
+    rules: {
+      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+      'no-restricted-properties': ['error', ...PROHIBIDO_EN_TESTS],
+    },
+  },
+  // Regla 1: presentacion → aplicacion → dominio. Las páginas no ven la infraestructura.
+  ...MODULOS.map((modulo) => ({
+    files: [`src/modulos/${modulo}/presentacion/**/*.{ts,tsx}`],
+    rules: {
+      'no-restricted-globals': ['error', SIN_FETCH],
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              regex: '(^|/)infraestructura(/|$)',
+              message:
+                'La presentación usa los hooks de aplicacion, no el cliente de la API (CLAUDE.md, regla 1).',
+            },
+            ...sinInteriorDeOtrosModulos(modulo),
+          ],
+        },
+      ],
+    },
+  })),
+  ...MODULOS.map((modulo) => ({
+    files: [`src/modulos/${modulo}/aplicacion/**/*.{ts,tsx}`],
+    rules: {
+      'no-restricted-globals': ['error', SIN_FETCH],
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              regex: '(^|/)presentacion(/|$)',
+              message: 'La aplicación no depende de la presentación (CLAUDE.md, regla 1).',
+            },
+            ...sinInteriorDeOtrosModulos(modulo),
+          ],
+        },
+      ],
+    },
+  })),
+  // El dominio del front son tipos y validaciones puras: sin React ni red.
+  ...MODULOS.map((modulo) => ({
+    files: [`src/modulos/${modulo}/dominio/**/*.{ts,tsx}`],
+    rules: {
+      'no-restricted-globals': ['error', SIN_FETCH],
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['react', 'react-dom', 'react-dom/*'],
+              message: 'El dominio son tipos y validaciones puras: no importa React.',
+            },
+            {
+              regex: '(^|/)(aplicacion|infraestructura|presentacion)(/|$)',
+              message: 'El dominio no depende de otras capas (CLAUDE.md, regla 1).',
+            },
+            ...sinInteriorDeOtrosModulos(modulo),
+          ],
+        },
+      ],
+    },
+  })),
+  ...MODULOS.map((modulo) => ({
+    files: [`src/modulos/${modulo}/infraestructura/**/*.{ts,tsx}`],
+    rules: {
+      'no-restricted-imports': ['error', { patterns: sinInteriorDeOtrosModulos(modulo) }],
+    },
+  })),
+  prettier,
+);

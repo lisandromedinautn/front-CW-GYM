@@ -1,0 +1,72 @@
+{
+  "name": "front-cw-gym",
+  "version": "0.0.0",
+  "description": "Front del Sistema de Entrenamiento de Gimnasio (React + Vite)",
+  "private": true,
+  "license": "UNLICENSED",
+  "type": "module",
+  "engines": {
+    "node": ">=24.15.0"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "test": "vitest run --passWithNoTests",
+    "test:vigilar": "vitest",
+    "test:cov": "vitest run --coverage --passWithNoTests",
+    "test:e2e": "playwright test --pass-with-no-tests",
+    "lint": "eslint . --max-warnings=0",
+    "formatear": "prettier --write .",
+    "formato:verificar": "prettier --check .",
+    "verificar:paquetes": "node scripts/verificar-antiguedad-paquetes.mjs",
+    "prepare": "husky"
+  },
+  "dependencies": {
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@playwright/test": "1.64.1",
+    "@testing-library/dom": "10.4.2",
+    "@testing-library/jest-dom": "7.0.1",
+    "@testing-library/react": "16.3.3",
+    "@testing-library/user-event": "14.6.8",
+    "@types/node": "24.19.2",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.1.2",
+    "@vitest/coverage-v8": "5.0.5",
+    "eslint": "10.14.0",
+    "eslint-config-prettier": "10.1.8",
+    "eslint-plugin-react-hooks": "7.1.1",
+    "eslint-plugin-react-refresh": "0.5.7",
+    "globals": "17.14.0",
+    "husky": "9.1.7",
+    "jsdom": "30.1.3",
+    "lint-staged": "17.6.0",
+    "msw": "3.0.3",
+    "prettier": "3.9.10",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.72.1",
+    "vite": "8.3.5",
+    "vitest": "5.0.5"
+  },
+  "resolutions": {
+    "eslint-plugin-react-hooks/**/semver": "6.3.1",
+    "typescript-eslint/**/semver": "7.8.5",
+    "baseline-browser-mapping": "2.11.34",
+    "electron-to-chromium": "1.5.472"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,mjs}": [
+      "eslint --max-warnings=0 --fix",
+      "prettier --write"
+    ],
+    "src/**/*.{ts,tsx}": "vitest related --run --passWithNoTests",
+    "*.{json,yml,yaml,html,css}": "prettier --write",
+    "package.json": "node scripts/verificar-antiguedad-paquetes.mjs",
+    "yarn.lock": "node scripts/verificar-antiguedad-paquetes.mjs --lock"
+  }
+}

@@ -7,7 +7,7 @@ El objetivo principal del proyecto es una base de tests sólida. Un test vale si
 | Nivel | Qué prueba | Archivo | Bordes falsos |
 | :-- | :-- | :-- | :-- |
 | Unitario | Validaciones y transformaciones puras de `dominio/` | `*.test.ts` junto al archivo | Ninguno |
-| Integración | Página o componente + hook + cliente, renderizado con Testing Library, como lo usa una persona | `*.int.test.tsx` junto a la página | Red HTTP falsa en el borde (la herramienta se elige en T02, p. ej. MSW) que devuelve respuestas con la forma del contrato del back |
+| Integración | Página o componente + hook + cliente, renderizado con Testing Library, como lo usa una persona | `*.int.test.tsx` junto a la página | Red HTTP falsa en el borde: MSW (`src/pruebas/servidor-red-falsa.ts`) que devuelve respuestas con la forma del contrato del back |
 | e2e (Playwright) | Flujos completos de una persona en el navegador contra el back real y su base de test dockerizada (ingresar, armar una rutina, entrenar y ver el resumen) | `e2e/<modulo>/*.e2e.ts` | Ninguno: front y back reales |
 
 * Herramientas: Vitest, @testing-library/react y @testing-library/user-event. Lint con ESLint + Prettier.
@@ -22,7 +22,11 @@ El objetivo principal del proyecto es una base de tests sólida. Un test vale si
 | `src/modulos/*/dominio/**` | 80% | Superar el 80% |
 | Resto de `src/` | 70% | — |
 
-Se configura en `vite.config` / `vitest.config` (T02).
+Está en `vite.config.ts`.
+
+**Red falsa (MSW 3).** `src/pruebas/preparar-vitest.ts` levanta el servidor con `onUnhandledFrame: 'error'`: una request sin respuesta declarada hace fallar el test (en MSW 3 la opción ya no se llama `onUnhandledRequest`). Cada test declara sus respuestas con `servidorRedFalsa.use(...)`.
+
+**Playwright.** La primera vez: `yarn playwright install chromium`. Los e2e van en `e2e/<modulo>/*.e2e.ts` y corren con `yarn test:e2e` contra el front (`yarn dev`, lo levanta Playwright) y el back reales.
 
 ## Ciclo para escribir un test (TDD)
 
