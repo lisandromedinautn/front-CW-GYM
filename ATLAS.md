@@ -17,6 +17,20 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | `.claude/skills/tdd`, `.claude/skills/coverage` | Skills de TDD y cobertura |
 | `e2e/<modulo>/` | Tests e2e de Playwright (se crean con la suite) 📄 |
 
+## Configuración y arranque
+
+| Ruta | Qué es |
+| :-- | :-- |
+| `package.json`, `yarn.lock` | Dependencias exactas, scripts y `resolutions` (regla de las 24 h) ✅ |
+| `vite.config.ts` | Vite, Vitest y umbrales de cobertura ✅ |
+| `playwright.config.ts`, `e2e/` | e2e de navegador ✅ |
+| `src/pruebas/` | Preparación de Vitest y red falsa (MSW) ✅ |
+| `eslint.config.js`, `.prettierrc.json` | Lint con las reglas de capas del `CLAUDE.md` y formato ✅ |
+| `.husky/`, `scripts/` | Hooks, validador de mensajes y verificación de antigüedad de paquetes ✅ |
+| `index.html`, `src/main.tsx`, `src/Aplicacion.tsx` | Arranque y raíz de composición (rutas por rol, US00) ✅ |
+| `.env.example` | `VITE_URL_API` ✅ |
+| `CHANGELOG.md` | Cambios por versión (decisión 38) ✅ |
+
 ## Módulos
 
 | Módulo | Reglas de UI | Fichas | Reglas completas (back) |
