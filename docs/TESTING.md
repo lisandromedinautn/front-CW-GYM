@@ -51,4 +51,4 @@ Editar `*.test.ts`, `*.test.tsx` o `FICHAS-TEST.md` existentes pide confirmació
 
 ## Lint y hooks
 
-ESLint (flat config) + Prettier. Pre-commit con husky + lint-staged: lint y tests relacionados. Antes de `develop` → `main`: `yarn lint` y `yarn test:cov` en verde.
+ESLint (flat config) + Prettier. Pre-commit con husky + lint-staged: lint y tests relacionados. Antes de publicar una versión (tag en `develop`) o de `develop` → `main`: `yarn lint` y `yarn test:cov` en verde.

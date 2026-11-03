@@ -72,9 +72,11 @@ Comandos (se definen en T02): `yarn test`, `yarn test:cov`, `yarn lint`.
 
 ## Git y Trello
 
-* Ramas `main` y `develop`. Se trabaja sobre `develop` (commit directo permitido). Lo que bloquea son los hooks de lint y tests.
-* `develop` → `main` al cierre de cada sprint, con el permiso del desarrollador.
-* Todo commit referencia su tarjeta de Trello: `feat(entrenamiento): pantalla de serie realizada [US14]`.
+* Ramas `main` y `develop`. Cada tarjeta se trabaja en una subrama que sale de `develop` (`feat/US14-serie-realizada`) y se integra con `merge --no-ff` y el mensaje `US14 — Título`. Lo que bloquea son los hooks de lint y tests, y `--no-verify` está prohibido.
+* **Microcommits** (decisión 37): un único cambio lógico por commit, que compila y pasa los tests. Test e implementación mínima van juntos y el refactor va aparte. Sin squash, y sin reescribir commits ya pusheados. Detalle en `docs/PLANIFICACION.md`, sección "Microcommits y trazabilidad".
+* Todo commit referencia su tarjeta de Trello, con el verbo en primera persona: `feat(entrenamiento): agrego la pantalla de serie realizada [US14]`, con el pie `Reglas: RN-...` si toca el test de una regla.
+* **Versionado** (decisión 38): SemVer 1.x, sincronizado con el back (misma `MAJOR.MINOR` en cada hito). La minor sube al cerrar cada fase. Cada versión se publica en `develop` con `CHANGELOG.md`, `package.json` y el tag anotado `v1.x.y`.
+* **PROHIBIDO tocar `main` hasta el 22/11/2026** (decisión 39). Ese día, con el permiso del desarrollador, se mergea `develop`. En el escenario pesimista hay un segundo merge, como tarde el 01/12. Orden de las fases: `docs/PLAN-IMPLEMENTACION.md`.
 * El agente no commitea ni pushea sin que el desarrollador se lo pida.
 
 ## Trabajo con IA
