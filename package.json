@@ -18,7 +18,8 @@
     "test:e2e": "playwright test --pass-with-no-tests",
     "lint": "eslint . --max-warnings=0",
     "formatear": "prettier --write .",
-    "formato:verificar": "prettier --check ."
+    "formato:verificar": "prettier --check .",
+    "verificar:paquetes": "node scripts/verificar-antiguedad-paquetes.mjs"
   },
   "dependencies": {
     "react": "19.3.1",
