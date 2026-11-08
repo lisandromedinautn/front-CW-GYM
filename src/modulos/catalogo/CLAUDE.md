@@ -6,16 +6,18 @@ Listado de ejercicios del catálogo, que se carga desde el dataset de ejercicios
 
 | ID | Qué hace la UI | Estado |
 | :-- | :-- | :-- |
-| RN-CAT-01 | La lista de ejercicios muestra nombre, tipo, tipo de carga, músculo principal y grupo muscular. El botón "Registrar ejercicio" se ve deshabilitado (DT-06) | Vigente |
-| RN-CAT-05 | El grupo muscular se muestra derivado del músculo | Vigente |
-| RN-CAT-09 | El GIF se muestra con la atribución "© Gym visual — https://gymvisual.com/" | Vigente |
+| RN-CAT-01 | La lista de ejercicios muestra nombre, tipo, tipo de carga, músculo principal y grupo muscular. El botón "Registrar ejercicio" se ve deshabilitado (DT-06) | Vigente ✅ |
+| RN-CAT-05 | El grupo muscular se muestra derivado del músculo | Vigente ✅ |
+| RN-CAT-09 | El GIF se muestra con la atribución "© Gym visual — https://gymvisual.com/" | Vigente ✅ |
 
-## Pantallas y hooks planificados
+## Pantallas y hooks
 
-| Pantalla (`presentacion/`) | Hook (`aplicacion/`) | US |
-| :-- | :-- | :-- |
-| ~~`PaginaRegistrarEjercicio.tsx`~~ solo botón deshabilitado en `ListaEjercicios` (DT-06) | ~~`usarRegistrarEjercicio.ts`~~ | ~~US01~~ (DT-06) |
-| `ListaEjercicios.tsx` (componente reutilizable por el editor de rutinas) | `usarListarEjercicios.ts` | T01, US06 |
+| Pantalla (`presentacion/`) | Hook (`aplicacion/`) | US | Estado |
+| :-- | :-- | :-- | :-- |
+| ~~`PaginaRegistrarEjercicio.tsx`~~ solo botón deshabilitado en `ListaEjercicios` (DT-06) | ~~`usarRegistrarEjercicio.ts`~~ | ~~US01~~ (DT-06) | — |
+| `ListaEjercicios.tsx` (componente reutilizable por el editor de rutinas) | `usarListarEjercicios.ts` | T01, US06 | ✅ |
+
+El cliente de la API del módulo está en `infraestructura/apiCatalogo.ts` ✅.
 
 ## Historial de cambios de reglas de UI
 
