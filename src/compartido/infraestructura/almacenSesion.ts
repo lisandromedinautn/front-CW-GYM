@@ -20,7 +20,7 @@ function avisar() {
 export function leerSesion(): Sesion | null {
   const crudo = leerCrudo();
   if (crudo === cache.crudo) return cache.sesion;
-  let sesion: Sesion | null = null;
+  let sesion: Sesion | null;
   try {
     sesion = crudo ? (JSON.parse(crudo) as Sesion) : null;
   } catch {

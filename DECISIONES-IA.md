@@ -67,3 +67,13 @@ Registro de cada sesión relevante en la que un desarrollador trabajó con IA. D
 - Ideas descartadas: Jest con ESM experimental. Nest 11 con Jest. Node 26 (LTS recién estrenada) y Node 22. Bajar herramientas para seguir en Node 22.14. Escribir un smoke test sin regla de negocio. Implementar ya `ErrorDominio` y el filtro sin un test que los justifique.
 - Reglas afectadas: ninguna RN. Decisiones 17 y 21 actualizadas.
 - Pendientes: la API de una prueba quedó corriendo en el puerto 3000 (PID 17824) y hay que cerrarla a mano. Playwright necesita `yarn playwright install chromium` una vez por máquina. Las `resolutions` se pueden quitar cuando esas versiones superen las 24 h. Cada integrante tiene que instalar Node 24.
+
+## 2026-11-08 — Front de US00: ingreso, sesión, rutas y menú por rol [US00]
+- Desarrollador: Lisandro
+- Herramienta / modelo / esfuerzo: Claude Code · Sonnet 5.5 (subagente), a partir de tests en rojo escritos por otro agente con fichas confirmadas
+- Objetivo: poner en verde los tests de RN-IDE-01, RN-IDE-03, RN-UI-IDE-01 y RN-UI-IDE-02 con la implementación mínima.
+- Qué hizo la IA: armó el almacén de sesión (`cwgym.sesion`) con suscripción (`useSyncExternalStore`), el cliente HTTP con `ErrorApi` y cierre de sesión ante 401 con sesión activa, la página y el hook de ingreso, `RutaProtegida`, `MenuPrincipal` y las rutas por rol con "Próximamente". Verificó con mutaciones (6 de 6 mueren) y restauró cada archivo.
+- Decisiones del desarrollador: ninguna nueva; siguió el contrato del pedido.
+- Ideas descartadas: evento global para el 401 (se usa el almacén suscripto).
+- Reglas afectadas: RN-IDE-01, RN-IDE-03, RN-UI-IDE-01, RN-UI-IDE-02.
+- Pendientes: `react-hooks/rules-of-hooks` solo reconoce `use<Nombre>`; se apagó en `src/**/aplicacion/**` porque los hooks se llaman `usar<Accion>`. Revisar si se prefiere otra solución.
