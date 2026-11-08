@@ -10,6 +10,7 @@ import { RutaProtegida } from './compartido/presentacion/RutaProtegida.tsx';
 import { ListaEjercicios } from './modulos/catalogo/presentacion/ListaEjercicios.tsx';
 import { PaginaAltaProfesor } from './modulos/identidad/presentacion/PaginaAltaProfesor.tsx';
 import { PaginaCodigoProfesor } from './modulos/identidad/presentacion/PaginaCodigoProfesor.tsx';
+import { PaginaVincularProfesor } from './modulos/identidad/presentacion/PaginaVincularProfesor.tsx';
 import { PaginaIngreso } from './modulos/identidad/presentacion/PaginaIngreso.tsx';
 import './estilos.css';
 
@@ -21,6 +22,7 @@ const PAGINAS: Record<string, ReactElement> = {
   '/profesor/ejercicios': <ListaEjercicios />,
   '/admin/profesores': <PaginaAltaProfesor />,
   '/profesor/codigo': <PaginaCodigoProfesor />,
+  '/alumno/vinculo': <PaginaVincularProfesor />,
 };
 
 function Raiz() {

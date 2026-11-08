@@ -26,3 +26,9 @@ export function obtenerCodigoProfesor(): Promise<{ codigo: string | null }> {
 export function generarCodigoProfesor(): Promise<{ codigo: string }> {
   return pedir('/identidad/profesores/codigo', { metodo: 'POST' });
 }
+
+export function vincularAlumno(
+  codigo: string,
+): Promise<{ profesor: { nombre: string; apellido: string } }> {
+  return pedir('/identidad/alumnos/vinculo', { metodo: 'POST', cuerpo: { codigo } });
+}
