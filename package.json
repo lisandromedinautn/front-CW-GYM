@@ -1,6 +1,6 @@
 {
   "name": "front-cw-gym",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Front del Sistema de Entrenamiento de Gimnasio (React + Vite)",
   "private": true,
   "license": "UNLICENSED",
