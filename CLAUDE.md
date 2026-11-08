@@ -33,6 +33,7 @@ src/
     aplicacion/       un caso de uso de UI por archivo: hooks que orquestan (usarIniciarEntrenamiento)
     infraestructura/  cliente de la API del módulo (implementa el puerto que usa aplicacion)
     presentacion/     páginas y componentes; no llaman a la API directamente
+    (en todas las capas, una carpeta por pantalla o concepto, con su test: ver ATLAS.md, "Carpetas por concepto")
     CLAUDE.md         reglas que aplica la UI del módulo
     FICHAS-TEST.md    fichas de cada test
   compartido/         cliente HTTP base, sesión y JWT, rutas protegidas por rol, componentes genéricos

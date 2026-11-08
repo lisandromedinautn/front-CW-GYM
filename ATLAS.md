@@ -68,24 +68,24 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 
 | Ruta | Qué es | Estado |
 | :-- | :-- | :-- |
-| `src/modulos/identidad/infraestructura/apiIdentidad.ts` | Ingreso, alta de profesor, código de profesor y vínculo del alumno | ✅ |
-| `src/modulos/catalogo/infraestructura/apiCatalogo.ts` | Listado de ejercicios | ✅ |
+| `src/modulos/identidad/infraestructura/api/apiIdentidad.ts` | Ingreso, alta de profesor, código de profesor y vínculo del alumno | ✅ |
+| `src/modulos/catalogo/infraestructura/api/apiCatalogo.ts` | Listado de ejercicios | ✅ |
 
 ## Compartido (`src/compartido/`)
 
 | Ruta | Qué es | Estado |
 | :-- | :-- | :-- |
-| `dominio/sesion.ts` | Tipo `Rol`, interfaz `Sesion` y `RUTA_INICIO` por rol | ✅ |
-| `dominio/errorApi.ts` | Contrato de error del back (`{ codigo, mensaje }`) y `esErrorApi` | ✅ |
-| `dominio/opcionesMenu.ts` | Opciones del menú por rol (RN-UI-IDE-01) | ✅ |
-| `infraestructura/almacenSesion.ts` | Sesión en `localStorage` (`cwgym.sesion`) con suscripción | ✅ |
-| `infraestructura/clienteHttp.ts` | `pedir()`: URL base, JWT, traducción a `ErrorApi` y cierre de sesión ante 401 (RN-UI-IDE-02) | ✅ |
-| `aplicacion/usarSesion.ts` | Hook de sesión sobre `useSyncExternalStore` | ✅ |
-| `presentacion/RutaProtegida.tsx` | Guard por rol: sin sesión lleva al ingreso, con otro rol muestra "sin acceso" (RN-IDE-03) | ✅ |
-| `presentacion/MenuPrincipal.tsx` | Menú por rol y "Salir" (RN-UI-IDE-01) | ✅ |
-| `presentacion/DisenioConMenu.tsx` | Layout con el menú para las rutas por rol | ✅ |
-| `presentacion/PaginaInicio.tsx` | Inicio de cada rol (placeholder "Panel del {rol}") | ✅ |
-| `presentacion/Proximamente.tsx` | Texto para las rutas que todavía no tienen página | ✅ |
+| `dominio/sesion/sesion.ts` | Tipo `Rol`, interfaz `Sesion` y `RUTA_INICIO` por rol | ✅ |
+| `dominio/error-api/errorApi.ts` | Contrato de error del back (`{ codigo, mensaje }`) y `esErrorApi` | ✅ |
+| `dominio/menu/opcionesMenu.ts` | Opciones del menú por rol (RN-UI-IDE-01) | ✅ |
+| `infraestructura/sesion/almacenSesion.ts` | Sesión en `localStorage` (`cwgym.sesion`) con suscripción | ✅ |
+| `infraestructura/cliente-http/clienteHttp.ts` | `pedir()`: URL base, JWT, traducción a `ErrorApi` y cierre de sesión ante 401 (RN-UI-IDE-02) | ✅ |
+| `aplicacion/sesion/usarSesion.ts` | Hook de sesión sobre `useSyncExternalStore` | ✅ |
+| `presentacion/ruta-protegida/RutaProtegida.tsx` | Guard por rol: sin sesión lleva al ingreso, con otro rol muestra "sin acceso" (RN-IDE-03) | ✅ |
+| `presentacion/menu/MenuPrincipal.tsx` | Menú por rol y "Salir" (RN-UI-IDE-01) | ✅ |
+| `presentacion/menu/DisenioConMenu.tsx` | Layout con el menú para las rutas por rol | ✅ |
+| `presentacion/inicio/PaginaInicio.tsx` | Inicio de cada rol (placeholder "Panel del {rol}") | ✅ |
+| `presentacion/proximamente/Proximamente.tsx` | Texto para las rutas que todavía no tienen página | ✅ |
 
 ## Tests de integración (front)
 
@@ -93,14 +93,29 @@ Los tests viven junto a la pantalla o componente que prueban. Las fichas de cada
 
 | Ruta | Reglas | Estado |
 | :-- | :-- | :-- |
-| `src/modulos/identidad/presentacion/PaginaIngreso.int.test.tsx` | RN-IDE-01 | ✅ |
-| `src/compartido/presentacion/RutaProtegida.int.test.tsx` | RN-IDE-03 | ✅ |
-| `src/compartido/presentacion/MenuPrincipal.int.test.tsx` | RN-UI-IDE-01 | ✅ |
-| `src/compartido/infraestructura/clienteHttp.int.test.tsx` | RN-UI-IDE-02 | ✅ |
-| `src/modulos/identidad/presentacion/PaginaAltaProfesor.int.test.tsx` | RN-IDE-04, 06, 13 | ✅ |
-| `src/modulos/identidad/presentacion/PaginaCodigoProfesor.int.test.tsx` | RN-IDE-08 | ✅ |
-| `src/modulos/identidad/presentacion/PaginaVincularProfesor.int.test.tsx` | RN-IDE-09, 10, 11 | ✅ |
-| `src/modulos/catalogo/presentacion/ListaEjercicios.int.test.tsx` | RN-CAT-01, 09 | ✅ |
+| `src/modulos/identidad/presentacion/ingreso/PaginaIngreso.int.test.tsx` | RN-IDE-01 | ✅ |
+| `src/compartido/presentacion/ruta-protegida/RutaProtegida.int.test.tsx` | RN-IDE-03 | ✅ |
+| `src/compartido/presentacion/menu/MenuPrincipal.int.test.tsx` | RN-UI-IDE-01 | ✅ |
+| `src/compartido/infraestructura/cliente-http/clienteHttp.int.test.tsx` | RN-UI-IDE-02 | ✅ |
+| `src/modulos/identidad/presentacion/alta-profesor/PaginaAltaProfesor.int.test.tsx` | RN-IDE-04, 06, 13 | ✅ |
+| `src/modulos/identidad/presentacion/codigo-profesor/PaginaCodigoProfesor.int.test.tsx` | RN-IDE-08 | ✅ |
+| `src/modulos/identidad/presentacion/vinculo/PaginaVincularProfesor.int.test.tsx` | RN-IDE-09, 10, 11 | ✅ |
+| `src/modulos/catalogo/presentacion/lista-ejercicios/ListaEjercicios.int.test.tsx` | RN-CAT-01, 09 | ✅ |
+
+## Carpetas por concepto
+
+Decidido por Lisandro el 08/11/2026 (igual que en el back): en todas las capas de cada módulo y en `src/compartido/`, cada concepto o pantalla tiene su carpeta, con el código y su test juntos.
+
+| Módulo | Capa | Carpetas |
+| :-- | :-- | :-- |
+| identidad | aplicacion · presentacion | ingreso, alta-profesor, codigo-profesor, vinculo (hook y página de cada pantalla, con el mismo nombre de carpeta en las dos capas) |
+| identidad | infraestructura | api (`apiIdentidad.ts`) |
+| catalogo | dominio | ejercicio |
+| catalogo | aplicacion · presentacion | listar-ejercicios · lista-ejercicios |
+| catalogo | infraestructura | api (`apiCatalogo.ts`) |
+| compartido | dominio | error-api, menu, sesion |
+| compartido | aplicacion · infraestructura | sesion · sesion, cliente-http |
+| compartido | presentacion | menu, inicio, proximamente, ruta-protegida |
 
 ## Nombres de archivo
 
