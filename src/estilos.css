@@ -1,0 +1,75 @@
+:root {
+  font-family: system-ui, sans-serif;
+  color: #1f2933;
+  background: #f4f6f8;
+}
+body {
+  margin: 0;
+}
+h1 {
+  font-size: 1.4rem;
+  margin: 0 0 1rem;
+}
+.ingreso {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+}
+.tarjeta {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 22rem;
+  display: grid;
+  gap: 1rem;
+  box-shadow: 0 1px 4px rgb(0 0 0 / 15%);
+}
+label {
+  display: grid;
+  gap: 0.25rem;
+  font-size: 0.9rem;
+}
+input {
+  padding: 0.6rem;
+  font-size: 1rem;
+  border: 1px solid #9aa5b1;
+  border-radius: 4px;
+}
+button {
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  border: 0;
+  border-radius: 4px;
+  background: #1d4ed8;
+  color: #fff;
+  cursor: pointer;
+}
+button:disabled {
+  opacity: 0.6;
+}
+.error {
+  margin: 0;
+  color: #b42318;
+}
+.menu {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: #fff;
+  border-bottom: 1px solid #d9e2ec;
+}
+.menu a {
+  color: #1d4ed8;
+  text-decoration: none;
+  padding: 0.4rem 0.2rem;
+}
+.menu button {
+  margin-left: auto;
+}
+.contenido {
+  padding: 1rem;
+}

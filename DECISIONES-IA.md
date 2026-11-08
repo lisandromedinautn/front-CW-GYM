@@ -77,3 +77,13 @@ Registro de cada sesión relevante en la que un desarrollador trabajó con IA. D
 - Ideas descartadas: no se registraron en esta sesión.
 - Reglas afectadas: RN-CAT-01, 05 y 07 cambiadas; nuevas RN-CAT-08 y 09. RN-IDE-05 y 12 cambiadas; RN-IDE-06, 07 y 13 pasan a la semilla de usuarios de US00. Los textos salen de la rama `feat/T01-dataset-ejercicios` (commit 0a69b7b), porque no están en `docs/T01-alcance`.
 - Pendientes: llevar a `docs/T01-alcance` las reglas de catálogo e identidad de la rama T01 (el worktree de este cambio no las tiene). Definir si la semilla de usuarios tiene puntos propios o va dentro de los 5 pts de US00 backend. Revisar ZG-13, que es texto histórico y dice "dataset".
+
+## 2026-11-08 — Front de US00: ingreso, sesión, rutas y menú por rol [US00]
+- Desarrollador: Lisandro
+- Herramienta / modelo / esfuerzo: Claude Code · Sonnet 5.5 (subagente), a partir de tests en rojo escritos por otro agente con fichas confirmadas
+- Objetivo: poner en verde los tests de RN-IDE-01, RN-IDE-03, RN-UI-IDE-01 y RN-UI-IDE-02 con la implementación mínima.
+- Qué hizo la IA: armó el almacén de sesión (`cwgym.sesion`) con suscripción (`useSyncExternalStore`), el cliente HTTP con `ErrorApi` y cierre de sesión ante 401 con sesión activa, la página y el hook de ingreso, `RutaProtegida`, `MenuPrincipal` y las rutas por rol con "Próximamente". Verificó con mutaciones (6 de 6 mueren) y restauró cada archivo.
+- Decisiones del desarrollador: ninguna nueva; siguió el contrato del pedido.
+- Ideas descartadas: evento global para el 401 (se usa el almacén suscripto).
+- Reglas afectadas: RN-IDE-01, RN-IDE-03, RN-UI-IDE-01, RN-UI-IDE-02.
+- Pendientes: `react-hooks/rules-of-hooks` solo reconoce `use<Nombre>`; se apagó en `src/**/aplicacion/**` porque los hooks se llaman `usar<Accion>`. Revisar si se prefiere otra solución.

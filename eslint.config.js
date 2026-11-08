@@ -110,5 +110,11 @@ export default tseslint.config(
       'no-restricted-imports': ['error', { patterns: sinInteriorDeOtrosModulos(modulo) }],
     },
   })),
+  // Los hooks del proyecto se llaman usar<Accion> (en español) y react-hooks solo reconoce use<Nombre>:
+  // se apaga rules-of-hooks en las capas que los definen para no obligar a nombres en inglés.
+  {
+    files: ['src/**/aplicacion/**/*.{ts,tsx}'],
+    rules: { 'react-hooks/rules-of-hooks': 'off' },
+  },
   prettier,
 );
