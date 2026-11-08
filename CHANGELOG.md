@@ -6,6 +6,25 @@ Categorías: Agregado, Cambiado, Corregido, Eliminado, Seguridad. Cada entrada c
 
 ## [Sin publicar]
 
+### Agregado
+
+- Pantalla de ingreso con email y contraseña, que guarda la sesión y lleva al inicio de cada rol (US00).
+- Pantalla de alta de profesor, con validación de campos obligatorios y los errores de unicidad del back (US02).
+- Pantalla "Mi código de profesor" para generar, copiar y regenerar el código, con confirmación previa (US04).
+- Pantalla "Vincularme con mi profesor" para que el alumno se vincule con el código de su profesor (US05).
+- Lista de ejercicios con búsqueda por nombre, detalle con GIF y atribución, y botón "Registrar ejercicio" deshabilitado (T01, DT-06).
+- Almacén de la sesión en `localStorage`, con suscripción para que menú y rutas reaccionen al cambio (US00).
+- Cliente HTTP base que traduce los errores del back a `ErrorApi` y cierra la sesión ante un 401 (US00).
+- Tipos `Sesion`, `Rol` y `RUTA_INICIO` por rol (US00).
+- Contrato de error `ErrorApi` con `esErrorApi` (US00).
+- Opciones del menú por rol (US00).
+- Hook `usarSesion` sobre `useSyncExternalStore` (US00).
+- Ruta protegida por rol: sin sesión lleva al ingreso, con otro rol muestra "sin acceso" (US00).
+- Menú principal por rol con "Salir" (US00).
+- Layout con menú para las rutas por rol, `DisenioConMenu` (US00).
+- Pantalla de inicio por rol, `PaginaInicio` (US00).
+- Pantalla "Próximamente" para las rutas que todavía no tienen página (US00).
+
 ## [1.0.0] — 2026-11-02
 
 Base técnica (fase 0). Todavía no hay pantallas de negocio.

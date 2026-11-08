@@ -97,3 +97,13 @@ Registro de cada sesión relevante en la que un desarrollador trabajó con IA. D
 - Ideas descartadas: seguir midiendo solo pts/semana (con un único día de trabajo en el sprint 1, el número no dice nada del ritmo). Recortar alcance ya (lo real quedó debajo de la línea pesimista original, pero el ritmo medido no lo justifica: se revisa en el corte del 15/11).
 - Reglas afectadas: ninguna RN. Decisión 42 nueva; backlog de 127 a 129 pts.
 - Pendientes: el factor de complejidad (2 a 2,5) es una suposición: se valida al cerrar la fase 2. La decisión de no recortar es una propuesta que tiene que confirmar el desarrollador. No se pudo cargar Jira directo: el conector de Claude no tiene permiso sobre `lichimedina05.atlassian.net`.
+
+## 2026-11-08 — Front de la fase 1: T01, US02, US04 y US05 [T01, US02, US04, US05]
+- Desarrollador: Lisandro
+- Herramienta / modelo / esfuerzo: Claude Code · Opus 5.5 (orquestador, fijó el contrato de pantallas) + Haiku 5.5 (tests en rojo) + Sonnet 5.5 (implementación)
+- Objetivo: implementar en el front la lista de ejercicios (T01), el alta de profesor (US02), el código de profesor (US04) y el vínculo del alumno (US05), con TDD.
+- Qué hizo la IA: Haiku 5.5 escribió los tests en rojo a partir de fichas confirmadas y de un contrato de pantallas fijado por el orquestador Opus 5.5. Sonnet 5.5 implementó las pantallas, los hooks y los clientes sin tocar los tests. El orquestador corrigió dos valores inventados del fixture de la lista, "Peso Libre" y "Pectorales", que no existen en RN-CAT-03 y RN-CAT-05. Se hicieron mutaciones sobre la implementación: todas mueren salvo una (US02: el chequeo de campos con solo espacios no tiene test).
+- Decisiones del desarrollador: tests escritos por Haiku e implementación por Sonnet; fichas de test por tarjeta; botón "Registrar ejercicio" deshabilitado (DT-06).
+- Ideas descartadas: no se registraron en esta sesión.
+- Reglas afectadas: RN-IDE-04, 06, 08, 09, 10, 11 y 13; RN-CAT-01 y 09. Sin cambios de reglas.
+- Pendientes: (1) brecha de US02: el chequeo de campos con solo espacios no tiene test; queda por decidir si se cubre. (2) No verificado: la carga real de los GIF en un navegador. (3) No verificado: los e2e de Playwright, porque todavía no hay suite (`e2e/` solo tiene `.gitkeep`). (4) Nombre del hook de código: el archivo es `usarCodigoProfesor.ts`, pero el atlas decía `usarGenerarCodigoProfesor.ts`; se usó el nombre real y queda por confirmar si se renombra. (5) `react-hooks/rules-of-hooks` apagada en `aplicacion/`, pendiente de decisión (ver entrada de US00).
