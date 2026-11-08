@@ -16,3 +16,14 @@ Lo mínimo que usan todos los módulos. Acá no va lógica de un módulo en part
 - **Lint de hooks** (decidido por Lisandro el 08/11/2026): los hooks se llaman `usar<Accion>` y `react-hooks/rules-of-hooks` solo reconoce `use<Nombre>`. La regla local `cwgym-hooks/reglas-de-hooks` (`eslint/reglas-de-hooks.js`) controla las dos formas en todo `src/`: un hook solo se llama dentro de un componente o de otro hook, y nunca de forma condicional, en un bucle o en un callback. En `aplicacion/` la de React sigue apagada, porque marcaría como error los `use*` llamados dentro de un `usar*`.
 - **Diálogos**: `div role="dialog" aria-modal="true"` con `aria-labelledby` que apunta al título del diálogo.
 - **Validación de formularios**: el mensaje de un campo obligatorio se enlaza con el input por `aria-describedby`, y el input lleva `aria-invalid`. Los errores del back van en `role="alert"` y los avisos de éxito en `role="status"`.
+
+## Reglas de los listados (RN-UI-LIS) — a confirmar
+
+Propuestas el 08/11/2026 a pedido de Lisandro (T07, CG-74). Están **a confirmar**: no se testean ni se implementan hasta que él las confirme. La paginación es T06 (CG-73).
+
+| ID | Qué hace la UI | Estado |
+| :-- | :-- | :-- |
+| RN-UI-LIS-01 | Todo listado ofrece filtros por sus atributos principales y un botón para limpiarlos | A confirmar |
+| RN-UI-LIS-02 | Los filtros se combinan entre sí (Y lógico) y con el buscador por nombre | A confirmar |
+| RN-UI-LIS-03 | Al cambiar un filtro, el listado vuelve a la primera página (depende de T06) | A confirmar |
+| RN-UI-LIS-04 | Filtros por listado: Ejercicios (grupo muscular, músculo principal, tipo, tipo de carga); Profesores (legajo, apellido, documento); Alumnos (apellido, documento, con o sin profesor). Cada listado nuevo define los suyos en su historia | A confirmar |
