@@ -18,3 +18,11 @@ export interface DatosAltaProfesor {
 export function darAltaProfesor(datos: DatosAltaProfesor): Promise<{ id: string; legajo: string }> {
   return pedir('/identidad/profesores', { metodo: 'POST', cuerpo: datos });
 }
+
+export function obtenerCodigoProfesor(): Promise<{ codigo: string | null }> {
+  return pedir('/identidad/profesores/codigo');
+}
+
+export function generarCodigoProfesor(): Promise<{ codigo: string }> {
+  return pedir('/identidad/profesores/codigo', { metodo: 'POST' });
+}
