@@ -49,8 +49,8 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | identidad | `PaginaAltaProfesor.tsx` | `usarDarAltaProfesor.ts` | `POST /identidad/profesores` | US02 | 📄 |
 | identidad | `PaginaCodigoProfesor.tsx` | `usarGenerarCodigoProfesor.ts` | `POST /identidad/profesores/codigo` | US04 | 📄 |
 | identidad | `PaginaVincularProfesor.tsx` | `usarVincularAlumno.ts` | `POST /identidad/alumnos/vinculo` | US05 | 📄 |
-| catalogo | `PaginaRegistrarEjercicio.tsx` | `usarRegistrarEjercicio.ts` | `POST /catalogo/ejercicios` | US01 | 📄 |
-| catalogo | `ListaEjercicios.tsx` | `usarListarEjercicios.ts` | `GET /catalogo/ejercicios` | US01, US06 | 📄 |
+| catalogo | ~~`PaginaRegistrarEjercicio.tsx`~~ solo botón deshabilitado en ListaEjercicios (DT-06) | ~~`usarRegistrarEjercicio.ts`~~ | ~~`POST /catalogo/ejercicios`~~ | US01 (DT-06) | — |
+| catalogo | `ListaEjercicios.tsx` | `usarListarEjercicios.ts` | `GET /catalogo/ejercicios` | T01, US06 | 📄 |
 | planificacion | `EditorRutina.tsx` | `usarCrearRutina.ts`, `usarEditarRutina.ts` | `POST /planificacion/rutinas`, `PUT /planificacion/rutinas/:id` | US06, US09, US10 | 📄 |
 | planificacion | `PaginaImportarRutina.tsx` | `usarImportarRutina.ts` | `POST /planificacion/rutinas/:id/importacion` | US20 | 📄 |
 | planificacion | `PaginaCrearPlan.tsx` | `usarCrearPlan.ts` | `POST /planificacion/planes` | US07 | 📄 |
