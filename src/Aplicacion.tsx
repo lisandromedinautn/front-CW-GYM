@@ -1,3 +1,4 @@
+import type { ReactElement } from 'react';
 import { Navigate, Route, Routes } from 'react-router';
 import { usarSesion } from './compartido/aplicacion/usarSesion.ts';
 import { OPCIONES_MENU } from './compartido/dominio/opcionesMenu.ts';
@@ -6,10 +7,17 @@ import { DisenioConMenu } from './compartido/presentacion/DisenioConMenu.tsx';
 import { PaginaInicio } from './compartido/presentacion/PaginaInicio.tsx';
 import { Proximamente } from './compartido/presentacion/Proximamente.tsx';
 import { RutaProtegida } from './compartido/presentacion/RutaProtegida.tsx';
+import { ListaEjercicios } from './modulos/catalogo/presentacion/ListaEjercicios.tsx';
 import { PaginaIngreso } from './modulos/identidad/presentacion/PaginaIngreso.tsx';
 import './estilos.css';
 
 const ROLES: Rol[] = ['Admin', 'Profesor', 'Alumno'];
+
+/** Páginas implementadas por ruta; las que faltan muestran "Próximamente". */
+const PAGINAS: Record<string, ReactElement> = {
+  '/admin/ejercicios': <ListaEjercicios />,
+  '/profesor/ejercicios': <ListaEjercicios />,
+};
 
 function Raiz() {
   const { sesion } = usarSesion();
@@ -40,7 +48,7 @@ export function Aplicacion() {
             <Route
               key={opcion.ruta}
               path={opcion.ruta.slice(RUTA_INICIO[rol].length + 1)}
-              element={<Proximamente />}
+              element={PAGINAS[opcion.ruta] ?? <Proximamente />}
             />
           ))}
         </Route>
