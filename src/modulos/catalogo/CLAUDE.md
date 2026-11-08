@@ -17,7 +17,7 @@ Listado de ejercicios del catálogo, que se carga desde el dataset de ejercicios
 | ~~`PaginaRegistrarEjercicio.tsx`~~ solo botón deshabilitado en `ListaEjercicios` (DT-06) | ~~`usarRegistrarEjercicio.ts`~~ | ~~US01~~ (DT-06) | — |
 | `ListaEjercicios.tsx` (componente reutilizable por el editor de rutinas) | `usarListarEjercicios.ts` | T01, US06 | ✅ |
 
-El cliente de la API del módulo está en `infraestructura/apiCatalogo.ts` ✅.
+El cliente de la API del módulo está en `infraestructura/api/apiCatalogo.ts` ✅.
 
 ## Historial de cambios de reglas de UI
 

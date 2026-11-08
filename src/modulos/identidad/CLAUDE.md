@@ -24,7 +24,7 @@ Ingreso al sistema, alta de profesores, código de profesor y vínculo del alumn
 | `PaginaCodigoProfesor.tsx` | `usarCodigoProfesor.ts` | US04 | ✅ |
 | `PaginaVincularProfesor.tsx` | `usarVincularAlumno.ts` | US05 | ✅ |
 
-El cliente de la API del módulo está en `infraestructura/apiIdentidad.ts` ✅.
+El cliente de la API del módulo está en `infraestructura/api/apiIdentidad.ts` ✅.
 
 ## Historial de cambios de reglas de UI
 
