@@ -26,6 +26,7 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | `playwright.config.ts`, `e2e/` | e2e de navegador ✅ |
 | `src/pruebas/` | Preparación de Vitest y red falsa (MSW) ✅ |
 | `eslint.config.js`, `.prettierrc.json` | Lint con las reglas de capas del `CLAUDE.md` y formato ✅ |
+| `eslint/reglas-de-hooks.js` | Regla local de lint: reglas de los hooks también para `usar<Accion>` ✅ |
 | `.husky/`, `scripts/` | Hooks, validador de mensajes y verificación de antigüedad de paquetes ✅ |
 | `index.html`, `src/main.tsx`, `src/Aplicacion.tsx` | Arranque y raíz de composición (rutas por rol, US00) ✅ |
 | `src/estilos.css` | Estilos globales de la app ✅ |
