@@ -4,6 +4,7 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
+import cwgymHooks from './eslint/reglas-de-hooks.js';
 
 const MODULOS = ['identidad', 'catalogo', 'planificacion', 'entrenamiento'];
 const CAPAS = 'dominio|aplicacion|infraestructura|presentacion';
@@ -110,8 +111,15 @@ export default tseslint.config(
       'no-restricted-imports': ['error', { patterns: sinInteriorDeOtrosModulos(modulo) }],
     },
   })),
-  // Los hooks del proyecto se llaman usar<Accion> (en español) y react-hooks solo reconoce use<Nombre>:
-  // se apaga rules-of-hooks en las capas que los definen para no obligar a nombres en inglés.
+  // Los hooks del proyecto se llaman usar<Accion> (en español) y react-hooks solo reconoce use<Nombre>.
+  // La regla local cwgym-hooks/reglas-de-hooks controla las dos formas en todo src/ (eslint/reglas-de-hooks.js).
+  // En aplicacion/ se apaga la de React, que marcaría como error los use* llamados dentro de un usar*.
+  {
+    files: ['src/**/*.{ts,tsx}'],
+    ignores: ['src/**/*.test.{ts,tsx}', 'src/pruebas/**'],
+    plugins: { 'cwgym-hooks': cwgymHooks },
+    rules: { 'cwgym-hooks/reglas-de-hooks': 'error' },
+  },
   {
     files: ['src/**/aplicacion/**/*.{ts,tsx}'],
     rules: { 'react-hooks/rules-of-hooks': 'off' },
