@@ -146,4 +146,23 @@ describe('RN-IDE-04 · el legajo es obligatorio en el front', () => {
     expect(screen.getByLabelText('Legajo')).toHaveAttribute('aria-invalid', 'true');
     expect(llamadas).toBe(0);
   });
+
+  it('con Legajo de solo espacios ("   ") no envía nada y marca el campo con "Completá este campo"', async () => {
+    let llamadas = 0;
+    servidorRedFalsa.use(
+      http.post(URL_ALTA_PROFESOR, () => {
+        llamadas += 1;
+        return HttpResponse.json({ id: 'p1', legajo: 'P-001' }, { status: 201 });
+      }),
+    );
+    const usuario = userEvent.setup();
+    renderizarComoAdmin('/admin/profesores');
+
+    await completarFormulario(usuario, { legajo: '   ' });
+    await usuario.click(screen.getByRole('button', { name: 'Dar de alta' }));
+
+    expect(await screen.findByText('Completá este campo')).toBeInTheDocument();
+    expect(screen.getByLabelText('Legajo')).toHaveAttribute('aria-invalid', 'true');
+    expect(llamadas).toBe(0);
+  });
 });
