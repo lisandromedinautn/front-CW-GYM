@@ -191,3 +191,7 @@ input[aria-invalid='true'] {
   color: #b42318;
   font-size: 0.85rem;
 }
+.campo {
+  display: grid;
+  gap: 0.25rem;
+}
