@@ -15,7 +15,7 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | `docs/MODELOS-IA.md` | Modelos, delegación y plantillas (idéntica a la del back) |
 | `.claude/settings.json` | Permisos: confirmación al editar tests e instalar paquetes |
 | `.claude/skills/tdd`, `.claude/skills/coverage` | Skills de TDD y cobertura |
-| `e2e/<modulo>/` | Tests e2e de Playwright (se crean con la suite) 📄 |
+| `e2e/<modulo>/` | Tests e2e de Playwright. ✅ `e2e/planificacion/crear-rutina.e2e.ts` (US06); el resto 📄 |
 
 ## Configuración y arranque
 
@@ -54,7 +54,7 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | identidad | `PaginaVincularProfesor.tsx` | `usarVincularAlumno.ts` | `POST /identidad/alumnos/vinculo` | US05 | ✅ |
 | catalogo | ~~`PaginaRegistrarEjercicio.tsx`~~ solo botón deshabilitado en ListaEjercicios (DT-06) | ~~`usarRegistrarEjercicio.ts`~~ | ~~`POST /catalogo/ejercicios`~~ | US01 (DT-06) | — |
 | catalogo | `ListaEjercicios.tsx` | `usarListarEjercicios.ts` | `GET /catalogo/ejercicios` | T01, US06 | ✅ |
-| planificacion | `EditorRutina.tsx` | `usarCrearRutina.ts`, `usarEditarRutina.ts` | `POST /planificacion/rutinas`, `PUT /planificacion/rutinas/:id` | US06, US09, US10 | 📄 |
+| planificacion | `EditorRutina.tsx` (ruta `/profesor/rutinas`, menú "Rutinas") | `usarCrearRutina.ts`, `usarEjerciciosParaRutina.ts`, `usarEditarRutina.ts` | `GET /catalogo/ejercicios`, `POST /planificacion/rutinas`, `PUT /planificacion/rutinas/:id` | US06, US09, US10 | ✅ crear con bloques (US06); editar, circuitos y mixta 📄 |
 | planificacion | `PaginaImportarRutina.tsx` | `usarImportarRutina.ts` | `POST /planificacion/rutinas/:id/importacion` | US20 | 📄 |
 | planificacion | `PaginaCrearPlan.tsx` | `usarCrearPlan.ts` | `POST /planificacion/planes` | US07 | 📄 |
 | planificacion | `PaginaAlumnosDelPlan.tsx` | `usarAlumnosDelPlan.ts` | `POST/DELETE /planificacion/planes/:id/alumnos` | US12 | 📄 |
@@ -113,6 +113,9 @@ Decidido por Lisandro el 08/11/2026 (igual que en el back): en todas las capas d
 | catalogo | dominio | ejercicio |
 | catalogo | aplicacion · presentacion | listar-ejercicios · lista-ejercicios |
 | catalogo | infraestructura | api (`apiCatalogo.ts`) |
+| planificacion | dominio | bloque (`reglasBloque.ts` y su test), rutina (tipos del contrato) |
+| planificacion | aplicacion · presentacion | editor-rutina · editor-rutina |
+| planificacion | infraestructura | api (`apiPlanificacion.ts`) |
 | compartido | dominio | error-api, menu, sesion |
 | compartido | aplicacion · infraestructura | sesion · sesion, cliente-http |
 | compartido | presentacion | menu, inicio, proximamente, ruta-protegida |

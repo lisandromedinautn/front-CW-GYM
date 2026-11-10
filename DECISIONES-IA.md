@@ -127,3 +127,13 @@ Registro de cada sesión relevante en la que un desarrollador trabajó con IA. D
 - Ideas descartadas: dejar el controlador suelto en presentacion/ (se usa `controlador/` para que todo esté en carpetas).
 - Reglas afectadas: ninguna. Los tests solo cambian rutas de import.
 - Pendientes: ninguno.
+
+## 2026-11-10 — Editor de rutinas por bloques en el front [US06]
+- Desarrollador: Ignacio
+- Herramienta / modelo / esfuerzo: Claude Code · Opus 5.5
+- Objetivo: implementar en el front la creación de rutinas por bloques sobre el endpoint del back (`POST /planificacion/rutinas`).
+- Qué hizo la IA: propuso los casos de test (10 unitarios, 8 de integración y 1 e2e), registró las fichas y escribió los tests; vio el rojo y escribió el dominio (`reglasBloque.ts`: RN-PLAN-01, 02, 04 y 05), los tipos del contrato, el cliente `apiPlanificacion.ts`, los hooks `usarCrearRutina` y `usarEjerciciosParaRutina` y la pantalla `EditorRutina` en `/profesor/rutinas`. Verificó con mutaciones que cada regla tiene un test que muerde (también el e2e). Agregó a `playwright.config.ts` la variable opcional `E2E_URL_API`. Instaló Chromium para Playwright, levantó Docker y el back de test (puerto 3001) con su semilla para correr el e2e. Verificó tsc, lint, Prettier, la suite (47 tests) y la cobertura.
+- Decisiones del desarrollador: aprobar los casos de test; opción de menú "Rutinas"; sumar un e2e de Playwright contra el back real.
+- Ideas descartadas: importar el cliente o los tipos del módulo catálogo (regla 2); etiqueta de menú "Crear rutina".
+- Reglas afectadas: RN-PLAN-05 en la UI (el peso es opcional, como en el back).
+- Pendientes: editar-rutina (RN-PLAN-07); circuitos y rutina mixta (US09, US10); copiar en `../back-CW-GYM/docs/TRAZABILIDAD.md` las columnas del front de US06 (la matriz tiene que quedar idéntica en los dos repos).

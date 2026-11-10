@@ -2,6 +2,26 @@
 
 Una fila por caso de test. La entrada (acciones de la persona y respuesta de la API) y el esperado (lo que se ve o la request enviada) los **confirma el desarrollador antes** de escribir el test (ver `docs/TESTING.md`). Cambiar "Esperado" requiere que antes haya cambiado la regla.
 
+Catálogo falso de los tests de integración (forma de `GET /catalogo/ejercicios`): `lever chest press` (por repeticiones, Peso Extra), `weighted front plank` (por tiempo, Peso Corporal + Peso Extra), `3/4 sit-up` (por repeticiones, Peso Corporal).
+
 | Test (archivo › caso) | Regla | Nivel | Entrada | Esperado | Obtenido (último run) | Fecha |
 | :-- | :-- | :-- | :-- | :-- | :-- | :-- |
-| — | — | — | — | — | — | — |
+| `dominio/bloque/reglasBloque.test.ts` › "por repeticiones" pide repeticiones | RN-PLAN-04 | Unitario | `campoObjetivo('por repeticiones')` | `repeticiones` | `repeticiones` | 10/11/2026 |
+| `dominio/bloque/reglasBloque.test.ts` › "por tiempo" pide segundos | RN-PLAN-04 | Unitario | `campoObjetivo('por tiempo')` | `segundos` | `segundos` | 10/11/2026 |
+| `dominio/bloque/reglasBloque.test.ts` › Peso Extra admite peso | RN-PLAN-05 | Unitario | `admitePeso('Peso Extra')` | `true` | `true` | 10/11/2026 |
+| `dominio/bloque/reglasBloque.test.ts` › Peso Corporal + Peso Extra admite peso | RN-PLAN-05 | Unitario | `admitePeso('Peso Corporal + Peso Extra')` | `true` | `true` | 10/11/2026 |
+| `dominio/bloque/reglasBloque.test.ts` › Peso Corporal no admite peso | RN-PLAN-05 | Unitario | `admitePeso('Peso Corporal')` | `false` | `false` | 10/11/2026 |
+| `dominio/bloque/reglasBloque.test.ts` › Sin Peso no admite peso | RN-PLAN-05 | Unitario | `admitePeso('Sin Peso')` | `false` | `false` | 10/11/2026 |
+| `dominio/bloque/reglasBloque.test.ts` › sin bloques no hay tipo de rutina | RN-PLAN-01 | Unitario | `tipoDeRutina(0)` | `null` | `null` | 10/11/2026 |
+| `dominio/bloque/reglasBloque.test.ts` › con 2 bloques la rutina es de Bloques | RN-PLAN-01 | Unitario | `tipoDeRutina(2)` | `Bloques` | `Bloques` | 10/11/2026 |
+| `dominio/bloque/reglasBloque.test.ts` › 0 series no es válido | RN-PLAN-02 | Unitario | `seriesValidas(0)` | `false` | `false` | 10/11/2026 |
+| `dominio/bloque/reglasBloque.test.ts` › 1 serie es válida | RN-PLAN-02 | Unitario | `seriesValidas(1)` | `true` | `true` | 10/11/2026 |
+| `presentacion/editor-rutina/EditorRutina.int.test.tsx` › sin bloques no envía y pide agregar uno | RN-PLAN-01 | Integración | clic en "Guardar rutina" sin bloques | alert "Agregá al menos un bloque", 0 requests | alert "Agregá al menos un bloque", 0 requests | 10/11/2026 |
+| `presentacion/editor-rutina/EditorRutina.int.test.tsx` › con un bloque muestra el tipo Bloques | RN-PLAN-01 | Integración | clic en "Agregar bloque" | "Tipo de rutina: Bloques" | "Tipo de rutina: Bloques" | 10/11/2026 |
+| `presentacion/editor-rutina/EditorRutina.int.test.tsx` › lever chest press pide repeticiones y no tiempo | RN-PLAN-04 | Integración | elegir lever chest press | campo "Repeticiones", sin "Tiempo (s)" | campo "Repeticiones", sin "Tiempo (s)" | 10/11/2026 |
+| `presentacion/editor-rutina/EditorRutina.int.test.tsx` › weighted front plank pide tiempo y no repeticiones | RN-PLAN-04 | Integración | elegir weighted front plank | campo "Tiempo (s)", sin "Repeticiones" | campo "Tiempo (s)", sin "Repeticiones" | 10/11/2026 |
+| `presentacion/editor-rutina/EditorRutina.int.test.tsx` › lever chest press muestra peso; 3/4 sit-up no | RN-PLAN-05 | Integración | elegir lever chest press y después 3/4 sit-up | "Peso (kg)" visible y después ausente | "Peso (kg)" visible y después ausente | 10/11/2026 |
+| `presentacion/editor-rutina/EditorRutina.int.test.tsx` › con 0 series no envía | RN-PLAN-02 | Integración | series 0 y "Guardar rutina" | "Mínimo 1 serie", 0 requests | "Mínimo 1 serie", 0 requests | 10/11/2026 |
+| `presentacion/editor-rutina/EditorRutina.int.test.tsx` › camino feliz envía el body exacto | RN-PLAN-01, 02, 04, 05 | Integración | lever chest press, 3 series, 10 reps, 40 kg, micropausa 60, macropausa 120 | POST `{ bloques: [{ ejercicioId: 'e-press', series: 3, micropausaSegundos: 60, macropausaSegundos: 120, repeticiones: 10, pesoKg: 40 }] }` y status "Rutina creada" | POST `{ bloques: [{ ejercicioId: 'e-press', series: 3, micropausaSegundos: 60, macropausaSegundos: 120, repeticiones: 10, pesoKg: 40 }] }` y status "Rutina creada" | 10/11/2026 |
+| `presentacion/editor-rutina/EditorRutina.int.test.tsx` › el 404 RN-PLAN-06 del back se muestra | RN-PLAN-06 | Integración | el back responde 404 `RN-PLAN-06` | alert con el mensaje del back | alert con el mensaje del back | 10/11/2026 |
+| `e2e/planificacion/crear-rutina.e2e.ts` › el profesor arma y guarda una rutina de un bloque | RN-PLAN-01, 06 | e2e | ingresar como profesor01, Rutinas, lever chest press, 3 series, 10 reps, Guardar | status "Rutina creada (tipo Bloques)" | status "Rutina creada (tipo Bloques)" | 10/11/2026 |
