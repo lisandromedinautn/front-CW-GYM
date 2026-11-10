@@ -22,8 +22,25 @@ export interface PedidoBloque {
   pesoKg?: number;
 }
 
+/** Un ejercicio de un circuito: sin series ni pausas propias (RN-PLAN-03). */
+export interface PedidoEjercicioCircuito {
+  ejercicioId: string;
+  repeticiones?: number;
+  segundos?: number;
+  pesoKg?: number;
+}
+
+/** Un circuito tal como lo recibe `POST /planificacion/rutinas` (US09). */
+export interface PedidoCircuito {
+  vueltas: number;
+  macropausaSegundos: number;
+  ejercicios: PedidoEjercicioCircuito[];
+}
+
+/** Bloques y circuitos van en listas separadas; se manda solo la que tiene contenido. */
 export interface PedidoRutina {
-  bloques: PedidoBloque[];
+  bloques?: PedidoBloque[];
+  circuitos?: PedidoCircuito[];
 }
 
 /** Respuesta de `POST /planificacion/rutinas` (back: planificacion.controlador.ts). */
@@ -38,5 +55,15 @@ export interface RutinaCreada {
     repeticiones: number | null;
     segundos: number | null;
     pesoKg: number | null;
+  }[];
+  circuitos: {
+    vueltas: number;
+    macropausaSegundos: number;
+    ejercicios: {
+      ejercicioId: string;
+      repeticiones: number | null;
+      segundos: number | null;
+      pesoKg: number | null;
+    }[];
   }[];
 }

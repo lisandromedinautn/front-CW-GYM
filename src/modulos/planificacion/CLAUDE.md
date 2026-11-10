@@ -11,6 +11,7 @@ Editor de rutinas, importación, creación de planes, gestión de alumnos del pl
 | RN-PLAN-03 | Un circuito pide 2 o más ejercicios, vueltas y macropausa. No muestra micropausa | Vigente |
 | RN-PLAN-04 | Según el tipo del ejercicio, se pide repeticiones o tiempo, nunca los dos | Vigente |
 | RN-PLAN-05 | El campo peso solo aparece si el tipo de carga incluye Peso Extra, y es opcional | Vigente |
+| RN-PLAN-20 | Antes de enviar, avisa si un circuito repite un ejercicio ("No repitas ejercicios en el circuito") | Vigente |
 | RN-PLAN-08 | Al modificar una rutina importada, pregunta si es una rutina nueva. Solo se listan para importar las rutinas del propio profesor | Vigente |
 | RN-PLAN-09 | Al elegir la fecha de inicio, muestra la fecha de fin calculada (inicio + 27) sin permitir editarla | Vigente |
 | RN-PLAN-10 | Cada uno de los 28 días se puede marcar como descanso o asignarle una rutina | Vigente |
@@ -24,7 +25,7 @@ Editor de rutinas, importación, creación de planes, gestión de alumnos del pl
 
 | Pantalla (`presentacion/`) | Hook (`aplicacion/`) | US |
 | :-- | :-- | :-- |
-| `EditorRutina.tsx` | `usarCrearRutina.ts` ✅ (US06, bloques), `usarEjerciciosParaRutina.ts` ✅, `usarEditarRutina.ts` 📄 | US06, US09, US10 |
+| `EditorRutina.tsx` (con `EditorBloque.tsx`, `EditorCircuito.tsx`, `CamposObjetivo.tsx`, `CampoNumero.tsx` y `edicion.ts`) | `usarCrearRutina.ts` ✅ (US06 bloques, US09 circuitos), `usarEjerciciosParaRutina.ts` ✅, `usarEditarRutina.ts` 📄 | US06, US09, US10 |
 | `PaginaImportarRutina.tsx` | `usarImportarRutina.ts` | US20 |
 | `PaginaCrearPlan.tsx` | `usarCrearPlan.ts` | US07 |
 | `PaginaAlumnosDelPlan.tsx` | `usarAlumnosDelPlan.ts` | US12 |
@@ -38,6 +39,15 @@ Editor de rutinas, importación, creación de planes, gestión de alumnos del pl
 | 01/11/2026 | Todas | Versión inicial | Lisandro |
 | 01/11/2026 | RN-PLAN-03, 08, 16, 17 | Se reflejan ZG-06 y ZG-07; se quita US19 | Lisandro |
 | 10/11/2026 | RN-PLAN-05 | Se refleja la aclaración del back: el peso es opcional (US06) | Ignacio |
+| 10/11/2026 | RN-PLAN-20 | Se refleja la regla nueva del back: un circuito no repite ejercicios (US09) | Ignacio |
+
+## Decisiones de implementación (US09)
+
+* "Agregar circuito" suma un circuito que arranca con 2 ejercicios vacíos (el mínimo de RN-PLAN-03). Cada ejercicio va en su propio grupo ("Ejercicio 1", "Ejercicio 2"…) con "Quitar ejercicio", y el circuito tiene "Agregar ejercicio", "Vueltas", "Macropausa (s)" y "Quitar circuito". Decidido por Ignacio el 10/11/2026.
+* Hasta US10 (rutina mixta) no se mezclan: con bloques se deshabilita "Agregar circuito", y con circuitos "Agregar bloque". Esta restricción es temporal y no tiene test. Decidido por Ignacio el 10/11/2026.
+* Antes de enviar, el circuito avisa "Un circuito necesita 2 o más ejercicios", "Mínimo 1 vuelta" o "No repitas ejercicios en el circuito". Sin bloques ni circuitos avisa "Agregá al menos un bloque o un circuito".
+* El body manda solo la lista que tiene contenido: `{ bloques }` o `{ circuitos }` (contrato del back de US06 y US09).
+* El editor se partió en `edicion.ts` (estado, validaciones y armado del body), `CampoNumero`, `CamposObjetivo` (compartido por bloques y circuitos), `EditorBloque` y `EditorCircuito`. Los tests de US06 no cambiaron.
 
 ## Decisiones de implementación (US06)
 
