@@ -12,6 +12,7 @@ import { PaginaAltaProfesor } from './modulos/identidad/presentacion/alta-profes
 import { PaginaCodigoProfesor } from './modulos/identidad/presentacion/codigo-profesor/PaginaCodigoProfesor.tsx';
 import { PaginaVincularProfesor } from './modulos/identidad/presentacion/vinculo/PaginaVincularProfesor.tsx';
 import { PaginaIngreso } from './modulos/identidad/presentacion/ingreso/PaginaIngreso.tsx';
+import { EditorRutina } from './modulos/planificacion/presentacion/editor-rutina/EditorRutina.tsx';
 import './estilos.css';
 
 const ROLES: Rol[] = ['Admin', 'Profesor', 'Alumno'];
@@ -23,6 +24,7 @@ const PAGINAS: Record<string, ReactElement> = {
   '/admin/profesores': <PaginaAltaProfesor />,
   '/profesor/codigo': <PaginaCodigoProfesor />,
   '/alumno/vinculo': <PaginaVincularProfesor />,
+  '/profesor/rutinas': <EditorRutina />,
 };
 
 function Raiz() {
