@@ -137,3 +137,13 @@ Registro de cada sesión relevante en la que un desarrollador trabajó con IA. D
 - Ideas descartadas: importar el cliente o los tipos del módulo catálogo (regla 2); etiqueta de menú "Crear rutina".
 - Reglas afectadas: RN-PLAN-05 en la UI (el peso es opcional, como en el back).
 - Pendientes: editar-rutina (RN-PLAN-07); circuitos y rutina mixta (US09, US10); copiar en `../back-CW-GYM/docs/TRAZABILIDAD.md` las columnas del front de US06 (la matriz tiene que quedar idéntica en los dos repos).
+
+## 2026-11-10 — Editor de rutinas por circuitos en el front [US09]
+- Desarrollador: Ignacio
+- Herramienta / modelo / esfuerzo: Claude Code · Opus 5.5
+- Objetivo: implementar en el front la tarjeta US09 (CG-36) sobre el contrato del back ya mergeado en develop (`circuitos` en `POST /planificacion/rutinas`).
+- Qué hizo la IA: propuso los casos de test (7 unitarios, 8 de integración y 1 e2e, en archivos nuevos, sin tocar los de US06), registró las fichas, vio el rojo y escribió `reglasCircuito.ts` (RN-PLAN-03 y 20), la derivación del tipo con circuitos, los tipos del contrato y los circuitos en el editor. Partió el editor en `edicion.ts`, `CampoNumero`, `CamposObjetivo`, `EditorBloque` y `EditorCircuito`. Verificó con mutaciones que cada regla tiene un test que muerde (también el e2e). Actualizó el `develop` local del back con un fast-forward, levantó Docker y el back de test para el e2e, y reinstaló las dependencias del front. Verificó tsc, lint, Prettier, la suite (62 tests) y la cobertura. Armó la matriz de trazabilidad a partir de la del back (develop) con las columnas del front de US06 y US09.
+- Decisiones del desarrollador: aprobar los casos de test; un circuito nuevo arranca con 2 ejercicios; no mezclar bloques y circuitos hasta US10.
+- Ideas descartadas: arrancar el circuito con un solo ejercicio; permitir la rutina mixta antes de US10.
+- Reglas afectadas: RN-PLAN-20 se refleja en la UI.
+- Pendientes: US10 (rutina mixta: quitar la restricción, el orden entre bloques y circuitos y su test); copiar en `../back-CW-GYM/docs/TRAZABILIDAD.md` las columnas del front de US06 y US09, para que la matriz vuelva a ser idéntica.

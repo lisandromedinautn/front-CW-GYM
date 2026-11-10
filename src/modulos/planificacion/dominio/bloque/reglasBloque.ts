@@ -11,9 +11,11 @@ export function admitePeso(tipoCarga: string): boolean {
   return tipoCarga.includes('Peso Extra');
 }
 
-/** RN-PLAN-01: el tipo se deriva del contenido. Por ahora solo hay bloques (US06). */
-export function tipoDeRutina(cantidadBloques: number): string | null {
-  return cantidadBloques > 0 ? 'Bloques' : null;
+/** RN-PLAN-01: el tipo se deriva del contenido, igual que en el back (Mixta se testea en US10). */
+export function tipoDeRutina(cantidadBloques: number, cantidadCircuitos = 0): string | null {
+  if (cantidadBloques + cantidadCircuitos === 0) return null;
+  if (cantidadCircuitos === 0) return 'Bloques';
+  return cantidadBloques === 0 ? 'Circuitos' : 'Mixta';
 }
 
 /** RN-PLAN-02: un bloque tiene al menos una serie. */
