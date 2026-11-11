@@ -100,6 +100,8 @@ button:disabled {
   flex: 1 1 12rem;
 }
 select {
+  max-width: 100%;
+  min-width: 0;
   padding: 0.6rem;
   font-size: 1rem;
   border: 1px solid #9aa5b1;
@@ -196,6 +198,8 @@ input[aria-invalid='true'] {
   gap: 0.25rem;
 }
 .bloque {
+  /* Un fieldset tiene min-width: min-content: sin esto, un nombre largo desborda en mobile. */
+  min-width: 0;
   display: grid;
   gap: 0.75rem;
   border: 1px solid #d9e2ec;
@@ -206,4 +210,174 @@ input[aria-invalid='true'] {
 .bloque legend {
   font-weight: 600;
   padding: 0 0.25rem;
+}
+
+/* Rutinas: consulta paginada (Profesor, responsive) */
+.pagina-ancha {
+  max-width: 64rem;
+}
+.encabezado {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+.boton {
+  display: inline-block;
+  padding: 0.6rem 1rem;
+  border-radius: 4px;
+  background: #1d4ed8;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.boton:hover,
+button:not(.secundario, .enlace):hover {
+  background: #1e40af;
+}
+.tenue {
+  margin: 0;
+  color: #616e7c;
+  font-size: 0.9rem;
+}
+.vacio {
+  background: #fff;
+  border: 2px dashed #cbd2d9;
+  border-radius: 12px;
+  padding: 2.5rem 1.5rem;
+  display: grid;
+  justify-items: center;
+  gap: 0.75rem;
+  text-align: center;
+}
+.vacio-titulo {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+.grilla-rutinas {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: 1fr;
+}
+.tarjeta-rutina {
+  background: #fff;
+  border-radius: 10px;
+  padding: 1rem;
+  display: grid;
+  gap: 0.5rem;
+  align-content: start;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 12%);
+  border: 1px solid #d9e2ec;
+}
+.tarjeta-rutina-cabecera {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+.tarjeta-rutina h2 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+.ejercicios-rutina {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.4rem;
+}
+.ejercicios-rutina li {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.9rem;
+  text-transform: capitalize;
+}
+.miniatura {
+  width: 2.5rem;
+  height: 2.5rem;
+  flex: none;
+  object-fit: cover;
+  border-radius: 6px;
+  background: #e4e7eb;
+}
+.paginacion {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+/* Vista previa del ejercicio elegido en el editor: chica para no tapar el formulario. */
+.gif-vista-previa {
+  display: block;
+  margin: 0.25rem auto 0;
+  width: 7.5rem;
+  height: 7.5rem;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #d9e2ec;
+  background: #fff;
+}
+a:focus-visible,
+button:focus-visible,
+select:focus-visible,
+input:focus-visible {
+  outline: 2px solid #1d4ed8;
+  outline-offset: 2px;
+}
+.volver {
+  color: #1d4ed8;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+@media (min-width: 40rem) {
+  .grilla-rutinas {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 64rem) {
+  .grilla-rutinas {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.formulario > .etiqueta {
+  justify-self: start;
+}
+
+/* Paginador compartido, filtros del catálogo y nombre editable de la rutina */
+.paginacion {
+  flex-wrap: wrap;
+}
+.por-pagina {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.tarjeta-item .miniatura {
+  width: 3rem;
+  height: 3rem;
+}
+.nombre-rutina {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.6rem;
+  min-width: 0;
+}
+.nombre-rutina h2 {
+  overflow-wrap: anywhere;
+}
+.nombre-rutina-edicion {
+  display: grid;
+  flex: 1;
+}
+.nombre-rutina-edicion .error-campo {
+  margin: 0;
 }

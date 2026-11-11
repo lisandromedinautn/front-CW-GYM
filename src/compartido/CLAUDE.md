@@ -4,10 +4,10 @@ Lo mínimo que usan todos los módulos. Acá no va lógica de un módulo en part
 
 | Capa | Contenido |
 | :-- | :-- |
-| `dominio/` | `Rol`, `Sesion` y `RUTA_INICIO` (`sesion.ts`) ✅; `ErrorApi` (`{ codigo, mensaje }`) y `esErrorApi` (`errorApi.ts`) ✅; opciones del menú por rol (`opcionesMenu.ts`) ✅ |
-| `aplicacion/` | `usarSesion` (`usarSesion.ts`) ✅ |
+| `dominio/` | `TAMANIOS_PAGINA`, `Pagina<T>` y `totalPaginas` (`paginacion/paginacion.ts`) ✅; `Rol`, `Sesion` y `RUTA_INICIO` (`sesion.ts`) ✅; `ErrorApi` (`{ codigo, mensaje }`) y `esErrorApi` (`errorApi.ts`) ✅; opciones del menú por rol (`opcionesMenu.ts`) ✅ |
+| `aplicacion/` | `usarSesion` (`usarSesion.ts`) ✅; `usarTamanioPagina` (`paginacion/usarTamanioPagina.ts`) ✅ |
 | `infraestructura/` | Cliente HTTP base `pedir()` (URL de la API por variable de entorno de Vite, adjunta el JWT, traduce errores a `ErrorApi`) ✅ (`clienteHttp.ts`); almacenamiento de la sesión (`almacenSesion.ts`) ✅ |
-| `presentacion/` | `RutaProtegida` por rol (RN-IDE-03) ✅; layout con menú por rol (`DisenioConMenu`, `MenuPrincipal`, RN-UI-IDE-01) ✅; `PaginaInicio` ✅; `Proximamente` ✅; componentes genéricos de mensaje de error por `codigo`, carga y confirmación 📄 |
+| `presentacion/` | `Paginador` (`paginador/Paginador.tsx`) ✅; `RutaProtegida` por rol (RN-IDE-03) ✅; layout con menú por rol (`DisenioConMenu`, `MenuPrincipal`, RN-UI-IDE-01) ✅; `PaginaInicio` ✅; `Proximamente` ✅; componentes genéricos de mensaje de error por `codigo`, carga y confirmación 📄 |
 
 ## Decisiones de implementación
 
@@ -17,13 +17,17 @@ Lo mínimo que usan todos los módulos. Acá no va lógica de un módulo en part
 - **Diálogos**: `div role="dialog" aria-modal="true"` con `aria-labelledby` que apunta al título del diálogo.
 - **Validación de formularios**: el mensaje de un campo obligatorio se enlaza con el input por `aria-describedby`, y el input lleva `aria-invalid`. Los errores del back van en `role="alert"` y los avisos de éxito en `role="status"`.
 
-## Reglas de los listados (RN-UI-LIS) — a confirmar
+## Paginación (T06)
 
-Propuestas el 08/11/2026 a pedido de Lisandro (T07, CG-74). Están **a confirmar**: no se testean ni se implementan hasta que él las confirme. La paginación es T06 (CG-73).
+Confirmada por Lisandro el 11/11/2026. Todo listado se pagina con el `Paginador` compartido: botones "Anterior" y "Siguiente" (deshabilitados en los extremos), el texto "Página X de Y" y un select "Por página" con 5, 10, 20, 50 y 100. El tamaño elegido se recuerda por listado en `localStorage['cwgym.tamanio.' + clave]` (`usarTamanioPagina(clave, porDefecto)`; claves hoy: `ejercicios` con 20 y `rutinas` con 10). Cambiar el tamaño vuelve a la página 1 (lo hace quien usa el paginador). La respuesta del back es `{ items, total, pagina, tamanio }` con `pagina` desde 1.
+
+## Reglas de los listados (RN-UI-LIS)
+
+Propuestas el 08/11/2026 a pedido de Lisandro (T07, CG-74) y confirmadas por él el 11/11/2026.
 
 | ID | Qué hace la UI | Estado |
 | :-- | :-- | :-- |
-| RN-UI-LIS-01 | Todo listado ofrece filtros por sus atributos principales y un botón para limpiarlos | A confirmar |
-| RN-UI-LIS-02 | Los filtros se combinan entre sí (Y lógico) y con el buscador por nombre | A confirmar |
-| RN-UI-LIS-03 | Al cambiar un filtro, el listado vuelve a la primera página (depende de T06) | A confirmar |
-| RN-UI-LIS-04 | Filtros por listado: Ejercicios (grupo muscular, músculo principal, tipo, tipo de carga); Profesores (legajo, apellido, documento); Alumnos (apellido, documento, con o sin profesor). Cada listado nuevo define los suyos en su historia | A confirmar |
+| RN-UI-LIS-01 | Todo listado ofrece filtros por sus atributos principales y un botón "Limpiar filtros" que borra también el buscador | Vigente ✅ (ejercicios) |
+| RN-UI-LIS-02 | Los filtros se combinan entre sí (Y lógico) y con el buscador por nombre | Vigente ✅ (ejercicios) |
+| RN-UI-LIS-03 | Al cambiar un filtro, el listado vuelve a la primera página | Vigente ✅ (ejercicios) |
+| RN-UI-LIS-04 | Filtros por listado: Ejercicios (grupo muscular, músculo principal, tipo, tipo de carga); Profesores (legajo, apellido, documento); Alumnos (apellido, documento, con o sin profesor). Cada listado nuevo define los suyos en su historia | Vigente (solo Ejercicios implementado) |
