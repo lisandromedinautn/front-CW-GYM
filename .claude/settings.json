@@ -8,6 +8,21 @@
       "Edit(**/FICHAS-TEST.md)",
       "Edit(**/vite.config*)",
       "Edit(**/vitest.config*)",
+      "Write(**/*.test.ts)",
+      "Write(**/*.test.tsx)",
+      "Write(e2e/**)",
+      "Edit(src/pruebas/**)",
+      "Write(src/pruebas/**)",
+      "Write(**/playwright.config*)",
+      "Write(**/FICHAS-TEST.md)",
+      "Write(**/vite.config*)",
+      "Write(**/vitest.config*)",
+      "Edit(.husky/**)",
+      "Write(.husky/**)",
+      "Edit(.claude/settings.json)",
+      "Write(.claude/settings.json)",
+      "Edit(scripts/proteger-tests.mjs)",
+      "Write(scripts/proteger-tests.mjs)",
       "Bash(yarn add:*)",
       "Bash(yarn upgrade:*)",
       "Bash(yarn global add:*)",
@@ -17,6 +32,10 @@
       "Bash(git commit:*)",
       "Bash(git push:*)",
       "Bash(git merge:*)"
+    ],
+    "deny": [
+      "Bash(git commit --no-verify:*)",
+      "Bash(git commit -n:*)"
     ]
   }
 }
