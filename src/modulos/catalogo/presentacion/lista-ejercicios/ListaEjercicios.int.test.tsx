@@ -6,7 +6,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { Aplicacion } from '../../../../Aplicacion.tsx';
 import { servidorRedFalsa } from '../../../../pruebas/servidor-red-falsa.ts';
 
-const URL_EJERCICIOS = 'http://localhost:3000/catalogo/ejercicios';
+const URL_EJERCICIOS = 'http://localhost:3000/catalogo/ejercicios/consulta';
 
 const PLANCHA = {
   id: 'e1',
@@ -37,6 +37,15 @@ const PRESS = {
   atribucion: '© Gym visual — https://gymvisual.com/',
 };
 
+/** Respuesta de la consulta paginada con la forma del contrato; filtra por busqueda como el back. */
+function respuestaConsulta() {
+  return http.get(URL_EJERCICIOS, ({ request }) => {
+    const busqueda = (new URL(request.url).searchParams.get('busqueda') ?? '').toLowerCase();
+    const items = [PLANCHA, PRESS].filter((e) => e.nombre.toLowerCase().includes(busqueda));
+    return HttpResponse.json({ items, total: items.length, pagina: 1, tamanio: 20 });
+  });
+}
+
 function renderizarConSesion(rol: 'Admin' | 'Profesor', ruta: string) {
   localStorage.setItem('cwgym.sesion', JSON.stringify({ token: 't', rol }));
   return render(
@@ -54,7 +63,7 @@ afterEach(() => localStorage.clear());
 
 describe('RN-CAT-01 · el catálogo se lista con sus datos principales', () => {
   it('como Admin, cada ejercicio muestra nombre, tipo, tipo de carga, músculo principal y grupo muscular', async () => {
-    servidorRedFalsa.use(http.get(URL_EJERCICIOS, () => HttpResponse.json([PLANCHA, PRESS])));
+    servidorRedFalsa.use(respuestaConsulta());
     renderizarConSesion('Admin', '/admin/ejercicios');
 
     const lista = await listaDeEjercicios();
@@ -76,7 +85,7 @@ describe('RN-CAT-01 · el catálogo se lista con sus datos principales', () => {
   });
 
   it('como Profesor, en /profesor/ejercicios también ve la lista de ejercicios', async () => {
-    servidorRedFalsa.use(http.get(URL_EJERCICIOS, () => HttpResponse.json([PLANCHA, PRESS])));
+    servidorRedFalsa.use(respuestaConsulta());
     renderizarConSesion('Profesor', '/profesor/ejercicios');
 
     const lista = await listaDeEjercicios();
@@ -86,7 +95,7 @@ describe('RN-CAT-01 · el catálogo se lista con sus datos principales', () => {
   });
 
   it('el botón "Registrar ejercicio" está visible y deshabilitado (DT-06)', async () => {
-    servidorRedFalsa.use(http.get(URL_EJERCICIOS, () => HttpResponse.json([PLANCHA, PRESS])));
+    servidorRedFalsa.use(respuestaConsulta());
     renderizarConSesion('Admin', '/admin/ejercicios');
     await listaDeEjercicios();
 
@@ -94,7 +103,7 @@ describe('RN-CAT-01 · el catálogo se lista con sus datos principales', () => {
   });
 
   it('escribir "press" en "Buscar por nombre" deja solo los ejercicios que contienen "press"', async () => {
-    servidorRedFalsa.use(http.get(URL_EJERCICIOS, () => HttpResponse.json([PLANCHA, PRESS])));
+    servidorRedFalsa.use(respuestaConsulta());
     const usuario = userEvent.setup();
     renderizarConSesion('Admin', '/admin/ejercicios');
     await listaDeEjercicios();
@@ -111,7 +120,7 @@ describe('RN-CAT-01 · el catálogo se lista con sus datos principales', () => {
 
 describe('RN-CAT-09 · el detalle del ejercicio muestra el GIF y su atribución', () => {
   it('al tocar el nombre del ejercicio se abre el dialog con la imagen y la atribución', async () => {
-    servidorRedFalsa.use(http.get(URL_EJERCICIOS, () => HttpResponse.json([PLANCHA, PRESS])));
+    servidorRedFalsa.use(respuestaConsulta());
     const usuario = userEvent.setup();
     renderizarConSesion('Admin', '/admin/ejercicios');
     const lista = await listaDeEjercicios();
