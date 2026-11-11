@@ -9,6 +9,8 @@ export interface EjercicioParaRutina {
   tipo: string;
   /** Sin Peso, Peso Corporal, Peso Extra o Peso Corporal + Peso Extra. */
   tipoCarga: string;
+  /** GIF de demostración del dataset, para la vista previa al elegir el ejercicio. */
+  urlGif: string;
 }
 
 /** Un bloque tal como lo recibe `POST /planificacion/rutinas` (back: crear-rutina.dto.ts). */
@@ -46,6 +48,8 @@ export interface PedidoRutina {
 /** Respuesta de `POST /planificacion/rutinas` (back: planificacion.controlador.ts). */
 export interface RutinaCreada {
   id: string;
+  /** RN-PLAN-21: de 1 a 60 caracteres. */
+  nombre: string;
   tipo: string;
   bloques: {
     ejercicioId: string;
@@ -66,4 +70,23 @@ export interface RutinaCreada {
       pesoKg: number | null;
     }[];
   }[];
+}
+
+/** Ids de los ejercicios de la rutina en orden, sin repetir (bloques y después circuitos). */
+export function ejerciciosDeRutina(rutina: RutinaCreada): string[] {
+  const ids = [
+    ...rutina.bloques.map((b) => b.ejercicioId),
+    ...rutina.circuitos.flatMap((c) => c.ejercicios.map((e) => e.ejercicioId)),
+  ];
+  return [...new Set(ids)];
+}
+
+/** "2 bloques", "1 circuito", "1 bloque · 2 circuitos". */
+export function resumenRutina(rutina: RutinaCreada): string {
+  const partes: string[] = [];
+  const contar = (n: number, singular: string, plural: string) =>
+    n > 0 && partes.push(`${n} ${n === 1 ? singular : plural}`);
+  contar(rutina.bloques.length, 'bloque', 'bloques');
+  contar(rutina.circuitos.length, 'circuito', 'circuitos');
+  return partes.join(' · ');
 }

@@ -32,7 +32,17 @@ const SIN_FETCH = {
 };
 
 export default tseslint.config(
-  { ignores: ['dist/', 'coverage/', 'node_modules/', 'test-results/', 'playwright-report/'] },
+  {
+    // .claude/: skills de terceros (impeccable) con sus propios scripts; no son código de la app.
+    ignores: [
+      'dist/',
+      'coverage/',
+      'node_modules/',
+      'test-results/',
+      'playwright-report/',
+      '.claude/',
+    ],
+  },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   reactHooks.configs.flat['recommended-latest'],

@@ -13,6 +13,7 @@ import { PaginaCodigoProfesor } from './modulos/identidad/presentacion/codigo-pr
 import { PaginaVincularProfesor } from './modulos/identidad/presentacion/vinculo/PaginaVincularProfesor.tsx';
 import { PaginaIngreso } from './modulos/identidad/presentacion/ingreso/PaginaIngreso.tsx';
 import { EditorRutina } from './modulos/planificacion/presentacion/editor-rutina/EditorRutina.tsx';
+import { PaginaRutinas } from './modulos/planificacion/presentacion/consultar-rutinas/PaginaRutinas.tsx';
 import './estilos.css';
 
 const ROLES: Rol[] = ['Admin', 'Profesor', 'Alumno'];
@@ -24,7 +25,14 @@ const PAGINAS: Record<string, ReactElement> = {
   '/admin/profesores': <PaginaAltaProfesor />,
   '/profesor/codigo': <PaginaCodigoProfesor />,
   '/alumno/vinculo': <PaginaVincularProfesor />,
-  '/profesor/rutinas': <EditorRutina />,
+  '/profesor/rutinas': <PaginaRutinas />,
+};
+
+/** Páginas que no son opción de menú (se llega desde otra pantalla). */
+const SUBPAGINAS: Record<Rol, Record<string, ReactElement>> = {
+  Admin: {},
+  Profesor: { '/profesor/rutinas/nueva': <EditorRutina /> },
+  Alumno: {},
 };
 
 function Raiz() {
@@ -58,6 +66,9 @@ export function Aplicacion() {
               path={opcion.ruta.slice(RUTA_INICIO[rol].length + 1)}
               element={PAGINAS[opcion.ruta] ?? <Proximamente />}
             />
+          ))}
+          {Object.entries(SUBPAGINAS[rol]).map(([ruta, pagina]) => (
+            <Route key={ruta} path={ruta.slice(RUTA_INICIO[rol].length + 1)} element={pagina} />
           ))}
         </Route>
       ))}

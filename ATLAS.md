@@ -53,7 +53,8 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | identidad | `PaginaCodigoProfesor.tsx` | `usarCodigoProfesor.ts` | `GET` y `POST /identidad/profesores/codigo` | US04 | ✅ |
 | identidad | `PaginaVincularProfesor.tsx` | `usarVincularAlumno.ts` | `POST /identidad/alumnos/vinculo` | US05 | ✅ |
 | catalogo | ~~`PaginaRegistrarEjercicio.tsx`~~ solo botón deshabilitado en ListaEjercicios (DT-06) | ~~`usarRegistrarEjercicio.ts`~~ | ~~`POST /catalogo/ejercicios`~~ | US01 (DT-06) | — |
-| catalogo | `ListaEjercicios.tsx` | `usarListarEjercicios.ts` | `GET /catalogo/ejercicios` | T01, US06 | ✅ |
+| catalogo | `ListaEjercicios.tsx` | `usarConsultarEjercicios.ts` | `GET /catalogo/ejercicios/consulta` | T01, T06, T07 | ✅ |
+| planificacion | `PaginaRutinas.tsx` (ruta `/profesor/rutinas`) | `usarConsultarRutinas.ts`, `usarRenombrarRutina.ts` | `GET /planificacion/rutinas`, `PATCH /planificacion/rutinas/:id/nombre` | T06, T08, T09 | ✅ |
 | planificacion | `EditorRutina.tsx` (ruta `/profesor/rutinas`, menú "Rutinas") | `usarCrearRutina.ts`, `usarEjerciciosParaRutina.ts`, `usarEditarRutina.ts` | `GET /catalogo/ejercicios`, `POST /planificacion/rutinas`, `PUT /planificacion/rutinas/:id` | US06, US09, US10 | ✅ crear con bloques (US06) y con circuitos (US09); editar y mixta 📄 |
 | planificacion | `PaginaImportarRutina.tsx` | `usarImportarRutina.ts` | `POST /planificacion/rutinas/:id/importacion` | US20 | 📄 |
 | planificacion | `PaginaCrearPlan.tsx` | `usarCrearPlan.ts` | `POST /planificacion/planes` | US07 | 📄 |
@@ -69,13 +70,17 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | Ruta | Qué es | Estado |
 | :-- | :-- | :-- |
 | `src/modulos/identidad/infraestructura/api/apiIdentidad.ts` | Ingreso, alta de profesor, código de profesor y vínculo del alumno | ✅ |
-| `src/modulos/catalogo/infraestructura/api/apiCatalogo.ts` | Listado de ejercicios | ✅ |
+| `src/modulos/catalogo/infraestructura/api/apiCatalogo.ts` | Consulta paginada de ejercicios con filtros | ✅ |
+| `src/modulos/planificacion/infraestructura/api/apiPlanificacion.ts` | Catálogo para el editor, listado, alta y renombrado de rutinas | ✅ |
 
 ## Compartido (`src/compartido/`)
 
 | Ruta | Qué es | Estado |
 | :-- | :-- | :-- |
 | `dominio/sesion/sesion.ts` | Tipo `Rol`, interfaz `Sesion` y `RUTA_INICIO` por rol | ✅ |
+| `dominio/paginacion/paginacion.ts` | `TAMANIOS_PAGINA`, `Pagina<T>` y `totalPaginas` (T06) | ✅ |
+| `aplicacion/paginacion/usarTamanioPagina.ts` | Tamaño de página recordado por listado en `localStorage` | ✅ |
+| `presentacion/paginador/Paginador.tsx` | Anterior, Siguiente, "Página X de Y" y "Por página" (T06) | ✅ |
 | `dominio/error-api/errorApi.ts` | Contrato de error del back (`{ codigo, mensaje }`) y `esErrorApi` | ✅ |
 | `dominio/menu/opcionesMenu.ts` | Opciones del menú por rol (RN-UI-IDE-01) | ✅ |
 | `infraestructura/sesion/almacenSesion.ts` | Sesión en `localStorage` (`cwgym.sesion`) con suscripción | ✅ |
@@ -101,6 +106,10 @@ Los tests viven junto a la pantalla o componente que prueban. Las fichas de cada
 | `src/modulos/identidad/presentacion/codigo-profesor/PaginaCodigoProfesor.int.test.tsx` | RN-IDE-08 | ✅ |
 | `src/modulos/identidad/presentacion/vinculo/PaginaVincularProfesor.int.test.tsx` | RN-IDE-09, 10, 11 | ✅ |
 | `src/modulos/catalogo/presentacion/lista-ejercicios/ListaEjercicios.int.test.tsx` | RN-CAT-01, 09 | ✅ |
+| `src/modulos/catalogo/presentacion/lista-ejercicios/ListaEjerciciosPaginada.int.test.tsx` | RN-CAT-09, T06, RN-UI-LIS-01, 02, 03 | ✅ |
+| `src/compartido/presentacion/paginador/Paginador.test.tsx` | T06 | ✅ |
+| `src/modulos/planificacion/dominio/rutina/nombreRutina.test.ts` | RN-PLAN-21 | ✅ |
+| `src/modulos/planificacion/presentacion/consultar-rutinas/PaginaRutinas.int.test.tsx` | RN-PLAN-21, 08, T06 | ✅ |
 
 ## Carpetas por concepto
 
@@ -110,15 +119,15 @@ Decidido por Lisandro el 08/11/2026 (igual que en el back): en todas las capas d
 | :-- | :-- | :-- |
 | identidad | aplicacion · presentacion | ingreso, alta-profesor, codigo-profesor, vinculo (hook y página de cada pantalla, con el mismo nombre de carpeta en las dos capas) |
 | identidad | infraestructura | api (`apiIdentidad.ts`) |
-| catalogo | dominio | ejercicio |
-| catalogo | aplicacion · presentacion | listar-ejercicios · lista-ejercicios |
+| catalogo | dominio | ejercicio (`ejercicio.ts`, `clasificacion.ts`) |
+| catalogo | aplicacion · presentacion | consultar-ejercicios · lista-ejercicios |
 | catalogo | infraestructura | api (`apiCatalogo.ts`) |
-| planificacion | dominio | bloque (`reglasBloque.ts` y su test), circuito (`reglasCircuito.ts` y su test), rutina (tipos del contrato) |
-| planificacion | aplicacion · presentacion | editor-rutina · editor-rutina |
+| planificacion | dominio | bloque (`reglasBloque.ts` y su test), circuito (`reglasCircuito.ts` y su test), rutina (tipos del contrato y `nombreRutina.ts` con su test) |
+| planificacion | aplicacion · presentacion | editor-rutina · editor-rutina; consultar-rutinas · consultar-rutinas; renombrar-rutina (solo aplicacion) |
 | planificacion | infraestructura | api (`apiPlanificacion.ts`) |
-| compartido | dominio | error-api, menu, sesion |
-| compartido | aplicacion · infraestructura | sesion · sesion, cliente-http |
-| compartido | presentacion | menu, inicio, proximamente, ruta-protegida |
+| compartido | dominio | error-api, menu, paginacion, sesion |
+| compartido | aplicacion · infraestructura | paginacion, sesion · sesion, cliente-http |
+| compartido | presentacion | menu, inicio, paginador, proximamente, ruta-protegida |
 
 ## Nombres de archivo
 

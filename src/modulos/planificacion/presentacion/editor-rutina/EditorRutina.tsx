@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from 'react';
+import { Link } from 'react-router';
 import { usarCrearRutina } from '../../aplicacion/editor-rutina/usarCrearRutina.ts';
 import { usarEjerciciosParaRutina } from '../../aplicacion/editor-rutina/usarEjerciciosParaRutina.ts';
 import { tipoDeRutina } from '../../dominio/bloque/reglasBloque.ts';
@@ -97,6 +98,9 @@ export function EditorRutina() {
 
   return (
     <section className="pagina">
+      <Link to="/profesor/rutinas" className="volver">
+        Volver a rutinas
+      </Link>
       <h1>Nueva rutina</h1>
       {errorCatalogo && (
         <p role="alert" className="error">

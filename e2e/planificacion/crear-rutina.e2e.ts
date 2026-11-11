@@ -19,6 +19,7 @@ test.describe('RN-PLAN-01, 06 · el profesor arma y guarda una rutina por bloque
       .getByRole('navigation', { name: 'Menú principal' })
       .getByRole('link', { name: 'Rutinas' })
       .click();
+    await page.getByRole('link', { name: 'Nueva rutina' }).click();
     await page.getByRole('button', { name: 'Agregar bloque' }).click();
 
     const bloque = page.getByRole('group', { name: 'Bloque 1' });

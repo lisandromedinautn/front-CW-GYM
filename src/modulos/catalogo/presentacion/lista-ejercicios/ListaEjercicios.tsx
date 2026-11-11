@@ -1,23 +1,63 @@
 import { useState } from 'react';
-import { usarListarEjercicios } from '../../aplicacion/listar-ejercicios/usarListarEjercicios.ts';
+import { Paginador } from '../../../../compartido/presentacion/paginador/Paginador.tsx';
+import { usarConsultarEjercicios } from '../../aplicacion/consultar-ejercicios/usarConsultarEjercicios.ts';
+import {
+  GRUPOS_MUSCULARES,
+  MUSCULOS,
+  musculosDelGrupo,
+  TIPOS_CARGA,
+  TIPOS_EJERCICIO,
+  type FiltrosEjercicios,
+} from '../../dominio/ejercicio/clasificacion.ts';
 import type { Ejercicio } from '../../dominio/ejercicio/ejercicio.ts';
 
+const SELECTORES: {
+  clave: keyof FiltrosEjercicios;
+  etiqueta: string;
+  opciones: readonly string[];
+}[] = [
+  { clave: 'grupo', etiqueta: 'Grupo muscular', opciones: GRUPOS_MUSCULARES },
+  { clave: 'musculo', etiqueta: 'Músculo principal', opciones: MUSCULOS },
+  { clave: 'tipo', etiqueta: 'Tipo', opciones: TIPOS_EJERCICIO },
+  { clave: 'tipoCarga', etiqueta: 'Tipo de carga', opciones: TIPOS_CARGA },
+];
+
 export function ListaEjercicios() {
-  const { ejercicios, error } = usarListarEjercicios();
-  const [busqueda, setBusqueda] = useState('');
+  const catalogo = usarConsultarEjercicios();
+  const { resultado, error, filtros } = catalogo;
   const [abierto, setAbierto] = useState<Ejercicio | null>(null);
 
-  const termino = busqueda.trim().toLowerCase();
-  const visibles = (ejercicios ?? []).filter((e) => e.nombre.toLowerCase().includes(termino));
-
   return (
-    <section className="pagina">
+    <section className="pagina pagina-ancha">
       <h1>Ejercicios</h1>
       <div className="barra">
         <label>
           Buscar por nombre
-          <input type="search" value={busqueda} onChange={(e) => setBusqueda(e.target.value)} />
+          <input
+            type="search"
+            value={filtros.busqueda}
+            onChange={(e) => catalogo.cambiarFiltro('busqueda', e.target.value)}
+          />
         </label>
+        {SELECTORES.map(({ clave, etiqueta, opciones }) => (
+          <label key={clave}>
+            {etiqueta}
+            <select
+              value={filtros[clave]}
+              onChange={(e) => catalogo.cambiarFiltro(clave, e.target.value)}
+            >
+              <option value="">Todos</option>
+              {(clave === 'musculo' ? musculosDelGrupo(filtros.grupo) : opciones).map((opcion) => (
+                <option key={opcion} value={opcion}>
+                  {opcion}
+                </option>
+              ))}
+            </select>
+          </label>
+        ))}
+        <button type="button" className="secundario" onClick={catalogo.limpiarFiltros}>
+          Limpiar filtros
+        </button>
         <button type="button" disabled>
           Registrar ejercicio
         </button>
@@ -27,11 +67,15 @@ export function ListaEjercicios() {
           {error}
         </p>
       )}
-      {ejercicios === null && !error && <p>Cargando…</p>}
-      {ejercicios !== null && (
+      {resultado === null && !error && <p>Cargando…</p>}
+      {resultado !== null && resultado.items.length === 0 && (
+        <p className="tenue">No hay ejercicios con esos filtros</p>
+      )}
+      {resultado !== null && resultado.items.length > 0 && (
         <ul aria-label="Catálogo de ejercicios" className="lista-tarjetas">
-          {visibles.map((e) => (
+          {resultado.items.map((e) => (
             <li key={e.id} className="tarjeta-item">
+              <img src={e.urlGif} alt="" className="miniatura" loading="lazy" />
               <button type="button" className="enlace" onClick={() => setAbierto(e)}>
                 {e.nombre}
               </button>
@@ -42,6 +86,15 @@ export function ListaEjercicios() {
             </li>
           ))}
         </ul>
+      )}
+      {resultado !== null && resultado.total > 0 && (
+        <Paginador
+          pagina={catalogo.pagina}
+          total={resultado.total}
+          tamanio={catalogo.tamanio}
+          alCambiarPagina={catalogo.irAPagina}
+          alCambiarTamanio={catalogo.cambiarTamanio}
+        />
       )}
       {abierto && (
         <div className="fondo-dialog">
