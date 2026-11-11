@@ -11,6 +11,7 @@ Editor de rutinas, importación, creación de planes, gestión de alumnos del pl
 | RN-PLAN-03 | Un circuito pide 2 o más ejercicios, vueltas y macropausa. No muestra micropausa | Vigente |
 | RN-PLAN-04 | Según el tipo del ejercicio, se pide repeticiones o tiempo, nunca los dos | Vigente |
 | RN-PLAN-05 | El campo peso solo aparece si el tipo de carga incluye Peso Extra, y es opcional | Vigente |
+| RN-PLAN-21 | La tarjeta de la rutina muestra su nombre como título, con edición en el lugar ("Editar nombre", "Guardar", "Cancelar"). Antes de enviar valida de 1 a 60 caracteres sin contar los extremos ("Completá el nombre", "Máximo 60 caracteres"); "Cancelar" no envía nada y los errores del back (409 por nombre repetido) van en un `alert` | Vigente ✅ |
 | RN-PLAN-20 | Antes de enviar, avisa si un circuito repite un ejercicio ("No repitas ejercicios en el circuito") | Vigente |
 | RN-PLAN-08 | Al modificar una rutina importada, pregunta si es una rutina nueva. Solo se listan para importar las rutinas del propio profesor | Vigente |
 | RN-PLAN-09 | Al elegir la fecha de inicio, muestra la fecha de fin calculada (inicio + 27) sin permitir editarla | Vigente |
@@ -26,6 +27,7 @@ Editor de rutinas, importación, creación de planes, gestión de alumnos del pl
 | Pantalla (`presentacion/`) | Hook (`aplicacion/`) | US |
 | :-- | :-- | :-- |
 | `EditorRutina.tsx` (con `EditorBloque.tsx`, `EditorCircuito.tsx`, `CamposObjetivo.tsx`, `CampoNumero.tsx` y `edicion.ts`) | `usarCrearRutina.ts` ✅ (US06 bloques, US09 circuitos), `usarEjerciciosParaRutina.ts` ✅, `usarEditarRutina.ts` 📄 | US06, US09, US10 |
+| `PaginaRutinas.tsx` (`consultar-rutinas/`) ✅ | `usarConsultarRutinas.ts` ✅, `usarRenombrarRutina.ts` (`renombrar-rutina/`) ✅ | T06, T08, T09 |
 | `PaginaImportarRutina.tsx` | `usarImportarRutina.ts` | US20 |
 | `PaginaCrearPlan.tsx` | `usarCrearPlan.ts` | US07 |
 | `PaginaAlumnosDelPlan.tsx` | `usarAlumnosDelPlan.ts` | US12 |
@@ -40,6 +42,12 @@ Editor de rutinas, importación, creación de planes, gestión de alumnos del pl
 | 01/11/2026 | RN-PLAN-03, 08, 16, 17 | Se reflejan ZG-06 y ZG-07; se quita US19 | Lisandro |
 | 10/11/2026 | RN-PLAN-05 | Se refleja la aclaración del back: el peso es opcional (US06) | Ignacio |
 | 10/11/2026 | RN-PLAN-20 | Se refleja la regla nueva del back: un circuito no repite ejercicios (US09) | Ignacio |
+| 11/11/2026 | RN-PLAN-21 | Se refleja la regla nueva del back: el nombre de la rutina (1 a 60 caracteres, único por profesor) | Lisandro |
+
+## Decisiones de implementación (T06, T08)
+
+* El listado usa el `Paginador` compartido con `usarTamanioPagina('rutinas', 10)`. Se reemplaza el `totalPaginas` propio por el de `compartido/dominio/paginacion`.
+* El nombre se edita en el lugar con `PATCH /planificacion/rutinas/:id/nombre`; la tarjeta ya no muestra "Rutina N" sino `rutina.nombre`.
 
 ## Decisiones de implementación (US09)
 

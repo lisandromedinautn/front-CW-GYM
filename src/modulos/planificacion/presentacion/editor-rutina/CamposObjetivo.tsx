@@ -38,6 +38,14 @@ export function CamposObjetivo(props: {
           </select>
         </label>
         {errores.ejercicioId && <span className="error-campo">{errores.ejercicioId}</span>}
+        {ejercicio?.urlGif && (
+          <img
+            src={ejercicio.urlGif}
+            alt={`Vista previa de ${ejercicio.nombre}`}
+            className="gif-vista-previa"
+            loading="lazy"
+          />
+        )}
       </div>
       {campo === 'repeticiones' && (
         <CampoNumero

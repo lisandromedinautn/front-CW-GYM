@@ -49,7 +49,7 @@ function prepararRed(respuesta: () => Response = () => HttpResponse.json({}, { s
 async function abrirConUnCircuito() {
   localStorage.setItem('cwgym.sesion', JSON.stringify({ token: 't', rol: 'Profesor' }));
   render(
-    <MemoryRouter initialEntries={['/profesor/rutinas']}>
+    <MemoryRouter initialEntries={['/profesor/rutinas/nueva']}>
       <Aplicacion />
     </MemoryRouter>,
   );
