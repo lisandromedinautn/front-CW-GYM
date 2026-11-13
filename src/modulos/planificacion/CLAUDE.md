@@ -29,7 +29,7 @@ Editor de rutinas, importación, creación de planes, gestión de alumnos del pl
 | `EditorRutina.tsx` (con `EditorBloque.tsx`, `EditorCircuito.tsx`, `CamposObjetivo.tsx`, `CampoNumero.tsx` y `edicion.ts`) | `usarCrearRutina.ts` ✅ (US06 bloques, US09 circuitos), `usarEjerciciosParaRutina.ts` ✅, `usarEditarRutina.ts` 📄 | US06, US09, US10 |
 | `PaginaRutinas.tsx` (`consultar-rutinas/`) ✅ | `usarConsultarRutinas.ts` ✅, `usarRenombrarRutina.ts` (`renombrar-rutina/`) ✅ | T06, T08, T09 |
 | `PaginaImportarRutina.tsx` | `usarImportarRutina.ts` | US20 |
-| `PaginaCrearPlan.tsx` | `usarCrearPlan.ts` | US07 |
+| `PaginaCrearPlan.tsx` ✅ (`crear-plan/`) | `usarCrearPlan.ts` ✅, `usarDatosParaPlan.ts` ✅ | US07 |
 | `PaginaAlumnosDelPlan.tsx` | `usarAlumnosDelPlan.ts` | US12 |
 | `PaginaRutinaDelDia.tsx` | `usarRutinaDelDia.ts` | US08 |
 | `PaginaMiPlan.tsx` | `usarMiPlan.ts` | US11 |
@@ -43,6 +43,16 @@ Editor de rutinas, importación, creación de planes, gestión de alumnos del pl
 | 10/11/2026 | RN-PLAN-05 | Se refleja la aclaración del back: el peso es opcional (US06) | Ignacio |
 | 10/11/2026 | RN-PLAN-20 | Se refleja la regla nueva del back: un circuito no repite ejercicios (US09) | Ignacio |
 | 11/11/2026 | RN-PLAN-21 | Se refleja la regla nueva del back: el nombre de la rutina (1 a 60 caracteres, único por profesor) | Lisandro |
+| 13/11/2026 | RN-PLAN-09 a 14, 17 | Se implementa US07: pantalla de crear plan con fecha de fin calculada, 28 días con rutina o descanso y alumnos vinculados | Lisandro |
+
+## Decisiones de implementación (US07)
+
+* La pantalla vive en `/profesor/planes` y la abre la opción de menú "Planes". `PaginaCrearPlan` se renderiza directo (todavía no hay endpoint para listar planes).
+* La fecha de inicio arranca en hoy (`hoyIso()`), se elige con un `input type="date"` y la fecha de fin se muestra calculada (inicio + 27) sin editarla. Las fechas se manejan como `AAAA-MM-DD` en UTC (`dominio/plan/plan.ts`), sin depender de la zona del navegador.
+* Cada uno de los 28 días tiene un `select` de rutina con la opción "Descanso" (valor vacío, que se envía como `rutinaId: null`). El body manda siempre los 28 días, en orden.
+* Los alumnos se piden a `GET /identidad/alumnos` (solo los vinculados al profesor, RN-PLAN-13) y se ordenan por apellido y nombre. Las rutinas se piden con `listarTodasLasRutinas()`, que pagina `GET /planificacion/rutinas` de a 100 hasta traerlas todas.
+* Antes de enviar valida en el front: fecha válida ("Elegí una fecha de inicio válida") y al menos un alumno ("Elegí al menos un alumno", RN-PLAN-12). Los rechazos del back (RN-PLAN-08, 13, 14) se muestran con su mensaje en el `alert`.
+* No hay botón para finalizar el plan antes de tiempo (RN-PLAN-17).
 
 ## Decisiones de implementación (T06, T08)
 

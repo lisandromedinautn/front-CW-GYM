@@ -12,8 +12,9 @@ import { PaginaAltaProfesor } from './modulos/identidad/presentacion/alta-profes
 import { PaginaCodigoProfesor } from './modulos/identidad/presentacion/codigo-profesor/PaginaCodigoProfesor.tsx';
 import { PaginaVincularProfesor } from './modulos/identidad/presentacion/vinculo/PaginaVincularProfesor.tsx';
 import { PaginaIngreso } from './modulos/identidad/presentacion/ingreso/PaginaIngreso.tsx';
-import { EditorRutina } from './modulos/planificacion/presentacion/editor-rutina/EditorRutina.tsx';
+import { PaginaCrearPlan } from './modulos/planificacion/presentacion/crear-plan/PaginaCrearPlan.tsx';
 import { PaginaRutinas } from './modulos/planificacion/presentacion/consultar-rutinas/PaginaRutinas.tsx';
+import { EditorRutina } from './modulos/planificacion/presentacion/editor-rutina/EditorRutina.tsx';
 import './estilos.css';
 
 const ROLES: Rol[] = ['Admin', 'Profesor', 'Alumno'];
@@ -26,6 +27,7 @@ const PAGINAS: Record<string, ReactElement> = {
   '/profesor/codigo': <PaginaCodigoProfesor />,
   '/alumno/vinculo': <PaginaVincularProfesor />,
   '/profesor/rutinas': <PaginaRutinas />,
+  '/profesor/planes': <PaginaCrearPlan />,
 };
 
 /** Páginas que no son opción de menú (se llega desde otra pantalla). */

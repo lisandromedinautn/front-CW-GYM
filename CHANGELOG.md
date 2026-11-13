@@ -6,6 +6,12 @@ Categorías: Agregado, Cambiado, Corregido, Eliminado, Seguridad. Cada entrada c
 
 ## [Sin publicar]
 
+### Agregado
+
+- Pantalla "Nuevo plan" en `/profesor/planes`: el profesor elige la fecha de inicio (el fin se calcula solo), asigna una rutina o descanso a cada uno de los 28 días y selecciona los alumnos vinculados (US07).
+- Opción "Planes" en el menú del Profesor.
+- Helpers de fechas y contrato del plan en `dominio/plan/plan.ts`, y hooks `usarCrearPlan` y `usarDatosParaPlan` (US07).
+
 ## [1.1.0] — 2026-11-08
 
 Ingreso al sistema con roles, catálogo de ejercicios por dataset, alta de profesores, semilla de usuarios, código de profesor y vínculo alumno-profesor (fase 1: US00, T01, US02, US04, US05; T04 y T05 de planificación).
