@@ -15,6 +15,7 @@ import { PaginaIngreso } from './modulos/identidad/presentacion/ingreso/PaginaIn
 import { PaginaCrearPlan } from './modulos/planificacion/presentacion/crear-plan/PaginaCrearPlan.tsx';
 import { PaginaRutinas } from './modulos/planificacion/presentacion/consultar-rutinas/PaginaRutinas.tsx';
 import { EditorRutina } from './modulos/planificacion/presentacion/editor-rutina/EditorRutina.tsx';
+import { PaginaRutinaDelDia } from './modulos/planificacion/presentacion/rutina-del-dia/PaginaRutinaDelDia.tsx';
 import './estilos.css';
 
 const ROLES: Rol[] = ['Admin', 'Profesor', 'Alumno'];
@@ -28,6 +29,7 @@ const PAGINAS: Record<string, ReactElement> = {
   '/alumno/vinculo': <PaginaVincularProfesor />,
   '/profesor/rutinas': <PaginaRutinas />,
   '/profesor/planes': <PaginaCrearPlan />,
+  '/alumno/rutina-del-dia': <PaginaRutinaDelDia />,
 };
 
 /** Páginas que no son opción de menú (se llega desde otra pantalla). */
