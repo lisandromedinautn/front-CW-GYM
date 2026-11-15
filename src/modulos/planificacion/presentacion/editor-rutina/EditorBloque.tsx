@@ -1,4 +1,5 @@
 import type { EjercicioParaRutina } from '../../dominio/rutina/rutina.ts';
+import { BotonesOrden, type Reordenar } from './BotonesOrden.tsx';
 import { CampoNumero } from './CampoNumero.tsx';
 import { CamposObjetivo } from './CamposObjetivo.tsx';
 import type { BloqueEnEdicion, Errores } from './edicion.ts';
@@ -11,6 +12,7 @@ export function EditorBloque(props: {
   errores: Errores;
   alCambiar: (campo: keyof BloqueEnEdicion, valor: string) => void;
   alQuitar: () => void;
+  reordenar?: Reordenar;
 }) {
   const { bloque, errores, alCambiar } = props;
   const id = String(bloque.clave);
@@ -47,6 +49,7 @@ export function EditorBloque(props: {
         error={errores.macropausa}
         alCambiar={(v) => alCambiar('macropausa', v)}
       />
+      <BotonesOrden reordenar={props.reordenar} />
       <button type="button" className="secundario" onClick={props.alQuitar}>
         Quitar bloque
       </button>

@@ -4,6 +4,7 @@ import { usarCrearRutina } from '../../aplicacion/editor-rutina/usarCrearRutina.
 import { usarEjerciciosParaRutina } from '../../aplicacion/editor-rutina/usarEjerciciosParaRutina.ts';
 import { tipoDeRutina } from '../../dominio/bloque/reglasBloque.ts';
 import type { PedidoRutina } from '../../dominio/rutina/rutina.ts';
+import { mover } from '../../dominio/rutina/secuenciaRutina.ts';
 import {
   type BloqueEnEdicion,
   bloqueAPedido,
@@ -22,8 +23,9 @@ import { EditorBloque } from './EditorBloque.tsx';
 import { EditorCircuito } from './EditorCircuito.tsx';
 
 /**
- * US06 y US09: el profesor arma una rutina por bloques o por circuitos. Hasta US10 (rutina
- * mixta) no se mezclan: con bloques no se puede agregar un circuito, y al revés.
+ * US06, US09 y US10: el profesor arma una rutina por bloques, por circuitos o mixta. Los bloques
+ * y circuitos se muestran en el orden de la rutina (`secuencia`), que se cambia con "Subir" y
+ * "Bajar" (RN-PLAN-01).
  */
 export function EditorRutina() {
   const { ejercicios, error: errorCatalogo } = usarEjerciciosParaRutina();
@@ -31,6 +33,8 @@ export function EditorRutina() {
   const [bloques, setBloques] = useState<BloqueEnEdicion[]>([]);
   const [circuitos, setCircuitos] = useState<CircuitoEnEdicion[]>([]);
   const [errores, setErrores] = useState<Record<number, Errores>>({});
+  /** Claves de bloques y circuitos en el orden de la rutina (RN-PLAN-01). */
+  const [secuencia, setSecuencia] = useState<number[]>([]);
 
   const catalogo = ejercicios ?? [];
   const buscar = (id: string) => catalogo.find((e) => e.id === id);
@@ -69,6 +73,41 @@ export function EditorRutina() {
     limpiarError(clave, campo);
   }
 
+  function agregarBloque() {
+    const bloque = bloqueVacio();
+    setBloques((anteriores) => [...anteriores, bloque]);
+    setSecuencia((anterior) => [...anterior, bloque.clave]);
+  }
+
+  function agregarCircuito() {
+    const circuito = circuitoVacio();
+    setCircuitos((anteriores) => [...anteriores, circuito]);
+    setSecuencia((anterior) => [...anterior, circuito.clave]);
+  }
+
+  function quitar(clave: number) {
+    setBloques((anteriores) => anteriores.filter((b) => b.clave !== clave));
+    setCircuitos((anteriores) => anteriores.filter((c) => c.clave !== clave));
+    setSecuencia((anterior) => anterior.filter((c) => c !== clave));
+  }
+
+  /** "Subir" y "Bajar" solo aparecen si hay más de un bloque o circuito. */
+  function reordenar(clave: number) {
+    if (secuencia.length < 2) return undefined;
+    const indice = secuencia.indexOf(clave);
+    return {
+      puedeSubir: indice > 0,
+      puedeBajar: indice < secuencia.length - 1,
+      alSubir: () => setSecuencia((anterior) => mover(anterior, indice, 'arriba')),
+      alBajar: () => setSecuencia((anterior) => mover(anterior, indice, 'abajo')),
+    };
+  }
+
+  // Bloques y circuitos en el orden de la rutina; "Bloque N" y "Circuito N" cuentan por tipo.
+  const bloquesEnOrden = secuencia.flatMap((clave) => bloques.filter((b) => b.clave === clave));
+  const circuitosEnOrden = secuencia.flatMap((clave) => circuitos.filter((c) => c.clave === clave));
+  const orden = (clave: number) => secuencia.indexOf(clave) + 1;
+
   async function guardar(evento: FormEvent) {
     evento.preventDefault();
     // RN-PLAN-01: al menos un bloque o un circuito.
@@ -84,14 +123,23 @@ export function EditorRutina() {
     setErrores(encontrados);
     if (!sinErrores(encontrados)) return;
 
-    // Se manda solo la lista que tiene contenido (contrato de US06 y US09).
-    const pedido: PedidoRutina =
-      circuitos.length > 0
-        ? { circuitos: circuitos.map((c) => circuitoAPedido(c, buscar)) }
-        : { bloques: bloques.map((b) => bloqueAPedido(b, buscar)) };
+    // Se manda solo la lista que tiene contenido (contrato de US06 y US09). En una rutina mixta
+    // van las dos y cada bloque y circuito lleva su `orden` en la rutina (US10).
+    const mixta = bloques.length > 0 && circuitos.length > 0;
+    const conOrden = <T,>(clave: number, pedido: T) =>
+      mixta ? { orden: orden(clave), ...pedido } : pedido;
+    const pedido: PedidoRutina = {
+      ...(bloques.length > 0 && {
+        bloques: bloquesEnOrden.map((b) => conOrden(b.clave, bloqueAPedido(b, buscar))),
+      }),
+      ...(circuitos.length > 0 && {
+        circuitos: circuitosEnOrden.map((c) => conOrden(c.clave, circuitoAPedido(c, buscar))),
+      }),
+    };
     if (await crear(pedido)) {
       setBloques([]);
       setCircuitos([]);
+      setSecuencia([]);
       setErrores({});
     }
   }
@@ -109,61 +157,60 @@ export function EditorRutina() {
       )}
       <form className="formulario" onSubmit={(e) => void guardar(e)} noValidate>
         {tipo && <p className="etiqueta">Tipo de rutina: {tipo}</p>}
-        {bloques.map((bloque, indice) => (
-          <EditorBloque
-            key={bloque.clave}
-            numero={indice + 1}
-            bloque={bloque}
-            ejercicios={catalogo}
-            errores={errores[bloque.clave] ?? {}}
-            alCambiar={(campo, valor) => cambiarBloque(bloque.clave, campo, valor)}
-            alQuitar={() => setBloques((anteriores) => anteriores.filter((b) => b !== bloque))}
-          />
-        ))}
-        {circuitos.map((circuito, indice) => (
-          <EditorCircuito
-            key={circuito.clave}
-            numero={indice + 1}
-            circuito={circuito}
-            ejercicios={catalogo}
-            errores={errores}
-            alCambiar={(campo, valor) => {
-              cambiarCircuito(circuito.clave, (c) => ({ ...c, [campo]: valor }));
-              limpiarError(circuito.clave, campo);
-            }}
-            alCambiarEjercicio={(clave, campo, valor) =>
-              cambiarEjercicio(circuito.clave, clave, campo, valor)
-            }
-            alAgregarEjercicio={() =>
-              cambiarCircuito(circuito.clave, (c) => ({
-                ...c,
-                ejercicios: [...c.ejercicios, ejercicioCircuitoVacio()],
-              }))
-            }
-            alQuitarEjercicio={(clave) =>
-              cambiarCircuito(circuito.clave, (c) => ({
-                ...c,
-                ejercicios: c.ejercicios.filter((e) => e.clave !== clave),
-              }))
-            }
-            alQuitar={() => setCircuitos((anteriores) => anteriores.filter((c) => c !== circuito))}
-          />
-        ))}
+        {secuencia.map((clave) => {
+          const bloque = bloques.find((b) => b.clave === clave);
+          if (bloque) {
+            return (
+              <EditorBloque
+                key={clave}
+                numero={bloquesEnOrden.indexOf(bloque) + 1}
+                bloque={bloque}
+                ejercicios={catalogo}
+                errores={errores[clave] ?? {}}
+                alCambiar={(campo, valor) => cambiarBloque(clave, campo, valor)}
+                alQuitar={() => quitar(clave)}
+                reordenar={reordenar(clave)}
+              />
+            );
+          }
+          const circuito = circuitos.find((c) => c.clave === clave);
+          if (!circuito) return null;
+          return (
+            <EditorCircuito
+              key={clave}
+              numero={circuitosEnOrden.indexOf(circuito) + 1}
+              circuito={circuito}
+              ejercicios={catalogo}
+              errores={errores}
+              alCambiar={(campo, valor) => {
+                cambiarCircuito(clave, (c) => ({ ...c, [campo]: valor }));
+                limpiarError(clave, campo);
+              }}
+              alCambiarEjercicio={(ejercicio, campo, valor) =>
+                cambiarEjercicio(clave, ejercicio, campo, valor)
+              }
+              alAgregarEjercicio={() =>
+                cambiarCircuito(clave, (c) => ({
+                  ...c,
+                  ejercicios: [...c.ejercicios, ejercicioCircuitoVacio()],
+                }))
+              }
+              alQuitarEjercicio={(ejercicio) =>
+                cambiarCircuito(clave, (c) => ({
+                  ...c,
+                  ejercicios: c.ejercicios.filter((e) => e.clave !== ejercicio),
+                }))
+              }
+              alQuitar={() => quitar(clave)}
+              reordenar={reordenar(clave)}
+            />
+          );
+        })}
         <div className="barra">
-          <button
-            type="button"
-            className="secundario"
-            disabled={circuitos.length > 0}
-            onClick={() => setBloques((anteriores) => [...anteriores, bloqueVacio()])}
-          >
+          <button type="button" className="secundario" onClick={agregarBloque}>
             Agregar bloque
           </button>
-          <button
-            type="button"
-            className="secundario"
-            disabled={bloques.length > 0}
-            onClick={() => setCircuitos((anteriores) => [...anteriores, circuitoVacio()])}
-          >
+          <button type="button" className="secundario" onClick={agregarCircuito}>
             Agregar circuito
           </button>
         </div>
