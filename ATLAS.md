@@ -34,6 +34,7 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | `src/vite-env.d.ts` | Tipos de Vite para `import.meta.env` ✅ |
 | `.env.example` | `VITE_URL_API` ✅ |
 | `CHANGELOG.md` | Cambios por versión (decisión 38) ✅ |
+| `src/modulos/planificacion/presentacion/detalle-rutina/DetalleRutina.tsx` | Detalle visual de ejercicios, objetivos y pausas; extraído de US08 para compartir con la vista de US11 |
 
 ## Módulos
 
@@ -128,7 +129,7 @@ Decidido por Lisandro el 08/11/2026 (igual que en el back): en todas las capas d
 | catalogo | aplicacion · presentacion | consultar-ejercicios · lista-ejercicios |
 | catalogo | infraestructura | api (`apiCatalogo.ts`) |
 | planificacion | dominio | bloque (`reglasBloque.ts` y su test), circuito (`reglasCircuito.ts` y su test), rutina (tipos del contrato y `nombreRutina.ts` con su test), plan (fechas del plan y tipos del contrato, con su test) |
-| planificacion | aplicacion · presentacion | editor-rutina · editor-rutina; consultar-rutinas · consultar-rutinas; renombrar-rutina (solo aplicacion); crear-plan · crear-plan; consultar-rutina-del-dia · rutina-del-dia |
+| planificacion | aplicacion · presentacion | editor-rutina · editor-rutina; consultar-rutinas · consultar-rutinas; renombrar-rutina (solo aplicacion); crear-plan · crear-plan; consultar-rutina-del-dia · rutina-del-dia; detalle-rutina (componente compartido del módulo) |
 | planificacion | infraestructura | api (`apiPlanificacion.ts`) |
 | compartido | dominio | error-api, menu, paginacion, sesion |
 | compartido | aplicacion · infraestructura | paginacion, sesion · sesion, cliente-http |
