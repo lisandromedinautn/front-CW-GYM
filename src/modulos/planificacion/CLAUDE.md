@@ -26,7 +26,7 @@ Editor de rutinas, importación, creación de planes, gestión de alumnos del pl
 
 | Pantalla (`presentacion/`) | Hook (`aplicacion/`) | US |
 | :-- | :-- | :-- |
-| `EditorRutina.tsx` (con `EditorBloque.tsx`, `EditorCircuito.tsx`, `CamposObjetivo.tsx`, `CampoNumero.tsx` y `edicion.ts`) | `usarCrearRutina.ts` ✅ (US06 bloques, US09 circuitos), `usarEjerciciosParaRutina.ts` ✅, `usarEditarRutina.ts` 📄 | US06, US09, US10 |
+| `EditorRutina.tsx` (con `EditorBloque.tsx`, `EditorCircuito.tsx`, `BotonesOrden.tsx`, `CamposObjetivo.tsx`, `CampoNumero.tsx` y `edicion.ts`) | `usarCrearRutina.ts` ✅ (US06 bloques, US09 circuitos, US10 mixta), `usarEjerciciosParaRutina.ts` ✅, `usarEditarRutina.ts` 📄 | US06, US09, US10 |
 | `PaginaRutinas.tsx` (`consultar-rutinas/`) ✅ | `usarConsultarRutinas.ts` ✅, `usarRenombrarRutina.ts` (`renombrar-rutina/`) ✅ | T06, T08, T09 |
 | `PaginaImportarRutina.tsx` | `usarImportarRutina.ts` | US20 |
 | `PaginaCrearPlan.tsx` ✅ (`crear-plan/`) | `usarCrearPlan.ts` ✅, `usarDatosParaPlan.ts` ✅ | US07 |
@@ -59,10 +59,17 @@ Editor de rutinas, importación, creación de planes, gestión de alumnos del pl
 * El listado usa el `Paginador` compartido con `usarTamanioPagina('rutinas', 10)`. Se reemplaza el `totalPaginas` propio por el de `compartido/dominio/paginacion`.
 * El nombre se edita en el lugar con `PATCH /planificacion/rutinas/:id/nombre`; la tarjeta ya no muestra "Rutina N" sino `rutina.nombre`.
 
+## Decisiones de implementación (US10)
+
+* Bloques y circuitos se pueden mezclar. Se muestran en el orden en que se agregan, y cada uno tiene "Subir" y "Bajar" (deshabilitados en los extremos; no aparecen si hay un solo elemento). Los títulos siguen siendo "Bloque N" y "Circuito N", numerados por tipo en el orden de la rutina. Decidido por Ignacio el 15/11/2026.
+* El orden vive en `secuencia` (claves en orden) dentro de `EditorRutina`; `mover` (`dominio/rutina/secuenciaRutina.ts`) hace el intercambio.
+* El body manda `orden` (1..N, posición en la rutina) en cada bloque y circuito **solo si la rutina es mixta**. Una rutina solo de bloques o solo de circuitos manda el mismo body que en US06 y US09 (contrato del back de US10).
+* El listado de rutinas no cambia: la tarjeta sigue mostrando "1 bloque · 1 circuito" y los ejercicios con bloques primero. Decidido por Ignacio el 15/11/2026.
+
 ## Decisiones de implementación (US09)
 
 * "Agregar circuito" suma un circuito que arranca con 2 ejercicios vacíos (el mínimo de RN-PLAN-03). Cada ejercicio va en su propio grupo ("Ejercicio 1", "Ejercicio 2"…) con "Quitar ejercicio", y el circuito tiene "Agregar ejercicio", "Vueltas", "Macropausa (s)" y "Quitar circuito". Decidido por Ignacio el 10/11/2026.
-* Hasta US10 (rutina mixta) no se mezclan: con bloques se deshabilita "Agregar circuito", y con circuitos "Agregar bloque". Esta restricción es temporal y no tiene test. Decidido por Ignacio el 10/11/2026.
+* Hasta US10 (rutina mixta) no se mezclaban: con bloques se deshabilitaba "Agregar circuito", y al revés. US10 quitó esa restricción (15/11/2026).
 * Antes de enviar, el circuito avisa "Un circuito necesita 2 o más ejercicios", "Mínimo 1 vuelta" o "No repitas ejercicios en el circuito". Sin bloques ni circuitos avisa "Agregá al menos un bloque o un circuito".
 * El body manda solo la lista que tiene contenido: `{ bloques }` o `{ circuitos }` (contrato del back de US06 y US09).
 * El editor se partió en `edicion.ts` (estado, validaciones y armado del body), `CampoNumero`, `CamposObjetivo` (compartido por bloques y circuitos), `EditorBloque` y `EditorCircuito`. Los tests de US06 no cambiaron.
