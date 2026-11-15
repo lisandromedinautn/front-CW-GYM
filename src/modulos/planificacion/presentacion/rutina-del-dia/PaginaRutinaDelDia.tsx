@@ -24,6 +24,12 @@ export function PaginaRutinaDelDia() {
       )}
       {cargando && !resultado && <p className="tenue">Cargando tu rutina…</p>}
 
+      {resultado && (
+        <p className="tenue">
+          Fecha: <time dateTime={resultado.fecha}>{resultado.fecha}</time>
+        </p>
+      )}
+
       {resultado?.estado === 'sin-plan' && <p>No tenés un plan vigente.</p>}
 
       {resultado?.estado === 'descanso' && (
@@ -53,33 +59,40 @@ function Detalle(props: { rutina: RutinaDelDiaDetalle; numeroDia: number }) {
       {rutina.bloques.length > 0 && (
         <section>
           <h3>Bloques</h3>
-          <ul className="lista-ejercicios">
-            {rutina.bloques.map((bloque) => (
-              <li key={bloque.ejercicioId}>
+          <ol className="lista-tarjetas" aria-label="Bloques">
+            {rutina.bloques.map((bloque, indice) => (
+              <li key={indice} className="tarjeta-rutina">
                 <p className="campo">{bloque.nombre}</p>
                 <p className="tenue">{resumenDeBloque(bloque)}</p>
+                <p className="tenue">
+                  Micropausa entre series: {bloque.micropausaSegundos} s · Macropausa al terminar el
+                  bloque: {bloque.macropausaSegundos} s
+                </p>
               </li>
             ))}
-          </ul>
+          </ol>
         </section>
       )}
 
       {rutina.circuitos.length > 0 && (
         <section>
           <h3>Circuitos</h3>
-          {rutina.circuitos.map((circuito) => (
-            <div key={circuito.ejercicios.map((ejercicio) => ejercicio.ejercicioId).join('|')}>
+          {rutina.circuitos.map((circuito, indice) => (
+            <div key={indice} className="tarjeta-rutina">
               <p className="etiqueta">
                 {circuito.vueltas} {circuito.vueltas === 1 ? 'vuelta' : 'vueltas'}
               </p>
-              <ul className="lista-ejercicios">
+              <ol>
                 {circuito.ejercicios.map((ejercicio) => (
                   <li key={ejercicio.ejercicioId}>
                     <p className="campo">{ejercicio.nombre}</p>
                     <p className="tenue">{objetivoDeEjercicio(ejercicio)}</p>
                   </li>
                 ))}
-              </ul>
+              </ol>
+              <p className="tenue">
+                Macropausa al terminar cada vuelta: {circuito.macropausaSegundos} s
+              </p>
             </div>
           ))}
         </section>

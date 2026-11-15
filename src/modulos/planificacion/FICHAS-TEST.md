@@ -59,3 +59,26 @@ Catálogo falso de los tests de integración (forma de `GET /catalogo/ejercicios
 | `presentacion/crear-plan/PaginaCrearPlan.int.test.tsx` › sin alumno avisa "Elegí al menos un alumno" y no envía nada | RN-PLAN-12 | Integración | "Crear plan" sin marcar alumnos | alert "Elegí al menos un alumno", 0 requests | = esperado (verde el 13/11/2026) | 13/11/2026 |
 | `presentacion/crear-plan/PaginaCrearPlan.int.test.tsx` › con 409 RN-PLAN-14 muestra su mensaje | RN-PLAN-14 | Integración | el back responde 409 `RN-PLAN-14` "El alumno ya tiene un plan vigente" | alert con "El alumno ya tiene un plan vigente" | = esperado (verde el 13/11/2026) | 13/11/2026 |
 | `presentacion/crear-plan/PaginaCrearPlan.int.test.tsx` › sin alumnos vinculados muestra "No tenés alumnos vinculados todavía." | RN-PLAN-13 | Integración | `GET /identidad/alumnos` responde `[]` | "No tenés alumnos vinculados todavía." | = esperado (verde el 13/11/2026) | 13/11/2026 |
+
+## US08 — Casos confirmados por Martina el 14/11/2026
+
+| Test (archivo › caso) | RN | Nivel | Entrada | Esperado | Obtenido (último run) | Fecha |
+| :-- | :-- | :-- | :-- | :-- | :-- | :-- |
+| `presentacion/rutina-del-dia/PaginaRutinaDelDiaDetalles.int.test.tsx` › abre desde el menú y muestra la fecha del back | RN-PLAN-11, 18 | Integración | Alumno; Mi rutina del día; fecha 2026-11-01 | fecha visible 2026-11-01 en time | = esperado (laptop, salida compartida por Martina, 14/11/2026) | 14/11/2026 |
+| `presentacion/rutina-del-dia/PaginaRutinaDelDiaDetalles.int.test.tsx` › muestra las pausas del bloque | RN-PLAN-02, 18 | Integración | micropausa 60 s, macropausa 120 s | Micropausa entre series: 60 s · Macropausa al terminar el bloque: 120 s | = esperado (laptop, salida compartida por Martina, 14/11/2026) | 14/11/2026 |
+| `presentacion/rutina-del-dia/PaginaRutinaDelDiaDetalles.int.test.tsx` › muestra la pausa de cada vuelta | RN-PLAN-03, 18 | Integración | circuito con macropausa 90 s | Macropausa al terminar cada vuelta: 90 s | = esperado (laptop, salida compartida por Martina, 14/11/2026) | 14/11/2026 |
+| `presentacion/rutina-del-dia/PaginaRutinaDelDiaDetalles.int.test.tsx` › muestra también las pausas de cero segundos | RN-PLAN-02, 03, 18 | Integración | micropausa y macropausas 0 s | las tres pausas visibles con 0 s | = esperado (laptop, salida compartida por Martina, 14/11/2026) | 14/11/2026 |
+| `presentacion/rutina-del-dia/PaginaRutinaDelDiaDetalles.int.test.tsx` › sin sesión lleva al ingreso | RN-IDE-03 | Integración | abrir /alumno/rutina-del-dia sin sesión | pantalla Ingresar al sistema, sin consultar la rutina | = esperado (laptop, salida compartida por Martina, 14/11/2026) | 14/11/2026 |
+| `presentacion/rutina-del-dia/PaginaRutinaDelDiaDetalles.int.test.tsx` › un profesor no puede abrir la rutina del alumno | RN-IDE-03 | Integración | Profesor abre /alumno/rutina-del-dia | No tenés acceso a esta sección, sin consultar la rutina | = esperado (laptop, salida compartida por Martina, 14/11/2026) | 14/11/2026 |
+
+## US08 — Pruebas existentes reutilizadas
+
+| Test (archivo › caso) | RN | Nivel | Entrada | Esperado | Obtenido (último run) | Fecha |
+| :-- | :-- | :-- | :-- | :-- | :-- | :-- |
+| `dominio/plan/rutinaDelDia.test.ts` › con repeticiones y peso muestra 10 repeticiones · 20 kg | RN-PLAN-04, 18 | Unitario | 10 repeticiones, peso 20 kg | 10 repeticiones · 20 kg | No ejecutado por separado; formato de objetivos cubierto por las pruebas de pantalla | 14/11/2026 |
+| `dominio/plan/rutinaDelDia.test.ts` › con tiempo y sin peso muestra 30 segundos | RN-PLAN-04, 18 | Unitario | 30 segundos, sin peso | 30 segundos | No ejecutado por separado; formato de objetivos cubierto por las pruebas de pantalla | 14/11/2026 |
+| `dominio/plan/rutinaDelDia.test.ts` › el número de día se muestra como Día 1 de 28 | RN-PLAN-11 | Unitario | número de día 1 | Día 1 de 28 | No ejecutado por separado; formato de objetivos cubierto por las pruebas de pantalla | 14/11/2026 |
+| `presentacion/rutina-del-dia/PaginaRutinaDelDia.int.test.tsx` › sin plan vigente | RN-PLAN-18 | Integración | estado sin-plan | No tenés un plan vigente. | = esperado (laptop, salida compartida por Martina, 14/11/2026) | 14/11/2026 |
+| `presentacion/rutina-del-dia/PaginaRutinaDelDia.int.test.tsx` › día de descanso | RN-PLAN-18 | Integración | estado descanso, día 2 | Hoy es día de descanso. y Día 2 de 28 | = esperado (laptop, salida compartida por Martina, 14/11/2026) | 14/11/2026 |
+| `presentacion/rutina-del-dia/PaginaRutinaDelDia.int.test.tsx` › rutina por bloques y circuitos | RN-PLAN-11, 18 | Integración | Piernas, día 4; press 3 series, 10 repeticiones, 20 kg; circuito 3 vueltas, sentadilla 12 repeticiones y plancha 30 s | nombre, día y todos los objetivos visibles | = esperado (laptop, salida compartida por Martina, 14/11/2026) | 14/11/2026 |
+| `presentacion/rutina-del-dia/PaginaRutinaDelDia.int.test.tsx` › error HTTP | RN-PLAN-18 | Integración | 500 con mensaje de error del back | alert No se pudo cargar la rutina del día | = esperado (laptop, salida compartida por Martina, 14/11/2026) | 14/11/2026 |

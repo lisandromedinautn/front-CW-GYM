@@ -119,7 +119,7 @@ describe('RN-PLAN-11, 18 · la rutina del día muestra el nombre y el objetivo d
   });
 });
 
-describe('US08 · si el back falla se muestra su mensaje', () => {
+describe('RN-PLAN-18 · si el back falla se muestra su mensaje', () => {
   it('con 500 muestra el mensaje en un alert', async () => {
     prepararRed({
       respuesta: () => ({ codigo: 'ERROR-RED', mensaje: 'No se pudo cargar la rutina del día' }),

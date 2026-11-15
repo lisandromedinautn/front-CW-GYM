@@ -20,7 +20,7 @@ Editor de rutinas, importación, creación de planes, gestión de alumnos del pl
 | RN-PLAN-13, 14 | Solo ofrece alumnos vinculados al profesor; si el back rechaza por plan vigente, muestra el error | Vigente |
 | RN-PLAN-16 | Se puede quitar al último alumno de un plan vigente | Vigente |
 | RN-PLAN-17 | No hay opción para finalizar un plan antes de tiempo | Vigente |
-| RN-PLAN-18 | La rutina del día muestra la rutina, "Descanso" o "No tenés un plan vigente" | Vigente |
+| RN-PLAN-18 | La rutina del día muestra la rutina con sus ejercicios y objetivos, "Hoy es día de descanso." o "No tenés un plan vigente." | Vigente ✅ |
 
 ## Pantallas y hooks planificados
 
@@ -31,7 +31,7 @@ Editor de rutinas, importación, creación de planes, gestión de alumnos del pl
 | `PaginaImportarRutina.tsx` | `usarImportarRutina.ts` | US20 |
 | `PaginaCrearPlan.tsx` ✅ (`crear-plan/`) | `usarCrearPlan.ts` ✅, `usarDatosParaPlan.ts` ✅ | US07 |
 | `PaginaAlumnosDelPlan.tsx` | `usarAlumnosDelPlan.ts` | US12 |
-| `PaginaRutinaDelDia.tsx` | `usarRutinaDelDia.ts` | US08 |
+| `rutina-del-dia/PaginaRutinaDelDia.tsx` ✅ | `consultar-rutina-del-dia/usarRutinaDelDia.ts` ✅ | US08 |
 | `PaginaMiPlan.tsx` | `usarMiPlan.ts` | US11 |
 
 ## Historial de cambios de reglas de UI
@@ -74,3 +74,10 @@ Editor de rutinas, importación, creación de planes, gestión de alumnos del pl
 * Antes de enviar, el editor marca los campos que faltan ("Completá este campo") y las series menores que 1 ("Mínimo 1 serie"). Sin bloques avisa "Agregá al menos un bloque". Los errores del back se muestran con su mensaje en el `alert`.
 * El body manda `repeticiones` o `segundos` según el tipo del ejercicio, y `pesoKg` solo si la carga incluye Peso Extra y se completó.
 * El e2e de Playwright (`e2e/planificacion/crear-rutina.e2e.ts`) corre contra el back de test: `NODE_ENV=test yarn seed` y `NODE_ENV=test yarn start` en el back, y `E2E_URL_API=http://localhost:3001 yarn test:e2e` en el front.
+
+## Decisiones de implementación (US08)
+
+* La opción «Mi rutina del día» abre `/alumno/rutina-del-dia`, protegida para Alumno por la ruta compartida. `PaginaRutinaDelDia` usa `usarRutinaDelDia`; solo el cliente `apiPlanificacion.ts` hace la petición HTTP.
+* La fecha visible y el número de día vienen del back. No se recalcula la vigencia en el navegador ni se envía un alumno por parámetros. El contrato y los textos se encuentran en `dominio/plan/rutinaDelDia.ts`.
+* La rutina muestra los ejercicios en orden, sus series o vueltas, repeticiones o segundos, peso y micropausa/macropausa en segundos, incluidos los ceros. Se reutilizan los estilos de tarjetas existentes.
+* Se reutilizaron los tests existentes de rutina, descanso, ausencia de plan y error HTTP; se suman fecha, pausas y rutas protegidas con casos confirmados por Martina el 14/11/2026.

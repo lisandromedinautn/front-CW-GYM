@@ -8,9 +8,14 @@ Categorías: Agregado, Cambiado, Corregido, Eliminado, Seguridad. Cada entrada c
 
 ### Agregado
 
+- Pantalla "Mi rutina del día" en `/alumno/rutina-del-dia`: muestra fecha, día del plan, ejercicios, series o vueltas, objetivos, peso y pausas; informa los días de descanso y la ausencia de plan vigente (RN-PLAN-11, 15, 18; US08).
 - Pantalla "Nuevo plan" en `/profesor/planes`: el profesor elige la fecha de inicio (el fin se calcula solo), asigna una rutina o descanso a cada uno de los 28 días y selecciona los alumnos vinculados (US07).
 - Opción "Planes" en el menú del Profesor.
 - Helpers de fechas y contrato del plan en `dominio/plan/plan.ts`, y hooks `usarCrearPlan` y `usarDatosParaPlan` (US07).
+
+### Cambiado
+
+- Métricas del sprint 2 al 14/11: US06 parcial, 26 puntos técnicos del sprint y 52/129 acumulados; residual V2 de 91 puntos con cierre explícito y pronósticos por capacidad. Se conserva la base histórica y se retiran como medición las horas inferidas de commits. Informe en `docs/METRICAS-SPRINT-2.md`.
 
 ## [1.1.0] — 2026-11-08
 
