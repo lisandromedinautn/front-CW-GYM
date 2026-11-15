@@ -103,35 +103,37 @@ export function PaginaCrearPlan() {
           {fechas.length === 0 && (
             <p className="tenue">Elegí la fecha de inicio para ver los {DIAS_DEL_PLAN} días.</p>
           )}
-          {fechas.map((fecha, indice) => {
-            const numero = indice + 1;
-            return (
-              <div key={numero} className="barra">
-                <p className="campo">
-                  Día {numero} — {etiquetaDeFecha(fecha)}
-                </p>
-                <label>
-                  <span>Rutina del día {numero}</span>
-                  <select
-                    value={rutinaPorDia[numero] ?? ''}
-                    onChange={(e) =>
-                      setRutinaPorDia((anteriores) => ({
-                        ...anteriores,
-                        [numero]: e.target.value,
-                      }))
-                    }
-                  >
-                    <option value="">Descanso</option>
-                    {(rutinas ?? []).map((rutina) => (
-                      <option key={rutina.id} value={rutina.id}>
-                        {rutina.nombre}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-              </div>
-            );
-          })}
+          <div className="dias-del-plan">
+            {fechas.map((fecha, indice) => {
+              const numero = indice + 1;
+              return (
+                <div key={numero} className="dia-del-plan">
+                  <p className="dia-del-plan-titulo">
+                    Día {numero} — {etiquetaDeFecha(fecha)}
+                  </p>
+                  <label>
+                    <span>Rutina del día {numero}</span>
+                    <select
+                      value={rutinaPorDia[numero] ?? ''}
+                      onChange={(e) =>
+                        setRutinaPorDia((anteriores) => ({
+                          ...anteriores,
+                          [numero]: e.target.value,
+                        }))
+                      }
+                    >
+                      <option value="">Descanso</option>
+                      {(rutinas ?? []).map((rutina) => (
+                        <option key={rutina.id} value={rutina.id}>
+                          {rutina.nombre}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                </div>
+              );
+            })}
+          </div>
         </fieldset>
 
         {error && (

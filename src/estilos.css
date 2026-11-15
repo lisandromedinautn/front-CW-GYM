@@ -212,6 +212,28 @@ input[aria-invalid='true'] {
   padding: 0 0.25rem;
 }
 
+/* Días del plan (US07): tarjetas del mismo ancho y alto, en columnas parejas. */
+.dias-del-plan {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+  gap: 0.75rem;
+}
+.dia-del-plan {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 0.5rem;
+  border: 1px solid #d9e2ec;
+  border-radius: 6px;
+  padding: 0.75rem;
+}
+.dia-del-plan-titulo {
+  margin: 0;
+  font-weight: 600;
+}
+.dia-del-plan select {
+  width: 100%;
+}
+
 /* Rutinas: consulta paginada (Profesor, responsive) */
 .pagina-ancha {
   max-width: 64rem;
