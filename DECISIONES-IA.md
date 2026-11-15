@@ -203,3 +203,23 @@ Registro de cada sesión relevante en la que un desarrollador trabajó con IA. D
 - Verificación: cálculos de sumas, porcentajes, reglas referenciadas, fechas por redondeo al día superior y consistencia de las copias mediante comprobaciones Python. Sin reejecutar suites de la aplicación para cambios de documentación. Los 50 casos relacionados de US08 son resultados de la sesión anterior; no se sumaron a los conteos históricos de suite ni se presentó cobertura de código nueva.
 - Ideas descartadas: declarar US06 completa, sumar puntos retroactivos a T06–T10, llamar velocity formal a un sprint abierto, usar lapsos entre commits como horas reales, garantizar el 22/11 o el 01/12 con capacidad no registrada y aplicar recortes automáticamente.
 - Limitaciones: sin timesheets, compromiso semanal congelado, medición de demo ni verificación nueva de cobertura completa o tablero. Google Doc original y herramientas externas sin cambios. Publicaciones, tags, merges y commits no realizados.
+
+## 2026-11-15 — Crear rutina mixta, back [US10]
+- Desarrollador: Ignacio
+- Herramienta / modelo / esfuerzo: Claude Code · Opus 5.5 (orquestador, sin subagentes)
+- Objetivo: back de US10 (CG-38). En el front solo se sincronizó `docs/TRAZABILIDAD.md` con la del back.
+- Qué hizo la IA: ver la entrada del mismo día en `../back-CW-GYM/DECISIONES-IA.md`. Contrato nuevo para el front: cada bloque y circuito acepta `orden` (1..N) en `POST /planificacion/rutinas` y la respuesta lo devuelve.
+- Decisiones del desarrollador: ver el back.
+- Ideas descartadas: ver el back.
+- Reglas afectadas: ninguna.
+- Pendientes: front de US10 (CG-39): habilitar mezclar bloques y circuitos, ordenarlos y enviar `orden`.
+
+## 2026-11-15 — Crear rutina mixta, front [US10]
+- Desarrollador: Ignacio
+- Herramienta / modelo / esfuerzo: Claude Code · Opus 5.5 (orquestador, sin subagentes)
+- Objetivo: resolver el front de US10 (CG-39) sobre el contrato del back: mezclar bloques y circuitos y ordenarlos.
+- Qué hizo la IA: propuso el diseño y los casos, y siguió TDD (rojo antes que verde). Quitó la restricción de US09, agregó la secuencia del editor con "Subir" y "Bajar" (`BotonesOrden.tsx`, `secuenciaRutina.ts`) y manda `orden` solo en rutinas mixtas. Tests: `secuenciaRutina.test.ts` (3), `EditorRutinaMixta.int.test.tsx` (4) y `crear-rutina-mixta.e2e.ts` (1, contra el back de la rama US10). Probó 5 mutaciones (mover sin intercambio, sin `orden`, "Subir" sin efecto, volver a la restricción, `orden` por tipo) y todas hacen fallar un test. Los tests de US06 y US09 no cambiaron.
+- Decisiones del desarrollador: orden de agregado más "Subir" y "Bajar"; el listado de rutinas no muestra el orden; aprobó los casos.
+- Ideas descartadas: dejar solo el orden de agregado (sin reordenar); ordenar los ejercicios de la tarjeta del listado por `orden`.
+- Reglas afectadas: ninguna cambia. RN-PLAN-01 suma tests de rutina mixta en el front.
+- Pendientes: copiar las columnas del front de US10 en `docs/TRAZABILIDAD.md` del back (rama US10); `orden` en la rutina del día si se decide.
