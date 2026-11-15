@@ -35,6 +35,7 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | `.env.example` | `VITE_URL_API` ✅ |
 | `CHANGELOG.md` | Cambios por versión (decisión 38) ✅ |
 | `src/modulos/planificacion/presentacion/detalle-rutina/DetalleRutina.tsx` | Detalle visual de ejercicios, objetivos y pausas; extraído de US08 para compartir con la vista de US11 |
+| `src/modulos/planificacion/dominio/plan/miPlan.ts` | Contrato del plan vigente completo del alumno; reutiliza el detalle de rutina de US08 (US11) |
 
 ## Módulos
 
@@ -62,7 +63,7 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | planificacion | `PaginaCrearPlan.tsx` (ruta `/profesor/planes`) | `usarCrearPlan.ts`, `usarDatosParaPlan.ts` | `GET /identidad/alumnos`, `GET /planificacion/rutinas`, `POST /planificacion/planes` | US07 | ✅ |
 | planificacion | `PaginaAlumnosDelPlan.tsx` | `usarAlumnosDelPlan.ts` | `POST/DELETE /planificacion/planes/:id/alumnos` | US12 | 📄 |
 | planificacion | `PaginaRutinaDelDia.tsx` (`presentacion/rutina-del-dia/`, ruta `/alumno/rutina-del-dia`) | `usarRutinaDelDia.ts` (`aplicacion/consultar-rutina-del-dia/`) | `GET /planificacion/mi-rutina-del-dia` | US08 | ✅ |
-| planificacion | `PaginaMiPlan.tsx` | `usarMiPlan.ts` | `GET /planificacion/mi-plan` | US11 | 📄 |
+| planificacion | `mi-plan/PaginaMiPlan.tsx` | `consultar-plan-del-alumno/usarMiPlan.ts` | `GET /planificacion/mi-plan` | US11 | ✅ `PaginaMiPlan.int.test.tsx` (9 casos) |
 | entrenamiento | `PaginaEntrenamientoEnCurso.tsx` | `usarIniciarEntrenamiento.ts`, `usarEntrenamientoEnCurso.ts`, `usarRegistrarSerie.ts` | `POST /entrenamiento/entrenamientos`, `GET /entrenamiento/mi-entrenamiento-en-curso`, `POST .../:id/series` | US13, US14 | 📄 |
 | entrenamiento | `PaginaResumenEntrenamiento.tsx` | `usarFinalizarEntrenamiento.ts`, `usarRegistrarPercepcion.ts` | `POST .../:id/finalizacion`, `PUT .../:id/percepcion` | US15, US16, US17 | 📄 |
 | entrenamiento | `PaginaEntrenamientosDeAlumnos.tsx` | `usarEntrenamientosDeAlumnos.ts` | `GET /entrenamiento/alumnos/:alumnoId/entrenamientos` | US18 | 📄 |
@@ -129,7 +130,7 @@ Decidido por Lisandro el 08/11/2026 (igual que en el back): en todas las capas d
 | catalogo | aplicacion · presentacion | consultar-ejercicios · lista-ejercicios |
 | catalogo | infraestructura | api (`apiCatalogo.ts`) |
 | planificacion | dominio | bloque (`reglasBloque.ts` y su test), circuito (`reglasCircuito.ts` y su test), rutina (tipos del contrato y `nombreRutina.ts` con su test), plan (fechas del plan y tipos del contrato, con su test) |
-| planificacion | aplicacion · presentacion | editor-rutina · editor-rutina; consultar-rutinas · consultar-rutinas; renombrar-rutina (solo aplicacion); crear-plan · crear-plan; consultar-rutina-del-dia · rutina-del-dia; detalle-rutina (componente compartido del módulo) |
+| planificacion | aplicacion · presentacion | editor-rutina · editor-rutina; consultar-rutinas · consultar-rutinas; renombrar-rutina (solo aplicacion); crear-plan · crear-plan; consultar-rutina-del-dia · rutina-del-dia; consultar-plan-del-alumno · mi-plan; detalle-rutina (componente compartido del módulo) |
 | planificacion | infraestructura | api (`apiPlanificacion.ts`) |
 | compartido | dominio | error-api, menu, paginacion, sesion |
 | compartido | aplicacion · infraestructura | paginacion, sesion · sesion, cliente-http |

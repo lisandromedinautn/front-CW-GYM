@@ -21,6 +21,7 @@ Editor de rutinas, importación, creación de planes, gestión de alumnos del pl
 | RN-PLAN-16 | Se puede quitar al último alumno de un plan vigente | Vigente |
 | RN-PLAN-17 | No hay opción para finalizar un plan antes de tiempo | Vigente |
 | RN-PLAN-18 | La rutina del día muestra la rutina con sus ejercicios y objetivos, "Hoy es día de descanso." o "No tenés un plan vigente." | Vigente ✅ |
+| RN-PLAN-19 | Mi plan muestra los 28 días ordenados con sus fechas, rutina o descanso y detalle desplegable de ejercicios, objetivos y pausas | Vigente ✅ |
 
 ## Pantallas y hooks planificados
 
@@ -32,7 +33,7 @@ Editor de rutinas, importación, creación de planes, gestión de alumnos del pl
 | `PaginaCrearPlan.tsx` ✅ (`crear-plan/`) | `usarCrearPlan.ts` ✅, `usarDatosParaPlan.ts` ✅ | US07 |
 | `PaginaAlumnosDelPlan.tsx` | `usarAlumnosDelPlan.ts` | US12 |
 | `rutina-del-dia/PaginaRutinaDelDia.tsx` ✅ | `consultar-rutina-del-dia/usarRutinaDelDia.ts` ✅ | US08 |
-| `PaginaMiPlan.tsx` | `usarMiPlan.ts` | US11 |
+| `mi-plan/PaginaMiPlan.tsx` ✅ | `consultar-plan-del-alumno/usarMiPlan.ts` ✅ | US11 |
 
 ## Historial de cambios de reglas de UI
 
@@ -81,3 +82,10 @@ Editor de rutinas, importación, creación de planes, gestión de alumnos del pl
 * La fecha visible y el número de día vienen del back. No se recalcula la vigencia en el navegador ni se envía un alumno por parámetros. El contrato y los textos se encuentran en `dominio/plan/rutinaDelDia.ts`.
 * La rutina muestra los ejercicios en orden, sus series o vueltas, repeticiones o segundos, peso y micropausa/macropausa en segundos, incluidos los ceros. Se reutilizan los estilos de tarjetas existentes.
 * Se reutilizaron los tests existentes de rutina, descanso, ausencia de plan y error HTTP; se suman fecha, pausas y rutas protegidas con casos confirmados por Martina el 14/11/2026.
+
+## Decisiones de implementación (US11)
+
+* Martina confirmó el 14/11/2026 consultar solo el plan vigente. La opción Mi plan abre `/alumno/mi-plan`, protegida para Alumno. La rutina del día también permite abrir el plan completo mediante un enlace.
+* `usarMiPlan` consulta `GET /planificacion/mi-plan` a través del cliente del módulo. No envía parámetros de alumno ni calcula vigencia en el navegador. El contrato `dominio/plan/miPlan.ts` conserva las fechas del back y reutiliza `RutinaDelDiaDetalle`.
+* Los días se muestran en el orden recibido, con fechas formateadas por `etiquetaDeFecha`. Una rutina nula se muestra como Descanso. Cada rutina se despliega con `details`/`summary` nativos y reutiliza `DetalleRutina`, con el número de día correspondiente.
+* Sin plan vigente se muestra No tenés un plan vigente.; los errores se informan en un alert y la carga tiene un estado accesible.

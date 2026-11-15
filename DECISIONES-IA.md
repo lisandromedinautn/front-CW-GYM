@@ -214,3 +214,14 @@ Registro de cada sesión relevante en la que un desarrollador trabajó con IA. D
 - Sin dependencias nuevas del proyecto, cambios de esquema, pruebas existentes editadas, commits a main ni push.
 - Verificación en homelab: se reduce la concurrencia con afinidad a una CPU y se amplía solo el margen de arranque de workers de Vitest mediante un cargador de Node en memoria. No se escriben cambios en dependencias, hooks, configuración del proyecto ni aserciones; los tiempos de cada test siguen iguales. El control de tipos del refactor pasó.
 - La ejecución del hook desde el homelab se interrumpió tras 42.6 minutos de latencia de SSHFS; lint y formato habían pasado, Vitest no había terminado. Se prepara la confirmación de estos cinco archivos en la laptop con todos los hooks habilitados, porque el acceso SFTP no permite ejecutar comandos remotos allí.
+
+## 2026-11-15 — US11, bloque 4: pantalla Mi plan
+- Martina confirmó el alcance y los casos de US11 el 14/11 y autorizó microcommits sin push. El refactor compartido del front se confirmó como `db40646`, ejecutado por Martina en la laptop con todos los hooks aprobados (6.93 s) tras la latencia del homelab.
+- Primer rojo de la pantalla compartido por Martina: falta la lista Días del plan; 1 test fallido, 2.09 s. El esqueleto y la ruta compilaban y mostraban el título, por lo que el fallo era de comportamiento.
+- Se implementa la consulta con el contrato de GET mi-plan, un hook del módulo y las tarjetas de los 28 días con sus fechas. La vigencia y la identidad las resuelve el back; no hay parámetros de alumno ni cálculos de vigencia en el navegador.
+- Se registraron las fichas de los 9 casos confirmados. El detalle desplegable reutiliza DetalleRutina; no se modifican los tests existentes de US08. Los resultados finales se registran antes de confirmar la pantalla.
+- Segundo rojo observado en laptop: el detalle abierto no tenía Press de pecho (1 fallido, 1 aprobado; 1.49 s). Se conectó DetalleRutina, se agregó el enlace desde US08 y se completaron los casos de regresión.
+- Verificación final compartida por Martina: 9/9 tests de pantalla aprobados (1.79 s) y `yarn build` con TypeScript y Vite aprobado (3.35 s). Mordida: fijar temporalmente el número del detalle en 1 hizo fallar el caso del día 28 (1 fallo, 8 aprobados; 1.61 s). Se restauró dia.numero y el SHA-256 coincide con la página que pasó los tests y el build.
+- Se actualizan atlas, fichas, reglas de UI, changelog, trazabilidad y plan operativo. Los documentos compartidos reflejan la implementación en rama, con integración pendiente, y conservan las métricas históricas del 14/11.
+- Microcommits previos: back 0c355f1 (refactor), d647ce0 (consulta) y b3fc859 (endpoint); front db40646 (refactor). La pantalla se confirma por separado con sus tests y documentación. Sin push.
+- Verificaciones no ejecutadas: cobertura global nueva y recorrido manual en navegador. Sin cambios de dependencias ni de pruebas existentes.

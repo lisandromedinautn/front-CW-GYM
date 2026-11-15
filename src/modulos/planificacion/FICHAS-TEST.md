@@ -60,6 +60,19 @@ Catálogo falso de los tests de integración (forma de `GET /catalogo/ejercicios
 | `presentacion/crear-plan/PaginaCrearPlan.int.test.tsx` › con 409 RN-PLAN-14 muestra su mensaje | RN-PLAN-14 | Integración | el back responde 409 `RN-PLAN-14` "El alumno ya tiene un plan vigente" | alert con "El alumno ya tiene un plan vigente" | = esperado (verde el 13/11/2026) | 13/11/2026 |
 | `presentacion/crear-plan/PaginaCrearPlan.int.test.tsx` › sin alumnos vinculados muestra "No tenés alumnos vinculados todavía." | RN-PLAN-13 | Integración | `GET /identidad/alumnos` responde `[]` | "No tenés alumnos vinculados todavía." | = esperado (verde el 13/11/2026) | 13/11/2026 |
 
+## US11 — Casos confirmados por Martina el 14/11/2026
+
+| Test (archivo › caso) | RN | Nivel | Entrada | Esperado | Obtenido (último run) | Fecha |
+| :-- | :-- | :-- | :-- | :-- | :-- | :-- |
+| `presentacion/mi-plan/PaginaMiPlan.int.test.tsx` › muestra los 28 días ordenados con sus fechas, rutinas y descansos | RN-PLAN-11, 19 | Integración | Alumno; GET mi-plan devuelve plan 01/11–28/11/2026, Piernas día 1, Circuito día 28 y 26 descansos | lista Días del plan; 28 encabezados ordenados desde Día 1 — domingo 01/11 hasta Día 28 — sábado 28/11; ambas fechas de vigencia; 26 descansos | = esperado (laptop: 9 aprobados y build; mordida del día detectada y restaurada, 15/11/2026) | 15/11/2026 |
+| `presentacion/mi-plan/PaginaMiPlan.int.test.tsx` › despliega ejercicios, objetivos y pausas de cada rutina | RN-PLAN-02, 03, 04, 05, 19 | Integración | abrir rutina de día 1 y día 28 | press visible, 3 series × 10 repeticiones · 20 kg, pausas 60/120 s; circuito 3 vueltas, 10 repeticiones · 20 kg y 30 segundos, macropausa 90 s | = esperado (laptop: 9 aprobados y build; mordida del día detectada y restaurada, 15/11/2026) | 15/11/2026 |
+| `presentacion/mi-plan/PaginaMiPlan.int.test.tsx` › sin plan vigente muestra el aviso (2 casos) | RN-PLAN-15, 19 | Integración | API sin-plan con fecha 2026-10-31 o 2026-11-29 | No tenés un plan vigente.; sin lista de días | = esperado (laptop: 9 aprobados y build; mordida del día detectada y restaurada, 15/11/2026) | 15/11/2026 |
+| `presentacion/mi-plan/PaginaMiPlan.int.test.tsx` › muestra el error de la consulta | RN-PLAN-19 | Integración | API 500 con mensaje No se pudo consultar el plan | alert con el mensaje recibido | = esperado (laptop: 9 aprobados y build; mordida del día detectada y restaurada, 15/11/2026) | 15/11/2026 |
+| `presentacion/mi-plan/PaginaMiPlan.int.test.tsx` › abre el plan desde el menú | RN-PLAN-19 | Integración | Alumno, Inicio, clic Mi plan | lista Días del plan | = esperado (laptop: 9 aprobados y build; mordida del día detectada y restaurada, 15/11/2026) | 15/11/2026 |
+| `presentacion/mi-plan/PaginaMiPlan.int.test.tsx` › abre el plan completo desde la rutina del día | RN-PLAN-18, 19 | Integración | Alumno en rutina del día, descanso; clic Ver mi plan completo | lista Días del plan | = esperado (laptop: 9 aprobados y build; mordida del día detectada y restaurada, 15/11/2026) | 15/11/2026 |
+| `presentacion/mi-plan/PaginaMiPlan.int.test.tsx` › sin sesión lleva al ingreso | RN-IDE-03 | Integración | /alumno/mi-plan sin sesión | Ingresar al sistema; no consulta el plan | = esperado (laptop: 9 aprobados y build; mordida del día detectada y restaurada, 15/11/2026) | 15/11/2026 |
+| `presentacion/mi-plan/PaginaMiPlan.int.test.tsx` › un Profesor no puede abrir el plan del alumno | RN-IDE-03 | Integración | Profesor abre /alumno/mi-plan | No tenés acceso a esta sección; no consulta el plan | = esperado (laptop: 9 aprobados y build; mordida del día detectada y restaurada, 15/11/2026) | 15/11/2026 |
+
 ## US08 — Casos confirmados por Martina el 14/11/2026
 
 | Test (archivo › caso) | RN | Nivel | Entrada | Esperado | Obtenido (último run) | Fecha |

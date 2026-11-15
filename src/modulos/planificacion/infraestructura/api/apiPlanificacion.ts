@@ -2,6 +2,7 @@ import type { Pagina } from '../../../../compartido/dominio/paginacion/paginacio
 import { pedir } from '../../../../compartido/infraestructura/cliente-http/clienteHttp.ts';
 import type { AlumnoDelProfesor, PedidoPlan, PlanCreado } from '../../dominio/plan/plan.ts';
 import type { RutinaDelDia } from '../../dominio/plan/rutinaDelDia.ts';
+import type { ResultadoMiPlan } from '../../dominio/plan/miPlan.ts';
 import type {
   EjercicioParaRutina,
   PedidoRutina,
@@ -64,4 +65,9 @@ export function crearPlan(pedido: PedidoPlan): Promise<PlanCreado> {
 /** US08: la rutina del día del alumno (RN-PLAN-11, 15, 18). */
 export function obtenerRutinaDelDia(): Promise<RutinaDelDia> {
   return pedir<RutinaDelDia>('/planificacion/mi-rutina-del-dia');
+}
+
+/** US11: el plan vigente completo del alumno autenticado (RN-PLAN-11, 15, 19). */
+export function obtenerMiPlan(): Promise<ResultadoMiPlan> {
+  return pedir<ResultadoMiPlan>('/planificacion/mi-plan');
 }

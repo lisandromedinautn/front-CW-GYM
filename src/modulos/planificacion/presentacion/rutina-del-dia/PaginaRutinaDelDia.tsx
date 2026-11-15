@@ -1,3 +1,4 @@
+import { Link } from 'react-router';
 import { usarRutinaDelDia } from '../../aplicacion/consultar-rutina-del-dia/usarRutinaDelDia.ts';
 import { etiquetaDelDia } from '../../dominio/plan/rutinaDelDia.ts';
 import { DetalleRutina } from '../detalle-rutina/DetalleRutina.tsx';
@@ -12,6 +13,9 @@ export function PaginaRutinaDelDia() {
   return (
     <section className="pagina">
       <h1>Mi rutina del día</h1>
+      <p>
+        <Link to="/alumno/mi-plan">Ver mi plan completo</Link>
+      </p>
 
       {error && (
         <p role="alert" className="error">

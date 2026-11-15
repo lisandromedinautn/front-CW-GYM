@@ -8,6 +8,8 @@ Categorías: Agregado, Cambiado, Corregido, Eliminado, Seguridad. Cada entrada c
 
 ### Agregado
 
+- Pantalla "Mi plan" en `/alumno/mi-plan`: muestra los 28 días del plan vigente con sus fechas, rutinas o descansos y el detalle desplegable de ejercicios, objetivos y pausas. Se abre desde el menú del Alumno y desde la rutina del día (RN-PLAN-11, 15, 19; US11).
+
 - Pantalla "Mi rutina del día" en `/alumno/rutina-del-dia`: muestra fecha, día del plan, ejercicios, series o vueltas, objetivos, peso y pausas; informa los días de descanso y la ausencia de plan vigente (RN-PLAN-11, 15, 18; US08).
 - Pantalla "Nuevo plan" en `/profesor/planes`: el profesor elige la fecha de inicio (el fin se calcula solo), asigna una rutina o descanso a cada uno de los 28 días y selecciona los alumnos vinculados (US07).
 - Opción "Planes" en el menú del Profesor.
