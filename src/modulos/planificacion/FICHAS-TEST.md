@@ -6,6 +6,11 @@ Catálogo falso de los tests de integración (forma de `GET /catalogo/ejercicios
 
 | Test (archivo › caso) | Regla | Nivel | Entrada | Esperado | Obtenido (último run) | Fecha |
 | :-- | :-- | :-- | :-- | :-- | :-- | :-- |
+| `ImportarRutina.int.test.tsx` › crear copia | RN-PLAN-08 | Integración | importar Piernas | muestra Piernas - Copia y conserva la original | = esperado | 17/11/2026 |
+| `ImportarRutina.int.test.tsx` › error | RN-PLAN-08 | Integración | API rechaza importación | muestra error y permite reintentar | = esperado | 17/11/2026 |
+| `ImportarRutina.int.test.tsx` › paginación | RN-PLAN-08 | Integración | importar desde página 2 | vuelve a página 1 y muestra copia | = esperado | 17/11/2026 |
+| `ImportarRutina.int.test.tsx` › doble envío | RN-PLAN-08 | Integración | importar mientras hay petición pendiente | botón deshabilitado y una solicitud | = esperado | 17/11/2026 |
+| `ImportarRutina.int.test.tsx` › sin rutinas | RN-PLAN-08 | Integración | listado vacío | invita a crear y no ofrece importar | = esperado | 17/11/2026 |
 | `dominio/bloque/reglasBloque.test.ts` › "por repeticiones" pide repeticiones | RN-PLAN-04 | Unitario | `campoObjetivo('por repeticiones')` | `repeticiones` | `repeticiones` | 10/11/2026 |
 | `dominio/bloque/reglasBloque.test.ts` › "por tiempo" pide segundos | RN-PLAN-04 | Unitario | `campoObjetivo('por tiempo')` | `segundos` | `segundos` | 10/11/2026 |
 | `dominio/bloque/reglasBloque.test.ts` › Peso Extra admite peso | RN-PLAN-05 | Unitario | `admitePeso('Peso Extra')` | `true` | `true` | 10/11/2026 |

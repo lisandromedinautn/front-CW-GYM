@@ -4,6 +4,7 @@ import { Paginador } from '../../../../compartido/presentacion/paginador/Paginad
 import { usarConsultarRutinas } from '../../aplicacion/consultar-rutinas/usarConsultarRutinas.ts';
 import { usarEjerciciosParaRutina } from '../../aplicacion/editor-rutina/usarEjerciciosParaRutina.ts';
 import { usarRenombrarRutina } from '../../aplicacion/renombrar-rutina/usarRenombrarRutina.ts';
+import { usarImportarRutina } from '../../aplicacion/importar-rutina/usarImportarRutina.ts';
 import {
   ejerciciosDeRutina,
   type EjercicioParaRutina,
@@ -19,6 +20,16 @@ export function PaginaRutinas() {
   const consulta = usarConsultarRutinas();
   const { resultado, error, cargando } = consulta;
   const { ejercicios } = usarEjerciciosParaRutina();
+  const { importar, importando, error: errorImportacion } = usarImportarRutina();
+  const [mensaje, setMensaje] = useState<string | null>(null);
+  async function copiar(id: string) {
+    setMensaje(null);
+    const copia = await importar(id);
+    if (copia) {
+      setMensaje(`Se creó la rutina ${copia.nombre}`);
+      consulta.volverAlInicioYRecargar();
+    }
+  }
   const porId = new Map((ejercicios ?? []).map((e) => [e.id, e]));
   const vacia = resultado !== null && resultado.total === 0;
 
@@ -36,6 +47,16 @@ export function PaginaRutinas() {
       {error && (
         <p role="alert" className="error">
           {error}
+        </p>
+      )}
+      {errorImportacion && (
+        <p role="alert" className="error">
+          {errorImportacion}
+        </p>
+      )}
+      {mensaje && (
+        <p role="status" className="exito">
+          {mensaje}
         </p>
       )}
       {cargando && !resultado && <p className="tenue">Cargando rutinas…</p>}
@@ -61,6 +82,8 @@ export function PaginaRutinas() {
                 rutina={rutina}
                 porId={porId}
                 alRenombrar={consulta.reemplazar}
+                alImportar={() => void copiar(rutina.id)}
+                importando={importando}
               />
             ))}
           </ul>
@@ -81,6 +104,8 @@ function TarjetaRutina(props: {
   rutina: RutinaCreada;
   porId: Map<string, EjercicioParaRutina>;
   alRenombrar: (rutina: RutinaCreada) => void;
+  alImportar: () => void;
+  importando: boolean;
 }) {
   const ids = ejerciciosDeRutina(props.rutina);
   const visibles = ids.slice(0, EJERCICIOS_VISIBLES);
@@ -88,7 +113,12 @@ function TarjetaRutina(props: {
   return (
     <li className="tarjeta-rutina">
       <div className="tarjeta-rutina-cabecera">
-        <NombreRutina rutina={props.rutina} alRenombrar={props.alRenombrar} />
+        <NombreRutina
+          rutina={props.rutina}
+          alRenombrar={props.alRenombrar}
+          alImportar={props.alImportar}
+          importando={props.importando}
+        />
         <span className="etiqueta">{props.rutina.tipo}</span>
       </div>
       <p className="tenue">{resumenRutina(props.rutina)}</p>
@@ -116,6 +146,8 @@ function TarjetaRutina(props: {
 function NombreRutina(props: {
   rutina: RutinaCreada;
   alRenombrar: (rutina: RutinaCreada) => void;
+  alImportar: () => void;
+  importando: boolean;
 }) {
   const { renombrar, error, guardando, limpiarError } = usarRenombrarRutina(props.rutina.id);
   const [editando, setEditando] = useState(false);
@@ -141,8 +173,46 @@ function NombreRutina(props: {
     return (
       <div className="nombre-rutina">
         <h2>{props.rutina.nombre}</h2>
-        <button type="button" className="secundario" onClick={abrir}>
-          Editar nombre
+        <button
+          type="button"
+          className="secundario boton-icono"
+          onClick={abrir}
+          aria-label="Editar nombre"
+          title="Editar nombre"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M12 20h9" />
+            <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L9 17l-4 1 1-4Z" />
+          </svg>
+        </button>
+        <button
+          type="button"
+          className="secundario boton-icono"
+          onClick={props.alImportar}
+          disabled={props.importando}
+          aria-label="Importar como copia"
+          title="Importar como copia"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <rect x="8" y="8" width="12" height="12" rx="2" />
+            <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" />
+          </svg>
         </button>
       </div>
     );

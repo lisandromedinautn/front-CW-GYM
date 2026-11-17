@@ -57,7 +57,7 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | catalogo | `ListaEjercicios.tsx` | `usarConsultarEjercicios.ts` | `GET /catalogo/ejercicios/consulta` | T01, T06, T07 | ✅ |
 | planificacion | `PaginaRutinas.tsx` (ruta `/profesor/rutinas`) | `usarConsultarRutinas.ts`, `usarRenombrarRutina.ts` | `GET /planificacion/rutinas`, `PATCH /planificacion/rutinas/:id/nombre` | T06, T08, T09 | ✅ |
 | planificacion | `EditorRutina.tsx` (ruta `/profesor/rutinas`, menú "Rutinas") | `usarCrearRutina.ts`, `usarEjerciciosParaRutina.ts`, `usarEditarRutina.ts` | `GET /catalogo/ejercicios`, `POST /planificacion/rutinas`, `PUT /planificacion/rutinas/:id` | US06, US09, US10 | ✅ crear con bloques (US06), con circuitos (US09) y mixta (US10); editar 📄 |
-| planificacion | `PaginaImportarRutina.tsx` | `usarImportarRutina.ts` | `POST /planificacion/rutinas/:id/importacion` | US20 | 📄 copia independiente, sin pregunta al modificar (RN-PLAN-08 actualizada el 17/11/2026) |
+| planificacion | `PaginaRutinas.tsx` (acción "Importar como copia") | `usarImportarRutina.ts` | `POST /planificacion/rutinas/:id/importacion` | US20 | ✅ |
 | planificacion | `PaginaCrearPlan.tsx` (ruta `/profesor/planes`) | `usarCrearPlan.ts`, `usarDatosParaPlan.ts` | `GET /identidad/alumnos`, `GET /planificacion/rutinas`, `POST /planificacion/planes` | US07 | ✅ |
 | planificacion | `PaginaAlumnosDelPlan.tsx` | `usarAlumnosDelPlan.ts` | `POST/DELETE /planificacion/planes/:id/alumnos` | US12 | 📄 |
 | planificacion | `PaginaRutinaDelDia.tsx` (`presentacion/rutina-del-dia/`, ruta `/alumno/rutina-del-dia`) | `usarRutinaDelDia.ts` (`aplicacion/consultar-rutina-del-dia/`) | `GET /planificacion/mi-rutina-del-dia` | US08 | ✅ |
@@ -128,7 +128,7 @@ Decidido por Lisandro el 08/11/2026 (igual que en el back): en todas las capas d
 | catalogo | aplicacion · presentacion | consultar-ejercicios · lista-ejercicios |
 | catalogo | infraestructura | api (`apiCatalogo.ts`) |
 | planificacion | dominio | bloque (`reglasBloque.ts` y su test), circuito (`reglasCircuito.ts` y su test), rutina (tipos del contrato y `nombreRutina.ts` con su test), plan (fechas del plan y tipos del contrato, con su test) |
-| planificacion | aplicacion · presentacion | editor-rutina · editor-rutina; consultar-rutinas · consultar-rutinas; renombrar-rutina (solo aplicacion); crear-plan · crear-plan; consultar-rutina-del-dia · rutina-del-dia |
+| planificacion | aplicacion · presentacion | editor-rutina · editor-rutina; consultar-rutinas · consultar-rutinas; renombrar-rutina e importar-rutina (solo aplicacion); crear-plan · crear-plan; consultar-rutina-del-dia · rutina-del-dia |
 | planificacion | infraestructura | api (`apiPlanificacion.ts`) |
 | compartido | dominio | error-api, menu, paginacion, sesion |
 | compartido | aplicacion · infraestructura | paginacion, sesion · sesion, cliente-http |
