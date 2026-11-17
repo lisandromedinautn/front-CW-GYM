@@ -13,7 +13,7 @@ Editor de rutinas, importación, creación de planes, gestión de alumnos del pl
 | RN-PLAN-05 | El campo peso solo aparece si el tipo de carga incluye Peso Extra, y es opcional | Vigente |
 | RN-PLAN-21 | La tarjeta de la rutina muestra su nombre como título, con edición en el lugar ("Editar nombre", "Guardar", "Cancelar"). Antes de enviar valida de 1 a 60 caracteres sin contar los extremos ("Completá el nombre", "Máximo 60 caracteres"); "Cancelar" no envía nada y los errores del back (409 por nombre repetido) van en un `alert` | Vigente ✅ |
 | RN-PLAN-20 | Antes de enviar, avisa si un circuito repite un ejercicio ("No repitas ejercicios en el circuito") | Vigente |
-| RN-PLAN-08 | Al modificar una rutina importada, pregunta si es una rutina nueva. Solo se listan para importar las rutinas del propio profesor | Vigente |
+| RN-PLAN-08 | Solo se listan para importar las rutinas del propio profesor; la importación crea una copia independiente | Vigente |
 | RN-PLAN-09 | Al elegir la fecha de inicio, muestra la fecha de fin calculada (inicio + 27) sin permitir editarla | Vigente |
 | RN-PLAN-10 | Cada uno de los 28 días se puede marcar como descanso o asignarle una rutina | Vigente |
 | RN-PLAN-11 | Cada día muestra su fecha concreta | Vigente |
@@ -44,6 +44,7 @@ Editor de rutinas, importación, creación de planes, gestión de alumnos del pl
 | 10/11/2026 | RN-PLAN-20 | Se refleja la regla nueva del back: un circuito no repite ejercicios (US09) | Ignacio |
 | 11/11/2026 | RN-PLAN-21 | Se refleja la regla nueva del back: el nombre de la rutina (1 a 60 caracteres, único por profesor) | Lisandro |
 | 13/11/2026 | RN-PLAN-09 a 14, 17 | Se implementa US07: pantalla de crear plan con fecha de fin calculada, 28 días con rutina o descanso y alumnos vinculados | Lisandro |
+| 17/11/2026 | RN-PLAN-08 | Se elimina la pregunta sobre si la copia modificada es una rutina nueva (CG-40, US20) | Desarrollador |
 
 ## Decisiones de implementación (US07)
 
