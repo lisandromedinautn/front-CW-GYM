@@ -1,4 +1,5 @@
 import type { EjercicioParaRutina } from '../../dominio/rutina/rutina.ts';
+import { BotonesOrden, type Reordenar } from './BotonesOrden.tsx';
 import { CampoNumero } from './CampoNumero.tsx';
 import { CamposObjetivo } from './CamposObjetivo.tsx';
 import type { CircuitoEnEdicion, Errores, ObjetivoEnEdicion } from './edicion.ts';
@@ -17,6 +18,7 @@ export function EditorCircuito(props: {
   alAgregarEjercicio: () => void;
   alQuitarEjercicio: (clave: number) => void;
   alQuitar: () => void;
+  reordenar?: Reordenar;
 }) {
   const { circuito } = props;
   const errores = props.errores[circuito.clave] ?? {};
@@ -62,6 +64,7 @@ export function EditorCircuito(props: {
         error={errores.macropausa}
         alCambiar={(v) => props.alCambiar('macropausa', v)}
       />
+      <BotonesOrden reordenar={props.reordenar} />
       <button type="button" className="secundario" onClick={props.alQuitar}>
         Quitar circuito
       </button>

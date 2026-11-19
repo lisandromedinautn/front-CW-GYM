@@ -225,3 +225,43 @@ Registro de cada sesión relevante en la que un desarrollador trabajó con IA. D
 - Se actualizan atlas, fichas, reglas de UI, changelog, trazabilidad y plan operativo. Los documentos compartidos reflejan la implementación en rama, con integración pendiente, y conservan las métricas históricas del 14/11.
 - Microcommits previos: back 0c355f1 (refactor), d647ce0 (consulta) y b3fc859 (endpoint); front db40646 (refactor). La pantalla se confirma por separado con sus tests y documentación. Sin push.
 - Verificaciones no ejecutadas: cobertura global nueva y recorrido manual en navegador. Sin cambios de dependencias ni de pruebas existentes.
+
+## 2026-11-15 — Crear rutina mixta, back [US10]
+- Desarrollador: Ignacio
+- Herramienta / modelo / esfuerzo: Claude Code · Opus 5.5 (orquestador, sin subagentes)
+- Objetivo: back de US10 (CG-38). En el front solo se sincronizó `docs/TRAZABILIDAD.md` con la del back.
+- Qué hizo la IA: ver la entrada del mismo día en `../back-CW-GYM/DECISIONES-IA.md`. Contrato nuevo para el front: cada bloque y circuito acepta `orden` (1..N) en `POST /planificacion/rutinas` y la respuesta lo devuelve.
+- Decisiones del desarrollador: ver el back.
+- Ideas descartadas: ver el back.
+- Reglas afectadas: ninguna.
+- Pendientes: front de US10 (CG-39): habilitar mezclar bloques y circuitos, ordenarlos y enviar `orden`.
+
+## 2026-11-15 — Crear rutina mixta, front [US10]
+- Desarrollador: Ignacio
+- Herramienta / modelo / esfuerzo: Claude Code · Opus 5.5 (orquestador, sin subagentes)
+- Objetivo: resolver el front de US10 (CG-39) sobre el contrato del back: mezclar bloques y circuitos y ordenarlos.
+- Qué hizo la IA: propuso el diseño y los casos, y siguió TDD (rojo antes que verde). Quitó la restricción de US09, agregó la secuencia del editor con "Subir" y "Bajar" (`BotonesOrden.tsx`, `secuenciaRutina.ts`) y manda `orden` solo en rutinas mixtas. Tests: `secuenciaRutina.test.ts` (3), `EditorRutinaMixta.int.test.tsx` (4) y `crear-rutina-mixta.e2e.ts` (1, contra el back de la rama US10). Probó 5 mutaciones (mover sin intercambio, sin `orden`, "Subir" sin efecto, volver a la restricción, `orden` por tipo) y todas hacen fallar un test. Los tests de US06 y US09 no cambiaron.
+- Decisiones del desarrollador: orden de agregado más "Subir" y "Bajar"; el listado de rutinas no muestra el orden; aprobó los casos.
+- Ideas descartadas: dejar solo el orden de agregado (sin reordenar); ordenar los ejercicios de la tarjeta del listado por `orden`.
+- Reglas afectadas: ninguna cambia. RN-PLAN-01 suma tests de rutina mixta en el front.
+- Pendientes: copiar las columnas del front de US10 en `docs/TRAZABILIDAD.md` del back (rama US10); `orden` en la rutina del día si se decide.
+
+## 2026-11-17 — Actualizar RN-PLAN-08 [CG-40, US20]
+- Solicitante: Julián; consideró obsoleta la pregunta sobre si una copia modificada es una rutina nueva y pidió eliminarla.
+- Herramienta / modelo: OpenCode · GPT-6.1 Terra.
+- Qué hizo la IA: revisó el flujo de planes y rutinas en ambos repositorios y actualizó la regla, su historial, la decisión 8, la trazabilidad, los atlas y los changelogs. No modificó código ni tests.
+- Decisión: se conserva que importar crea una copia independiente y que cada profesor solo ve, edita e importa sus propias rutinas; no se pregunta si la copia modificada es una rutina nueva.
+- Ideas descartadas: definir acciones de sí/no o crear una tercera rutina a partir de la pregunta eliminada.
+- Pendientes: implementar y probar US20 en back y front; la edición completa de rutinas también sigue pendiente. Sin commits ni publicaciones.
+
+## 2026-11-17 — Importar rutina como copia [CG-40, US20]
+- Desarrollador: Julián. Aprobó los casos de copia, nombres, seguridad, persistencia, interfaz y asignación a plan.
+- Herramienta / modelo: OpenCode · GPT-6.1 Terra.
+- Qué hizo la IA: implementó el endpoint de importación, copia del agregado con IDs nuevos y nombres únicos, y la acción en el listado del front. Agregó tests unitarios, e2e de API con PostgreSQL de test e integración de interfaz; actualizó documentación y trazabilidad.
+- Decisiones de Julián: acción "Importar como copia" en la lista de rutinas; sufijos ` - Copia`, ` - Copia 2`, etc.; volver a la primera página tras importar.
+- Verificación: 195 tests unitarios del back, 121 tests del front, 3 e2e de API de US20 y lint en ambos repositorios aprobados. El primer ciclo unitario y el primer ciclo de interfaz se observaron en rojo antes de implementar; los e2e se agregaron después. No se ejecutaron pruebas de mutación ni e2e de navegador.
+- Pendientes: revisión del desarrollador y commits; edición completa de rutinas y e2e de navegador de US20. No se hizo push.
+- Ajuste de interfaz pedido por Julián: reemplazar los botones de texto por un lápiz para editar el nombre y dos hojas superpuestas para importar una copia, junto al nombre, con etiquetas accesibles y ayuda al pasar el cursor. Pasaron las 10 pruebas de las dos suites del listado y lint; sin commits.
+- Ajuste posterior pedido por Julián: ambas acciones pasan a un menú de tres puntos; se retira el indicador de tipo y se agrega "Ver rutina" deshabilitado. Julián autorizó adaptar los tests existentes para abrir el menú sin eliminar verificaciones: las 10 pruebas del listado y lint pasan.
+- Julián pidió volver al diseño anterior: íconos de lápiz y copia junto al nombre, con el indicador de tipo; se retiraron el menú y "Ver rutina" y se restauró el recorrido anterior de las pruebas.
+- Verificación posterior (17/11): se agregó `e2e/planificacion/importar-rutina.e2e.ts`. La primera ejecución falló por usar `getByLabel` en el selector del día; Julián autorizó corregirlo a `getByRole`. El test pasó contra frontend y backend de test separados (`5174`, `3001`, PostgreSQL `5443`): crea, copia y selecciona una rutina, sin guardar el plan. También se probaron en una copia temporal tres mutaciones de propiedad, orden y nombres; los tests detectaron las tres y el original restaurado pasó. Sin commits nuevos.

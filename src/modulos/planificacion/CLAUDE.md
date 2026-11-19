@@ -11,9 +11,9 @@ Editor de rutinas, importación, creación de planes, gestión de alumnos del pl
 | RN-PLAN-03 | Un circuito pide 2 o más ejercicios, vueltas y macropausa. No muestra micropausa | Vigente |
 | RN-PLAN-04 | Según el tipo del ejercicio, se pide repeticiones o tiempo, nunca los dos | Vigente |
 | RN-PLAN-05 | El campo peso solo aparece si el tipo de carga incluye Peso Extra, y es opcional | Vigente |
-| RN-PLAN-21 | La tarjeta de la rutina muestra su nombre como título, con edición en el lugar ("Editar nombre", "Guardar", "Cancelar"). Antes de enviar valida de 1 a 60 caracteres sin contar los extremos ("Completá el nombre", "Máximo 60 caracteres"); "Cancelar" no envía nada y los errores del back (409 por nombre repetido) van en un `alert` | Vigente ✅ |
+| RN-PLAN-21 | La tarjeta muestra el nombre y un botón de lápiz accesible como "Editar nombre", con edición en el lugar ("Guardar", "Cancelar"). Antes de enviar valida de 1 a 60 caracteres sin contar los extremos ("Completá el nombre", "Máximo 60 caracteres"); "Cancelar" no envía nada y los errores del back (409 por nombre repetido) van en un `alert` | Vigente ✅ |
 | RN-PLAN-20 | Antes de enviar, avisa si un circuito repite un ejercicio ("No repitas ejercicios en el circuito") | Vigente |
-| RN-PLAN-08 | Al modificar una rutina importada, pregunta si es una rutina nueva. Solo se listan para importar las rutinas del propio profesor | Vigente |
+| RN-PLAN-08 | Solo se listan para importar las rutinas del propio profesor; la importación crea una copia independiente | Vigente |
 | RN-PLAN-09 | Al elegir la fecha de inicio, muestra la fecha de fin calculada (inicio + 27) sin permitir editarla | Vigente |
 | RN-PLAN-10 | Cada uno de los 28 días se puede marcar como descanso o asignarle una rutina | Vigente |
 | RN-PLAN-11 | Cada día muestra su fecha concreta | Vigente |
@@ -27,9 +27,9 @@ Editor de rutinas, importación, creación de planes, gestión de alumnos del pl
 
 | Pantalla (`presentacion/`) | Hook (`aplicacion/`) | US |
 | :-- | :-- | :-- |
-| `EditorRutina.tsx` (con `EditorBloque.tsx`, `EditorCircuito.tsx`, `CamposObjetivo.tsx`, `CampoNumero.tsx` y `edicion.ts`) | `usarCrearRutina.ts` ✅ (US06 bloques, US09 circuitos), `usarEjerciciosParaRutina.ts` ✅, `usarEditarRutina.ts` 📄 | US06, US09, US10 |
+| `EditorRutina.tsx` (con `EditorBloque.tsx`, `EditorCircuito.tsx`, `BotonesOrden.tsx`, `CamposObjetivo.tsx`, `CampoNumero.tsx` y `edicion.ts`) | `usarCrearRutina.ts` ✅ (US06 bloques, US09 circuitos, US10 mixta), `usarEjerciciosParaRutina.ts` ✅, `usarEditarRutina.ts` 📄 | US06, US09, US10 |
 | `PaginaRutinas.tsx` (`consultar-rutinas/`) ✅ | `usarConsultarRutinas.ts` ✅, `usarRenombrarRutina.ts` (`renombrar-rutina/`) ✅ | T06, T08, T09 |
-| `PaginaImportarRutina.tsx` | `usarImportarRutina.ts` | US20 |
+| `PaginaRutinas.tsx` (acción "Importar como copia") | `usarImportarRutina.ts` | US20 ✅ |
 | `PaginaCrearPlan.tsx` ✅ (`crear-plan/`) | `usarCrearPlan.ts` ✅, `usarDatosParaPlan.ts` ✅ | US07 |
 | `PaginaAlumnosDelPlan.tsx` | `usarAlumnosDelPlan.ts` | US12 |
 | `rutina-del-dia/PaginaRutinaDelDia.tsx` ✅ | `consultar-rutina-del-dia/usarRutinaDelDia.ts` ✅ | US08 |
@@ -45,6 +45,12 @@ Editor de rutinas, importación, creación de planes, gestión de alumnos del pl
 | 10/11/2026 | RN-PLAN-20 | Se refleja la regla nueva del back: un circuito no repite ejercicios (US09) | Ignacio |
 | 11/11/2026 | RN-PLAN-21 | Se refleja la regla nueva del back: el nombre de la rutina (1 a 60 caracteres, único por profesor) | Lisandro |
 | 13/11/2026 | RN-PLAN-09 a 14, 17 | Se implementa US07: pantalla de crear plan con fecha de fin calculada, 28 días con rutina o descanso y alumnos vinculados | Lisandro |
+| 17/11/2026 | RN-PLAN-08 | Se elimina la pregunta sobre si la copia modificada es una rutina nueva (CG-40, US20) | Desarrollador |
+
+## Decisiones de implementación (US20)
+
+* Cada tarjeta de `/profesor/rutinas` ofrece "Importar como copia" mediante un botón de hojas superpuestas junto al nombre, con etiqueta accesible y ayuda al pasar el cursor. Después de importar, se vuelve a la primera página y se recarga el listado.
+* La importación se deshabilita mientras hay una solicitud en curso; se informa el resultado o el error. Crear un plan permite seleccionar la copia como cualquier rutina propia.
 
 ## Decisiones de implementación (US07)
 
@@ -60,10 +66,17 @@ Editor de rutinas, importación, creación de planes, gestión de alumnos del pl
 * El listado usa el `Paginador` compartido con `usarTamanioPagina('rutinas', 10)`. Se reemplaza el `totalPaginas` propio por el de `compartido/dominio/paginacion`.
 * El nombre se edita en el lugar con `PATCH /planificacion/rutinas/:id/nombre`; la tarjeta ya no muestra "Rutina N" sino `rutina.nombre`.
 
+## Decisiones de implementación (US10)
+
+* Bloques y circuitos se pueden mezclar. Se muestran en el orden en que se agregan, y cada uno tiene "Subir" y "Bajar" (deshabilitados en los extremos; no aparecen si hay un solo elemento). Los títulos siguen siendo "Bloque N" y "Circuito N", numerados por tipo en el orden de la rutina. Decidido por Ignacio el 15/11/2026.
+* El orden vive en `secuencia` (claves en orden) dentro de `EditorRutina`; `mover` (`dominio/rutina/secuenciaRutina.ts`) hace el intercambio.
+* El body manda `orden` (1..N, posición en la rutina) en cada bloque y circuito **solo si la rutina es mixta**. Una rutina solo de bloques o solo de circuitos manda el mismo body que en US06 y US09 (contrato del back de US10).
+* El listado de rutinas no cambia: la tarjeta sigue mostrando "1 bloque · 1 circuito" y los ejercicios con bloques primero. Decidido por Ignacio el 15/11/2026.
+
 ## Decisiones de implementación (US09)
 
 * "Agregar circuito" suma un circuito que arranca con 2 ejercicios vacíos (el mínimo de RN-PLAN-03). Cada ejercicio va en su propio grupo ("Ejercicio 1", "Ejercicio 2"…) con "Quitar ejercicio", y el circuito tiene "Agregar ejercicio", "Vueltas", "Macropausa (s)" y "Quitar circuito". Decidido por Ignacio el 10/11/2026.
-* Hasta US10 (rutina mixta) no se mezclan: con bloques se deshabilita "Agregar circuito", y con circuitos "Agregar bloque". Esta restricción es temporal y no tiene test. Decidido por Ignacio el 10/11/2026.
+* Hasta US10 (rutina mixta) no se mezclaban: con bloques se deshabilitaba "Agregar circuito", y al revés. US10 quitó esa restricción (15/11/2026).
 * Antes de enviar, el circuito avisa "Un circuito necesita 2 o más ejercicios", "Mínimo 1 vuelta" o "No repitas ejercicios en el circuito". Sin bloques ni circuitos avisa "Agregá al menos un bloque o un circuito".
 * El body manda solo la lista que tiene contenido: `{ bloques }` o `{ circuitos }` (contrato del back de US06 y US09).
 * El editor se partió en `edicion.ts` (estado, validaciones y armado del body), `CampoNumero`, `CamposObjetivo` (compartido por bloques y circuitos), `EditorBloque` y `EditorCircuito`. Los tests de US06 no cambiaron.

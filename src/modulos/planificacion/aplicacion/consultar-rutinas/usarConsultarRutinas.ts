@@ -14,6 +14,7 @@ export function usarConsultarRutinas() {
   const [resultado, setResultado] = useState<Pagina<RutinaCreada> | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [cargando, setCargando] = useState(true);
+  const [revision, setRevision] = useState(0);
 
   useEffect(() => {
     let vigente = true;
@@ -32,7 +33,7 @@ export function usarConsultarRutinas() {
     return () => {
       vigente = false;
     };
-  }, [pagina, tamanio]);
+  }, [pagina, tamanio, revision]);
 
   return {
     resultado,
@@ -41,6 +42,10 @@ export function usarConsultarRutinas() {
     pagina,
     tamanio,
     irAPagina: setPagina,
+    volverAlInicioYRecargar: () => {
+      setPagina(1);
+      setRevision((actual) => actual + 1);
+    },
     cambiarTamanio: (nuevo: number) => {
       setTamanio(nuevo);
       setPagina(1);

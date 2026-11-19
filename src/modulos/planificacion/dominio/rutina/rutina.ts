@@ -15,6 +15,8 @@ export interface EjercicioParaRutina {
 
 /** Un bloque tal como lo recibe `POST /planificacion/rutinas` (back: crear-rutina.dto.ts). */
 export interface PedidoBloque {
+  /** US10: posición en una rutina mixta (1..N). Solo se manda si hay bloques y circuitos. */
+  orden?: number;
   ejercicioId: string;
   series: number;
   micropausaSegundos: number;
@@ -34,12 +36,17 @@ export interface PedidoEjercicioCircuito {
 
 /** Un circuito tal como lo recibe `POST /planificacion/rutinas` (US09). */
 export interface PedidoCircuito {
+  /** US10: posición en una rutina mixta (1..N). Solo se manda si hay bloques y circuitos. */
+  orden?: number;
   vueltas: number;
   macropausaSegundos: number;
   ejercicios: PedidoEjercicioCircuito[];
 }
 
-/** Bloques y circuitos van en listas separadas; se manda solo la que tiene contenido. */
+/**
+ * Bloques y circuitos van en listas separadas; se manda solo la que tiene contenido. En una
+ * rutina mixta (US10) van las dos, y cada bloque y circuito lleva su `orden`.
+ */
 export interface PedidoRutina {
   bloques?: PedidoBloque[];
   circuitos?: PedidoCircuito[];
