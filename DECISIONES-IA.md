@@ -265,3 +265,11 @@ Registro de cada sesión relevante en la que un desarrollador trabajó con IA. D
 - Ajuste posterior pedido por Julián: ambas acciones pasan a un menú de tres puntos; se retira el indicador de tipo y se agrega "Ver rutina" deshabilitado. Julián autorizó adaptar los tests existentes para abrir el menú sin eliminar verificaciones: las 10 pruebas del listado y lint pasan.
 - Julián pidió volver al diseño anterior: íconos de lápiz y copia junto al nombre, con el indicador de tipo; se retiraron el menú y "Ver rutina" y se restauró el recorrido anterior de las pruebas.
 - Verificación posterior (17/11): se agregó `e2e/planificacion/importar-rutina.e2e.ts`. La primera ejecución falló por usar `getByLabel` en el selector del día; Julián autorizó corregirlo a `getByRole`. El test pasó contra frontend y backend de test separados (`5174`, `3001`, PostgreSQL `5443`): crea, copia y selecciona una rutina, sin guardar el plan. También se probaron en una copia temporal tres mutaciones de propiedad, orden y nombres; los tests detectaron las tres y el original restaurado pasó. Sin commits nuevos.
+## 2026-11-20 — Iniciar y retomar un entrenamiento [CG-46]
+
+- Desarrollador: Julián.
+- Herramienta / modelo: OpenCode · GPT-6.2 Sol.
+- Objetivo: implementar el modelado, la API y la pantalla de US13.
+- Qué hizo la IA: compuso las acciones en la rutina del día y agregó la pantalla que retoma el contador desde el inicio informado por la API o muestra el abandono.
+- Decisiones del desarrollador: confirmó UTC, los estados de consulta y los casos de dominio, API y UI.
+- Ideas descartadas: guardar el entrenamiento en el navegador y agregar controles para historias posteriores.

@@ -17,6 +17,9 @@ import { PaginaRutinas } from './modulos/planificacion/presentacion/consultar-ru
 import { EditorRutina } from './modulos/planificacion/presentacion/editor-rutina/EditorRutina.tsx';
 import { PaginaRutinaDelDia } from './modulos/planificacion/presentacion/rutina-del-dia/PaginaRutinaDelDia.tsx';
 import { PaginaMiPlan } from './modulos/planificacion/presentacion/mi-plan/PaginaMiPlan.tsx';
+import { AccionesEntrenamiento } from './modulos/entrenamiento/presentacion/entrenamiento-en-curso/AccionesEntrenamiento.tsx';
+import { PaginaEntrenamientoEnCurso } from './modulos/entrenamiento/presentacion/entrenamiento-en-curso/PaginaEntrenamientoEnCurso.tsx';
+import { RUTA_ENTRENAMIENTO } from './modulos/entrenamiento/presentacion/entrenamiento-en-curso/rutas.ts';
 import './estilos.css';
 
 const ROLES: Rol[] = ['Admin', 'Profesor', 'Alumno'];
@@ -30,15 +33,17 @@ const PAGINAS: Record<string, ReactElement> = {
   '/alumno/vinculo': <PaginaVincularProfesor />,
   '/profesor/rutinas': <PaginaRutinas />,
   '/profesor/planes': <PaginaCrearPlan />,
-  '/alumno/rutina-del-dia': <PaginaRutinaDelDia />,
   '/alumno/mi-plan': <PaginaMiPlan />,
+  '/alumno/rutina-del-dia': (
+    <PaginaRutinaDelDia acciones={(hayRutina) => <AccionesEntrenamiento hayRutina={hayRutina} />} />
+  ),
 };
 
 /** Páginas que no son opción de menú (se llega desde otra pantalla). */
 const SUBPAGINAS: Record<Rol, Record<string, ReactElement>> = {
   Admin: {},
   Profesor: { '/profesor/rutinas/nueva': <EditorRutina /> },
-  Alumno: {},
+  Alumno: { [RUTA_ENTRENAMIENTO]: <PaginaEntrenamientoEnCurso /> },
 };
 
 function Raiz() {
