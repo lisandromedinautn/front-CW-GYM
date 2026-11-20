@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { Link } from 'react-router';
 import { usarRutinaDelDia } from '../../aplicacion/consultar-rutina-del-dia/usarRutinaDelDia.ts';
 import { etiquetaDelDia } from '../../dominio/plan/rutinaDelDia.ts';
@@ -7,7 +8,7 @@ import { DetalleRutina } from '../detalle-rutina/DetalleRutina.tsx';
  * US08: el alumno consulta la rutina del día de su plan vigente. RN-PLAN-18 (rutina, descanso o
  * sin plan), RN-PLAN-11 (día del plan) y RN-PLAN-15 (vigencia, la resuelve el back).
  */
-export function PaginaRutinaDelDia() {
+export function PaginaRutinaDelDia({ acciones }: { acciones?: (hayRutina: boolean) => ReactNode }) {
   const { resultado, error, cargando } = usarRutinaDelDia();
 
   return (
@@ -42,6 +43,7 @@ export function PaginaRutinaDelDia() {
       {resultado?.estado === 'rutina' && (
         <DetalleRutina rutina={resultado.rutina} numeroDia={resultado.numeroDia} />
       )}
+      {resultado && acciones?.(resultado.estado === 'rutina')}
     </section>
   );
 }
