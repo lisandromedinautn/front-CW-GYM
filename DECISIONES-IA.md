@@ -293,3 +293,13 @@ Registro de cada sesión relevante en la que un desarrollador trabajó con IA. D
 - Ideas descartadas: marcar US06 como parcial en Jira o reabrirla sin consultar; mover US12 al sprint 4 aunque ya figura en curso.
 - Reglas afectadas: ninguna.
 - Pendientes: decidir US06 (Listo en Jira, edición RN-PLAN-07 sin código; subtareas CG-24 y CG-25 en Por hacer). CG-23 y CG-27 (Modelar de US06 y US07) no se pudieron pasar a Listo: el permiso de la herramienta lo bloqueó. Publicar `v1.2.0` y `v1.3.0`.
+
+## 2026-11-21 — Crear plan como calendario de 5 semanas [T12]
+- Desarrollador: Lisandro
+- Herramienta / modelo / esfuerzo: Claude Code · Opus 5.5 bajo (sin subagentes)
+- Objetivo: fix visual de `/profesor/planes`: mostrar los 28 días como calendario 7 × 5, con los días que no forman parte del plan en gris y con blur.
+- Qué hizo la IA: cambió `PaginaCrearPlan.tsx` y `estilos.css`. Encabezado lunes a domingo, celdas de relleno con su fecha real antes del inicio y después del fin (siempre 35 celdas), texto accesible de cada día conservado y lista en pantallas menores a 48rem. Sin cambios en el contrato, las reglas ni los tests: la suite pasa completa (27 archivos, 135 tests).
+- Decisiones del desarrollador: calendario 7 × 5 con gris y blur para los días fuera del plan.
+- Ideas descartadas: mover el cálculo de la grilla a `dominio/plan/plan.ts` (sumaría código de dominio sin test); cambiar los textos que usan los tests existentes.
+- Reglas afectadas: ninguna (RN-PLAN-09 a 11 se siguen mostrando igual).
+- Pendientes: crear la tarjeta T12 en Jira.

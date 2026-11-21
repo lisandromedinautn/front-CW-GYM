@@ -60,6 +60,7 @@ Editor de rutinas, importación, creación de planes, gestión de alumnos del pl
 * Los alumnos se piden a `GET /identidad/alumnos` (solo los vinculados al profesor, RN-PLAN-13) y se ordenan por apellido y nombre. Las rutinas se piden con `listarTodasLasRutinas()`, que pagina `GET /planificacion/rutinas` de a 100 hasta traerlas todas.
 * Antes de enviar valida en el front: fecha válida ("Elegí una fecha de inicio válida") y al menos un alumno ("Elegí al menos un alumno", RN-PLAN-12). Los rechazos del back (RN-PLAN-08, 13, 14) se muestran con su mensaje en el `alert`.
 * No hay botón para finalizar el plan antes de tiempo (RN-PLAN-17).
+* Desde el 21/11/2026 (T12, pedido de Lisandro) los 28 días se ven como calendario de 5 semanas, de lunes a domingo (7 × 5). Los días anteriores al inicio y posteriores al fin muestran su fecha en gris y con blur, sin `select` y ocultos para lectores de pantalla. Cada día conserva el texto accesible "Día N — día dd/mm" y la etiqueta "Rutina del día N" (visualmente ocultos), y muestra en pantalla "Día N" y "vie 13/11". Por debajo de 48rem vuelve a una lista sin las celdas de relleno.
 
 ## Decisiones de implementación (T06, T08)
 
