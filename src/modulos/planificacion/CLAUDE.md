@@ -50,6 +50,17 @@ Editor de rutinas, importación, creación de planes, gestión de alumnos del pl
 | 17/11/2026 | RN-PLAN-08 | Se elimina la pregunta sobre si la copia modificada es una rutina nueva (CG-40, US20) | Desarrollador |
 | 21/11/2026 | RN-PLAN-22 | Se refleja la regla nueva del back: listado de planes del profesor con estado y filtros (T13) | Lisandro |
 
+## Nota para US12 (Martina): qué cambió con T12 y T13 (21/11/2026)
+
+T12 y T13 (CG-84) ya están en `develop` y cambian la pantalla de planes. Antes de seguir, traé `develop` (`git pull`) y mergealo en tu rama local.
+
+* **`/profesor/planes` ahora es el listado** (`consultar-planes/PaginaPlanes.tsx`). La creación se mudó a `/profesor/planes/nuevo` (`crear-plan/PaginaNuevoPlan.tsx`) y se abre con "Nuevo plan".
+* **Dónde enganchar US12**: un botón "Alumnos" en la tarjeta de los planes con estado `vigente` (RN-PLAN-16) que navegue a una subpágina nueva en `SUBPAGINAS` de `src/Aplicacion.tsx`, por ejemplo `'/profesor/planes/:id/alumnos': <PaginaAlumnosDelPlan />`. Las claves de `SUBPAGINAS` son rutas de react-router, así que `:id` se lee con `useParams`.
+* **Reutilizable**: `dominio/plan/listadoPlanes.ts` (`ResumenPlan` con `estado` y `alumnoIds`, `etiquetaDeEstado`, `fechaConBarras`), `usarConsultarPlanes` (expone `recargar` y `alumnos`) y `consultarPlanes` en `infraestructura/api/apiPlanificacion.ts`. Los alumnos del profesor ya se piden con `GET /identidad/alumnos`.
+* **Archivos con más chance de choque**: `src/Aplicacion.tsx` (rutas), `apiPlanificacion.ts`, `PaginaPlanes.tsx`, `estilos.css` (secciones nuevas de calendario y listado de planes) y `PaginaCrearPlan.tsx` (calendario 7 × 5 y prop `alVolver`).
+* **Tests**: el test de US07 ahora entra por `/profesor/planes/nuevo`. Si tu test entra al listado, mockeá `GET /planificacion/planes` como en `PaginaPlanes.int.test.tsx`.
+* **Doc compartida**: `docs/TRAZABILIDAD.md`, `CHANGELOG.md`, `DECISIONES-IA.md`, `ATLAS.md`, `FICHAS-TEST.md` y este archivo tienen entradas nuevas: al mergear, conservá las dos.
+
 ## Decisiones de implementación (T13)
 
 * `/profesor/planes` muestra `PaginaPlanes`: tarjetas con el mismo estilo que Rutinas ("Del dd/mm/aaaa al dd/mm/aaaa", badge de estado Próximo/Vigente/Finalizado, alumnos por "Apellido, Nombre" o "Sin alumnos", "N días con rutina · M de descanso"). El `<ul aria-label="Planes">` se renderiza siempre que hay respuesta, aunque venga vacío.
