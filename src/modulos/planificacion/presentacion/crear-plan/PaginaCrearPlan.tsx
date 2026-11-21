@@ -9,7 +9,38 @@ import {
   fechaFinDelPlan,
   fechasDeLosDias,
   hoyIso,
+  sumarDias,
 } from '../../dominio/plan/plan.ts';
+
+/** El calendario siempre muestra 5 semanas de lunes a domingo: los 28 días entran en 35 celdas. */
+const CELDAS_DEL_CALENDARIO = 35;
+const DIAS_DE_LA_SEMANA = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
+const ABREVIATURAS = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
+
+/** Días de la semana entre el lunes y la fecha (0 si es lunes, 6 si es domingo). Fecha en UTC. */
+function desfaseLunes(fecha: string): number {
+  if (!esFechaValida(fecha)) return 0;
+  return (new Date(`${fecha}T00:00:00Z`).getUTCDay() + 6) % 7;
+}
+
+/** "vie 13/11", para la celda del calendario. */
+function etiquetaCorta(fecha: string): string {
+  const diaDeLaSemana = new Date(`${fecha}T00:00:00Z`).getUTCDay();
+  return `${ABREVIATURAS[diaDeLaSemana]} ${fecha.slice(8, 10)}/${fecha.slice(5, 7)}`;
+}
+
+/** Celdas grises de los días que no forman parte del plan, con su fecha real. */
+function relleno(desde: string, inicio: number, cantidad: number) {
+  if (!desde || cantidad <= 0) return null;
+  return Array.from({ length: cantidad }, (_, indice) => {
+    const fecha = sumarDias(desde, indice);
+    return (
+      <div key={`fuera-${inicio + indice}`} className="dia-fuera-del-plan" aria-hidden="true">
+        {etiquetaCorta(fecha)}
+      </div>
+    );
+  });
+}
 
 /**
  * US07: el profesor crea un plan de 28 días y asigna una rutina o descanso a cada día.
@@ -103,16 +134,33 @@ export function PaginaCrearPlan() {
           {fechas.length === 0 && (
             <p className="tenue">Elegí la fecha de inicio para ver los {DIAS_DEL_PLAN} días.</p>
           )}
+          {fechas.length > 0 && (
+            <div className="calendario-plan-semana" aria-hidden="true">
+              {DIAS_DE_LA_SEMANA.map((dia) => (
+                <span key={dia}>{dia}</span>
+              ))}
+            </div>
+          )}
           <div className="dias-del-plan">
+            {relleno(
+              fechaValida ? sumarDias(fechaInicio, -desfaseLunes(fechaInicio)) : '',
+              0,
+              desfaseLunes(fechaInicio),
+            )}
             {fechas.map((fecha, indice) => {
               const numero = indice + 1;
               return (
                 <div key={numero} className="dia-del-plan">
-                  <p className="dia-del-plan-titulo">
+                  {/* Texto completo para lectores de pantalla; el visible es compacto. */}
+                  <p className="dia-del-plan-titulo solo-lectores">
                     Día {numero} — {etiquetaDeFecha(fecha)}
                   </p>
+                  <p className="dia-del-plan-encabezado" aria-hidden="true">
+                    <span className="dia-del-plan-numero">Día {numero}</span>
+                    <span className="dia-del-plan-fecha">{etiquetaCorta(fecha)}</span>
+                  </p>
                   <label>
-                    <span>Rutina del día {numero}</span>
+                    <span className="solo-lectores">Rutina del día {numero}</span>
                     <select
                       value={rutinaPorDia[numero] ?? ''}
                       onChange={(e) =>
@@ -133,6 +181,12 @@ export function PaginaCrearPlan() {
                 </div>
               );
             })}
+            {fechaValida &&
+              relleno(
+                sumarDias(fechaInicio, DIAS_DEL_PLAN),
+                desfaseLunes(fechaInicio) + DIAS_DEL_PLAN,
+                CELDAS_DEL_CALENDARIO - desfaseLunes(fechaInicio) - DIAS_DEL_PLAN,
+              )}
           </div>
         </fieldset>
 
