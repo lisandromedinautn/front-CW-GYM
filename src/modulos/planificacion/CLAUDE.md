@@ -21,6 +21,7 @@ Editor de rutinas, importación, creación de planes, gestión de alumnos del pl
 | RN-PLAN-16 | Se puede quitar al último alumno de un plan vigente | Vigente |
 | RN-PLAN-17 | No hay opción para finalizar un plan antes de tiempo | Vigente |
 | RN-PLAN-18 | La rutina del día muestra la rutina con sus ejercicios y objetivos, "Hoy es día de descanso." o "No tenés un plan vigente." | Vigente ✅ |
+| RN-PLAN-22 | `/profesor/planes` lista solo los planes del profesor, paginados, con su estado (Próximo, Vigente, Finalizado) y filtros por estado, alumno y rango de fecha de inicio (RN-UI-LIS-01 a 04) | Vigente (T13) |
 | RN-PLAN-19 | Mi plan muestra los 28 días ordenados con sus fechas, rutina o descanso y detalle desplegable de ejercicios, objetivos y pausas | Vigente ✅ |
 
 ## Pantallas y hooks planificados
@@ -45,6 +46,7 @@ Editor de rutinas, importación, creación de planes, gestión de alumnos del pl
 | 10/11/2026 | RN-PLAN-20 | Se refleja la regla nueva del back: un circuito no repite ejercicios (US09) | Ignacio |
 | 11/11/2026 | RN-PLAN-21 | Se refleja la regla nueva del back: el nombre de la rutina (1 a 60 caracteres, único por profesor) | Lisandro |
 | 13/11/2026 | RN-PLAN-09 a 14, 17 | Se implementa US07: pantalla de crear plan con fecha de fin calculada, 28 días con rutina o descanso y alumnos vinculados | Lisandro |
+| 21/11/2026 | RN-PLAN-22 | Se refleja la regla nueva del back: listado de planes del profesor con estado y filtros (T13) | Lisandro |
 | 17/11/2026 | RN-PLAN-08 | Se elimina la pregunta sobre si la copia modificada es una rutina nueva (CG-40, US20) | Desarrollador |
 
 ## Decisiones de implementación (US20)

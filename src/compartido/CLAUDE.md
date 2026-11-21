@@ -30,4 +30,4 @@ Propuestas el 08/11/2026 a pedido de Lisandro (T07, CG-74) y confirmadas por él
 | RN-UI-LIS-01 | Todo listado ofrece filtros por sus atributos principales y un botón "Limpiar filtros" que borra también el buscador | Vigente ✅ (ejercicios) |
 | RN-UI-LIS-02 | Los filtros se combinan entre sí (Y lógico) y con el buscador por nombre | Vigente ✅ (ejercicios) |
 | RN-UI-LIS-03 | Al cambiar un filtro, el listado vuelve a la primera página | Vigente ✅ (ejercicios) |
-| RN-UI-LIS-04 | Filtros por listado: Ejercicios (grupo muscular, músculo principal, tipo, tipo de carga); Profesores (legajo, apellido, documento); Alumnos (apellido, documento, con o sin profesor). Cada listado nuevo define los suyos en su historia | Vigente (solo Ejercicios implementado) |
+| RN-UI-LIS-04 | Filtros por listado: Ejercicios (grupo muscular, músculo principal, tipo, tipo de carga); Profesores (legajo, apellido, documento); Alumnos (apellido, documento, con o sin profesor); Planes (estado, alumno, fecha de inicio desde y hasta; agregado el 21/11/2026, T13). Cada listado nuevo define los suyos en su historia | Vigente (Ejercicios; Planes en T13) |
