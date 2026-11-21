@@ -77,7 +77,7 @@ function prepararRed(opciones: Opciones = {}) {
 function abrirPaginaComoProfesor() {
   localStorage.setItem('cwgym.sesion', JSON.stringify({ token: 't', rol: 'Profesor' }));
   render(
-    <MemoryRouter initialEntries={['/profesor/planes']}>
+    <MemoryRouter initialEntries={['/profesor/planes/nuevo']}>
       <Aplicacion />
     </MemoryRouter>,
   );

@@ -6,6 +6,15 @@ Categorías: Agregado, Cambiado, Corregido, Eliminado, Seguridad. Cada entrada c
 
 ## [Sin publicar]
 
+### Agregado
+
+- Listado de planes en `/profesor/planes`: tarjetas con fechas, estado, alumnos y días con rutina o descanso; filtros por estado, alumno y fecha de inicio, "Limpiar filtros" y paginador (RN-PLAN-22, RN-UI-LIS-01 a 04; CG-84, T13).
+
+### Cambiado
+
+- La creación del plan pasa a `/profesor/planes/nuevo` y se abre con "Nuevo plan" desde el listado; tiene "Volver al listado" (T13).
+- Crear plan muestra los 28 días como calendario de 5 semanas, de lunes a domingo; los días fuera del plan aparecen en gris y con blur. En pantallas chicas sigue como lista (T12).
+
 ## [1.3.0] — 2026-11-21
 
 Más rutinas e inicio del entrenamiento (fase 3: US09, US10, US20, US11, US13). La fase se terminó el 20/11, dentro del CG Sprint 3.

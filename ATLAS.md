@@ -61,6 +61,7 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | planificacion | `EditorRutina.tsx` (ruta `/profesor/rutinas`, menú "Rutinas") | `usarCrearRutina.ts`, `usarEjerciciosParaRutina.ts`, `usarEditarRutina.ts` | `GET /catalogo/ejercicios`, `POST /planificacion/rutinas`, `PUT /planificacion/rutinas/:id` | US06, US09, US10 | ✅ crear con bloques (US06), con circuitos (US09) y mixta (US10); editar 📄 |
 | planificacion | `PaginaRutinas.tsx` (acción "Importar como copia") | `usarImportarRutina.ts` | `POST /planificacion/rutinas/:id/importacion` | US20 | ✅ |
 | planificacion | `PaginaCrearPlan.tsx` (ruta `/profesor/planes`) | `usarCrearPlan.ts`, `usarDatosParaPlan.ts` | `GET /identidad/alumnos`, `GET /planificacion/rutinas`, `POST /planificacion/planes` | US07 | ✅ |
+| planificacion | `PaginaPlanes.tsx` (`consultar-planes/`, ruta `/profesor/planes`, menú "Planes"; "Nuevo plan" navega a `/profesor/planes/nuevo`, `crear-plan/PaginaNuevoPlan.tsx`, que muestra `PaginaCrearPlan`) | `usarConsultarPlanes.ts` (`consultar-planes/`) | `GET /planificacion/planes`, `GET /identidad/alumnos` | T13 | ✅ |
 | planificacion | `PaginaAlumnosDelPlan.tsx` | `usarAlumnosDelPlan.ts` | `POST/DELETE /planificacion/planes/:id/alumnos` | US12 | 📄 |
 | planificacion | `PaginaRutinaDelDia.tsx` (`presentacion/rutina-del-dia/`, ruta `/alumno/rutina-del-dia`) | `usarRutinaDelDia.ts` (`aplicacion/consultar-rutina-del-dia/`) | `GET /planificacion/mi-rutina-del-dia` | US08 | ✅ |
 | planificacion | `mi-plan/PaginaMiPlan.tsx` | `consultar-plan-del-alumno/usarMiPlan.ts` | `GET /planificacion/mi-plan` | US11 | ✅ `PaginaMiPlan.int.test.tsx` (9 casos) |
@@ -116,6 +117,7 @@ Los tests viven junto a la pantalla o componente que prueban. Las fichas de cada
 | `src/modulos/planificacion/dominio/rutina/nombreRutina.test.ts` | RN-PLAN-21 | ✅ |
 | `src/modulos/planificacion/presentacion/consultar-rutinas/PaginaRutinas.int.test.tsx` | RN-PLAN-21, 08, T06 | ✅ |
 | `src/modulos/planificacion/presentacion/crear-plan/PaginaCrearPlan.int.test.tsx` | RN-PLAN-09, 11, 12, 13, 14, US07 | ✅ |
+| `src/modulos/planificacion/presentacion/consultar-planes/PaginaPlanes.int.test.tsx` | RN-PLAN-22, RN-UI-LIS-01, 02, 03 | ✅ |
 | `src/modulos/planificacion/dominio/plan/rutinaDelDia.test.ts` | Objetivos y etiqueta del día (US08) | ✅ |
 | `src/modulos/planificacion/presentacion/rutina-del-dia/PaginaRutinaDelDia.int.test.tsx` | RN-PLAN-11, 18; rutina, descanso, sin plan y error HTTP | ✅ |
 | `src/modulos/planificacion/presentacion/rutina-del-dia/PaginaRutinaDelDiaDetalles.int.test.tsx` | RN-PLAN-11, 18, 02, 03; fecha, pausas y acceso por rol (RN-IDE-03) | ✅ |
@@ -132,7 +134,7 @@ Decidido por Lisandro el 08/11/2026 (igual que en el back): en todas las capas d
 | catalogo | aplicacion · presentacion | consultar-ejercicios · lista-ejercicios |
 | catalogo | infraestructura | api (`apiCatalogo.ts`) |
 | planificacion | dominio | bloque (`reglasBloque.ts` y su test), circuito (`reglasCircuito.ts` y su test), rutina (tipos del contrato y `nombreRutina.ts` con su test), plan (fechas del plan y tipos del contrato, con su test) |
-| planificacion | aplicacion · presentacion | editor-rutina · editor-rutina; consultar-rutinas · consultar-rutinas; renombrar-rutina (solo aplicacion); crear-plan · crear-plan; consultar-rutina-del-dia · rutina-del-dia; consultar-plan-del-alumno · mi-plan; detalle-rutina (componente compartido del módulo) |
+| planificacion | aplicacion · presentacion | editor-rutina · editor-rutina; consultar-rutinas · consultar-rutinas; renombrar-rutina (solo aplicacion); crear-plan · crear-plan; consultar-planes · consultar-planes; consultar-rutina-del-dia · rutina-del-dia; consultar-plan-del-alumno · mi-plan; detalle-rutina (componente compartido del módulo) |
 | planificacion | infraestructura | api (`apiPlanificacion.ts`) |
 | compartido | dominio | error-api, menu, paginacion, sesion |
 | compartido | aplicacion · infraestructura | paginacion, sesion · sesion, cliente-http |

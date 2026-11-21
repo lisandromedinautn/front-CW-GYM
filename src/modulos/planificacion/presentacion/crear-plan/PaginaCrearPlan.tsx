@@ -48,7 +48,7 @@ function relleno(desde: string, inicio: number, cantidad: number) {
  * RN-PLAN-12 (al menos un alumno), RN-PLAN-13 (solo alumnos vinculados) y RN-PLAN-17 (sin
  * finalización anticipada).
  */
-export function PaginaCrearPlan() {
+export function PaginaCrearPlan(props: { alVolver?: () => void } = {}) {
   const { alumnos, rutinas, error: errorDatos, cargando } = usarDatosParaPlan();
   const { crear, avisar, error, plan, enviando } = usarCrearPlan();
   const [fechaInicio, setFechaInicio] = useState(hoyIso());
@@ -90,6 +90,11 @@ export function PaginaCrearPlan() {
   return (
     <section className="pagina pagina-ancha">
       <h1>Nuevo plan</h1>
+      {props.alVolver && (
+        <button type="button" className="secundario" onClick={props.alVolver}>
+          Volver al listado
+        </button>
+      )}
       {errorDatos && (
         <p role="alert" className="error">
           {errorDatos}

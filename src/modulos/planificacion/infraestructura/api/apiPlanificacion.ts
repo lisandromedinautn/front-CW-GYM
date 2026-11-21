@@ -2,6 +2,7 @@ import type { Pagina } from '../../../../compartido/dominio/paginacion/paginacio
 import { pedir } from '../../../../compartido/infraestructura/cliente-http/clienteHttp.ts';
 import type { AlumnoDelProfesor, PedidoPlan, PlanCreado } from '../../dominio/plan/plan.ts';
 import type { RutinaDelDia } from '../../dominio/plan/rutinaDelDia.ts';
+import type { FiltrosPlanes, ResumenPlan } from '../../dominio/plan/listadoPlanes.ts';
 import type { ResultadoMiPlan } from '../../dominio/plan/miPlan.ts';
 import type {
   EjercicioParaRutina,
@@ -65,6 +66,21 @@ export async function listarTodasLasRutinas(): Promise<RutinaCreada[]> {
 /** US07: crea el plan de 28 días (RN-PLAN-09 a 15). */
 export function crearPlan(pedido: PedidoPlan): Promise<PlanCreado> {
   return pedir<PlanCreado>('/planificacion/planes', { metodo: 'POST', cuerpo: pedido });
+}
+
+/** RN-PLAN-22: planes del profesor, paginados; la query lleva solo los filtros presentes. */
+export function consultarPlanes(
+  filtros: FiltrosPlanes,
+  pagina: number,
+  tamanio: number,
+): Promise<Pagina<ResumenPlan>> {
+  const query = new URLSearchParams();
+  for (const clave of ['estado', 'alumnoId', 'inicioDesde', 'inicioHasta'] as const) {
+    if (filtros[clave]) query.set(clave, filtros[clave]);
+  }
+  query.set('pagina', String(pagina));
+  query.set('tamanio', String(tamanio));
+  return pedir<Pagina<ResumenPlan>>(`/planificacion/planes?${query.toString()}`);
 }
 
 /** US08: la rutina del día del alumno (RN-PLAN-11, 15, 18). */

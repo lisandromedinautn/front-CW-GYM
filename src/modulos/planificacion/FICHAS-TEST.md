@@ -109,3 +109,16 @@ Catálogo falso de los tests de integración (forma de `GET /catalogo/ejercicios
 | `presentacion/rutina-del-dia/PaginaRutinaDelDia.int.test.tsx` › día de descanso | RN-PLAN-18 | Integración | estado descanso, día 2 | Hoy es día de descanso. y Día 2 de 28 | = esperado (laptop, salida compartida por Martina, 14/11/2026) | 14/11/2026 |
 | `presentacion/rutina-del-dia/PaginaRutinaDelDia.int.test.tsx` › rutina por bloques y circuitos | RN-PLAN-11, 18 | Integración | Piernas, día 4; press 3 series, 10 repeticiones, 20 kg; circuito 3 vueltas, sentadilla 12 repeticiones y plancha 30 s | nombre, día y todos los objetivos visibles | = esperado (laptop, salida compartida por Martina, 14/11/2026) | 14/11/2026 |
 | `presentacion/rutina-del-dia/PaginaRutinaDelDia.int.test.tsx` › error HTTP | RN-PLAN-18 | Integración | 500 con mensaje de error del back | alert No se pudo cargar la rutina del día | = esperado (laptop, salida compartida por Martina, 14/11/2026) | 14/11/2026 |
+
+## T13 — Casos confirmados por Lisandro el 21/11/2026
+
+| Test (archivo › caso) | RN | Nivel | Entrada | Esperado | Obtenido (último run) | Fecha |
+| :-- | :-- | :-- | :-- | :-- | :-- | :-- |
+| `presentacion/consultar-planes/PaginaPlanes.int.test.tsx` › cada plan muestra fechas, estado, alumnos y días | RN-PLAN-22 | Integración | 3 planes (próximo, vigente, finalizado) y 2 alumnos | "Del 01/11/2026 al 28/11/2026", estado, "Pérez, Martín", "Sin alumnos", "20 días con rutina · 8 de descanso" | = esperado | 21/11/2026 |
+| `PaginaPlanes.int.test.tsx` › cambiar "Estado" desde la página 2 | RN-UI-LIS-03 | Integración | página 2, Estado Vigente | petición con pagina=1 y estado=vigente | = esperado | 21/11/2026 |
+| `PaginaPlanes.int.test.tsx` › los filtros viajan juntos | RN-UI-LIS-02 | Integración | estado, alumno, inicio desde y hasta | una petición con los cuatro filtros | = esperado | 21/11/2026 |
+| `PaginaPlanes.int.test.tsx` › "Limpiar filtros" | RN-UI-LIS-01 | Integración | cuatro filtros elegidos, clic Limpiar filtros | petición con pagina=1 sin filtros y controles vacíos | = esperado | 21/11/2026 |
+| `PaginaPlanes.int.test.tsx` › sin planes y sin filtros | RN-PLAN-22 | Integración | respuesta vacía | Todavía no creaste planes. | = esperado | 21/11/2026 |
+| `PaginaPlanes.int.test.tsx` › con filtros sin resultados | RN-PLAN-22 | Integración | Estado Vigente, respuesta vacía | No hay planes con esos filtros. | = esperado | 21/11/2026 |
+| `PaginaPlanes.int.test.tsx` › "Nuevo plan" | RN-PLAN-22 | Integración | clic en Nuevo plan | encabezado Nuevo plan y campo Fecha de inicio | = esperado | 21/11/2026 |
+| `PaginaPlanes.int.test.tsx` › error del back | RN-PLAN-22 | Integración | 500 con mensaje | alert con el mensaje | = esperado | 21/11/2026 |
