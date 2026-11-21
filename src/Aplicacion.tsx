@@ -12,7 +12,8 @@ import { PaginaAltaProfesor } from './modulos/identidad/presentacion/alta-profes
 import { PaginaCodigoProfesor } from './modulos/identidad/presentacion/codigo-profesor/PaginaCodigoProfesor.tsx';
 import { PaginaVincularProfesor } from './modulos/identidad/presentacion/vinculo/PaginaVincularProfesor.tsx';
 import { PaginaIngreso } from './modulos/identidad/presentacion/ingreso/PaginaIngreso.tsx';
-import { PaginaCrearPlan } from './modulos/planificacion/presentacion/crear-plan/PaginaCrearPlan.tsx';
+import { PaginaPlanes } from './modulos/planificacion/presentacion/consultar-planes/PaginaPlanes.tsx';
+import { PaginaNuevoPlan } from './modulos/planificacion/presentacion/crear-plan/PaginaNuevoPlan.tsx';
 import { PaginaRutinas } from './modulos/planificacion/presentacion/consultar-rutinas/PaginaRutinas.tsx';
 import { EditorRutina } from './modulos/planificacion/presentacion/editor-rutina/EditorRutina.tsx';
 import { PaginaRutinaDelDia } from './modulos/planificacion/presentacion/rutina-del-dia/PaginaRutinaDelDia.tsx';
@@ -32,7 +33,7 @@ const PAGINAS: Record<string, ReactElement> = {
   '/profesor/codigo': <PaginaCodigoProfesor />,
   '/alumno/vinculo': <PaginaVincularProfesor />,
   '/profesor/rutinas': <PaginaRutinas />,
-  '/profesor/planes': <PaginaCrearPlan />,
+  '/profesor/planes': <PaginaPlanes />,
   '/alumno/mi-plan': <PaginaMiPlan />,
   '/alumno/rutina-del-dia': (
     <PaginaRutinaDelDia acciones={(hayRutina) => <AccionesEntrenamiento hayRutina={hayRutina} />} />
@@ -42,7 +43,10 @@ const PAGINAS: Record<string, ReactElement> = {
 /** Páginas que no son opción de menú (se llega desde otra pantalla). */
 const SUBPAGINAS: Record<Rol, Record<string, ReactElement>> = {
   Admin: {},
-  Profesor: { '/profesor/rutinas/nueva': <EditorRutina /> },
+  Profesor: {
+    '/profesor/rutinas/nueva': <EditorRutina />,
+    '/profesor/planes/nuevo': <PaginaNuevoPlan />,
+  },
   Alumno: { [RUTA_ENTRENAMIENTO]: <PaginaEntrenamientoEnCurso /> },
 };
 

@@ -479,3 +479,29 @@ input:focus-visible {
 .nombre-rutina-edicion .error-campo {
   margin: 0;
 }
+
+/* Listado de planes (RN-PLAN-22): badge de estado y alumnos de cada tarjeta */
+.estado-plan {
+  border-radius: 999px;
+  padding: 0.1rem 0.6rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.estado-plan-proximo {
+  background: #fef3c7;
+  color: #78350f;
+}
+.estado-plan-vigente {
+  background: #d1fae5;
+  color: #065f46;
+}
+.estado-plan-finalizado {
+  background: #e4e7eb;
+  color: #323f4b;
+}
+.alumnos-plan {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
