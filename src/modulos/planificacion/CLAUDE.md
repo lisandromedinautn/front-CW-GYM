@@ -31,6 +31,7 @@ Editor de rutinas, importación, creación de planes, gestión de alumnos del pl
 | `EditorRutina.tsx` (con `EditorBloque.tsx`, `EditorCircuito.tsx`, `BotonesOrden.tsx`, `CamposObjetivo.tsx`, `CampoNumero.tsx` y `edicion.ts`) | `usarCrearRutina.ts` ✅ (US06 bloques, US09 circuitos, US10 mixta), `usarEjerciciosParaRutina.ts` ✅, `usarEditarRutina.ts` 📄 | US06, US09, US10 |
 | `PaginaRutinas.tsx` (`consultar-rutinas/`) ✅ | `usarConsultarRutinas.ts` ✅, `usarRenombrarRutina.ts` (`renombrar-rutina/`) ✅ | T06, T08, T09 |
 | `PaginaRutinas.tsx` (acción "Importar como copia") | `usarImportarRutina.ts` | US20 ✅ |
+| `consultar-planes/PaginaPlanes.tsx` ✅ | `consultar-planes/usarConsultarPlanes.ts` ✅ | T13 |
 | `PaginaCrearPlan.tsx` ✅ (`crear-plan/`) | `usarCrearPlan.ts` ✅, `usarDatosParaPlan.ts` ✅ | US07 |
 | `PaginaAlumnosDelPlan.tsx` | `usarAlumnosDelPlan.ts` | US12 |
 | `rutina-del-dia/PaginaRutinaDelDia.tsx` ✅ | `consultar-rutina-del-dia/usarRutinaDelDia.ts` ✅ | US08 |
@@ -46,8 +47,14 @@ Editor de rutinas, importación, creación de planes, gestión de alumnos del pl
 | 10/11/2026 | RN-PLAN-20 | Se refleja la regla nueva del back: un circuito no repite ejercicios (US09) | Ignacio |
 | 11/11/2026 | RN-PLAN-21 | Se refleja la regla nueva del back: el nombre de la rutina (1 a 60 caracteres, único por profesor) | Lisandro |
 | 13/11/2026 | RN-PLAN-09 a 14, 17 | Se implementa US07: pantalla de crear plan con fecha de fin calculada, 28 días con rutina o descanso y alumnos vinculados | Lisandro |
-| 21/11/2026 | RN-PLAN-22 | Se refleja la regla nueva del back: listado de planes del profesor con estado y filtros (T13) | Lisandro |
 | 17/11/2026 | RN-PLAN-08 | Se elimina la pregunta sobre si la copia modificada es una rutina nueva (CG-40, US20) | Desarrollador |
+| 21/11/2026 | RN-PLAN-22 | Se refleja la regla nueva del back: listado de planes del profesor con estado y filtros (T13) | Lisandro |
+
+## Decisiones de implementación (T13)
+
+* `/profesor/planes` muestra `PaginaPlanes`: tarjetas con el mismo estilo que Rutinas ("Del dd/mm/aaaa al dd/mm/aaaa", badge de estado Próximo/Vigente/Finalizado, alumnos por "Apellido, Nombre" o "Sin alumnos", "N días con rutina · M de descanso"). El `<ul aria-label="Planes">` se renderiza siempre que hay respuesta, aunque venga vacío.
+* `usarConsultarPlanes` guarda filtros (estado, alumno, inicio desde/hasta) y página; cambiar un filtro vuelve a la página 1 (RN-UI-LIS-03) y "Limpiar filtros" los borra (RN-UI-LIS-01). El cliente `consultarPlanes` arma la query solo con los filtros presentes. Alumnos de `GET /identidad/alumnos`, tamaño con `usarTamanioPagina('planes', 10)`.
+* "Nuevo plan" navega a `/profesor/planes/nuevo` (`crear-plan/PaginaNuevoPlan.tsx`), una subpágina propia como `/profesor/rutinas/nueva`. Ahí `PaginaCrearPlan` recibe `alVolver` ("Volver al listado"); al crear se queda en el formulario con el mensaje "Plan creado del … al …". El listado vuelve a pedir los planes al montarse. Decidido por Lisandro el 21/11/2026; por eso el test de US07 entra por `/profesor/planes/nuevo` (cambio aprobado por él, sin tocar aserciones).
 
 ## Decisiones de implementación (US20)
 
@@ -56,7 +63,7 @@ Editor de rutinas, importación, creación de planes, gestión de alumnos del pl
 
 ## Decisiones de implementación (US07)
 
-* La pantalla vive en `/profesor/planes` y la abre la opción de menú "Planes". `PaginaCrearPlan` se renderiza directo (todavía no hay endpoint para listar planes).
+* La pantalla vivía en `/profesor/planes`. Desde T13 esa ruta es el listado (`PaginaPlanes`) y la creación está en `/profesor/planes/nuevo`, a la que se llega con "Nuevo plan".
 * La fecha de inicio arranca en hoy (`hoyIso()`), se elige con un `input type="date"` y la fecha de fin se muestra calculada (inicio + 27) sin editarla. Las fechas se manejan como `AAAA-MM-DD` en UTC (`dominio/plan/plan.ts`), sin depender de la zona del navegador.
 * Cada uno de los 28 días tiene un `select` de rutina con la opción "Descanso" (valor vacío, que se envía como `rutinaId: null`). El body manda siempre los 28 días, en orden.
 * Los alumnos se piden a `GET /identidad/alumnos` (solo los vinculados al profesor, RN-PLAN-13) y se ordenan por apellido y nombre. Las rutinas se piden con `listarTodasLasRutinas()`, que pagina `GET /planificacion/rutinas` de a 100 hasta traerlas todas.

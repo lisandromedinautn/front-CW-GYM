@@ -1,4 +1,4 @@
-# Compartido (`compartido`) — front
+Vigente ✅ (ejercicios, planes) |Vigente ✅ (ejercicios, planes) |Vigente ✅ (ejercicios, planes) |# Compartido (`compartido`) — front
 
 Lo mínimo que usan todos los módulos. Acá no va lógica de un módulo en particular. Estado: ✅ existe · 📄 planificado.
 
