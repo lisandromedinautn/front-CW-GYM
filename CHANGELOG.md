@@ -8,9 +8,27 @@ Categorías: Agregado, Cambiado, Corregido, Eliminado, Seguridad. Cada entrada c
 
 ### Agregado
 
-- Pantalla "Mi plan" en `/alumno/mi-plan`: muestra los 28 días del plan vigente con sus fechas, rutinas o descansos y el detalle desplegable de ejercicios, objetivos y pausas. Se abre desde el menú del Alumno y desde la rutina del día (RN-PLAN-11, 15, 19; US11).
-
+- Circuitos en el editor de rutina: ejercicios, vueltas y macropausa (RN-PLAN-01, 03, 04; US09).
+- Rutina mixta: los bloques y circuitos se pueden mover dentro de la rutina con los botones de orden (RN-PLAN-01; US10).
 - Acción "Importar como copia" en el listado de rutinas; vuelve a la primera página para mostrar la copia creada (CG-40, US20).
+- Pantalla "Mi plan" en `/alumno/mi-plan`: muestra los 28 días del plan vigente con sus fechas, rutinas o descansos y el detalle desplegable de ejercicios, objetivos y pausas. Se abre desde el menú del Alumno y desde la rutina del día (RN-PLAN-11, 15, 19; US11).
+- Pantalla del entrenamiento en curso en `/alumno/entrenamiento`: iniciar el entrenamiento de hoy, retomarlo con contador de duración y ver si quedó abandonado (RN-ENT-01, 02, 20; RN-UI-ENT-02; CG-46, US13).
+
+### Cambiado
+
+- Componente de detalle de rutina reutilizable por las vistas del Alumno; refactor preparatorio de US11, sin cambiar la vista de US08.
+- RN-PLAN-08: se elimina la pregunta sobre si una rutina importada modificada es una rutina nueva; se mantiene la copia independiente y la restricción a rutinas propias (CG-40, US20).
+
+## [1.2.0] — 2026-11-21
+
+Planificación básica (fase 2: US06, US07, US08) y las tareas técnicas del sprint 2 (T06 a T10). Se publica el 21/11, al cerrar el CG Sprint 2 en Jira. US06 figura Listo en Jira, pero la edición de rutinas (RN-PLAN-07) todavía no está implementada.
+
+### Agregado
+
+- Editor de rutina por bloques en `/profesor/rutinas` (menú "Rutinas"): ejercicios del catálogo, series, objetivos y pausas (RN-PLAN-01, 02, 04, 05, 06; US06).
+- Listado de rutinas paginado con acción para renombrar (RN-PLAN-21; T08, T09).
+- Lista de ejercicios paginada con GIF, buscador y filtros por atributo (RN-UI-LIS-01 a 04; T06, T07).
+- Paginador compartido (Anterior, Siguiente, "Página X de Y" y "Por página") y hook `usarTamanioPagina` (T06).
 - Pantalla "Mi rutina del día" en `/alumno/rutina-del-dia`: muestra fecha, día del plan, ejercicios, series o vueltas, objetivos, peso y pausas; informa los días de descanso y la ausencia de plan vigente (RN-PLAN-11, 15, 18; US08).
 - Pantalla "Nuevo plan" en `/profesor/planes`: el profesor elige la fecha de inicio (el fin se calcula solo), asigna una rutina o descanso a cada uno de los 28 días y selecciona los alumnos vinculados (US07).
 - Opción "Planes" en el menú del Profesor.
@@ -18,10 +36,8 @@ Categorías: Agregado, Cambiado, Corregido, Eliminado, Seguridad. Cada entrada c
 
 ### Cambiado
 
-- Componente de detalle de rutina reutilizable por las vistas del Alumno; refactor preparatorio de US11, sin cambiar la vista de US08.
-
-- RN-PLAN-08: se elimina la pregunta sobre si una rutina importada modificada es una rutina nueva; se mantiene la copia independiente y la restricción a rutinas propias (CG-40, US20).
 - Métricas del sprint 2 al 14/11: US06 parcial, 26 puntos técnicos del sprint y 52/129 acumulados; residual V2 de 91 puntos con cierre explícito y pronósticos por capacidad. Se conserva la base histórica y se retiran como medición las horas inferidas de commits. Informe en `docs/METRICAS-SPRINT-2.md`.
+- Sprints de Jira alineados al calendario el 21/11: Sprint 2 cerrado, Sprint 3 activo y Sprint 4 creado; patrones de diseño aplicados relevados en `docs/PATRONES.md` (T11).
 
 ## [1.1.0] — 2026-11-08
 
