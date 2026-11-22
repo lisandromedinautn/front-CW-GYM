@@ -33,7 +33,7 @@ Editor de rutinas, importación, creación de planes, gestión de alumnos del pl
 | `PaginaRutinas.tsx` (acción "Importar como copia") | `usarImportarRutina.ts` | US20 ✅ |
 | `consultar-planes/PaginaPlanes.tsx` ✅ | `consultar-planes/usarConsultarPlanes.ts` ✅ | T13 |
 | `PaginaCrearPlan.tsx` ✅ (`crear-plan/`) | `usarCrearPlan.ts` ✅, `usarDatosParaPlan.ts` ✅ | US07 |
-| `PaginaAlumnosDelPlan.tsx` | `usarAlumnosDelPlan.ts` | US12 |
+| `alumnos-del-plan/PaginaAlumnosDelPlan.tsx` ✅ | `alumnos-del-plan/usarAlumnosDelPlan.ts` ✅ | US12 |
 | `rutina-del-dia/PaginaRutinaDelDia.tsx` ✅ | `consultar-rutina-del-dia/usarRutinaDelDia.ts` ✅ | US08 |
 | `mi-plan/PaginaMiPlan.tsx` ✅ | `consultar-plan-del-alumno/usarMiPlan.ts` ✅ | US11 |
 
@@ -123,3 +123,9 @@ T12 y T13 (CG-84) ya están en `develop` y cambian la pantalla de planes. Antes 
 * `usarMiPlan` consulta `GET /planificacion/mi-plan` a través del cliente del módulo. No envía parámetros de alumno ni calcula vigencia en el navegador. El contrato `dominio/plan/miPlan.ts` conserva las fechas del back y reutiliza `RutinaDelDiaDetalle`.
 * Los días se muestran en el orden recibido, con fechas formateadas por `etiquetaDeFecha`. Una rutina nula se muestra como Descanso. Cada rutina se despliega con `details`/`summary` nativos y reutiliza `DetalleRutina`, con el número de día correspondiente.
 * Sin plan vigente se muestra No tenés un plan vigente.; los errores se informan en un alert y la carga tiene un estado accesible.
+
+## Implementación US12
+
+* Solo el profesor propietario puede consultar y modificar los alumnos de un plan vigente. El back valida el vínculo, la ausencia de otro plan vigente y permite quitar al último alumno.
+* La pantalla se abre desde «Alumnos» en el listado de planes vigentes. El alta o la baja actualiza las asignaciones sin recrear los días del plan.
+* La asignación y la creación serializan por alumno en PostgreSQL y vuelven a comprobar la vigencia dentro de la transacción (RN-PLAN-14).

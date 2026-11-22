@@ -122,3 +122,12 @@ Catálogo falso de los tests de integración (forma de `GET /catalogo/ejercicios
 | `PaginaPlanes.int.test.tsx` › con filtros sin resultados | RN-PLAN-22 | Integración | Estado Vigente, respuesta vacía | No hay planes con esos filtros. | = esperado | 21/11/2026 |
 | `PaginaPlanes.int.test.tsx` › "Nuevo plan" | RN-PLAN-22 | Integración | clic en Nuevo plan | encabezado Nuevo plan y campo Fecha de inicio | = esperado | 21/11/2026 |
 | `PaginaPlanes.int.test.tsx` › error del back | RN-PLAN-22 | Integración | 500 con mensaje | alert con el mensaje | = esperado | 21/11/2026 |
+
+## US12 — Agregar o quitar alumnos de un plan vigente
+
+| Test (archivo › caso) | RN | Nivel | Entrada | Esperado | Obtenido (último run) | Fecha |
+| :-- | :-- | :-- | :-- | :-- | :-- | :-- |
+| `PaginaAlumnosDelPlan.int.test.tsx` › ofrece la acción solo para planes vigentes | RN-PLAN-16 | Integración | listado con planes próximo, vigente y finalizado | solo el vigente ofrece Alumnos | = esperado (laptop, 21/11/2026) | 21/11/2026 |
+| `PaginaAlumnosDelPlan.int.test.tsx` › agregar alumno vinculado | RN-PLAN-13, 14, 16 | Integración | plan vigente, alumno vinculado sin plan | se agrega y aparece asignado | = esperado (laptop, 21/11/2026) | 21/11/2026 |
+| `PaginaAlumnosDelPlan.int.test.tsx` › quitar el último alumno | RN-PLAN-12, 16 | Integración | plan vigente con un alumno | se quita y queda sin alumnos | = esperado (laptop, 21/11/2026) | 21/11/2026 |
+| `PaginaAlumnosDelPlan.int.test.tsx` › comunica error del servidor | RN-PLAN-13, 14, 16 | Integración | rechazo de asignación | muestra el mensaje del servidor | = esperado (laptop, 21/11/2026) | 21/11/2026 |
