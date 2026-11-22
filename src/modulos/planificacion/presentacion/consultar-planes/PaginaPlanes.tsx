@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { Paginador } from '../../../../compartido/presentacion/paginador/Paginador.tsx';
 import { usarConsultarPlanes } from '../../aplicacion/consultar-planes/usarConsultarPlanes.ts';
 import {
@@ -132,6 +132,7 @@ function TarjetaPlan(props: { plan: ResumenPlan; nombres: Map<string, string> })
           ))}
         </ul>
       )}
+      {plan.estado === 'vigente' && <Link to={`/profesor/planes/${plan.id}/alumnos`}>Alumnos</Link>}
       <p className="tenue">{`${plan.diasConRutina} días con rutina · ${plan.diasDeDescanso} de descanso`}</p>
     </li>
   );

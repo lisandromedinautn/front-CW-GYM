@@ -92,3 +92,15 @@ export function obtenerRutinaDelDia(): Promise<RutinaDelDia> {
 export function obtenerMiPlan(): Promise<ResultadoMiPlan> {
   return pedir<ResultadoMiPlan>('/planificacion/mi-plan');
 }
+
+export function consultarAlumnosDelPlan(id: string): Promise<{ alumnoIds: string[] }> {
+  return pedir(`/planificacion/planes/${id}/alumnos`);
+}
+
+export function agregarAlumnoAlPlan(id: string, alumnoId: string): Promise<void> {
+  return pedir(`/planificacion/planes/${id}/alumnos`, { metodo: 'POST', cuerpo: { alumnoId } });
+}
+
+export function quitarAlumnoDelPlan(id: string, alumnoId: string): Promise<void> {
+  return pedir(`/planificacion/planes/${id}/alumnos/${alumnoId}`, { metodo: 'DELETE' });
+}

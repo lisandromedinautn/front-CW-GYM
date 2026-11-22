@@ -1,3 +1,4 @@
+import { PaginaAlumnosDelPlan } from './modulos/planificacion/presentacion/alumnos-del-plan/PaginaAlumnosDelPlan.tsx';
 import type { ReactElement } from 'react';
 import { Navigate, Route, Routes } from 'react-router';
 import { usarSesion } from './compartido/aplicacion/sesion/usarSesion.ts';
@@ -46,6 +47,7 @@ const SUBPAGINAS: Record<Rol, Record<string, ReactElement>> = {
   Profesor: {
     '/profesor/rutinas/nueva': <EditorRutina />,
     '/profesor/planes/nuevo': <PaginaNuevoPlan />,
+    '/profesor/planes/:id/alumnos': <PaginaAlumnosDelPlan />,
   },
   Alumno: { [RUTA_ENTRENAMIENTO]: <PaginaEntrenamientoEnCurso /> },
 };
