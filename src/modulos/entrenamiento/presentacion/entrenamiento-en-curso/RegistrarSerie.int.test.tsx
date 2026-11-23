@@ -7,75 +7,96 @@ import { Aplicacion } from '../../../../Aplicacion.tsx';
 import { servidorRedFalsa } from '../../../../pruebas/servidor-red-falsa.ts';
 
 const URL_API = 'http://localhost:3000';
+const GIF_PLANCHA = 'https://gifs.test/plancha.gif';
 
-// Rutina "Fuerza" del e2e de US14 en el back: circuito orden 1 y bloque orden 2.
-const rutina = {
-  id: 'r1',
-  nombre: 'Fuerza',
-  tipo: 'Mixta',
-  bloques: [
-    {
-      ejercicioId: 'press',
-      nombre: 'lever chest press',
-      repeticiones: 10,
-      segundos: null,
-      pesoKg: 30,
-      orden: 2,
-      series: 3,
-      micropausaSegundos: 20,
-      macropausaSegundos: 60,
-    },
-  ],
-  circuitos: [
-    {
-      orden: 1,
-      vueltas: 2,
-      macropausaSegundos: 45,
-      ejercicios: [
-        {
-          ejercicioId: 'plancha',
-          nombre: 'weighted front plank',
-          repeticiones: null,
-          segundos: 30,
-          pesoKg: null,
-        },
-        {
-          ejercicioId: 'press',
-          nombre: 'lever chest press',
-          repeticiones: 8,
-          segundos: null,
-          pesoKg: null,
-        },
-      ],
-    },
-  ],
+const plancha = {
+  ejercicioId: 'plancha',
+  nombre: 'weighted front plank',
+  repeticiones: null,
+  segundos: 30,
+  pesoKg: null,
 };
+const press = { ejercicioId: 'press', nombre: 'lever chest press', pesoKg: null, segundos: null };
 
-const serieTresRegistrada = {
-  orden: 2,
-  numero: 3,
-  posicion: null,
-  ejercicioId: 'press',
-  nombre: 'lever chest press',
-  prescripta: { repeticiones: 10, segundos: null, pesoKg: 30 },
-  realizada: { repeticiones: 8, segundos: null, pesoKg: 30 },
-};
-
-function entrenamiento(series: unknown[] = []) {
+// Rutina "Fuerza" del e2e de US14 en el back: circuito orden 1 y bloque orden 2. Son 7 pasos:
+// vuelta 1 (plancha, press), vuelta 2 (plancha, press) y las series 1 a 3 del bloque.
+function rutina(gifPlancha?: string) {
   return {
+    id: 'r1',
+    nombre: 'Fuerza',
+    tipo: 'Mixta',
+    bloques: [
+      {
+        ...press,
+        repeticiones: 10,
+        pesoKg: 30,
+        orden: 2,
+        series: 3,
+        micropausaSegundos: 20,
+        macropausaSegundos: 60,
+      },
+    ],
+    circuitos: [
+      {
+        orden: 1,
+        vueltas: 2,
+        macropausaSegundos: 45,
+        ejercicios: [
+          { ...plancha, ...(gifPlancha && { urlGif: gifPlancha }) },
+          { ...press, repeticiones: 8 },
+        ],
+      },
+    ],
+  };
+}
+
+function registrada(orden: number, numero: number, posicion: number | null, valor: number) {
+  const esPlancha = posicion === 1;
+  return {
+    orden,
+    numero,
+    posicion,
+    ejercicioId: esPlancha ? 'plancha' : 'press',
+    nombre: esPlancha ? plancha.nombre : press.nombre,
+    prescripta: {
+      repeticiones: esPlancha ? null : 10,
+      segundos: esPlancha ? 30 : null,
+      pesoKg: orden === 2 ? 30 : null,
+    },
+    realizada: {
+      repeticiones: esPlancha ? null : valor,
+      segundos: esPlancha ? valor : null,
+      pesoKg: orden === 2 ? 30 : null,
+    },
+  };
+}
+
+const serieTresRegistrada = registrada(2, 3, null, 8);
+const pasosUnoASeis = [
+  registrada(1, 1, 1, 25),
+  registrada(1, 1, 2, 8),
+  registrada(1, 2, 1, 30),
+  registrada(1, 2, 2, 8),
+  registrada(2, 1, null, 10),
+  registrada(2, 2, null, 10),
+];
+
+function abrir(
+  estado: 'en-curso' | 'abandonado',
+  series: unknown[] = [],
+  gifPlancha: string | undefined = GIF_PLANCHA,
+) {
+  const entrenamiento = {
     id: 'ent-1',
     alumnoId: 'a1',
     inicio: '2026-11-20T23:59:00.000Z',
     pesoCorporalKg: 80,
-    rutina,
+    rutina: rutina(gifPlancha),
     series,
   };
-}
-
-function abrir(estado: 'en-curso' | 'abandonado', series: unknown[] = []) {
   servidorRedFalsa.use(
     http.get(`${URL_API}/entrenamiento/mi-entrenamiento-en-curso`, () =>
-      HttpResponse.json({ estado, entrenamiento: entrenamiento(series) }),
+      HttpResponse.json({ estado, entrenamiento }),
     ),
   );
   localStorage.setItem('cwgym.sesion', JSON.stringify({ token: 't', rol: 'Alumno' }));
@@ -86,31 +107,6 @@ function abrir(estado: 'en-curso' | 'abandonado', series: unknown[] = []) {
   );
 }
 
-const fila = (nombre: string) => screen.findByRole('group', { name: nombre });
-
-afterEach(() => {
-  localStorage.clear();
-});
-
-describe('RN-ENT-03 · cada serie muestra lo prescripto al lado de lo realizado', () => {
-  it('la serie 3 del bloque muestra 10 repeticiones · 30 kg y la vuelta 2 de la plancha 30 s', async () => {
-    abrir('en-curso');
-    expect(await fila('Serie 3 de lever chest press')).toHaveTextContent(
-      'Prescripto: 10 repeticiones · 30 kg',
-    );
-    expect(await fila('Vuelta 2 de weighted front plank')).toHaveTextContent('Prescripto: 30 s');
-  });
-});
-
-describe('RN-UI-ENT-02 · al retomar se ven las series ya registradas', () => {
-  it('la serie 3 del bloque registrada con 8 repeticiones y 30 kg se muestra como registrada', async () => {
-    abrir('en-curso', [serieTresRegistrada]);
-    expect(await fila('Serie 3 de lever chest press')).toHaveTextContent(
-      'Registrada: 8 repeticiones · 30 kg',
-    );
-  });
-});
-
 /** Responde como el back: 201 con la serie, lo prescripto de la copia y lo realizado. */
 function aceptarSeries() {
   const enviados: Record<string, number>[] = [];
@@ -118,78 +114,107 @@ function aceptarSeries() {
     http.post(`${URL_API}/entrenamiento/entrenamientos/ent-1/series`, async ({ request }) => {
       const cuerpo = (await request.json()) as Record<string, number>;
       enviados.push(cuerpo);
-      return HttpResponse.json(
-        {
-          ...serieTresRegistrada,
-          orden: cuerpo.orden,
-          numero: cuerpo.numero,
-          posicion: cuerpo.posicion ?? null,
-          realizada: {
-            repeticiones: cuerpo.repeticiones ?? null,
-            segundos: cuerpo.segundos ?? null,
-            pesoKg: cuerpo.pesoKg ?? null,
-          },
-        },
-        { status: 201 },
+      const serie = registrada(
+        cuerpo.orden,
+        cuerpo.numero,
+        cuerpo.posicion ?? null,
+        cuerpo.repeticiones ?? cuerpo.segundos,
       );
+      return HttpResponse.json(serie, { status: 201 });
     }),
   );
   return enviados;
 }
 
-async function completar(serie: HTMLElement, campo: string, valor: string) {
+async function completar(campo: string, valor: string) {
   const usuario = userEvent.setup();
-  const entrada = within(serie).getByLabelText(campo);
+  const entrada = screen.getByLabelText(campo);
   await usuario.clear(entrada);
   if (valor) await usuario.type(entrada, valor);
   return usuario;
 }
 
-describe('RN-ENT-03 y RN-UI-ENT-01 · registrar una serie en la misma pantalla y con un clic', () => {
-  it('serie 3 del bloque con 8 repeticiones y 30 kg: envía la serie y la muestra registrada', async () => {
+const paso = (texto: string) => screen.findByText(texto);
+const titulo = (nombre: string) => screen.findByRole('heading', { name: nombre });
+const boton = (nombre: string) => screen.getByRole('button', { name: nombre });
+
+afterEach(() => {
+  localStorage.clear();
+});
+
+describe('RN-UI-ENT-03 · un paso por vez, con el contador siempre visible', () => {
+  it('sin series registradas abre en el paso 1 de 7: la vuelta 1 de la plancha, 30 s', async () => {
+    abrir('en-curso');
+    expect(await paso('Paso 1 de 7')).toBeVisible();
+    expect(await titulo('Vuelta 1 · weighted front plank')).toBeVisible();
+    expect(screen.getByText('Prescripto: 30 s')).toBeVisible();
+    expect(screen.getByRole('timer')).toBeVisible();
+    expect(screen.getAllByText(/^Prescripto:/)).toHaveLength(1);
+  });
+
+  it('Siguiente pasa al paso 2 sin enviar nada', async () => {
     const enviados = aceptarSeries();
     abrir('en-curso');
-    const serieTres = await fila('Serie 3 de lever chest press');
-    const usuario = await completar(serieTres, 'Repeticiones', '8');
-    await usuario.click(within(serieTres).getByRole('button', { name: 'Registrar' }));
+    await paso('Paso 1 de 7');
+    await userEvent.setup().click(boton('Siguiente'));
 
-    expect(await within(serieTres).findByText('Registrada: 8 repeticiones · 30 kg')).toBeVisible();
+    expect(await paso('Paso 2 de 7')).toBeVisible();
+    expect(enviados).toEqual([]);
+  });
+});
+
+describe('RN-ENT-03, RN-UI-ENT-01 y RN-UI-ENT-03 · registrar avanza al paso siguiente', () => {
+  it('paso 1 con 25 s: envía la vuelta 1, posición 1, y pasa al press de la vuelta 1', async () => {
+    const enviados = aceptarSeries();
+    abrir('en-curso');
+    await paso('Paso 1 de 7');
+    const usuario = await completar('Segundos', '25');
+    await usuario.click(boton('Registrar'));
+
+    expect(await paso('Paso 2 de 7')).toBeVisible();
+    expect(await titulo('Vuelta 1 · lever chest press')).toBeVisible();
+    expect(screen.getByText('Prescripto: 8 repeticiones')).toBeVisible();
+    expect(enviados).toEqual([{ orden: 1, numero: 1, posicion: 1, segundos: 25 }]);
+  });
+
+  it('con los pasos 1 a 6 registrados retoma en la serie 3 y la registra con 8 repeticiones y 30 kg', async () => {
+    const enviados = aceptarSeries();
+    abrir('en-curso', pasosUnoASeis);
+    expect(await paso('Paso 7 de 7')).toBeVisible();
+    expect(await titulo('Serie 3 · lever chest press')).toBeVisible();
+    expect(screen.getByText('Prescripto: 10 repeticiones · 30 kg')).toBeVisible();
+    const usuario = await completar('Repeticiones', '8');
+    await usuario.click(boton('Registrar'));
+
+    expect(await screen.findByText('Registrada: 8 repeticiones · 30 kg')).toBeVisible();
     expect(enviados).toEqual([{ orden: 2, numero: 3, repeticiones: 8, pesoKg: 30 }]);
-    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
-  it('vuelta 2 de la plancha con 25 segundos: envía orden 1, número 2 y posición 1', async () => {
+  it('Anterior vuelve al paso 1 registrado con 25 s y corregirlo a 20 s lo reemplaza', async () => {
+    const enviados = aceptarSeries();
+    abrir('en-curso', [registrada(1, 1, 1, 25)]);
+    await paso('Paso 2 de 7');
+    await userEvent.setup().click(boton('Anterior'));
+    expect(await paso('Paso 1 de 7')).toBeVisible();
+    expect(screen.getByText('Registrada: 25 s')).toBeVisible();
+    const usuario = await completar('Segundos', '20');
+    await usuario.click(boton('Registrar'));
+
+    expect(await paso('Paso 2 de 7')).toBeVisible();
+    expect(enviados).toEqual([{ orden: 1, numero: 1, posicion: 1, segundos: 20 }]);
+  });
+
+  it('con los segundos vacíos no envía nada, marca el campo y se queda en el paso 1', async () => {
     const enviados = aceptarSeries();
     abrir('en-curso');
-    const plancha = await fila('Vuelta 2 de weighted front plank');
-    const usuario = await completar(plancha, 'Segundos', '25');
-    await usuario.click(within(plancha).getByRole('button', { name: 'Registrar' }));
+    await paso('Paso 1 de 7');
+    const usuario = await completar('Segundos', '');
+    await usuario.click(boton('Registrar'));
 
-    expect(await within(plancha).findByText('Registrada: 25 s')).toBeVisible();
-    expect(enviados).toEqual([{ orden: 1, numero: 2, posicion: 1, segundos: 25 }]);
-  });
-
-  it('corregir la serie 3 ya registrada con 9 repeticiones la reemplaza', async () => {
-    const enviados = aceptarSeries();
-    abrir('en-curso', [serieTresRegistrada]);
-    const serieTres = await fila('Serie 3 de lever chest press');
-    const usuario = await completar(serieTres, 'Repeticiones', '9');
-    await usuario.click(within(serieTres).getByRole('button', { name: 'Registrar' }));
-
-    expect(await within(serieTres).findByText('Registrada: 9 repeticiones · 30 kg')).toBeVisible();
-    expect(enviados).toEqual([{ orden: 2, numero: 3, repeticiones: 9, pesoKg: 30 }]);
-  });
-
-  it('con las repeticiones vacías no envía nada y marca el campo', async () => {
-    const enviados = aceptarSeries();
-    abrir('en-curso');
-    const serieUno = await fila('Serie 1 de lever chest press');
-    const usuario = await completar(serieUno, 'Repeticiones', '');
-    await usuario.click(within(serieUno).getByRole('button', { name: 'Registrar' }));
-
-    const repeticiones = within(serieUno).getByLabelText('Repeticiones');
-    expect(repeticiones).toHaveAttribute('aria-invalid', 'true');
-    expect(repeticiones).toHaveAccessibleDescription('Ingresá un número entero de 0 o más.');
+    const segundos = screen.getByLabelText('Segundos');
+    expect(segundos).toHaveAttribute('aria-invalid', 'true');
+    expect(segundos).toHaveAccessibleDescription('Ingresá un número entero de 0 o más.');
+    expect(screen.getByText('Paso 1 de 7')).toBeVisible();
     expect(enviados).toEqual([]);
   });
 });
@@ -197,7 +222,7 @@ describe('RN-ENT-03 y RN-UI-ENT-01 · registrar una serie en la misma pantalla y
 describe('RN-ENT-20 · un entrenamiento abandonado no admite series', () => {
   it('muestra la rutina y la serie registrada, sin ningún botón Registrar', async () => {
     abrir('abandonado', [serieTresRegistrada]);
-    const serieTres = await fila('Serie 3 de lever chest press');
+    const serieTres = await screen.findByRole('group', { name: 'Serie 3 de lever chest press' });
     expect(serieTres).toHaveTextContent('Registrada: 8 repeticiones · 30 kg');
     expect(within(serieTres).queryByRole('button')).not.toBeInTheDocument();
     expect(screen.queryAllByRole('button', { name: 'Registrar' })).toHaveLength(0);
@@ -213,8 +238,8 @@ describe('RN-ENT-20 · un entrenamiento abandonado no admite series', () => {
       ),
     );
     abrir('en-curso');
-    const serieTres = await fila('Serie 3 de lever chest press');
-    await userEvent.setup().click(within(serieTres).getByRole('button', { name: 'Registrar' }));
+    await paso('Paso 1 de 7');
+    await userEvent.setup().click(boton('Registrar'));
 
     expect(await screen.findByRole('alert')).toHaveTextContent('El entrenamiento quedó abandonado');
     expect(screen.queryAllByRole('button', { name: 'Registrar' })).toHaveLength(0);

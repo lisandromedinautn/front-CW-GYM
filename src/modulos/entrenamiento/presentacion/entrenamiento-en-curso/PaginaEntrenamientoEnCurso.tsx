@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react';
 import { usarEntrenamientoEnCurso } from '../../aplicacion/consultar-entrenamiento-en-curso/usarEntrenamientoEnCurso.ts';
 import { usarRegistrarSerie } from '../../aplicacion/registrar-serie/usarRegistrarSerie.ts';
 import type { Entrenamiento } from '../../dominio/entrenamiento/entrenamiento.ts';
-import { agruparSeries } from '../../dominio/serie/filasSeries.ts';
+import { agruparSeries, pasosDelEntrenamiento } from '../../dominio/serie/filasSeries.ts';
 import { ListaSeries } from './ListaSeries.tsx';
+import { PasoActual } from './PasoActual.tsx';
 
 export function PaginaEntrenamientoEnCurso() {
   const { resultado, error } = usarEntrenamientoEnCurso();
@@ -31,16 +32,18 @@ function DetalleEntrenamiento(props: { entrenamiento: Entrenamiento; abandonado:
     entrenamiento.series ?? [],
   );
   const soloLectura = props.abandonado || abandonado;
+  const grupos = agruparSeries(entrenamiento.rutina, series);
 
   return (
     <>
       <h2>{entrenamiento.rutina.nombre}</h2>
       {soloLectura ? <p>Abandonado</p> : <Contador inicio={entrenamiento.inicio} />}
       {error && <p role="alert">{error}</p>}
-      <ListaSeries
-        grupos={agruparSeries(entrenamiento.rutina, series)}
-        registrar={soloLectura ? undefined : registrar}
-      />
+      {soloLectura ? (
+        <ListaSeries grupos={grupos} />
+      ) : (
+        <PasoActual pasos={pasosDelEntrenamiento(grupos)} registrar={registrar} />
+      )}
     </>
   );
 }

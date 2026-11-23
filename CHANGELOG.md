@@ -12,7 +12,7 @@ Categorías: Agregado, Cambiado, Corregido, Eliminado, Seguridad. Cada entrada c
 
 - Listado de planes en `/profesor/planes`: tarjetas con fechas, estado, alumnos y días con rutina o descanso; filtros por estado, alumno y fecha de inicio, "Limpiar filtros" y paginador (RN-PLAN-22, RN-UI-LIS-01 a 04; CG-84, T13).
 
-- Registro de series en `/alumno/entrenamiento`: cada serie de bloque y cada ejercicio por vuelta de circuito muestra lo prescripto junto a los campos de lo realizado, precargados con lo prescripto; se registra o corrige con un clic, valida antes de enviar (medida entera ≥ 0, peso ≥ 0), retoma lo ya registrado al recargar y queda de solo lectura si el entrenamiento está abandonado o el back responde `RN-ENT-20` (RN-ENT-03, 04, 20, RN-UI-ENT-01, 02; CG-52, US14).
+- Registro de series en `/alumno/entrenamiento`, paso a paso: un paso por serie de bloque o por ejercicio en cada vuelta de circuito, con lo prescripto junto a los campos de lo realizado, precargados con lo prescripto. Registrar (un clic) avanza al paso siguiente; "Anterior" y "Siguiente" permiten corregir o saltear. Valida antes de enviar (medida entera ≥ 0, peso ≥ 0), retoma en el primer paso sin registrar y, si el entrenamiento está abandonado o el back responde `RN-ENT-20`, muestra la lista completa de solo lectura. El contador se ve siempre (RN-ENT-03, 04, 20, RN-UI-ENT-01, 02, 03; CG-52, US14).
 
 ### Cambiado
 

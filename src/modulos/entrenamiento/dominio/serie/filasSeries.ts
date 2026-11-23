@@ -78,3 +78,14 @@ export function describirMedida(medida: MedidaSerie): string {
   if (medida.pesoKg !== null) partes.push(`${String(medida.pesoKg).replace('.', ',')} kg`);
   return partes.join(' · ');
 }
+
+/** RN-UI-ENT-03: los pasos del entrenamiento, uno por fila, en el orden de la rutina. */
+export function pasosDelEntrenamiento(grupos: GrupoSeries[]): FilaSerie[] {
+  return grupos.flatMap((grupo) => grupo.filas);
+}
+
+/** Al abrir o retomar se arranca en el primer paso sin registrar; si no queda ninguno, en el último. */
+export function pasoInicial(pasos: FilaSerie[]): number {
+  const pendiente = pasos.findIndex((paso) => paso.registrada === null);
+  return pendiente === -1 ? Math.max(pasos.length - 1, 0) : pendiente;
+}
