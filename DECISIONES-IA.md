@@ -314,3 +314,14 @@ Registro de cada sesión relevante en la que un desarrollador trabajó con IA. D
 - Reglas afectadas: nueva RN-PLAN-22; RN-UI-LIS-04 suma los filtros de Planes.
 - Verificación: back 216 unitarios y 13 e2e de consultar planes (63 e2e de planificación según el subagente); front 28 archivos y 143 tests; tipos y lint sin errores en los dos repos.
 - Pendientes: la tarjeta T12 en Jira (la creación fue bloqueada por permisos); detalle de un plan desde el listado, si se pide.
+
+## 2026-11-22 — Registrar serie realizada en el front [US14]
+- Desarrollador: Ulises
+- Herramienta / modelo / esfuerzo: Claude Code · Opus 5.5 (todo en serie, sin subagentes: la parte de front es chica y concentra decisiones de pantalla)
+- Objetivo: que el alumno registre cada serie realizada desde el entrenamiento en curso, con lo prescripto a la vista y en una sola pantalla (RN-ENT-03, 04, 20; RN-UI-ENT-01, 02), sobre el contrato que el back publicó en US14.
+- Qué hizo la IA: cruzó el board de Jira con las ramas para confirmar que CG-52 estaba libre. Propuso el diseño y 11 fichas, y las registró antes de escribir los tests. Con TDD (rojo por aserción, verde y mutaciones que hacen fallar cada test) escribió `dominio/serie/serie.ts` (validación, 8 unitarios), `dominio/serie/filasSeries.ts`, `usarRegistrarSerie`, `registrarSerie` en el cliente y `ListaSeries` en la página, con 8 tests de integración. Lo probó en el navegador contra el back real: registro con un clic y retomar al recargar. Sincronizó `docs/TRAZABILIDAD.md` con la copia del back, que había quedado adelantada con US14 y US18.
+- Decisiones del desarrollador: campos precargados con lo prescripto; campo de peso solo si la serie prescripta tiene peso; ante `409 RN-ENT-20` se muestra el mensaje y la lista queda de solo lectura; una serie registrada se corrige registrándola otra vez; sin test de RN-ENT-19 en el front (lo cubre el back).
+- Ideas descartadas: campos vacíos (más lento que el OKR O3); campo de peso siempre visible; repartir el trabajo entre subagentes.
+- Reglas afectadas: ninguna cambió de texto. RN-ENT-03, 04, 20 y RN-UI-ENT-01 pasan a estar implementadas en el front.
+- Verificación: front 31 archivos y 162 tests en verde (16 nuevos), `yarn test:cov` dentro de los umbrales (`dominio/serie` con 100% de líneas), tipos, lint y Prettier sin errores. Sobreviven dos mutaciones sin ficha: invertir el orden de bloques y circuitos, y no descartar la serie reemplazada en el hook (no cambia lo que se ve).
+- Pendientes: replicar en el back los cambios de `docs/TRAZABILIDAD.md` y `docs/PLAN-IMPLEMENTACION.md`; medir los 10 s del OKR O3 en la demo; el bloqueo por entrenamiento finalizado (RN-ENT-04) llega con US15.
