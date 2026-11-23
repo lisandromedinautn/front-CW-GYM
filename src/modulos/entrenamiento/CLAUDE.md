@@ -52,6 +52,7 @@ Decididas por Ulises el 22/11/2026.
 * Antes de enviar se valida lo mismo que el back (`dominio/serie/serie.ts`): medida entera ≥ 0 obligatoria y peso ≥ 0 opcional. El error se enlaza al campo con `aria-invalid` y `aria-describedby`.
 * Registrar otra vez la misma serie la corrige: se vuelve con "Anterior", se envía la misma clave (`orden`, `numero`, `posicion`) y el paso muestra la respuesta del back.
 * Abandonado (al abrir, o porque el back responde `409 RN-ENT-20` al registrar): se muestra el mensaje del back y, en lugar del paso a paso, la lista completa de solo lectura con las series ya registradas (`ListaSeries.tsx`). RN-ENT-04 (finalizado) se suma con US15.
+* En el último paso aparece "Finalizar entrenamiento" **deshabilitado**, con "Disponible con US15": el back todavía no tiene `POST .../:id/finalizacion`. No tiene test porque no hay regla vigente implementada que lo respalde; lo cubren los tests de US15 cuando se habilite (decidido por Ulises el 22/11/2026).
 * El tipo `Entrenamiento` del front tolera `rutina` sin `bloques` o `circuitos` y la ausencia de `series`, porque las respuestas falsas de los tests de US13 no los traen.
 
 ## Decisiones de implementación (CG-85, T14)

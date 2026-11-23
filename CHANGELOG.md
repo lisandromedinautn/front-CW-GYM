@@ -16,6 +16,8 @@ Categorías: Agregado, Cambiado, Corregido, Eliminado, Seguridad. Cada entrada c
 
 - Cada paso del entrenamiento muestra el GIF del ejercicio con la atribución "GIF © Gym visual", si la copia lo trae; los entrenamientos iniciados antes no muestran imagen (RN-UI-ENT-03; CG-85, T14).
 
+- En el último paso del entrenamiento aparece "Finalizar entrenamiento" deshabilitado, con la aclaración "Disponible con US15": se habilita cuando el back tenga la finalización (US14, a la espera de US15).
+
 ### Cambiado
 
 - La creación del plan pasa a `/profesor/planes/nuevo` y se abre con "Nuevo plan" desde el listado; tiene "Volver al listado" (T13).

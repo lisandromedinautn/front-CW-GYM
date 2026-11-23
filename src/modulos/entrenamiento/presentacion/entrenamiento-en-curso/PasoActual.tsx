@@ -47,6 +47,15 @@ export function PasoActual(props: {
           Siguiente
         </button>
       </div>
+      {indice === ultimo && (
+        // Se habilita con US15 (finalizar y ver resumen): hoy el back no tiene la finalización.
+        <p>
+          <button type="button" disabled aria-describedby="finalizar-pendiente">
+            Finalizar entrenamiento
+          </button>{' '}
+          <small id="finalizar-pendiente">Disponible con US15</small>
+        </p>
+      )}
     </section>
   );
 }
