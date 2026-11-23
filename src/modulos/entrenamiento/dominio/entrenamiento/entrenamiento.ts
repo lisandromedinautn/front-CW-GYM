@@ -8,6 +8,8 @@ export interface MedidaSerie {
 export interface EjercicioPrescripto extends MedidaSerie {
   ejercicioId: string;
   nombre: string;
+  /** T14: GIF del catálogo; no está en los entrenamientos iniciados antes de T14. */
+  urlGif?: string | null;
 }
 
 /** Copia independiente de la rutina que guarda el entrenamiento (RN-ENT-02). */

@@ -14,6 +14,8 @@ Categorías: Agregado, Cambiado, Corregido, Eliminado, Seguridad. Cada entrada c
 
 - Registro de series en `/alumno/entrenamiento`, paso a paso: un paso por serie de bloque o por ejercicio en cada vuelta de circuito, con lo prescripto junto a los campos de lo realizado, precargados con lo prescripto. Registrar (un clic) avanza al paso siguiente; "Anterior" y "Siguiente" permiten corregir o saltear. Valida antes de enviar (medida entera ≥ 0, peso ≥ 0), retoma en el primer paso sin registrar y, si el entrenamiento está abandonado o el back responde `RN-ENT-20`, muestra la lista completa de solo lectura. El contador se ve siempre (RN-ENT-03, 04, 20, RN-UI-ENT-01, 02, 03; CG-52, US14).
 
+- Cada paso del entrenamiento muestra el GIF del ejercicio con la atribución "GIF © Gym visual", si la copia lo trae; los entrenamientos iniciados antes no muestran imagen (RN-UI-ENT-03; CG-85, T14).
+
 ### Cambiado
 
 - La creación del plan pasa a `/profesor/planes/nuevo` y se abre con "Nuevo plan" desde el listado; tiene "Volver al listado" (T13).

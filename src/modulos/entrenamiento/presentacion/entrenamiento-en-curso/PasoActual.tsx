@@ -23,6 +23,14 @@ export function PasoActual(props: {
       <h3>
         {paso.titulo} · {paso.nombre}
       </h3>
+      {paso.urlGif && (
+        <figure>
+          <img src={paso.urlGif} alt={paso.nombre} className="gif" />
+          <figcaption>
+            <small>GIF © Gym visual</small>
+          </figcaption>
+        </figure>
+      )}
       <p>Prescripto: {describirMedida(paso.prescripta)}</p>
       {paso.registrada && <p>Registrada: {describirMedida(paso.registrada)}</p>}
       <FormularioSerie

@@ -53,3 +53,7 @@ Decididas por Ulises el 22/11/2026.
 * Registrar otra vez la misma serie la corrige: se vuelve con "Anterior", se envía la misma clave (`orden`, `numero`, `posicion`) y el paso muestra la respuesta del back.
 * Abandonado (al abrir, o porque el back responde `409 RN-ENT-20` al registrar): se muestra el mensaje del back y, en lugar del paso a paso, la lista completa de solo lectura con las series ya registradas (`ListaSeries.tsx`). RN-ENT-04 (finalizado) se suma con US15.
 * El tipo `Entrenamiento` del front tolera `rutina` sin `bloques` o `circuitos` y la ausencia de `series`, porque las respuestas falsas de los tests de US13 no los traen.
+
+## Decisiones de implementación (CG-85, T14)
+
+* Cada paso muestra el GIF del ejercicio (`urlGif` de la copia, que el back guarda desde T14) con la atribución "GIF © Gym visual", la de todo el dataset. Si la copia no trae `urlGif` (entrenamiento iniciado antes de T14) no se muestra imagen.

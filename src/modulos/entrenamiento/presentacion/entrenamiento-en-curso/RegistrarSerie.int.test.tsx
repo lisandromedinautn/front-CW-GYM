@@ -20,7 +20,7 @@ const press = { ejercicioId: 'press', nombre: 'lever chest press', pesoKg: null,
 
 // Rutina "Fuerza" del e2e de US14 en el back: circuito orden 1 y bloque orden 2. Son 7 pasos:
 // vuelta 1 (plancha, press), vuelta 2 (plancha, press) y las series 1 a 3 del bloque.
-function rutina(gifPlancha?: string) {
+function rutina(gifPlancha: string | null) {
   return {
     id: 'r1',
     nombre: 'Fuerza',
@@ -84,7 +84,7 @@ const pasosUnoASeis = [
 function abrir(
   estado: 'en-curso' | 'abandonado',
   series: unknown[] = [],
-  gifPlancha: string | undefined = GIF_PLANCHA,
+  gifPlancha: string | null = GIF_PLANCHA,
 ) {
   const entrenamiento = {
     id: 'ent-1',
@@ -160,6 +160,19 @@ describe('RN-UI-ENT-03 · un paso por vez, con el contador siempre visible', () 
 
     expect(await paso('Paso 2 de 7')).toBeVisible();
     expect(enviados).toEqual([]);
+  });
+
+  it('el paso 1 muestra el GIF de la plancha con su atribución', async () => {
+    abrir('en-curso');
+    const gif = await screen.findByRole('img', { name: 'weighted front plank' });
+    expect(gif).toHaveAttribute('src', GIF_PLANCHA);
+    expect(screen.getByText('GIF © Gym visual')).toBeVisible();
+  });
+
+  it('un entrenamiento iniciado sin GIF en la copia no muestra imagen', async () => {
+    abrir('en-curso', [], null);
+    await paso('Paso 1 de 7');
+    expect(screen.queryByRole('img')).not.toBeInTheDocument();
   });
 });
 

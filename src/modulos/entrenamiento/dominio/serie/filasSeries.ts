@@ -8,6 +8,7 @@ export interface FilaSerie {
   posicion: number | null;
   titulo: string;
   nombre: string;
+  urlGif: string | null;
   prescripta: MedidaSerie;
   registrada: MedidaSerie | null;
 }
@@ -32,7 +33,7 @@ export function agruparSeries(rutina: CopiaRutina, series: SerieRealizada[]): Gr
     numero: number,
     posicion: number | null,
     titulo: string,
-    ejercicio: { nombre: string } & MedidaSerie,
+    ejercicio: { nombre: string; urlGif?: string | null } & MedidaSerie,
   ): FilaSerie => {
     const clave = claveSerie(orden, numero, posicion);
     return {
@@ -42,6 +43,7 @@ export function agruparSeries(rutina: CopiaRutina, series: SerieRealizada[]): Gr
       posicion,
       titulo,
       nombre: ejercicio.nombre,
+      urlGif: ejercicio.urlGif ?? null,
       prescripta: {
         repeticiones: ejercicio.repeticiones,
         segundos: ejercicio.segundos,
