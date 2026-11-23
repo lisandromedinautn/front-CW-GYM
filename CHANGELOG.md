@@ -8,6 +8,8 @@ Categorías: Agregado, Cambiado, Corregido, Eliminado, Seguridad. Cada entrada c
 
 ### Agregado
 
+- US15: finalización del entrenamiento y resumen de volumen, grupos musculares y duración.
+
 - US12: gestión de alumnos de planes vigentes por su profesor, con validaciones de vínculo y plan vigente.
 
 - Listado de planes en `/profesor/planes`: tarjetas con fechas, estado, alumnos y días con rutina o descanso; filtros por estado, alumno y fecha de inicio, "Limpiar filtros" y paginador (RN-PLAN-22, RN-UI-LIS-01 a 04; CG-84, T13).

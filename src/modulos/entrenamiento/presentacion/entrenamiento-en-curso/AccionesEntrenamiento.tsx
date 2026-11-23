@@ -10,6 +10,12 @@ export function AccionesEntrenamiento({ hayRutina }: { hayRutina: boolean }) {
 
   if (errorConsulta) return <p role="alert">{errorConsulta}</p>;
   if (!resultado) return null;
+  if (
+    resultado.estado === 'finalizado' &&
+    resultado.entrenamiento.inicio.slice(0, 10) === new Date().toISOString().slice(0, 10)
+  ) {
+    return <Link to={RUTA_ENTRENAMIENTO}>Ver resumen del entrenamiento</Link>;
+  }
   if (resultado.estado === 'en-curso') {
     return <Link to={RUTA_ENTRENAMIENTO}>Retomar entrenamiento</Link>;
   }

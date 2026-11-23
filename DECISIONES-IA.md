@@ -314,3 +314,11 @@ Registro de cada sesión relevante en la que un desarrollador trabajó con IA. D
 - Reglas afectadas: nueva RN-PLAN-22; RN-UI-LIS-04 suma los filtros de Planes.
 - Verificación: back 216 unitarios y 13 e2e de consultar planes (63 e2e de planificación según el subagente); front 28 archivos y 143 tests; tipos y lint sin errores en los dos repos.
 - Pendientes: la tarjeta T12 en Jira (la creación fue bloqueada por permisos); detalle de un plan desde el listado, si se pide.
+
+## 2026-11-22 — Finalizar entrenamiento y mostrar resumen [US15]
+- Desarrolladora: Martina Pineda. Herramienta: Codex.
+- Objetivo: finalizar y consultar peso total, grupos musculares y duración, aun sin la pantalla de registro de series de US14.
+- Implementación: el back calcula con las series guardadas, el peso corporal del inicio y datos del catálogo; guarda hora y resumen. El cierre se serializa con el registro de series. El front muestra el resumen y lo recupera al recargar.
+- Decisiones: Martina confirmó los casos, incluido cierre sin series y permisos. Los récords corresponden a US16 y no se simulan.
+- Verificación: 6 unitarios y 2 e2e en back, 4 tests de integración en front y builds aprobados en laptop. Rojo inicial observado en back y front. La comprobación por mutación detectó el cálculo y el texto alterados; los archivos fueron restaurados y sus huellas coinciden con las versiones aprobadas.
+- Reglas: RN-ENT-05, 06, 07, 08, 09, 17, 19 y 20.

@@ -67,7 +67,7 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | planificacion | `mi-plan/PaginaMiPlan.tsx` | `consultar-plan-del-alumno/usarMiPlan.ts` | `GET /planificacion/mi-plan` | US11 | ✅ `PaginaMiPlan.int.test.tsx` (9 casos) |
 | entrenamiento | `AccionesEntrenamiento.tsx`, `PaginaEntrenamientoEnCurso.tsx` (`/alumno/entrenamiento`) | `usarIniciarEntrenamiento.ts`, `usarEntrenamientoEnCurso.ts` | `POST /entrenamiento/entrenamientos`, `GET /entrenamiento/mi-entrenamiento-en-curso` | US13 | ✅ `entrenamiento.int.test.tsx` |
 | entrenamiento | `PaginaEntrenamientoEnCurso.tsx` (registro de series) | `usarRegistrarSerie.ts` | `POST .../:id/series` | US14 | 📄 |
-| entrenamiento | `PaginaResumenEntrenamiento.tsx` | `usarFinalizarEntrenamiento.ts`, `usarRegistrarPercepcion.ts` | `POST .../:id/finalizacion`, `PUT .../:id/percepcion` | US15, US16, US17 | 📄 |
+| entrenamiento | `ResumenEntrenamiento.tsx`, `PaginaEntrenamientoEnCurso.tsx` | `usarFinalizarEntrenamiento.ts` | `POST .../:id/finalizacion` | US15 | ✅ 4 pruebas de integración |
 | entrenamiento | `PaginaEntrenamientosDeAlumnos.tsx` | `usarEntrenamientosDeAlumnos.ts` | `GET /entrenamiento/alumnos/:alumnoId/entrenamientos` | US18 | 📄 |
 
 ## Clientes de API del módulo

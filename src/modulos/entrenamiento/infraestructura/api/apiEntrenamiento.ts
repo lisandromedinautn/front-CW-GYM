@@ -2,6 +2,7 @@ import { pedir } from '../../../../compartido/infraestructura/cliente-http/clien
 import type {
   Entrenamiento,
   ResultadoEntrenamiento,
+  ResumenEntrenamiento,
 } from '../../dominio/entrenamiento/entrenamiento.ts';
 
 export function consultarEntrenamiento(): Promise<ResultadoEntrenamiento> {
@@ -10,4 +11,8 @@ export function consultarEntrenamiento(): Promise<ResultadoEntrenamiento> {
 
 export function iniciarEntrenamiento(): Promise<Entrenamiento> {
   return pedir('/entrenamiento/entrenamientos', { metodo: 'POST' });
+}
+
+export function finalizarEntrenamiento(id: string): Promise<ResumenEntrenamiento> {
+  return pedir(`/entrenamiento/entrenamientos/${id}/finalizacion`, { metodo: 'POST' });
 }

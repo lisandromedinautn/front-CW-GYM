@@ -25,7 +25,7 @@ Ejecución del entrenamiento (iniciar, registrar series y finalizar), resumen co
 | :-- | :-- | :-- |
 | `AccionesEntrenamiento.tsx`, `PaginaEntrenamientoEnCurso.tsx` ✅ | `usarIniciarEntrenamiento.ts`, `usarEntrenamientoEnCurso.ts` ✅ | US13 |
 | `PaginaEntrenamientoEnCurso.tsx` | `usarRegistrarSerie.ts` | US14 |
-| `PaginaResumenEntrenamiento.tsx` | `usarFinalizarEntrenamiento.ts`, `usarRegistrarPercepcion.ts` | US15, US16, US17 |
+| `finalizar-entrenamiento/ResumenEntrenamiento.tsx`, `PaginaEntrenamientoEnCurso.tsx` ✅ | `usarFinalizarEntrenamiento.ts` ✅ | US15 |
 | `PaginaEntrenamientosDeAlumnos.tsx` | `usarEntrenamientosDeAlumnos.ts` | US18 |
 
 ## Historial de cambios de reglas de UI
@@ -39,3 +39,8 @@ Ejecución del entrenamiento (iniciar, registrar series y finalizar), resumen co
 
 * La raíz de rutas compone las acciones de Entrenamiento en «Mi rutina del día» sin que Planificación dependa de otro módulo. Solo hay botón de inicio con rutina disponible y sin entrenamiento en curso.
 * `/alumno/entrenamiento` consulta al servidor al abrirse o recargarse. En curso se muestra el contador desde `inicio`; abandonado se muestra sin contador. Desde la rutina del día se puede ver el abandono e iniciar la rutina de hoy si corresponde.
+
+## Decisiones de implementación (US15)
+
+* El entrenamiento en curso ofrece «Finalizar entrenamiento» y presenta volumen, grupos y duración. Sin series informa cero y ningún grupo registrado.
+* Al recargar, el estado `finalizado` recupera el resumen guardado. La pantalla de registro de series (US14) y los récords (US16) siguen pendientes.
