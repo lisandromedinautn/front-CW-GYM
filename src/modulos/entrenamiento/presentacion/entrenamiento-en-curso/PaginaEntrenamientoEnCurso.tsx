@@ -68,15 +68,13 @@ function DetalleEntrenamiento(props: {
         <ListaSeries grupos={grupos} />
       ) : (
         <>
-          <PasoActual pasos={pasosDelEntrenamiento(grupos)} registrar={registrar} />
           {finalizacion.error && <p role="alert">{finalizacion.error}</p>}
-          <button
-            type="button"
-            disabled={finalizacion.finalizando}
-            onClick={() => void finalizacion.finalizar(entrenamiento.id)}
-          >
-            Finalizar entrenamiento
-          </button>
+          <PasoActual
+            pasos={pasosDelEntrenamiento(grupos)}
+            registrar={registrar}
+            finalizar={() => void finalizacion.finalizar(entrenamiento.id)}
+            finalizando={finalizacion.finalizando}
+          />
         </>
       )}
     </>
