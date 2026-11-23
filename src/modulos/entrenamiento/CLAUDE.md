@@ -19,6 +19,8 @@ Ejecución del entrenamiento (iniciar, registrar series y finalizar), resumen co
 | RN-UI-ENT-01 | Registrar una serie realizada no requiere más de una pantalla ni más de una confirmación (OKR O3: 10 segundos o menos) | Vigente |
 | RN-UI-ENT-02 | Si se recarga la página con un entrenamiento en curso del día, se retoma ese entrenamiento. Uno abandonado (RN-ENT-20) se muestra como abandonado | Vigente |
 | RN-UI-ENT-03 | Durante el entrenamiento en curso se muestra un paso por vez (una serie de bloque o un ejercicio en una vuelta de circuito), con el GIF del ejercicio y su atribución si lo tiene. Registrar avanza al paso siguiente; "Anterior" y "Siguiente" mueven sin registrar. El contador está siempre visible | Vigente |
+| RN-ENT-18 | El profesor solo elige entre sus alumnos vinculados; si el back responde `RN-ENT-18`, se muestra su mensaje | Vigente |
+| RN-UI-ENT-04 | El profesor elige uno de sus alumnos vinculados y ve sus entrenamientos del más nuevo al más viejo, paginados, cada uno con fecha y hora de inicio (hora de Argentina), rutina, estado, peso del día, cuántas series registró sobre el total y cada serie realizada junto a lo prescripto | Vigente |
 
 ## Pantallas y hooks planificados
 
@@ -27,7 +29,7 @@ Ejecución del entrenamiento (iniciar, registrar series y finalizar), resumen co
 | `AccionesEntrenamiento.tsx`, `PaginaEntrenamientoEnCurso.tsx` ✅ | `usarIniciarEntrenamiento.ts`, `usarEntrenamientoEnCurso.ts` ✅ | US13 |
 | `PaginaEntrenamientoEnCurso.tsx`, `ListaSeries.tsx` ✅ | `usarRegistrarSerie.ts` ✅ | US14 |
 | `PaginaResumenEntrenamiento.tsx` | `usarFinalizarEntrenamiento.ts`, `usarRegistrarPercepcion.ts` | US15, US16, US17 |
-| `PaginaEntrenamientosDeAlumnos.tsx` | `usarEntrenamientosDeAlumnos.ts` | US18 |
+| `PaginaEntrenamientosDeAlumnos.tsx` ✅ | `usarEntrenamientosDeAlumnos.ts` ✅ | US18 |
 
 ## Historial de cambios de reglas de UI
 
@@ -35,6 +37,7 @@ Ejecución del entrenamiento (iniciar, registrar series y finalizar), resumen co
 | :-- | :-- | :-- | :-- |
 | 01/11/2026 | Todas | Versión inicial | Lisandro |
 | 01/11/2026 | RN-ENT-01, 09, 13, 16, RN-UI-ENT-02 | Se reflejan ZG-08 a ZG-12 | Lisandro |
+| 23/11/2026 | RN-ENT-18 (UI) y nueva RN-UI-ENT-04 | Consulta de entrenamientos de alumnos (US18) | Ulises |
 | 22/11/2026 | Nueva RN-UI-ENT-03 | Registro paso a paso con GIF y contador siempre visible (US14, T14) | Ulises |
 
 ## Decisiones de implementación (CG-46, US13)
@@ -58,3 +61,13 @@ Decididas por Ulises el 22/11/2026.
 ## Decisiones de implementación (CG-85, T14)
 
 * Cada paso muestra el GIF del ejercicio (`urlGif` de la copia, que el back guarda desde T14) con la atribución "GIF © Gym visual", la de todo el dataset. Si la copia no trae `urlGif` (entrenamiento iniciado antes de T14) no se muestra imagen.
+
+## Decisiones de implementación (CG-68, US18)
+
+Decididas por Ulises el 23/11/2026.
+
+* `/profesor/entrenamientos`, con la opción "Entrenamientos" en el menú del Profesor. Arriba, el selector "Alumno" con los alumnos vinculados (`GET /identidad/alumnos`, por apellido); hasta elegir uno no se piden entrenamientos. Sin alumnos vinculados se avisa y no hay selector.
+* El cliente propio del módulo llama a `GET /identidad/alumnos` (no se importa Planificación, regla de dependencia 2).
+* Cada entrenamiento es una tarjeta: fecha y hora de inicio en hora de Argentina (`America/Argentina/Buenos_Aires`, para que no dependa del navegador), rutina y estado (En curso, Abandonado; Finalizado cuando llegue US15), peso del día, "Series registradas: N de M" (M son los pasos de la copia, como en US14) y cada serie en el orden de la rutina con lo prescripto y lo realizado.
+* Paginado con el `Paginador` compartido (10 por defecto, clave `entrenamientos-de-alumnos`). Cambiar de alumno vuelve a la página 1. Sin filtros: el back no los tiene (RN-UI-LIS-04).
+* Los errores del back se muestran por su mensaje en un `alert` (por ejemplo `RN-ENT-18`).
