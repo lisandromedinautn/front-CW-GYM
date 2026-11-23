@@ -28,6 +28,14 @@ Está en `vite.config.ts`.
 
 **Playwright.** La primera vez: `yarn playwright install chromium`. Los e2e van en `e2e/<modulo>/*.e2e.ts` y corren con `yarn test:e2e` contra el front (`yarn dev`, lo levanta Playwright) y el back reales.
 
+Desde T15 la suite corre contra el **back de test con la base recién sembrada**: cada alumno de la semilla se vincula una sola vez (RN-IDE-10), tiene un plan vigente (RN-PLAN-14) y entrena una vez por día (RN-ENT-01), así que una segunda corrida sobre la misma base falla. Pasos, sin tocar los servidores de desarrollo (3000 y 5173):
+
+1. En `back-CW-GYM`: `docker compose up -d --force-recreate --wait bd-test` (la base de test está en memoria y queda vacía) y `NODE_ENV=test yarn seed`.
+2. En `back-CW-GYM`: `NODE_ENV=test URL_FRONT=http://localhost:5180 yarn start` (back de test en el 3001, aceptando el front de Playwright).
+3. En `front-CW-GYM`: `E2E_URL_API=http://localhost:3001 E2E_PUERTO_FRONT=5180 yarn test:e2e`. Con `E2E_PUERTO_FRONT`, Playwright levanta su propio front en ese puerto.
+
+Cada archivo usa sus propios usuarios de la semilla y prepara por API (`e2e/soporte/api.ts`) lo que no es parte del flujo que prueba. Corre con un solo worker porque generar un código de profesor invalida el anterior (RN-IDE-08). Los e2e de API del back (`yarn test:e2e` del back) vacían la base de test: después de correrlos, repetir el paso 1.
+
 ## Ciclo para escribir un test (TDD)
 
 Igual que en el back (`../back-CW-GYM/docs/TESTING.md`):
