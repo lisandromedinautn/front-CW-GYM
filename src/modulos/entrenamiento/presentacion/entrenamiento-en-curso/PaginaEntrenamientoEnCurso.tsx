@@ -1,5 +1,10 @@
 import { useEffect, useState } from 'react';
 import { usarEntrenamientoEnCurso } from '../../aplicacion/consultar-entrenamiento-en-curso/usarEntrenamientoEnCurso.ts';
+import { usarRegistrarSerie } from '../../aplicacion/registrar-serie/usarRegistrarSerie.ts';
+import type { Entrenamiento } from '../../dominio/entrenamiento/entrenamiento.ts';
+import { agruparSeries, pasosDelEntrenamiento } from '../../dominio/serie/filasSeries.ts';
+import { ListaSeries } from './ListaSeries.tsx';
+import { PasoActual } from './PasoActual.tsx';
 
 export function PaginaEntrenamientoEnCurso() {
   const { resultado, error } = usarEntrenamientoEnCurso();
@@ -11,16 +16,35 @@ export function PaginaEntrenamientoEnCurso() {
       {!resultado && !error && <p>Cargando tu entrenamiento…</p>}
       {resultado?.estado === 'sin-entrenamiento' && <p>No tenés un entrenamiento en curso.</p>}
       {resultado && resultado.estado !== 'sin-entrenamiento' && (
-        <>
-          <h2>{resultado.entrenamiento.rutina.nombre}</h2>
-          {resultado.estado === 'abandonado' ? (
-            <p>Abandonado</p>
-          ) : (
-            <Contador inicio={resultado.entrenamiento.inicio} />
-          )}
-        </>
+        <DetalleEntrenamiento
+          entrenamiento={resultado.entrenamiento}
+          abandonado={resultado.estado === 'abandonado'}
+        />
       )}
     </section>
+  );
+}
+
+function DetalleEntrenamiento(props: { entrenamiento: Entrenamiento; abandonado: boolean }) {
+  const { entrenamiento } = props;
+  const { series, registrar, error, abandonado } = usarRegistrarSerie(
+    entrenamiento.id,
+    entrenamiento.series ?? [],
+  );
+  const soloLectura = props.abandonado || abandonado;
+  const grupos = agruparSeries(entrenamiento.rutina, series);
+
+  return (
+    <>
+      <h2>{entrenamiento.rutina.nombre}</h2>
+      {soloLectura ? <p>Abandonado</p> : <Contador inicio={entrenamiento.inicio} />}
+      {error && <p role="alert">{error}</p>}
+      {soloLectura ? (
+        <ListaSeries grupos={grupos} />
+      ) : (
+        <PasoActual pasos={pasosDelEntrenamiento(grupos)} registrar={registrar} />
+      )}
+    </>
   );
 }
 
@@ -37,7 +61,7 @@ function Contador({ inicio }: { inicio: string }) {
     .join(':');
 
   return (
-    <p role="timer" aria-label="Tiempo transcurrido">
+    <p role="timer" aria-label="Tiempo transcurrido" className="contador">
       {tiempo}
     </p>
   );
