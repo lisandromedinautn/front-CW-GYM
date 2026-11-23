@@ -13,6 +13,7 @@ import { PaginaAltaProfesor } from './modulos/identidad/presentacion/alta-profes
 import { PaginaCodigoProfesor } from './modulos/identidad/presentacion/codigo-profesor/PaginaCodigoProfesor.tsx';
 import { PaginaVincularProfesor } from './modulos/identidad/presentacion/vinculo/PaginaVincularProfesor.tsx';
 import { PaginaIngreso } from './modulos/identidad/presentacion/ingreso/PaginaIngreso.tsx';
+import { PaginaEntrenamientosDeAlumnos } from './modulos/entrenamiento/presentacion/entrenamientos-de-alumnos/PaginaEntrenamientosDeAlumnos.tsx';
 import { PaginaPlanes } from './modulos/planificacion/presentacion/consultar-planes/PaginaPlanes.tsx';
 import { PaginaNuevoPlan } from './modulos/planificacion/presentacion/crear-plan/PaginaNuevoPlan.tsx';
 import { PaginaRutinas } from './modulos/planificacion/presentacion/consultar-rutinas/PaginaRutinas.tsx';
@@ -35,6 +36,7 @@ const PAGINAS: Record<string, ReactElement> = {
   '/alumno/vinculo': <PaginaVincularProfesor />,
   '/profesor/rutinas': <PaginaRutinas />,
   '/profesor/planes': <PaginaPlanes />,
+  '/profesor/entrenamientos': <PaginaEntrenamientosDeAlumnos />,
   '/alumno/mi-plan': <PaginaMiPlan />,
   '/alumno/rutina-del-dia': (
     <PaginaRutinaDelDia acciones={(hayRutina) => <AccionesEntrenamiento hayRutina={hayRutina} />} />

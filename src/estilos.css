@@ -505,3 +505,36 @@ input:focus-visible {
   margin: 0;
   padding: 0;
 }
+
+/* Entrenamiento paso a paso (RN-UI-ENT-03): el contador queda fijo arriba y el GIF no empuja
+   los campos fuera de la pantalla. */
+.contador {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  margin: 0;
+  padding: 0.5rem 0;
+  background: #f4f6f8;
+  font-size: 1.5rem;
+  font-variant-numeric: tabular-nums;
+}
+.gif-paso {
+  display: block;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 14rem;
+  height: auto;
+  border-radius: 8px;
+}
+
+/* US18: cada serie del alumno en una fila, con lo prescripto y lo realizado separados. */
+.series-alumno {
+  display: grid;
+  gap: 0.35rem;
+  padding-left: 1.1rem;
+}
+.series-alumno li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+}

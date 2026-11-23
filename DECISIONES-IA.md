@@ -315,6 +315,28 @@ Registro de cada sesión relevante en la que un desarrollador trabajó con IA. D
 - Verificación: back 216 unitarios y 13 e2e de consultar planes (63 e2e de planificación según el subagente); front 28 archivos y 143 tests; tipos y lint sin errores en los dos repos.
 - Pendientes: la tarjeta T12 en Jira (la creación fue bloqueada por permisos); detalle de un plan desde el listado, si se pide.
 
+## 2026-11-22 — Registrar serie realizada en el front [US14]
+- Desarrollador: Ulises
+- Herramienta / modelo / esfuerzo: Claude Code · Opus 5.5 (todo en serie, sin subagentes: la parte de front es chica y concentra decisiones de pantalla)
+- Objetivo: que el alumno registre cada serie realizada desde el entrenamiento en curso, con lo prescripto a la vista y en una sola pantalla (RN-ENT-03, 04, 20; RN-UI-ENT-01, 02), sobre el contrato que el back publicó en US14.
+- Qué hizo la IA: cruzó el board de Jira con las ramas para confirmar que CG-52 estaba libre. Propuso el diseño y 11 fichas, y las registró antes de escribir los tests. Con TDD (rojo por aserción, verde y mutaciones que hacen fallar cada test) escribió `dominio/serie/serie.ts` (validación, 8 unitarios), `dominio/serie/filasSeries.ts`, `usarRegistrarSerie`, `registrarSerie` en el cliente y `ListaSeries` en la página, con 8 tests de integración. Lo probó en el navegador contra el back real: registro con un clic y retomar al recargar. Sincronizó `docs/TRAZABILIDAD.md` con la copia del back, que había quedado adelantada con US14 y US18.
+- Decisiones del desarrollador: campos precargados con lo prescripto; campo de peso solo si la serie prescripta tiene peso; ante `409 RN-ENT-20` se muestra el mensaje y la lista queda de solo lectura; una serie registrada se corrige registrándola otra vez; sin test de RN-ENT-19 en el front (lo cubre el back).
+- Ideas descartadas: campos vacíos (más lento que el OKR O3); campo de peso siempre visible; repartir el trabajo entre subagentes.
+- Reglas afectadas: ninguna cambió de texto. RN-ENT-03, 04, 20 y RN-UI-ENT-01 pasan a estar implementadas en el front.
+- Verificación: front 31 archivos y 162 tests en verde (16 nuevos), `yarn test:cov` dentro de los umbrales (`dominio/serie` con 100% de líneas), tipos, lint y Prettier sin errores. Sobreviven dos mutaciones sin ficha: invertir el orden de bloques y circuitos, y no descartar la serie reemplazada en el hook (no cambia lo que se ve).
+- Pendientes: replicar en el back los cambios de `docs/TRAZABILIDAD.md` y `docs/PLAN-IMPLEMENTACION.md`; medir los 10 s del OKR O3 en la demo; el bloqueo por entrenamiento finalizado (RN-ENT-04) llega con US15.
+
+## 2026-11-22 — Entrenamiento paso a paso con GIF y botón de finalizar [US14, T14]
+- Desarrollador: Ulises
+- Herramienta / modelo / esfuerzo: Claude Code · Opus 5.5 (todo en serie, sin subagentes: el front del GIF dependía del contrato del back)
+- Objetivo: después de probar a mano el front de US14, mostrar un ejercicio por vez con su GIF y el contador siempre visible, avanzar al registrar, y dejar visible el botón de finalizar hasta que exista US15.
+- Qué hizo la IA: verificó que el modo secuencial era solo front, que el GIF necesitaba un cambio en el back y que finalizar dependía de US15 (back inexistente, asignada a Martina). Propuso la regla RN-UI-ENT-03, la ampliación de RN-ENT-02 y las fichas. Front: reescribió los tests de integración de US14 para el paso a paso (aprobado), implementó `PasoActual` y `FormularioSerie`, el GIF con atribución y el botón deshabilitado. Back: puerto `ConsultaEjercicios` implementado por la Fachada de catálogo (`EjercicioPublico` suma `urlGif`) y la función de dominio `conGifs` en `IniciarEntrenamiento`, con 2 unitarios y 2 e2e. Creó la tarjeta CG-85 (T14) en Jira. Sincronizó `TRAZABILIDAD.md` y `PLAN-IMPLEMENTACION.md` entre los repos.
+- Decisiones del desarrollador: paso a paso con Anterior/Siguiente; arranca en el primer paso sin registrar; abandonado sigue como lista de solo lectura; GIF guardado en la copia tocando solo Entrenamiento y la Fachada de catálogo (no Planificación, cuyos e2e comparan con `toEqual`); atribución "GIF © Gym visual"; botón "Finalizar entrenamiento" deshabilitado en el último paso, sin test hasta US15.
+- Ideas descartadas: agregar el GIF en la rutina del día de Planificación (cambiaba sus contratos y rompía e2e); habilitar el catálogo para el rol Alumno (toca RN-IDE-03); implementar la finalización en el back sin coordinar con US15.
+- Reglas afectadas: nueva RN-UI-ENT-03 (front). RN-ENT-02 amplía la copia con el GIF (back, historial del módulo).
+- Verificación: front 164 tests, back 247 unitarios, 3 de integración y 110 e2e; `yarn test:cov` en los dos dentro de los umbrales (back 98,2% de líneas); lint y tipos sin errores. Mutaciones sobre el paso inicial, el avance, Anterior/Siguiente, lo registrado, el GIF y `conGifs` hacen fallar los tests. Un test del GIF pasaba por un error del propio test (`undefined` tomaba el valor por defecto); se corrigió antes de commitear.
+- Pendientes: el back de US15 para habilitar el botón; los entrenamientos anteriores a T14 no tienen GIF; nada pusheado.
+
 ## 2026-11-22 — Finalizar entrenamiento y mostrar resumen [US15]
 - Desarrolladora: Martina Pineda. Herramienta: Codex.
 - Objetivo: finalizar y consultar peso total, grupos musculares y duración, aun sin la pantalla de registro de series de US14.
@@ -322,3 +344,14 @@ Registro de cada sesión relevante en la que un desarrollador trabajó con IA. D
 - Decisiones: Martina confirmó los casos, incluido cierre sin series y permisos. Los récords corresponden a US16 y no se simulan.
 - Verificación: 6 unitarios y 2 e2e en back, 4 tests de integración en front y builds aprobados en laptop. Rojo inicial observado en back y front. La comprobación por mutación detectó el cálculo y el texto alterados; los archivos fueron restaurados y sus huellas coinciden con las versiones aprobadas.
 - Reglas: RN-ENT-05, 06, 07, 08, 09, 17, 19 y 20.
+
+## 2026-11-23 — Consultar entrenamientos de mis alumnos en el front [US18]
+- Desarrollador: Ulises
+- Herramienta / modelo / esfuerzo: Claude Code · Opus 5.5 (todo en serie, sin subagentes: una pantalla sobre un contrato ya publicado)
+- Objetivo: que el profesor vea los entrenamientos de sus alumnos para ajustar sus planes (RN-ENT-18), sobre `GET /entrenamiento/alumnos/:alumnoId/entrenamientos` que el back publicó en US18.
+- Qué hizo la IA: pusheó las ramas de US14 y T14 y, ya mergeadas, sacó la rama desde `develop`. Verificó en Jira que CG-68 estaba asignada al desarrollador. Propuso la regla RN-UI-ENT-04, el diseño y 9 fichas, y las registró antes de los tests. Con TDD escribió el formato de fecha en hora de Argentina (1 unitario), `usarEntrenamientosDeAlumnos`, el cliente y `PaginaEntrenamientosDeAlumnos` con 8 tests de integración, la ruta y la opción del menú. Una mutación (sacar la guarda sin alumno) sobrevivía porque la red falsa no registraba la URL con el alumno vacío; se amplió el handler del test antes de commitear. Lo probó en el navegador contra el back real con el entrenamiento de la prueba manual y separó las filas de las series con estilos.
+- Decisiones del desarrollador: selector de alumnos vinculados sin filtros extra (el back no los tiene); tarjetas con fecha y hora de Argentina, rutina, estado, peso, series N de M y cada serie junto a lo prescripto; cambiar de alumno vuelve a la página 1; rama desde `develop` porque US14 y T14 ya estaban mergeadas.
+- Ideas descartadas: rama apilada sobre US14 (ya no hacía falta); importar los alumnos desde Planificación (rompe la regla de dependencia entre módulos); mostrar la hora en la zona del navegador (los tests dependerían de la máquina).
+- Reglas afectadas: nueva RN-UI-ENT-04 y fila de RN-ENT-18 en el `CLAUDE.md` del módulo; RN-UI-LIS-04 suma el listado de entrenamientos de alumnos (sin filtros).
+- Verificación: front 33 archivos y 173 tests (9 nuevos), `yarn test:cov` dentro de los umbrales, tipos, lint y Prettier sin errores. Nueve mutaciones (guarda, orden de alumnos, página 1 al cambiar, etiqueta de estado, total de series, título de la serie, sin alumnos, realizado, ruta del menú) hacen fallar los tests.
+- Pendientes: el estado "Finalizado" llega con US15; el commit de documentación de Alex en la rama `feat/US18-consultar-entrenamientos-de-alumnos` del back sigue sin mergear; nada pusheado.

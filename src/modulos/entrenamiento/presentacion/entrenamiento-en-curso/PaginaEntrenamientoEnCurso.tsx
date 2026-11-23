@@ -2,6 +2,11 @@ import { usarFinalizarEntrenamiento } from '../../aplicacion/finalizar-entrenami
 import { ResumenEntrenamiento } from '../finalizar-entrenamiento/ResumenEntrenamiento.tsx';
 import { useEffect, useState } from 'react';
 import { usarEntrenamientoEnCurso } from '../../aplicacion/consultar-entrenamiento-en-curso/usarEntrenamientoEnCurso.ts';
+import { usarRegistrarSerie } from '../../aplicacion/registrar-serie/usarRegistrarSerie.ts';
+import type { Entrenamiento } from '../../dominio/entrenamiento/entrenamiento.ts';
+import { agruparSeries, pasosDelEntrenamiento } from '../../dominio/serie/filasSeries.ts';
+import { ListaSeries } from './ListaSeries.tsx';
+import { PasoActual } from './PasoActual.tsx';
 
 export function PaginaEntrenamientoEnCurso() {
   const { resultado, error } = usarEntrenamientoEnCurso();
@@ -22,25 +27,59 @@ export function PaginaEntrenamientoEnCurso() {
           {resumen ? (
             <ResumenEntrenamiento resumen={resumen} />
           ) : resultado.estado === 'abandonado' ? (
-            <p>Abandonado</p>
+            <DetalleEntrenamiento
+              entrenamiento={resultado.entrenamiento}
+              abandonado={true}
+              finalizacion={finalizacion}
+            />
           ) : resultado.estado === 'finalizado' ? (
             <p>No se pudo recuperar el resumen.</p>
           ) : (
-            <>
-              <Contador inicio={resultado.entrenamiento.inicio} />
-              {finalizacion.error && <p role="alert">{finalizacion.error}</p>}
-              <button
-                type="button"
-                disabled={finalizacion.finalizando}
-                onClick={() => void finalizacion.finalizar(resultado.entrenamiento.id)}
-              >
-                Finalizar entrenamiento
-              </button>
-            </>
+            <DetalleEntrenamiento
+              entrenamiento={resultado.entrenamiento}
+              abandonado={false}
+              finalizacion={finalizacion}
+            />
           )}
         </>
       )}
     </section>
+  );
+}
+
+function DetalleEntrenamiento(props: {
+  entrenamiento: Entrenamiento;
+  abandonado: boolean;
+  finalizacion: ReturnType<typeof usarFinalizarEntrenamiento>;
+}) {
+  const { entrenamiento, finalizacion } = props;
+  const { series, registrar, error, abandonado } = usarRegistrarSerie(
+    entrenamiento.id,
+    entrenamiento.series ?? [],
+  );
+  const soloLectura = props.abandonado || abandonado;
+  const grupos = agruparSeries(entrenamiento.rutina, series);
+
+  return (
+    <>
+      {soloLectura ? <p>Abandonado</p> : <Contador inicio={entrenamiento.inicio} />}
+      {error && <p role="alert">{error}</p>}
+      {soloLectura ? (
+        <ListaSeries grupos={grupos} />
+      ) : (
+        <>
+          <PasoActual pasos={pasosDelEntrenamiento(grupos)} registrar={registrar} />
+          {finalizacion.error && <p role="alert">{finalizacion.error}</p>}
+          <button
+            type="button"
+            disabled={finalizacion.finalizando}
+            onClick={() => void finalizacion.finalizar(entrenamiento.id)}
+          >
+            Finalizar entrenamiento
+          </button>
+        </>
+      )}
+    </>
   );
 }
 
@@ -57,7 +96,7 @@ function Contador({ inicio }: { inicio: string }) {
     .join(':');
 
   return (
-    <p role="timer" aria-label="Tiempo transcurrido">
+    <p role="timer" aria-label="Tiempo transcurrido" className="contador">
       {tiempo}
     </p>
   );
