@@ -7,6 +7,9 @@ import { FormularioSerie } from './FormularioSerie.tsx';
 export function PasoActual(props: {
   pasos: FilaSerie[];
   registrar: (registro: RegistroSerie) => Promise<boolean>;
+  /** US15: el último paso ofrece finalizar el entrenamiento. */
+  finalizar: () => void;
+  finalizando: boolean;
 }) {
   const { pasos } = props;
   const [indice, setIndice] = useState(() => pasoInicial(pasos));
@@ -48,12 +51,10 @@ export function PasoActual(props: {
         </button>
       </div>
       {indice === ultimo && (
-        // Se habilita con US15 (finalizar y ver resumen): hoy el back no tiene la finalización.
         <p>
-          <button type="button" disabled aria-describedby="finalizar-pendiente">
+          <button type="button" disabled={props.finalizando} onClick={props.finalizar}>
             Finalizar entrenamiento
-          </button>{' '}
-          <small id="finalizar-pendiente">Disponible con US15</small>
+          </button>
         </p>
       )}
     </section>

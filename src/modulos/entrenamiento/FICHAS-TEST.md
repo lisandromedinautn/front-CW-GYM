@@ -40,4 +40,6 @@ Una fila por caso de test. La entrada (acciones de la persona y respuesta de la 
 | `finalizar-entrenamiento/ResumenPersistido.int.test.tsx` › muestra resumen y conserva al recargar | RN-ENT-05, 06, 09, 17 | Integración | resumen 540 kg, Espalda y Brazos | muestra volumen, grupos y duración después de recargar | = esperado (laptop) | 22/11/2026 |
 | `finalizar-entrenamiento/ResumenPersistido.int.test.tsx` › error y acceso sin sesión | RN-ENT-19, 20 | Integración | error de finalización y alumno sin sesión | muestra error y protege la ruta | = esperado (laptop) | 22/11/2026 |
 
+23/11/2026: las dos pruebas que finalizan (`finaliza sin series` y `error`) pasan a usar una rutina con un bloque de una serie, porque «Finalizar entrenamiento» está solo en el último paso. Cambia solo la entrada (la rutina falsa); los esperados siguen iguales. Aprobado por Ulises.
+
 Comprobación por mutación US15: el cálculo de peso corporal con carga extra y la visualización de 540 kg fallaron al alterarse; se restauraron los archivos con las mismas huellas que las versiones aprobadas.

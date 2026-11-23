@@ -57,7 +57,7 @@ Decididas por Ulises el 22/11/2026.
 * Antes de enviar se valida lo mismo que el back (`dominio/serie/serie.ts`): medida entera ≥ 0 obligatoria y peso ≥ 0 opcional. El error se enlaza al campo con `aria-invalid` y `aria-describedby`.
 * Registrar otra vez la misma serie la corrige: se vuelve con "Anterior", se envía la misma clave (`orden`, `numero`, `posicion`) y el paso muestra la respuesta del back.
 * Abandonado (al abrir, o porque el back responde `409 RN-ENT-20` al registrar): se muestra el mensaje del back y, en lugar del paso a paso, la lista completa de solo lectura con las series ya registradas (`ListaSeries.tsx`). RN-ENT-04 (finalizado) se suma con US15.
-* En el último paso aparece "Finalizar entrenamiento" **deshabilitado**, con "Disponible con US15": el back todavía no tiene `POST .../:id/finalizacion`. No tiene test porque no hay regla vigente implementada que lo respalde; lo cubren los tests de US15 cuando se habilite (decidido por Ulises el 22/11/2026).
+* "Finalizar entrenamiento" aparece **solo en el último paso** (decidido por Ulises el 22/11/2026). Hasta US15 estuvo deshabilitado; desde el 23/11 llama a la finalización (ver US15).
 * El tipo `Entrenamiento` del front tolera `rutina` sin `bloques` o `circuitos` y la ausencia de `series`, porque las respuestas falsas de los tests de US13 no los traen.
 
 ## Decisiones de implementación (CG-85, T14)
@@ -66,7 +66,7 @@ Decididas por Ulises el 22/11/2026.
 
 ## Decisiones de implementación (US15)
 
-* El entrenamiento en curso ofrece «Finalizar entrenamiento» y presenta volumen, grupos y duración. Sin series informa cero y ningún grupo registrado.
+* El entrenamiento en curso ofrece «Finalizar entrenamiento» en el último paso (`PasoActual.tsx`; antes había un segundo botón visible desde el paso 1, que se quitó el 23/11/2026 por decisión de Ulises) y presenta volumen, grupos y duración. Sin series informa cero y ningún grupo registrado.
 * Al recargar, el estado `finalizado` recupera el resumen guardado.
 * El resumen vive dentro de `PaginaEntrenamientoEnCurso.tsx` (no en una página aparte): el mismo contenedor muestra el entrenamiento en curso y, al finalizar, el resumen con su estado persistido.
 * Los récords (US16) y la percepción (US17) se suman al mismo resumen; hoy no se muestran.
