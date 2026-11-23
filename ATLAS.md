@@ -68,7 +68,7 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | entrenamiento | `AccionesEntrenamiento.tsx`, `PaginaEntrenamientoEnCurso.tsx` (`/alumno/entrenamiento`) | `usarIniciarEntrenamiento.ts`, `usarEntrenamientoEnCurso.ts` | `POST /entrenamiento/entrenamientos`, `GET /entrenamiento/mi-entrenamiento-en-curso` | US13 | ✅ `entrenamiento.int.test.tsx` |
 | entrenamiento | `PaginaEntrenamientoEnCurso.tsx`, `PasoActual.tsx` (paso a paso), `FormularioSerie.tsx` y `ListaSeries.tsx` (solo lectura si está abandonado), en `/alumno/entrenamiento` | `usarRegistrarSerie.ts` (`aplicacion/registrar-serie/`) | `POST /entrenamiento/entrenamientos/:id/series` | US14 | ✅ `RegistrarSerie.int.test.tsx`; dominio `serie/serie.ts` (validación, `serie.test.ts`) y `serie/filasSeries.ts` (pasos por bloque y vuelta, con el GIF de cada ejercicio, T14) |
 | entrenamiento | `PaginaResumenEntrenamiento.tsx` | `usarFinalizarEntrenamiento.ts`, `usarRegistrarPercepcion.ts` | `POST .../:id/finalizacion`, `PUT .../:id/percepcion` | US15, US16, US17 | 📄 |
-| entrenamiento | `PaginaEntrenamientosDeAlumnos.tsx` | `usarEntrenamientosDeAlumnos.ts` | `GET /entrenamiento/alumnos/:alumnoId/entrenamientos` | US18 | 📄 |
+| entrenamiento | `PaginaEntrenamientosDeAlumnos.tsx` (`presentacion/entrenamientos-de-alumnos/`, ruta `/profesor/entrenamientos`, menú "Entrenamientos") | `usarEntrenamientosDeAlumnos.ts` (`aplicacion/consultar-entrenamientos-de-alumnos/`) | `GET /identidad/alumnos`, `GET /entrenamiento/alumnos/:alumnoId/entrenamientos` | US18 | ✅ `PaginaEntrenamientosDeAlumnos.int.test.tsx` (8 casos); dominio `entrenamientos-de-alumnos/entrenamientosDeAlumnos.ts` (fecha en hora de Argentina, estado, orden y total de series; `entrenamientosDeAlumnos.test.ts`) |
 
 ## Clientes de API del módulo
 
@@ -77,7 +77,7 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | `src/modulos/identidad/infraestructura/api/apiIdentidad.ts` | Ingreso, alta de profesor, código de profesor y vínculo del alumno | ✅ |
 | `src/modulos/catalogo/infraestructura/api/apiCatalogo.ts` | Consulta paginada de ejercicios con filtros | ✅ |
 | `src/modulos/planificacion/infraestructura/api/apiPlanificacion.ts` | Catálogo para el editor, listado, alta y renombrado de rutinas; alumnos del profesor, rutinas y alta de plan (US07); rutina del día del alumno (US08) | ✅ |
-| `src/modulos/entrenamiento/infraestructura/api/apiEntrenamiento.ts` | Inicio y consulta del entrenamiento (US13); registro de una serie realizada (US14) | ✅ |
+| `src/modulos/entrenamiento/infraestructura/api/apiEntrenamiento.ts` | Inicio y consulta del entrenamiento (US13); registro de una serie realizada (US14); alumnos vinculados y entrenamientos de un alumno, paginados (US18) | ✅ |
 
 ## Compartido (`src/compartido/`)
 

@@ -526,3 +526,15 @@ input:focus-visible {
   height: auto;
   border-radius: 8px;
 }
+
+/* US18: cada serie del alumno en una fila, con lo prescripto y lo realizado separados. */
+.series-alumno {
+  display: grid;
+  gap: 0.35rem;
+  padding-left: 1.1rem;
+}
+.series-alumno li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+}

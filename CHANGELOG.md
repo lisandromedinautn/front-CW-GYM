@@ -18,6 +18,8 @@ Categorías: Agregado, Cambiado, Corregido, Eliminado, Seguridad. Cada entrada c
 
 - En el último paso del entrenamiento aparece "Finalizar entrenamiento" deshabilitado, con la aclaración "Disponible con US15": se habilita cuando el back tenga la finalización (US14, a la espera de US15).
 
+- Entrenamientos de los alumnos en `/profesor/entrenamientos` (menú "Entrenamientos"): el profesor elige un alumno vinculado y ve sus entrenamientos del más nuevo al más viejo, paginados, con fecha y hora, rutina, estado, peso del día y cada serie realizada junto a lo prescripto (RN-ENT-18, RN-UI-ENT-04, RN-UI-LIS-03; CG-68, US18).
+
 ### Cambiado
 
 - La creación del plan pasa a `/profesor/planes/nuevo` y se abre con "Nuevo plan" desde el listado; tiene "Volver al listado" (T13).
