@@ -61,7 +61,7 @@ function Contador({ inicio }: { inicio: string }) {
     .join(':');
 
   return (
-    <p role="timer" aria-label="Tiempo transcurrido">
+    <p role="timer" aria-label="Tiempo transcurrido" className="contador">
       {tiempo}
     </p>
   );

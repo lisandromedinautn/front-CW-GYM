@@ -25,7 +25,7 @@ export function PasoActual(props: {
       </h3>
       {paso.urlGif && (
         <figure>
-          <img src={paso.urlGif} alt={paso.nombre} className="gif" />
+          <img src={paso.urlGif} alt={paso.nombre} className="gif-paso" />
           <figcaption>
             <small>GIF © Gym visual</small>
           </figcaption>
