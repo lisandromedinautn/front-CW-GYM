@@ -43,3 +43,13 @@ Una fila por caso de test. La entrada (acciones de la persona y respuesta de la 
 23/11/2026: las dos pruebas que finalizan (`finaliza sin series` y `error`) pasan a usar una rutina con un bloque de una serie, porque «Finalizar entrenamiento» está solo en el último paso. Cambia solo la entrada (la rutina falsa); los esperados siguen iguales. Aprobado por Ulises.
 
 Comprobación por mutación US15: el cálculo de peso corporal con carga extra y la visualización de 540 kg fallaron al alterarse; se restauraron los archivos con las mismas huellas que las versiones aprobadas.
+## T15 — e2e de navegador (confirmadas por Ulises el 23/11/2026)
+
+Rutina de prueba: un bloque de lever chest press, 2 series de 10 repeticiones con 30 kg (2 pasos). Volumen esperado según RN-ENT-06 y 07: 30 × 10 × 2 = 600 kg.
+
+| Test (archivo › caso) | Regla | Nivel | Entrada | Esperado | Obtenido (último run) | Fecha |
+| :-- | :-- | :-- | :-- | :-- | :-- | :-- |
+| `e2e/entrenamiento/entrenar.e2e.ts` › iniciar y registrar | RN-ENT-01, 02, 03, RN-UI-ENT-03 | e2e navegador | alumno14 con plan de hoy (por API) toca "Iniciar entrenamiento" y "Registrar" en el paso 1 | contador visible y "Paso 2 de 2" | = esperado | 23/11/2026 |
+| `e2e/entrenamiento/entrenar.e2e.ts` › recargar retoma | RN-UI-ENT-02 | e2e navegador | recarga la página | sigue en "Paso 2 de 2"; con "Anterior", el paso 1 muestra "Registrada: 10 repeticiones · 30 kg" | = esperado | 23/11/2026 |
+| `e2e/entrenamiento/entrenar.e2e.ts` › finalizar y ver resumen | RN-ENT-05, 06, 17 | e2e navegador | registra el paso 2 y toca "Finalizar entrenamiento" (solo en el último paso) | heading "Resumen del entrenamiento" y "Peso total levantado: 600 kg" | = esperado | 23/11/2026 |
+| `e2e/entrenamiento/seguimiento.e2e.ts` › el profesor ve lo registrado | RN-ENT-18, RN-UI-ENT-04 | e2e navegador | alumno15 con plan de hoy inicia y registra la serie 1 por API; profesor03 entra a "Entrenamientos" y elige a alumno15 | tarjeta con "En curso" y "Series registradas: 1 de 2" | = esperado | 23/11/2026 |

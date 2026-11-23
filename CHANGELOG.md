@@ -22,6 +22,8 @@ Categorías: Agregado, Cambiado, Corregido, Eliminado, Seguridad. Cada entrada c
 
 - Entrenamientos de los alumnos en `/profesor/entrenamientos` (menú "Entrenamientos"): el profesor elige un alumno vinculado y ve sus entrenamientos del más nuevo al más viejo, paginados, con fecha y hora, rutina, estado, peso del día y cada serie realizada junto a lo prescripto (RN-ENT-18, RN-UI-ENT-04, RN-UI-LIS-03; CG-68, US18).
 
+- e2e de navegador de los cuatro flujos del MVP: ingreso y vínculo, plan del día, entrenamiento (iniciar, registrar, retomar y finalizar) y seguimiento del profesor, contra el back de test con la base recién sembrada (CG-86, T15).
+
 ### Cambiado
 
 - La creación del plan pasa a `/profesor/planes/nuevo` y se abre con "Nuevo plan" desde el listado; tiene "Volver al listado" (T13).

@@ -16,7 +16,7 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | `docs/MODELOS-IA.md` | Modelos, delegación y plantillas (idéntica a la del back) |
 | `.claude/settings.json` | Permisos: confirmación al editar tests e instalar paquetes |
 | `.claude/skills/tdd`, `.claude/skills/coverage` | Skills de TDD y cobertura |
-| `e2e/<modulo>/` | Tests e2e de Playwright. ✅ `e2e/planificacion/crear-rutina.e2e.ts` (US06), `crear-rutina-circuitos.e2e.ts` (US09), `crear-rutina-mixta.e2e.ts` (US10) e `importar-rutina.e2e.ts` (US20) |
+| `e2e/<modulo>/` | Tests e2e de Playwright. ✅ `e2e/planificacion/crear-rutina.e2e.ts` (US06), `crear-rutina-circuitos.e2e.ts` (US09), `crear-rutina-mixta.e2e.ts` (US10), `importar-rutina.e2e.ts` (US20) y `crear-plan.e2e.ts` (T15); `e2e/identidad/ingreso-y-vinculo.e2e.ts`, `e2e/entrenamiento/entrenar.e2e.ts` y `seguimiento.e2e.ts` (T15); soporte en `e2e/soporte/` (`api.ts` prepara datos por la API, `sesion.ts` ingresa y navega el menú) |
 
 ## Configuración y arranque
 

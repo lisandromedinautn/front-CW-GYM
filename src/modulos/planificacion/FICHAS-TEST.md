@@ -6,7 +6,7 @@ Catálogo falso de los tests de integración (forma de `GET /catalogo/ejercicios
 
 | Test (archivo › caso) | Regla | Nivel | Entrada | Esperado | Obtenido (último run) | Fecha |
 | :-- | :-- | :-- | :-- | :-- | :-- | :-- |
-| `e2e/planificacion/importar-rutina.e2e.ts` › copiar y seleccionar | RN-PLAN-08, 21 | e2e navegador | profesor crea una rutina por bloques, la copia y abre Nuevo plan | copia con nombre e ID distintos, mismo contenido y seleccionable en el día 1 | = esperado; `getByRole` corregido con autorización de Julián | 17/11/2026 |
+| `e2e/planificacion/importar-rutina.e2e.ts` › copiar y seleccionar | RN-PLAN-08, 21 | e2e navegador | profesor crea una rutina por bloques, la copia y abre Nuevo plan | copia con nombre e ID distintos, mismo contenido y seleccionable en el día 1 | = esperado; `getByRole` corregido con autorización de Julián. 23/11/2026 (T15): entra por "Planes" y "Nuevo plan" (listado de T13) y el selector se busca por `/^Rutina del día 1(?!\d)/`; esperados sin cambios, aprobado por Ulises. Mutación: la opción muestra el id en lugar del nombre → rojo por aserción | 23/11/2026 |
 | `ImportarRutina.int.test.tsx` › crear copia | RN-PLAN-08 | Integración | importar Piernas | muestra Piernas - Copia y conserva la original | = esperado | 17/11/2026 |
 | `ImportarRutina.int.test.tsx` › error | RN-PLAN-08 | Integración | API rechaza importación | muestra error y permite reintentar | = esperado | 17/11/2026 |
 | `ImportarRutina.int.test.tsx` › paginación | RN-PLAN-08 | Integración | importar desde página 2 | vuelve a página 1 y muestra copia | = esperado | 17/11/2026 |
@@ -131,3 +131,9 @@ Catálogo falso de los tests de integración (forma de `GET /catalogo/ejercicios
 | `PaginaAlumnosDelPlan.int.test.tsx` › agregar alumno vinculado | RN-PLAN-13, 14, 16 | Integración | plan vigente, alumno vinculado sin plan | se agrega y aparece asignado | = esperado (laptop, 21/11/2026) | 21/11/2026 |
 | `PaginaAlumnosDelPlan.int.test.tsx` › quitar el último alumno | RN-PLAN-12, 16 | Integración | plan vigente con un alumno | se quita y queda sin alumnos | = esperado (laptop, 21/11/2026) | 21/11/2026 |
 | `PaginaAlumnosDelPlan.int.test.tsx` › comunica error del servidor | RN-PLAN-13, 14, 16 | Integración | rechazo de asignación | muestra el mensaje del servidor | = esperado (laptop, 21/11/2026) | 21/11/2026 |
+
+## T15 — e2e de navegador (confirmadas por Ulises el 23/11/2026)
+
+| Test (archivo › caso) | Regla | Nivel | Entrada | Esperado | Obtenido (último run) | Fecha |
+| :-- | :-- | :-- | :-- | :-- | :-- | :-- |
+| `e2e/planificacion/crear-plan.e2e.ts` › plan de hoy y rutina del día | RN-PLAN-11, 13, 15 | e2e navegador | alumno13 vinculado a profesor03 y rutina creada por API; profesor03 crea en "Nuevo plan" un plan con inicio hoy (fecha UTC), la rutina en el día 1 y alumno13 | status "Plan creado del {hoy} al {hoy + 27}"; alumno13 ve el nombre de la rutina en "Mi rutina del día" | = esperado | 23/11/2026 |
