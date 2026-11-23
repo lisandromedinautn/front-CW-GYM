@@ -8,6 +8,7 @@ import type {
   Entrenamiento,
   RegistroSerie,
   ResultadoEntrenamiento,
+  ResumenEntrenamiento,
   SerieRealizada,
 } from '../../dominio/entrenamiento/entrenamiento.ts';
 
@@ -17,6 +18,10 @@ export function consultarEntrenamiento(): Promise<ResultadoEntrenamiento> {
 
 export function iniciarEntrenamiento(): Promise<Entrenamiento> {
   return pedir('/entrenamiento/entrenamientos', { metodo: 'POST' });
+}
+
+export function finalizarEntrenamiento(id: string): Promise<ResumenEntrenamiento> {
+  return pedir(`/entrenamiento/entrenamientos/${id}/finalizacion`, { metodo: 'POST' });
 }
 
 /** US14: registra la serie o reemplaza la ya registrada con la misma clave (orden, numero, posicion). */

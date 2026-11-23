@@ -27,8 +27,10 @@ Ejecución del entrenamiento (iniciar, registrar series y finalizar), resumen co
 | Pantalla (`presentacion/`) | Hook (`aplicacion/`) | US |
 | :-- | :-- | :-- |
 | `AccionesEntrenamiento.tsx`, `PaginaEntrenamientoEnCurso.tsx` ✅ | `usarIniciarEntrenamiento.ts`, `usarEntrenamientoEnCurso.ts` ✅ | US13 |
+| `AccionesEntrenamiento.tsx`, `PaginaEntrenamientoEnCurso.tsx` ✅ | `usarIniciarEntrenamiento.ts`, `usarEntrenamientoEnCurso.ts` ✅ | US13 |
 | `PaginaEntrenamientoEnCurso.tsx`, `ListaSeries.tsx` ✅ | `usarRegistrarSerie.ts` ✅ | US14 |
-| `PaginaResumenEntrenamiento.tsx` | `usarFinalizarEntrenamiento.ts`, `usarRegistrarPercepcion.ts` | US15, US16, US17 |
+| `finalizar-entrenamiento/ResumenEntrenamiento.tsx`, `PaginaEntrenamientoEnCurso.tsx` ✅ | `usarFinalizarEntrenamiento.ts` ✅ | US15 |
+| `PaginaEntrenamientoEnCurso.tsx` (mismo resumen, récords y percepción) | `usarRegistrarPercepcion.ts` | US16, US17 |
 | `PaginaEntrenamientosDeAlumnos.tsx` ✅ | `usarEntrenamientosDeAlumnos.ts` ✅ | US18 |
 
 ## Historial de cambios de reglas de UI
@@ -61,6 +63,13 @@ Decididas por Ulises el 22/11/2026.
 ## Decisiones de implementación (CG-85, T14)
 
 * Cada paso muestra el GIF del ejercicio (`urlGif` de la copia, que el back guarda desde T14) con la atribución "GIF © Gym visual", la de todo el dataset. Si la copia no trae `urlGif` (entrenamiento iniciado antes de T14) no se muestra imagen.
+
+## Decisiones de implementación (US15)
+
+* El entrenamiento en curso ofrece «Finalizar entrenamiento» y presenta volumen, grupos y duración. Sin series informa cero y ningún grupo registrado.
+* Al recargar, el estado `finalizado` recupera el resumen guardado.
+* El resumen vive dentro de `PaginaEntrenamientoEnCurso.tsx` (no en una página aparte): el mismo contenedor muestra el entrenamiento en curso y, al finalizar, el resumen con su estado persistido.
+* Los récords (US16) y la percepción (US17) se suman al mismo resumen; hoy no se muestran.
 
 ## Decisiones de implementación (CG-68, US18)
 

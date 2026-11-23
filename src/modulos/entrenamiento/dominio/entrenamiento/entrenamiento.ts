@@ -45,8 +45,16 @@ export interface Entrenamiento {
   inicio: string;
   rutina: CopiaRutina;
   series?: SerieRealizada[];
+  fin?: string;
+  resumen?: ResumenEntrenamiento;
 }
 
 export type ResultadoEntrenamiento =
   | { estado: 'sin-entrenamiento' }
-  | { estado: 'en-curso' | 'abandonado'; entrenamiento: Entrenamiento };
+  | { estado: 'en-curso' | 'abandonado' | 'finalizado'; entrenamiento: Entrenamiento };
+
+export interface ResumenEntrenamiento {
+  volumenKg: number;
+  duracionSegundos: number;
+  gruposMusculares: string[];
+}

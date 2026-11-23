@@ -337,6 +337,14 @@ Registro de cada sesión relevante en la que un desarrollador trabajó con IA. D
 - Verificación: front 164 tests, back 247 unitarios, 3 de integración y 110 e2e; `yarn test:cov` en los dos dentro de los umbrales (back 98,2% de líneas); lint y tipos sin errores. Mutaciones sobre el paso inicial, el avance, Anterior/Siguiente, lo registrado, el GIF y `conGifs` hacen fallar los tests. Un test del GIF pasaba por un error del propio test (`undefined` tomaba el valor por defecto); se corrigió antes de commitear.
 - Pendientes: el back de US15 para habilitar el botón; los entrenamientos anteriores a T14 no tienen GIF; nada pusheado.
 
+## 2026-11-22 — Finalizar entrenamiento y mostrar resumen [US15]
+- Desarrolladora: Martina Pineda. Herramienta: Codex.
+- Objetivo: finalizar y consultar peso total, grupos musculares y duración, aun sin la pantalla de registro de series de US14.
+- Implementación: el back calcula con las series guardadas, el peso corporal del inicio y datos del catálogo; guarda hora y resumen. El cierre se serializa con el registro de series. El front muestra el resumen y lo recupera al recargar.
+- Decisiones: Martina confirmó los casos, incluido cierre sin series y permisos. Los récords corresponden a US16 y no se simulan.
+- Verificación: 6 unitarios y 2 e2e en back, 4 tests de integración en front y builds aprobados en laptop. Rojo inicial observado en back y front. La comprobación por mutación detectó el cálculo y el texto alterados; los archivos fueron restaurados y sus huellas coinciden con las versiones aprobadas.
+- Reglas: RN-ENT-05, 06, 07, 08, 09, 17, 19 y 20.
+
 ## 2026-11-23 — Consultar entrenamientos de mis alumnos en el front [US18]
 - Desarrollador: Ulises
 - Herramienta / modelo / esfuerzo: Claude Code · Opus 5.5 (todo en serie, sin subagentes: una pantalla sobre un contrato ya publicado)

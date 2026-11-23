@@ -31,3 +31,13 @@ Una fila por caso de test. La entrada (acciones de la persona y respuesta de la 
 | `PaginaEntrenamientosDeAlumnos.int.test.tsx` › alumno sin entrenamientos | RN-UI-ENT-04 | Int | `items: []`, `total: 0` | `Este alumno todavía no tiene entrenamientos.` | ✅ | 23/11/2026 |
 | `PaginaEntrenamientosDeAlumnos.int.test.tsx` › sin alumnos vinculados | RN-UI-ENT-04 | Int | `GET /identidad/alumnos` responde `[]` | `Todavía no tenés alumnos vinculados.`; no hay selector | ✅ | 23/11/2026 |
 | `PaginaEntrenamientosDeAlumnos.int.test.tsx` › opción del menú | RN-UI-IDE-01 | Int | Sesión de Profesor | Link `Entrenamientos` que lleva a `/profesor/entrenamientos` | ✅ | 23/11/2026 |
+
+## US15 — Finalizar y mostrar resumen
+
+| Test (archivo › caso) | Regla | Nivel | Entrada | Esperado | Obtenido (último run) | Fecha |
+| :-- | :-- | :-- | :-- | :-- | :-- | :-- |
+| `finalizar-entrenamiento/PaginaResumenEntrenamiento.int.test.tsx` › finaliza sin series | RN-ENT-05, 06, 09, 17 | Integración | entrenamiento en curso sin series; finalización 30 minutos | muestra 0 kg, 30 minutos y sin grupos | = esperado (laptop) | 22/11/2026 |
+| `finalizar-entrenamiento/ResumenPersistido.int.test.tsx` › muestra resumen y conserva al recargar | RN-ENT-05, 06, 09, 17 | Integración | resumen 540 kg, Espalda y Brazos | muestra volumen, grupos y duración después de recargar | = esperado (laptop) | 22/11/2026 |
+| `finalizar-entrenamiento/ResumenPersistido.int.test.tsx` › error y acceso sin sesión | RN-ENT-19, 20 | Integración | error de finalización y alumno sin sesión | muestra error y protege la ruta | = esperado (laptop) | 22/11/2026 |
+
+Comprobación por mutación US15: el cálculo de peso corporal con carga extra y la visualización de 540 kg fallaron al alterarse; se restauraron los archivos con las mismas huellas que las versiones aprobadas.
