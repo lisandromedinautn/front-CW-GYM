@@ -66,7 +66,7 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | planificacion | `PaginaRutinaDelDia.tsx` (`presentacion/rutina-del-dia/`, ruta `/alumno/rutina-del-dia`) | `usarRutinaDelDia.ts` (`aplicacion/consultar-rutina-del-dia/`) | `GET /planificacion/mi-rutina-del-dia` | US08 | ✅ |
 | planificacion | `mi-plan/PaginaMiPlan.tsx` | `consultar-plan-del-alumno/usarMiPlan.ts` | `GET /planificacion/mi-plan` | US11 | ✅ `PaginaMiPlan.int.test.tsx` (9 casos) |
 | entrenamiento | `AccionesEntrenamiento.tsx`, `PaginaEntrenamientoEnCurso.tsx` (`/alumno/entrenamiento`) | `usarIniciarEntrenamiento.ts`, `usarEntrenamientoEnCurso.ts` | `POST /entrenamiento/entrenamientos`, `GET /entrenamiento/mi-entrenamiento-en-curso` | US13 | ✅ `entrenamiento.int.test.tsx` |
-| entrenamiento | `PaginaEntrenamientoEnCurso.tsx` (registro de series) | `usarRegistrarSerie.ts` | `POST .../:id/series` | US14 | 📄 |
+| entrenamiento | `PaginaEntrenamientoEnCurso.tsx` y `ListaSeries.tsx` (registro de series en `/alumno/entrenamiento`) | `usarRegistrarSerie.ts` (`aplicacion/registrar-serie/`) | `POST /entrenamiento/entrenamientos/:id/series` | US14 | ✅ `RegistrarSerie.int.test.tsx` (8 casos); dominio `serie/serie.ts` (validación, `serie.test.ts`) y `serie/filasSeries.ts` (filas por bloque y vuelta) |
 | entrenamiento | `PaginaResumenEntrenamiento.tsx` | `usarFinalizarEntrenamiento.ts`, `usarRegistrarPercepcion.ts` | `POST .../:id/finalizacion`, `PUT .../:id/percepcion` | US15, US16, US17 | 📄 |
 | entrenamiento | `PaginaEntrenamientosDeAlumnos.tsx` | `usarEntrenamientosDeAlumnos.ts` | `GET /entrenamiento/alumnos/:alumnoId/entrenamientos` | US18 | 📄 |
 
@@ -77,7 +77,7 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | `src/modulos/identidad/infraestructura/api/apiIdentidad.ts` | Ingreso, alta de profesor, código de profesor y vínculo del alumno | ✅ |
 | `src/modulos/catalogo/infraestructura/api/apiCatalogo.ts` | Consulta paginada de ejercicios con filtros | ✅ |
 | `src/modulos/planificacion/infraestructura/api/apiPlanificacion.ts` | Catálogo para el editor, listado, alta y renombrado de rutinas; alumnos del profesor, rutinas y alta de plan (US07); rutina del día del alumno (US08) | ✅ |
-| `src/modulos/entrenamiento/infraestructura/api/apiEntrenamiento.ts` | Inicio y consulta del entrenamiento (US13) | ✅ |
+| `src/modulos/entrenamiento/infraestructura/api/apiEntrenamiento.ts` | Inicio y consulta del entrenamiento (US13); registro de una serie realizada (US14) | ✅ |
 
 ## Compartido (`src/compartido/`)
 

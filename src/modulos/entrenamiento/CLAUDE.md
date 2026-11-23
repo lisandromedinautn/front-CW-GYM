@@ -24,7 +24,7 @@ Ejecución del entrenamiento (iniciar, registrar series y finalizar), resumen co
 | Pantalla (`presentacion/`) | Hook (`aplicacion/`) | US |
 | :-- | :-- | :-- |
 | `AccionesEntrenamiento.tsx`, `PaginaEntrenamientoEnCurso.tsx` ✅ | `usarIniciarEntrenamiento.ts`, `usarEntrenamientoEnCurso.ts` ✅ | US13 |
-| `PaginaEntrenamientoEnCurso.tsx` | `usarRegistrarSerie.ts` | US14 |
+| `PaginaEntrenamientoEnCurso.tsx`, `ListaSeries.tsx` ✅ | `usarRegistrarSerie.ts` ✅ | US14 |
 | `PaginaResumenEntrenamiento.tsx` | `usarFinalizarEntrenamiento.ts`, `usarRegistrarPercepcion.ts` | US15, US16, US17 |
 | `PaginaEntrenamientosDeAlumnos.tsx` | `usarEntrenamientosDeAlumnos.ts` | US18 |
 
@@ -39,3 +39,15 @@ Ejecución del entrenamiento (iniciar, registrar series y finalizar), resumen co
 
 * La raíz de rutas compone las acciones de Entrenamiento en «Mi rutina del día» sin que Planificación dependa de otro módulo. Solo hay botón de inicio con rutina disponible y sin entrenamiento en curso.
 * `/alumno/entrenamiento` consulta al servidor al abrirse o recargarse. En curso se muestra el contador desde `inicio`; abandonado se muestra sin contador. Desde la rutina del día se puede ver el abandono e iniciar la rutina de hoy si corresponde.
+
+## Decisiones de implementación (CG-52, US14)
+
+Decididas por Ulises el 22/11/2026.
+
+* El registro vive en `/alumno/entrenamiento`, debajo del contador. Bloques y circuitos se muestran por su `orden`: una fila por serie de bloque ("Serie N") y una por ejercicio en cada vuelta de circuito ("Vuelta N"), con lo prescripto al lado de los campos (`dominio/serie/filasSeries.ts`).
+* Los campos vienen precargados con lo prescripto, o con lo ya registrado si la serie se registró antes: si el alumno hizo lo indicado, alcanza con un clic en "Registrar" (RN-UI-ENT-01, OKR O3). No hay diálogo de confirmación.
+* El campo de peso solo aparece si la serie prescripta tiene peso ("y peso si corresponde", RN-ENT-03). El back igual lo acepta en cualquier serie.
+* Antes de enviar se valida lo mismo que el back (`dominio/serie/serie.ts`): medida entera ≥ 0 obligatoria y peso ≥ 0 opcional. El error se enlaza al campo con `aria-invalid` y `aria-describedby`.
+* Registrar otra vez la misma serie la corrige: se envía la misma clave (`orden`, `numero`, `posicion`) y la fila muestra la respuesta del back.
+* Abandonado (al abrir, o porque el back responde `409 RN-ENT-20` al registrar): se muestra el mensaje del back y la lista queda de solo lectura, con las series ya registradas. RN-ENT-04 (finalizado) se suma con US15.
+* El tipo `Entrenamiento` del front tolera `rutina` sin `bloques` o `circuitos` y la ausencia de `series`, porque las respuestas falsas de los tests de US13 no los traen.
