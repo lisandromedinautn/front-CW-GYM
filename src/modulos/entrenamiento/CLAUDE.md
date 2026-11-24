@@ -21,6 +21,7 @@ Ejecución del entrenamiento (iniciar, registrar series y finalizar), resumen co
 | RN-UI-ENT-03 | Durante el entrenamiento en curso se muestra un paso por vez (una serie de bloque o un ejercicio en una vuelta de circuito), con el GIF del ejercicio y su atribución si lo tiene. Registrar avanza al paso siguiente; "Anterior" y "Siguiente" mueven sin registrar. El contador está siempre visible | Vigente |
 | RN-ENT-18 | El profesor solo elige entre sus alumnos vinculados; si el back responde `RN-ENT-18`, se muestra su mensaje | Vigente |
 | RN-UI-ENT-04 | El profesor elige uno de sus alumnos vinculados y ve sus entrenamientos del más nuevo al más viejo, paginados, cada uno con fecha y hora de inicio (hora de Argentina), rutina, estado, peso del día, cuántas series registró sobre el total y cada serie realizada junto a lo prescripto. En un entrenamiento finalizado con percepción, también "RPE: N · Sensación de fuerza: N" (US17) | Vigente |
+| RN-UI-ENT-05 | Al finalizar, el resumen ofrece "Volver al inicio", que lleva a Mi rutina del día | Vigente |
 
 ## Pantallas y hooks
 
@@ -43,6 +44,7 @@ Ejecución del entrenamiento (iniciar, registrar series y finalizar), resumen co
 | 22/11/2026 | Nueva RN-UI-ENT-03 | Registro paso a paso con GIF y contador siempre visible (US14, T14) | Ulises |
 | 24/11/2026 | RN-ENT-13 y RN-ENT-17 | Visualización de récords personales en el resumen de finalización (US16) | Ramiro |
 | 24/11/2026 | RN-ENT-16 (UI) y RN-UI-ENT-04 | La percepción se carga una sola vez, con los dos campos obligatorios, desde el resumen; el profesor la ve en los entrenamientos de alumnos (US17, decisión 46) | Ulises |
+| 24/11/2026 | Nueva RN-UI-ENT-05 | Al finalizar, el resumen ofrece "Volver al inicio" hacia Mi rutina del día (T16) | Lisandro |
 
 ## Decisiones de implementación (CG-46, US13)
 

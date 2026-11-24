@@ -87,3 +87,10 @@ Comprobación por mutación US17 (24/11/2026). En cada caso se rompió la línea
 * e2e: "Percepción mala" cambiado en la tarjeta (cae el e2e).
 
 Ningún caso de la ficha usa la sensación de fuerza 6, así que su máximo no está cubierto. El e2e no tuvo rojo previo, porque el código ya existía cuando se escribió.
+
+
+## T16 — Volver al inicio (confirmada por Lisandro el 24/11/2026)
+
+| Test (archivo › caso) | Regla | Nivel | Entrada | Esperado | Obtenido (último run) | Fecha |
+| :-- | :-- | :-- | :-- | :-- | :-- | :-- |
+| `finalizar-entrenamiento/PaginaResumenEntrenamiento.int.test.tsx` › al finalizar muestra Volver al inicio y lleva a Mi rutina del día | RN-UI-ENT-05 | Integración | finalizar un entrenamiento de un bloque de una serie y tocar "Volver al inicio" | se ve el encabezado de "Mi rutina del día" | = esperado | 24/11/2026 |
