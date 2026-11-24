@@ -59,7 +59,8 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | catalogo | ~~`PaginaRegistrarEjercicio.tsx`~~ solo botón deshabilitado en ListaEjercicios (DT-06) | ~~`usarRegistrarEjercicio.ts`~~ | ~~`POST /catalogo/ejercicios`~~ | US01 (DT-06) | — |
 | catalogo | `ListaEjercicios.tsx` | `usarConsultarEjercicios.ts` | `GET /catalogo/ejercicios/consulta` | T01, T06, T07 | ✅ |
 | planificacion | `PaginaRutinas.tsx` (ruta `/profesor/rutinas`) | `usarConsultarRutinas.ts`, `usarRenombrarRutina.ts` | `GET /planificacion/rutinas`, `PATCH /planificacion/rutinas/:id/nombre` | T06, T08, T09 | ✅ |
-| planificacion | `EditorRutina.tsx` (ruta `/profesor/rutinas`, menú "Rutinas") | `usarCrearRutina.ts`, `usarEjerciciosParaRutina.ts`, `usarEditarRutina.ts` | `GET /catalogo/ejercicios`, `POST /planificacion/rutinas`, `PUT /planificacion/rutinas/:id` | US06, US09, US10 | ✅ crear con bloques (US06), con circuitos (US09) y mixta (US10); editar 📄 |
+| planificacion | `EditorRutina.tsx` (ruta `/profesor/rutinas`, menú "Rutinas") | `usarCrearRutina.ts`, `usarEjerciciosParaRutina.ts` | `GET /catalogo/ejercicios`, `POST /planificacion/rutinas` | US06, US09, US10 | ✅ crear con bloques (US06), con circuitos (US09) y mixta (US10) |
+| planificacion | `editar-rutina/PaginaEditarRutina.tsx` (ruta `/profesor/rutinas/:id`, desde "Ver y editar" en la tarjeta; muestra `EditorRutina` precargado) | `editar-rutina/usarEditarRutina.ts` | `GET /planificacion/rutinas/:id`, `PUT /planificacion/rutinas/:id` | US06 | ✅ |
 | planificacion | `PaginaRutinas.tsx` (acción "Importar como copia") | `usarImportarRutina.ts` | `POST /planificacion/rutinas/:id/importacion` | US20 | ✅ |
 | planificacion | `PaginaCrearPlan.tsx` (ruta `/profesor/planes`) | `usarCrearPlan.ts`, `usarDatosParaPlan.ts` | `GET /identidad/alumnos`, `GET /planificacion/rutinas`, `POST /planificacion/planes` | US07 | ✅ |
 | planificacion | `PaginaPlanes.tsx` (`consultar-planes/`, ruta `/profesor/planes`, menú "Planes"; "Nuevo plan" navega a `/profesor/planes/nuevo`, `crear-plan/PaginaNuevoPlan.tsx`, que muestra `PaginaCrearPlan`) | `usarConsultarPlanes.ts` (`consultar-planes/`) | `GET /planificacion/planes`, `GET /identidad/alumnos` | T13 | ✅ |
@@ -121,6 +122,7 @@ Los tests viven junto a la pantalla o componente que prueban. Las fichas de cada
 | `src/compartido/presentacion/paginador/Paginador.test.tsx` | T06 | ✅ |
 | `src/modulos/planificacion/dominio/rutina/nombreRutina.test.ts` | RN-PLAN-21 | ✅ |
 | `src/modulos/planificacion/presentacion/consultar-rutinas/PaginaRutinas.int.test.tsx` | RN-PLAN-21, 08, T06 | ✅ |
+| `src/modulos/planificacion/presentacion/editar-rutina/PaginaEditarRutina.int.test.tsx` | RN-PLAN-07, 08, 21 (US06) | ✅ |
 | `src/modulos/planificacion/presentacion/crear-plan/PaginaCrearPlan.int.test.tsx` | RN-PLAN-09, 11, 12, 13, 14, US07 | ✅ |
 | `src/modulos/planificacion/presentacion/consultar-planes/PaginaPlanes.int.test.tsx` | RN-PLAN-22, RN-UI-LIS-01, 02, 03 | ✅ |
 | `src/modulos/planificacion/dominio/plan/rutinaDelDia.test.ts` | Objetivos y etiqueta del día (US08) | ✅ |
