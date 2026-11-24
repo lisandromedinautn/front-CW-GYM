@@ -281,3 +281,30 @@ describe('RN-PLAN-22 · si el back falla al listar, el error se muestra en un al
     expect(await screen.findByRole('alert')).toHaveTextContent('No se pudieron cargar los planes');
   });
 });
+
+describe('RN-PLAN-23 · el profesor edita los días de un plan próximo o vigente', () => {
+  it('la tarjeta del plan vigente tiene "Editar días" y lleva a /profesor/planes/:id/dias', async () => {
+    prepararRed();
+    await abrirPaginaComoProfesor();
+
+    const enlace = within(tarjetaCon('Del 01/11/2026 al 28/11/2026')).getByRole('link', {
+      name: 'Editar días',
+    });
+
+    expect(enlace).toHaveAttribute('href', '/profesor/planes/p1/dias');
+  });
+
+  it('el plan próximo también lo ofrece y el finalizado no', async () => {
+    prepararRed();
+    await abrirPaginaComoProfesor();
+
+    expect(
+      within(tarjetaCon('Del 01/12/2026 al 28/12/2026')).getByRole('link', { name: 'Editar días' }),
+    ).toBeInTheDocument();
+    expect(
+      within(tarjetaCon('Del 01/10/2026 al 28/10/2026')).queryByRole('link', {
+        name: 'Editar días',
+      }),
+    ).toBeNull();
+  });
+});

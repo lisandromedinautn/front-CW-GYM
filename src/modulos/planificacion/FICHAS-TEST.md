@@ -10,3 +10,15 @@
 | `PaginaEditarRutina.int.test.tsx` › cambiar el nombre de "Empuje" a "Piernas" y "Guardar cambios" envía el PUT con el nombre y muestra "Piernas" | RN-PLAN-21 | Integración | Nombre Piernas; "Guardar cambios" | PUT con nombre Piernas y press 3x10, 60/120 s; título "Piernas" | = esperado (Vitest, 24/11/2026) | 24/11/2026 |
 
 El 24/11/2026 se quitaron de `PaginaRutinas.int.test.tsx` los 3 tests de renombrar en la tarjeta ("Editar nombre" y "Guardar", "Cancelar" y 409): el lápiz ahora abre el editor. Los reemplazan el cambio de nombre y el 409 de esta tabla. Aprobado por Martina.
+
+## US22 — Editar los días de un plan (confirmadas por Lisandro el 24/11/2026)
+
+Hoy fijo en 24/11/2026; plan del 21/11 al 18/12.
+
+| Test (archivo › caso) | RN | Nivel | Entrada | Esperado | Obtenido (último run) | Fecha |
+| :-- | :-- | :-- | :-- | :-- | :-- | :-- |
+| `consultar-planes/PaginaPlanes.int.test.tsx` › F1 enlace "Editar días" | RN-PLAN-23 | Integración | plan Vigente en el listado | la tarjeta tiene "Editar días" y lleva a `/profesor/planes/:id/dias` | = esperado | 24/11/2026 |
+| `editar-dias-plan/PaginaEditarDiasPlan.int.test.tsx` › F1 grilla | RN-PLAN-23 | Integración | `GET /planificacion/planes/:id` con 28 días | 28 días con su rutina o "Descanso"; los días anteriores al 24/11 sin selector | = esperado | 24/11/2026 |
+| `editar-dias-plan/PaginaEditarDiasPlan.int.test.tsx` › F2 guardar un día | RN-PLAN-23 | Integración | día 10: elegir R y "Guardar"; día 12: elegir "Descanso" y "Guardar" | `PUT .../dias/10` con `{ rutinaId: R }` y `PUT .../dias/12` con `{ rutinaId: null }`; el día muestra lo guardado | = esperado | 24/11/2026 |
+| `editar-dias-plan/PaginaEditarDiasPlan.int.test.tsx` › F3 error del back | RN-PLAN-23 | Integración | `PUT` responde 409 `RN-PLAN-23` | `alert` con el mensaje del back | = esperado | 24/11/2026 |
+

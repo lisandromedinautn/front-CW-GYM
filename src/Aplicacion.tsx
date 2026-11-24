@@ -1,3 +1,4 @@
+import { PaginaEditarDiasPlan } from './modulos/planificacion/presentacion/editar-dias-plan/PaginaEditarDiasPlan.tsx';
 import { PaginaAlumnosDelPlan } from './modulos/planificacion/presentacion/alumnos-del-plan/PaginaAlumnosDelPlan.tsx';
 import type { ReactElement, ReactNode } from 'react';
 import { Navigate, Route, Routes } from 'react-router';
@@ -60,6 +61,7 @@ const SUBPAGINAS: Record<Rol, Record<string, ReactElement>> = {
     '/profesor/rutinas/:id': <PaginaEditarRutina />,
     '/profesor/planes/nuevo': <PaginaNuevoPlan />,
     '/profesor/planes/:id/alumnos': <PaginaAlumnosDelPlan />,
+    '/profesor/planes/:id/dias': <PaginaEditarDiasPlan />,
   },
   Alumno: { [RUTA_ENTRENAMIENTO]: <PaginaEntrenamientoEnCurso /> },
 };

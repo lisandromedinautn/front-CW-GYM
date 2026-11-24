@@ -133,6 +133,9 @@ function TarjetaPlan(props: { plan: ResumenPlan; nombres: Map<string, string> })
         </ul>
       )}
       {plan.estado === 'vigente' && <Link to={`/profesor/planes/${plan.id}/alumnos`}>Alumnos</Link>}
+      {plan.estado !== 'finalizado' && (
+        <Link to={`/profesor/planes/${plan.id}/dias`}>Editar días</Link>
+      )}
       <p className="tenue">{`${plan.diasConRutina} días con rutina · ${plan.diasDeDescanso} de descanso`}</p>
     </li>
   );

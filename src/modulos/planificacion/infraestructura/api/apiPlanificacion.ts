@@ -1,6 +1,12 @@
 import type { Pagina } from '../../../../compartido/dominio/paginacion/paginacion.ts';
 import { pedir } from '../../../../compartido/infraestructura/cliente-http/clienteHttp.ts';
-import type { AlumnoDelProfesor, PedidoPlan, PlanCreado } from '../../dominio/plan/plan.ts';
+import type {
+  AlumnoDelProfesor,
+  DiaConsultado,
+  PedidoPlan,
+  PlanConDias,
+  PlanCreado,
+} from '../../dominio/plan/plan.ts';
 import type { RutinaDelDia } from '../../dominio/plan/rutinaDelDia.ts';
 import type { FiltrosPlanes, ResumenPlan } from '../../dominio/plan/listadoPlanes.ts';
 import type { ResultadoMiPlan } from '../../dominio/plan/miPlan.ts';
@@ -105,4 +111,21 @@ export function agregarAlumnoAlPlan(id: string, alumnoId: string): Promise<void>
 
 export function quitarAlumnoDelPlan(id: string, alumnoId: string): Promise<void> {
   return pedir(`/planificacion/planes/${id}/alumnos/${alumnoId}`, { metodo: 'DELETE' });
+}
+
+/** RN-PLAN-23: el plan con sus 28 días. */
+export function obtenerPlan(id: string): Promise<PlanConDias> {
+  return pedir<PlanConDias>(`/planificacion/planes/${id}`);
+}
+
+/** RN-PLAN-23: asigna una rutina (o descanso con `null`) a un día del plan. */
+export function guardarDiaDelPlan(
+  id: string,
+  numero: number,
+  rutinaId: string | null,
+): Promise<DiaConsultado> {
+  return pedir<DiaConsultado>(`/planificacion/planes/${id}/dias/${numero}`, {
+    metodo: 'PUT',
+    cuerpo: { rutinaId },
+  });
 }
