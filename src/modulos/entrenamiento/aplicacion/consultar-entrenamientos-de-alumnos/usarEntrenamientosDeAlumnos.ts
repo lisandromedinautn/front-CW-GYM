@@ -13,8 +13,12 @@ import {
 
 export const ENTRENAMIENTOS_POR_PAGINA = 10;
 
-/** US18 (RN-ENT-18, RN-UI-ENT-04): entrenamientos del alumno elegido, paginados. */
-export function usarEntrenamientosDeAlumnos() {
+/**
+ * US18 (RN-ENT-18, RN-UI-ENT-04): entrenamientos del alumno elegido, paginados.
+ * `alumnoInicial` (desde `?alumno=` de la URL, RN-UI-NOT-02) se elige al cargar solo si
+ * está entre los alumnos vinculados; si no, no se elige nada.
+ */
+export function usarEntrenamientosDeAlumnos(alumnoInicial = '') {
   const [alumnos, setAlumnos] = useState<AlumnoVinculado[] | null>(null);
   const [alumnoId, setAlumnoId] = useState('');
   const [pagina, setPagina] = useState(1);
@@ -35,6 +39,9 @@ export function usarEntrenamientosDeAlumnos() {
             `${uno.apellido} ${uno.nombre}`.localeCompare(`${otro.apellido} ${otro.nombre}`),
           ),
         );
+        if (alumnoInicial && lista.some((alumno) => alumno.id === alumnoInicial)) {
+          setAlumnoId(alumnoInicial);
+        }
       })
       .catch((e: unknown) => {
         if (vigente) setError(esErrorApi(e) ? e.mensaje : 'No se pudieron cargar tus alumnos');
@@ -42,7 +49,7 @@ export function usarEntrenamientosDeAlumnos() {
     return () => {
       vigente = false;
     };
-  }, []);
+  }, [alumnoInicial]);
 
   useEffect(() => {
     if (!alumnoId) return;

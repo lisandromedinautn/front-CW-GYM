@@ -1,3 +1,4 @@
+import { useSearchParams } from 'react-router';
 import { Paginador } from '../../../../compartido/presentacion/paginador/Paginador.tsx';
 import { usarEntrenamientosDeAlumnos } from '../../aplicacion/consultar-entrenamientos-de-alumnos/usarEntrenamientosDeAlumnos.ts';
 import {
@@ -14,7 +15,8 @@ export const RUTA_ENTRENAMIENTOS_DE_ALUMNOS = '/profesor/entrenamientos';
 
 /** US18: el profesor consulta los entrenamientos de un alumno vinculado (RN-ENT-18, RN-UI-ENT-04). */
 export function PaginaEntrenamientosDeAlumnos() {
-  const consulta = usarEntrenamientosDeAlumnos();
+  const [params] = useSearchParams();
+  const consulta = usarEntrenamientosDeAlumnos(params.get('alumno') ?? '');
   const { alumnos, alumnoId, resultado, error } = consulta;
 
   return (
