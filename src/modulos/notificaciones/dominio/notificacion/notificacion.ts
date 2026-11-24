@@ -25,8 +25,14 @@ export interface Percepcion {
   sensacionFuerza: number;
 }
 
+export type TipoNotificacion = 'entrenamiento' | 'alerta-incumplimiento';
+
 export interface Notificacion {
   id: string;
+  /** RN-NOT-08: la alerta de incumplimiento repetido es otro tipo de notificación. */
+  tipo: TipoNotificacion;
+  /** Solo en las alertas: los 3 entrenamientos seguidos por debajo. */
+  entrenamientos?: { id: string; fecha: string; rutina: string }[];
   creada: string;
   leida: boolean;
   gravedad: Gravedad;
@@ -85,6 +91,11 @@ const FORMATO = new Intl.DateTimeFormat('es-AR', {
   minute: '2-digit',
   hourCycle: 'h23',
 });
+
+/** RN-NOT-08: fecha en hora de Argentina (dd/mm/aaaa). */
+export function fechaCorta(iso: string): string {
+  return fechaHora(iso).slice(0, 10);
+}
 
 /** RN-NOT-01: fecha y hora en hora de Argentina (dd/mm/aaaa hh:mm). */
 export function fechaHora(iso: string): string {
