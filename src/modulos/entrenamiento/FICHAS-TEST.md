@@ -40,6 +40,8 @@ Una fila por caso de test. La entrada (acciones de la persona y respuesta de la 
 | `finalizar-entrenamiento/ResumenPersistido.int.test.tsx` › muestra resumen y conserva al recargar | RN-ENT-05, 06, 09, 17 | Integración | resumen 540 kg, Espalda y Brazos | muestra volumen, grupos y duración después de recargar | = esperado (laptop) | 22/11/2026 |
 | `finalizar-entrenamiento/ResumenPersistido.int.test.tsx` › error y acceso sin sesión | RN-ENT-19, 20 | Integración | error de finalización y alumno sin sesión | muestra error y protege la ruta | = esperado (laptop) | 22/11/2026 |
 
+23/11/2026: las dos pruebas que finalizan (`finaliza sin series` y `error`) pasan a usar una rutina con un bloque de una serie, porque «Finalizar entrenamiento» está solo en el último paso. Cambia solo la entrada (la rutina falsa); los esperados siguen iguales. Aprobado por Ulises.
+
 Comprobación por mutación US15: el cálculo de peso corporal con carga extra y la visualización de 540 kg fallaron al alterarse; se restauraron los archivos con las mismas huellas que las versiones aprobadas.
 
 ## US16 — Récords personales (front)
@@ -53,3 +55,35 @@ Comprobación por mutación US15: el cálculo de peso corporal con carga extra y
 | `aplanarRecords.test.ts` › etiqueta por tipo | RN-ENT-13 | Unit | los 4 tipos | `'Repeticiones'`, `'Volumen'`, `'1RM'`, `'Tiempo'` | = esperado | 23/11/2026 |
 | `aplanarRecords.test.ts` › unidad por tipo | RN-ENT-13 | Unit | los 4 tipos | `''`, `'kg'`, `'kg'`, `'s'` | = esperado | 23/11/2026 |
 | `finalizar-entrenamiento/PaginaResumenEntrenamiento.int.test.tsx` › muestra los récords personales devueltos al finalizar | RN-ENT-13, 17 | Integración | Respuesta de finalización con un récord de 12 a 13 repeticiones para kettlebell hang clean | Muestra el encabezado de récords, el ejercicio y `Repeticiones: 12 → 13` | = esperado | 24/11/2026 |
+
+## T15 — e2e de navegador (confirmadas por Ulises el 23/11/2026)
+
+Rutina de prueba: un bloque de lever chest press, 2 series de 10 repeticiones con 30 kg (2 pasos). Volumen esperado según RN-ENT-06 y 07: 30 × 10 × 2 = 600 kg.
+
+| Test (archivo › caso) | Regla | Nivel | Entrada | Esperado | Obtenido (último run) | Fecha |
+| :-- | :-- | :-- | :-- | :-- | :-- | :-- |
+| `e2e/entrenamiento/entrenar.e2e.ts` › iniciar y registrar | RN-ENT-01, 02, 03, RN-UI-ENT-03 | e2e navegador | alumno14 con plan de hoy (por API) toca "Iniciar entrenamiento" y "Registrar" en el paso 1 | contador visible y "Paso 2 de 2" | = esperado | 23/11/2026 |
+| `e2e/entrenamiento/entrenar.e2e.ts` › recargar retoma | RN-UI-ENT-02 | e2e navegador | recarga la página | sigue en "Paso 2 de 2"; con "Anterior", el paso 1 muestra "Registrada: 10 repeticiones · 30 kg" | = esperado | 23/11/2026 |
+| `e2e/entrenamiento/entrenar.e2e.ts` › finalizar y ver resumen | RN-ENT-05, 06, 17 | e2e navegador | registra el paso 2 y toca "Finalizar entrenamiento" (solo en el último paso) | heading "Resumen del entrenamiento" y "Peso total levantado: 600 kg" | = esperado | 23/11/2026 |
+| `e2e/entrenamiento/seguimiento.e2e.ts` › el profesor ve lo registrado | RN-ENT-18, RN-UI-ENT-04 | e2e navegador | alumno15 con plan de hoy inicia y registra la serie 1 por API; profesor03 entra a "Entrenamientos" y elige a alumno15 | tarjeta con "En curso" y "Series registradas: 1 de 2" | = esperado | 23/11/2026 |
+
+## US17 — Percepción del alumno (confirmadas por Ulises el 24/11/2026)
+
+| Test (archivo › caso) | Regla | Nivel | Entrada | Esperado | Obtenido (último run) | Fecha |
+| :-- | :-- | :-- | :-- | :-- | :-- | :-- |
+| `presentacion/finalizar-entrenamiento/PercepcionEnResumen.int.test.tsx` › guarda la percepción | RN-ENT-16 | Int | Entrenamiento finalizado sin percepción. Se escribe RPE 9 y sensación 2 y se hace clic en "Guardar percepción"; el `POST` responde `201 { rpe: 9, sensacionFuerza: 2 }` | Se envía `{ rpe: 9, sensacionFuerza: 2 }`. Se ve "RPE: 9 · Sensación de fuerza: 2" y el formulario desaparece | = esperado (verde el 24/11/2026) | 24/11/2026 |
+| `PercepcionEnResumen.int.test.tsx` › ya cargada | RN-ENT-16 | Int | Entrenamiento finalizado que trae `percepcion: { rpe: 9, sensacionFuerza: 2 }` | Se ve "RPE: 9 · Sensación de fuerza: 2" y no hay botón "Guardar percepción" | = esperado (verde el 24/11/2026) | 24/11/2026 |
+| `PercepcionEnResumen.int.test.tsx` › valida antes de enviar | RN-ENT-14, 15 | Int | Tres envíos: RPE 11 con sensación 3; RPE 5 con sensación 0; los dos campos vacíos | "El RPE es un entero de 1 a 10" y "La sensación de fuerza es un entero de 1 a 5" en el campo que corresponde (con los dos vacíos, los dos mensajes). No se envía ningún `POST` | = esperado (verde el 24/11/2026) | 24/11/2026 |
+| `PercepcionEnResumen.int.test.tsx` › error del back | RN-ENT-16 | Int | El `POST` responde 409 `{ codigo: 'RN-ENT-16', mensaje }` | Un `alert` con el mensaje del back | = esperado (verde el 24/11/2026) | 24/11/2026 |
+| `presentacion/entrenamientos-de-alumnos/PaginaEntrenamientosDeAlumnos.int.test.tsx` › (`describe` nuevo) muestra la percepción | RN-UI-ENT-04 | Int | Entrenamiento finalizado con `percepcion: { rpe: 9, sensacionFuerza: 2 }` | Se ve "RPE: 9 · Sensación de fuerza: 2" | = esperado (verde el 24/11/2026) | 24/11/2026 |
+| `e2e/entrenamiento/percepcion.e2e.ts` › el profesor recibe la percepción mala | RN-ENT-16 · RN-NOT-06 | e2e navegador | Por la API: alumno17 vinculado a profesor03, plan de hoy de 2 series, inicia, registra las 2 completas y finaliza. Por la interfaz, en el resumen, carga RPE 10 y sensación 1 | El resumen muestra "RPE: 10 · Sensación de fuerza: 1". profesor03 ve "Notificaciones (1)" y, en la bandeja, "Grave" y "Percepción mala" | = esperado (verde el 24/11/2026) | 24/11/2026 |
+
+Comprobación por mutación US17 (24/11/2026). En cada caso se rompió la línea de producción, el test dio rojo y se restauró:
+
+* RPE máximo 10 → 11, sensación mínima 1 → 0 y la validación salteada (cae "valida antes de enviar").
+* Formulario que no se oculta con la percepción cargada (caen "guarda" y "ya cargada").
+* Mensaje del back reemplazado (cae "error del back").
+* US18 sin la percepción (cae su caso).
+* e2e: "Percepción mala" cambiado en la tarjeta (cae el e2e).
+
+Ningún caso de la ficha usa la sensación de fuerza 6, así que su máximo no está cubierto. El e2e no tuvo rojo previo, porque el código ya existía cuando se escribió.

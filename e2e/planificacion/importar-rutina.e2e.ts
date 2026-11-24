@@ -61,7 +61,10 @@ test.describe('RN-PLAN-08, 21 · importar una rutina como copia', () => {
     await expect(page.getByRole('heading', { name: original.nombre, exact: true })).toBeVisible();
 
     await page.getByRole('link', { name: 'Planes', exact: true }).click();
-    const dia = page.getByRole('combobox', { name: 'Rutina del día 1', exact: true });
+    // Desde T13, "Planes" abre el listado y el formulario está en "Nuevo plan".
+    await page.getByRole('button', { name: 'Nuevo plan' }).click();
+    // El nombre accesible del select incluye sus opciones: se distingue "día 1" de "día 10".
+    const dia = page.getByRole('combobox', { name: /^Rutina del día 1(?!\d)/ });
     await dia.selectOption(copia.id);
     await expect(dia).toHaveValue(copia.id);
     await expect(dia.locator('option:checked')).toHaveText(copia.nombre);

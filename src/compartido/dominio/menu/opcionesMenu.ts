@@ -17,6 +17,7 @@ export const OPCIONES_MENU: Record<Rol, OpcionMenu[]> = {
     { etiqueta: 'Rutinas', ruta: '/profesor/rutinas' },
     { etiqueta: 'Planes', ruta: '/profesor/planes' },
     { etiqueta: 'Entrenamientos', ruta: '/profesor/entrenamientos' },
+    { etiqueta: 'Notificaciones', ruta: '/profesor/notificaciones' },
   ],
   Alumno: [
     { etiqueta: 'Mi rutina del día', ruta: '/alumno/rutina-del-dia' },

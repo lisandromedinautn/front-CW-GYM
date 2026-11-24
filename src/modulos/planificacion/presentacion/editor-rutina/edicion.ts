@@ -9,6 +9,7 @@ import type {
   PedidoBloque,
   PedidoCircuito,
   PedidoEjercicioCircuito,
+  RutinaCreada,
 } from '../../dominio/rutina/rutina.ts';
 
 /** Estado del editor mientras se escribe: todo como texto, tal cual lo carga el profesor. */
@@ -59,6 +60,41 @@ export const bloqueVacio = (): BloqueEnEdicion => ({
 });
 
 export const ejercicioCircuitoVacio = objetivoVacio;
+
+const texto = (valor: number | null) => (valor === null ? '' : String(valor));
+
+/** US06: la rutina guardada como estado del editor, en su orden (US10: sin `orden`, bloques primero). */
+export function rutinaAEdicion(rutina: RutinaCreada) {
+  const objetivo = (o: RutinaCreada['circuitos'][number]['ejercicios'][number]) => ({
+    clave: nuevaClave(),
+    ejercicioId: o.ejercicioId,
+    repeticiones: texto(o.repeticiones),
+    segundos: texto(o.segundos),
+    pesoKg: texto(o.pesoKg),
+  });
+  const bloques = rutina.bloques.map((b) => ({
+    ...objetivo(b),
+    series: String(b.series),
+    micropausa: String(b.micropausaSegundos),
+    macropausa: String(b.macropausaSegundos),
+  }));
+  const circuitos = rutina.circuitos.map((c) => ({
+    clave: nuevaClave(),
+    vueltas: String(c.vueltas),
+    macropausa: String(c.macropausaSegundos),
+    ejercicios: c.ejercicios.map(objetivo),
+  }));
+  const secuencia = [
+    ...rutina.bloques.map((b, i) => ({ orden: b.orden ?? i + 1, clave: bloques[i].clave })),
+    ...rutina.circuitos.map((c, i) => ({
+      orden: c.orden ?? rutina.bloques.length + i + 1,
+      clave: circuitos[i].clave,
+    })),
+  ]
+    .sort((a, b) => a.orden - b.orden)
+    .map((e) => e.clave);
+  return { bloques, circuitos, secuencia };
+}
 
 /** Un circuito nuevo arranca con 2 ejercicios, el mínimo de RN-PLAN-03 (decidido el 10/11/2026). */
 export const circuitoVacio = (): CircuitoEnEdicion => ({

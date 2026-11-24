@@ -16,7 +16,7 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | `docs/MODELOS-IA.md` | Modelos, delegación y plantillas (idéntica a la del back) |
 | `.claude/settings.json` | Permisos: confirmación al editar tests e instalar paquetes |
 | `.claude/skills/tdd`, `.claude/skills/coverage` | Skills de TDD y cobertura |
-| `e2e/<modulo>/` | Tests e2e de Playwright. ✅ `e2e/planificacion/crear-rutina.e2e.ts` (US06), `crear-rutina-circuitos.e2e.ts` (US09), `crear-rutina-mixta.e2e.ts` (US10) e `importar-rutina.e2e.ts` (US20) |
+| `e2e/<modulo>/` | Tests e2e de Playwright. ✅ `e2e/planificacion/crear-rutina.e2e.ts` (US06), `crear-rutina-circuitos.e2e.ts` (US09), `crear-rutina-mixta.e2e.ts` (US10), `importar-rutina.e2e.ts` (US20) y `crear-plan.e2e.ts` (T15); `e2e/identidad/ingreso-y-vinculo.e2e.ts`, `e2e/entrenamiento/entrenar.e2e.ts` y `seguimiento.e2e.ts` (T15); soporte en `e2e/soporte/` (`api.ts` prepara datos por la API, `sesion.ts` ingresa y navega el menú) |
 
 ## Configuración y arranque
 
@@ -45,6 +45,7 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | Catálogo | `src/modulos/catalogo/CLAUDE.md` | `src/modulos/catalogo/FICHAS-TEST.md` | `../back-CW-GYM/src/modulos/catalogo/CLAUDE.md` |
 | Planificación | `src/modulos/planificacion/CLAUDE.md` | `src/modulos/planificacion/FICHAS-TEST.md` | `../back-CW-GYM/src/modulos/planificacion/CLAUDE.md` |
 | Entrenamiento | `src/modulos/entrenamiento/CLAUDE.md` | `src/modulos/entrenamiento/FICHAS-TEST.md` | `../back-CW-GYM/src/modulos/entrenamiento/CLAUDE.md` |
+| Notificaciones (US21) | `src/modulos/notificaciones/CLAUDE.md` | `src/modulos/notificaciones/FICHAS-TEST.md` | `../back-CW-GYM/src/modulos/notificaciones/CLAUDE.md` |
 | Compartido | `src/compartido/CLAUDE.md` | — | — |
 
 ## Pantallas → hook → endpoint del back
@@ -57,8 +58,9 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | identidad | `PaginaVincularProfesor.tsx` | `usarVincularAlumno.ts` | `POST /identidad/alumnos/vinculo` | US05 | ✅ |
 | catalogo | ~~`PaginaRegistrarEjercicio.tsx`~~ solo botón deshabilitado en ListaEjercicios (DT-06) | ~~`usarRegistrarEjercicio.ts`~~ | ~~`POST /catalogo/ejercicios`~~ | US01 (DT-06) | — |
 | catalogo | `ListaEjercicios.tsx` | `usarConsultarEjercicios.ts` | `GET /catalogo/ejercicios/consulta` | T01, T06, T07 | ✅ |
-| planificacion | `PaginaRutinas.tsx` (ruta `/profesor/rutinas`) | `usarConsultarRutinas.ts`, `usarRenombrarRutina.ts` | `GET /planificacion/rutinas`, `PATCH /planificacion/rutinas/:id/nombre` | T06, T08, T09 | ✅ |
-| planificacion | `EditorRutina.tsx` (ruta `/profesor/rutinas`, menú "Rutinas") | `usarCrearRutina.ts`, `usarEjerciciosParaRutina.ts`, `usarEditarRutina.ts` | `GET /catalogo/ejercicios`, `POST /planificacion/rutinas`, `PUT /planificacion/rutinas/:id` | US06, US09, US10 | ✅ crear con bloques (US06), con circuitos (US09) y mixta (US10); editar 📄 |
+| planificacion | `PaginaRutinas.tsx` (ruta `/profesor/rutinas`) | `usarConsultarRutinas.ts` | `GET /planificacion/rutinas` | T06, T08, T09 | ✅ (el lápiz abre el editor de la rutina) |
+| planificacion | `EditorRutina.tsx` (ruta `/profesor/rutinas`, menú "Rutinas") | `usarCrearRutina.ts`, `usarEjerciciosParaRutina.ts` | `GET /catalogo/ejercicios`, `POST /planificacion/rutinas` | US06, US09, US10 | ✅ crear con bloques (US06), con circuitos (US09) y mixta (US10) |
+| planificacion | `editar-rutina/PaginaEditarRutina.tsx` (ruta `/profesor/rutinas/:id`, desde el lápiz "Editar rutina" de la tarjeta; muestra `EditorRutina` precargado) | `editar-rutina/usarEditarRutina.ts` | `GET /planificacion/rutinas/:id`, `PUT /planificacion/rutinas/:id` | US06 | ✅ |
 | planificacion | `PaginaRutinas.tsx` (acción "Importar como copia") | `usarImportarRutina.ts` | `POST /planificacion/rutinas/:id/importacion` | US20 | ✅ |
 | planificacion | `PaginaCrearPlan.tsx` (ruta `/profesor/planes`) | `usarCrearPlan.ts`, `usarDatosParaPlan.ts` | `GET /identidad/alumnos`, `GET /planificacion/rutinas`, `POST /planificacion/planes` | US07 | ✅ |
 | planificacion | `PaginaPlanes.tsx` (`consultar-planes/`, ruta `/profesor/planes`, menú "Planes"; "Nuevo plan" navega a `/profesor/planes/nuevo`, `crear-plan/PaginaNuevoPlan.tsx`, que muestra `PaginaCrearPlan`) | `usarConsultarPlanes.ts` (`consultar-planes/`) | `GET /planificacion/planes`, `GET /identidad/alumnos` | T13 | ✅ |
@@ -66,10 +68,13 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | planificacion | `PaginaRutinaDelDia.tsx` (`presentacion/rutina-del-dia/`, ruta `/alumno/rutina-del-dia`) | `usarRutinaDelDia.ts` (`aplicacion/consultar-rutina-del-dia/`) | `GET /planificacion/mi-rutina-del-dia` | US08 | ✅ |
 | planificacion | `mi-plan/PaginaMiPlan.tsx` | `consultar-plan-del-alumno/usarMiPlan.ts` | `GET /planificacion/mi-plan` | US11 | ✅ `PaginaMiPlan.int.test.tsx` (9 casos) |
 | entrenamiento | `AccionesEntrenamiento.tsx`, `PaginaEntrenamientoEnCurso.tsx` (`/alumno/entrenamiento`) | `usarIniciarEntrenamiento.ts`, `usarEntrenamientoEnCurso.ts` | `POST /entrenamiento/entrenamientos`, `GET /entrenamiento/mi-entrenamiento-en-curso` | US13 | ✅ `entrenamiento.int.test.tsx` |
-| entrenamiento | `PaginaEntrenamientoEnCurso.tsx` (percepción en el resumen o desde el entrenamiento finalizado) | `usarRegistrarPercepcion.ts` | `PUT /entrenamiento/entrenamientos/:id/percepcion` | US17 | 📄 |
-| entrenamiento | `ResumenEntrenamiento.tsx`, `PaginaEntrenamientoEnCurso.tsx` | `usarFinalizarEntrenamiento.ts` | `POST /entrenamiento/entrenamientos/:id/finalizacion` | US16 | ✅ Récords recibidos en recordsBatidos y mostrados en el resumen; reutiliza aplanarRecords |
-| entrenamiento | `PaginaResumenEntrenamiento.tsx` (planificada; récords en US16, percepción en US17) | `usarRegistrarPercepcion.ts` | `PUT .../:id/percepcion` | US16, US17 | 📄 |
+| entrenamiento | `PaginaEntrenamientoEnCurso.tsx`, `PasoActual.tsx` (paso a paso), `FormularioSerie.tsx` y `ListaSeries.tsx` (solo lectura si está abandonado), en `/alumno/entrenamiento` | `usarRegistrarSerie.ts` (`aplicacion/registrar-serie/`) | `POST /entrenamiento/entrenamientos/:id/series` | US14 | ✅ `RegistrarSerie.int.test.tsx`; dominio `serie/serie.ts` (validación, `serie.test.ts`) y `serie/filasSeries.ts` (pasos por bloque y vuelta, con el GIF de cada ejercicio, T14) |
+| entrenamiento | `ResumenEntrenamiento.tsx`, `PaginaEntrenamientoEnCurso.tsx` | `usarFinalizarEntrenamiento.ts` | `POST .../:id/finalizacion` | US15 | ✅ 4 pruebas de integración |
+| entrenamiento | `ResumenEntrenamiento.tsx`, `PaginaEntrenamientoEnCurso.tsx` | `usarFinalizarEntrenamiento.ts` | `POST /entrenamiento/entrenamientos/:id/finalizacion` | US16 | ✅ Récords recibidos en `recordsBatidos` y mostrados en el resumen; reutiliza `aplanarRecords` |
+| entrenamiento | `ResumenEntrenamiento.tsx` (formulario de percepción en el resumen del entrenamiento finalizado; percepción también desde el entrenamiento en curso) | `usarRegistrarPercepcion.ts` (`aplicacion/registrar-percepcion/`) | `POST /entrenamiento/entrenamientos/:id/percepcion` | US17 | ✅ `PercepcionDelResumen.tsx`, `PercepcionEnResumen.int.test.tsx` (4 casos), percepción en US18 (`PaginaEntrenamientosDeAlumnos.int.test.tsx`) y `e2e/entrenamiento/percepcion.e2e.ts` |
 | entrenamiento | `PaginaEntrenamientosDeAlumnos.tsx` (`presentacion/entrenamientos-de-alumnos/`, ruta `/profesor/entrenamientos`, menú "Entrenamientos") | `usarEntrenamientosDeAlumnos.ts` (`aplicacion/consultar-entrenamientos-de-alumnos/`) | `GET /identidad/alumnos`, `GET /entrenamiento/alumnos/:alumnoId/entrenamientos` | US18 | ✅ `PaginaEntrenamientosDeAlumnos.int.test.tsx` (8 casos); dominio `entrenamientos-de-alumnos/entrenamientosDeAlumnos.ts` (fecha en hora de Argentina, estado, orden y total de series; `entrenamientosDeAlumnos.test.ts`) |
+| notificaciones | `PaginaNotificaciones.tsx`, `TarjetaNotificacion.tsx` (`presentacion/bandeja/`, ruta `/profesor/notificaciones`, menú "Notificaciones") | `usarNotificaciones.ts`, `usarMarcarLeida.ts` | `GET /notificaciones/mis-notificaciones`, `PUT /notificaciones/mis-notificaciones/:id/lectura` | US21 | ✅ `PaginaNotificaciones.int.test.tsx` (6 casos, incluido el enlace de RN-UI-NOT-02); dominio `notificacion/notificacion.ts` (`notificacion.test.ts`, 3 casos); e2e `e2e/notificaciones/notificacion.e2e.ts` |
+| notificaciones | `ContadorNoLeidas.tsx` (`presentacion/contador/`, en el menú del Profesor, compuesto desde `Aplicacion.tsx`) | `usarContadorNoLeidas.ts` (cada 60 s) | `GET /notificaciones/mis-notificaciones/no-leidas` | US21 | ✅ `ContadorNoLeidas.int.test.tsx` (2 casos); se actualiza al marcar por `aplicacion/cambios-no-leidas.ts` |
 
 ## Clientes de API del módulo
 
@@ -77,8 +82,8 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | :-- | :-- | :-- |
 | `src/modulos/identidad/infraestructura/api/apiIdentidad.ts` | Ingreso, alta de profesor, código de profesor y vínculo del alumno | ✅ |
 | `src/modulos/catalogo/infraestructura/api/apiCatalogo.ts` | Consulta paginada de ejercicios con filtros | ✅ |
-| `src/modulos/planificacion/infraestructura/api/apiPlanificacion.ts` | Catálogo para el editor, listado, alta y renombrado de rutinas; alumnos del profesor, rutinas y alta de plan (US07); rutina del día del alumno (US08) | ✅ |
-| `src/modulos/entrenamiento/infraestructura/api/apiEntrenamiento.ts` | Inicio y consulta del entrenamiento (US13); registro de series (US14); finalización y obtención del resumen con récords batidos (US15, US16); alumnos vinculados y entrenamientos de un alumno, paginados (US18) | ✅ |
+| `src/modulos/planificacion/infraestructura/api/apiPlanificacion.ts` | Catálogo para el editor, listado, alta, detalle, edición y renombrado de rutinas; alumnos del profesor, rutinas y alta de plan (US07); rutina del día del alumno (US08) | ✅ |
+| `src/modulos/entrenamiento/infraestructura/api/apiEntrenamiento.ts` | Inicio y consulta del entrenamiento (US13); registro de una serie realizada (US14); finalización y obtención del resumen con récords batidos (US15, US16); alumnos vinculados y entrenamientos de un alumno, paginados (US18) | ✅ |
 
 ## Compartido (`src/compartido/`)
 
@@ -94,7 +99,7 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | `infraestructura/cliente-http/clienteHttp.ts` | `pedir()`: URL base, JWT, traducción a `ErrorApi` y cierre de sesión ante 401 (RN-UI-IDE-02) | ✅ |
 | `aplicacion/sesion/usarSesion.ts` | Hook de sesión sobre `useSyncExternalStore` | ✅ |
 | `presentacion/ruta-protegida/RutaProtegida.tsx` | Guard por rol: sin sesión lleva al ingreso, con otro rol muestra "sin acceso" (RN-IDE-03) | ✅ |
-| `presentacion/menu/MenuPrincipal.tsx` | Menú por rol y "Salir" (RN-UI-IDE-01) | ✅ |
+| `presentacion/menu/MenuPrincipal.tsx` | Menú por rol y "Salir" (RN-UI-IDE-01). Recibe contenido extra por ruta (`extras`), que compone `Aplicacion.tsx` (contador de notificaciones, US21) | ✅ |
 | `presentacion/menu/DisenioConMenu.tsx` | Layout con el menú para las rutas por rol | ✅ |
 | `presentacion/inicio/PaginaInicio.tsx` | Inicio de cada rol (placeholder "Panel del {rol}") | ✅ |
 | `presentacion/proximamente/Proximamente.tsx` | Texto para las rutas que todavía no tienen página | ✅ |
@@ -116,13 +121,17 @@ Los tests viven junto a la pantalla o componente que prueban. Las fichas de cada
 | `src/modulos/catalogo/presentacion/lista-ejercicios/ListaEjerciciosPaginada.int.test.tsx` | RN-CAT-09, T06, RN-UI-LIS-01, 02, 03 | ✅ |
 | `src/compartido/presentacion/paginador/Paginador.test.tsx` | T06 | ✅ |
 | `src/modulos/planificacion/dominio/rutina/nombreRutina.test.ts` | RN-PLAN-21 | ✅ |
-| `src/modulos/planificacion/presentacion/consultar-rutinas/PaginaRutinas.int.test.tsx` | RN-PLAN-21, 08, T06 | ✅ |
+| `src/modulos/planificacion/presentacion/consultar-rutinas/PaginaRutinas.int.test.tsx` | RN-PLAN-08, T06 | ✅ |
+| `src/modulos/planificacion/presentacion/editar-rutina/PaginaEditarRutina.int.test.tsx` | RN-PLAN-07, 08, 21 (US06) | ✅ |
 | `src/modulos/planificacion/presentacion/crear-plan/PaginaCrearPlan.int.test.tsx` | RN-PLAN-09, 11, 12, 13, 14, US07 | ✅ |
 | `src/modulos/planificacion/presentacion/consultar-planes/PaginaPlanes.int.test.tsx` | RN-PLAN-22, RN-UI-LIS-01, 02, 03 | ✅ |
 | `src/modulos/planificacion/dominio/plan/rutinaDelDia.test.ts` | Objetivos y etiqueta del día (US08) | ✅ |
 | `src/modulos/planificacion/presentacion/rutina-del-dia/PaginaRutinaDelDia.int.test.tsx` | RN-PLAN-11, 18; rutina, descanso, sin plan y error HTTP | ✅ |
 | `src/modulos/planificacion/presentacion/rutina-del-dia/PaginaRutinaDelDiaDetalles.int.test.tsx` | RN-PLAN-11, 18, 02, 03; fecha, pausas y acceso por rol (RN-IDE-03) | ✅ |
 | `src/modulos/entrenamiento/presentacion/finalizar-entrenamiento/PaginaResumenEntrenamiento.int.test.tsx` | RN-ENT-13, RN-ENT-17; visualización de récords batidos en el resumen (US16) | ✅ |
+| `src/modulos/notificaciones/presentacion/bandeja/PaginaNotificaciones.int.test.tsx` | RN-NOT-01, 02, 03, 04, RN-UI-NOT-02 (US21); RN-NOT-05, 06 (US17) | ✅ |
+| `src/modulos/notificaciones/presentacion/contador/ContadorNoLeidas.int.test.tsx` | RN-UI-NOT-01 (US21) | ✅ |
+| `src/modulos/notificaciones/dominio/notificacion/notificacion.test.ts` | RN-NOT-01: textos de series por tiempo, de circuito y con decimales (US21) | ✅ |
 
 ## Carpetas por concepto
 
@@ -130,13 +139,14 @@ Decidido por Lisandro el 08/11/2026 (igual que en el back): en todas las capas d
 
 | Módulo | Capa | Carpetas |
 | :-- | :-- | :-- |
+| notificaciones | todas | dominio `notificacion`; aplicacion `consultar-notificaciones`, `marcar-leida`, `contar-no-leidas` y `cambios-no-leidas.ts`; infraestructura `apiNotificaciones.ts`; presentacion `bandeja` y `contador` (US21) |
 | identidad | aplicacion · presentacion | ingreso, alta-profesor, codigo-profesor, vinculo (hook y página de cada pantalla, con el mismo nombre de carpeta en las dos capas) |
 | identidad | infraestructura | api (`apiIdentidad.ts`) |
 | catalogo | dominio | ejercicio (`ejercicio.ts`, `clasificacion.ts`) |
 | catalogo | aplicacion · presentacion | consultar-ejercicios · lista-ejercicios |
 | catalogo | infraestructura | api (`apiCatalogo.ts`) |
 | planificacion | dominio | bloque (`reglasBloque.ts` y su test), circuito (`reglasCircuito.ts` y su test), rutina (tipos del contrato y `nombreRutina.ts` con su test), plan (fechas del plan y tipos del contrato, con su test) |
-| planificacion | aplicacion · presentacion | editor-rutina · editor-rutina; consultar-rutinas · consultar-rutinas; renombrar-rutina (solo aplicacion); crear-plan · crear-plan; consultar-planes · consultar-planes; consultar-rutina-del-dia · rutina-del-dia; consultar-plan-del-alumno · mi-plan; detalle-rutina (componente compartido del módulo) |
+| planificacion | aplicacion · presentacion | editor-rutina · editor-rutina; consultar-rutinas · consultar-rutinas; editar-rutina · editar-rutina; crear-plan · crear-plan; consultar-planes · consultar-planes; consultar-rutina-del-dia · rutina-del-dia; consultar-plan-del-alumno · mi-plan; detalle-rutina (componente compartido del módulo) |
 | planificacion | infraestructura | api (`apiPlanificacion.ts`) |
 | compartido | dominio | error-api, menu, paginacion, sesion |
 | compartido | aplicacion · infraestructura | paginacion, sesion · sesion, cliente-http |

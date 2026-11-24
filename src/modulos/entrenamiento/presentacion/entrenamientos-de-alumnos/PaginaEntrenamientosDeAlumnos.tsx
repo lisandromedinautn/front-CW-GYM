@@ -1,3 +1,4 @@
+import { useSearchParams } from 'react-router';
 import { Paginador } from '../../../../compartido/presentacion/paginador/Paginador.tsx';
 import { usarEntrenamientosDeAlumnos } from '../../aplicacion/consultar-entrenamientos-de-alumnos/usarEntrenamientosDeAlumnos.ts';
 import {
@@ -8,13 +9,15 @@ import {
   tituloDeSerie,
   totalDeSeries,
 } from '../../dominio/entrenamientos-de-alumnos/entrenamientosDeAlumnos.ts';
+import { describirPercepcion } from '../../dominio/percepcion/percepcion.ts';
 import { describirMedida } from '../../dominio/serie/filasSeries.ts';
 
 export const RUTA_ENTRENAMIENTOS_DE_ALUMNOS = '/profesor/entrenamientos';
 
 /** US18: el profesor consulta los entrenamientos de un alumno vinculado (RN-ENT-18, RN-UI-ENT-04). */
 export function PaginaEntrenamientosDeAlumnos() {
-  const consulta = usarEntrenamientosDeAlumnos();
+  const [params] = useSearchParams();
+  const consulta = usarEntrenamientosDeAlumnos(params.get('alumno') ?? '');
   const { alumnos, alumnoId, resultado, error } = consulta;
 
   return (
@@ -74,6 +77,7 @@ function TarjetaEntrenamiento({ entrenamiento }: { entrenamiento: EntrenamientoD
       <p>
         Series registradas: {series.length} de {totalDeSeries(entrenamiento)}
       </p>
+      {entrenamiento.percepcion && <p>{describirPercepcion(entrenamiento.percepcion)}</p>}
       {series.length === 0 ? (
         <p>Sin series registradas</p>
       ) : (

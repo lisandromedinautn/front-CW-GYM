@@ -1,5 +1,6 @@
 import { usarFinalizarEntrenamiento } from '../../aplicacion/finalizar-entrenamiento/usarFinalizarEntrenamiento.ts';
 import { ResumenEntrenamiento } from '../finalizar-entrenamiento/ResumenEntrenamiento.tsx';
+import { PercepcionDelResumen } from '../finalizar-entrenamiento/PercepcionDelResumen.tsx';
 import { useEffect, useState } from 'react';
 import { usarEntrenamientoEnCurso } from '../../aplicacion/consultar-entrenamiento-en-curso/usarEntrenamientoEnCurso.ts';
 import { usarRegistrarSerie } from '../../aplicacion/registrar-serie/usarRegistrarSerie.ts';
@@ -25,10 +26,16 @@ export function PaginaEntrenamientoEnCurso() {
         <>
           <h2>{resultado.entrenamiento.rutina.nombre}</h2>
           {resumen ? (
-            <ResumenEntrenamiento
-              resumen={resumen}
-              recordsBatidos={finalizacion.resumen?.recordsBatidos ?? []}
-            />
+            <>
+              <ResumenEntrenamiento
+                resumen={resumen}
+                recordsBatidos={finalizacion.resumen?.recordsBatidos ?? []}
+              />
+              <PercepcionDelResumen
+                entrenamientoId={resultado.entrenamiento.id}
+                percepcion={resultado.entrenamiento.percepcion}
+              />
+            </>
           ) : resultado.estado === 'abandonado' ? (
             <DetalleEntrenamiento
               entrenamiento={resultado.entrenamiento}
@@ -71,15 +78,13 @@ function DetalleEntrenamiento(props: {
         <ListaSeries grupos={grupos} />
       ) : (
         <>
-          <PasoActual pasos={pasosDelEntrenamiento(grupos)} registrar={registrar} />
           {finalizacion.error && <p role="alert">{finalizacion.error}</p>}
-          <button
-            type="button"
-            disabled={finalizacion.finalizando}
-            onClick={() => void finalizacion.finalizar(entrenamiento.id)}
-          >
-            Finalizar entrenamiento
-          </button>
+          <PasoActual
+            pasos={pasosDelEntrenamiento(grupos)}
+            registrar={registrar}
+            finalizar={() => void finalizacion.finalizar(entrenamiento.id)}
+            finalizando={finalizacion.finalizando}
+          />
         </>
       )}
     </>

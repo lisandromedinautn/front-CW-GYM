@@ -1,4 +1,6 @@
 import type { RecordBatido } from '../record-batido/record-batido.ts';
+import type { Percepcion } from '../percepcion/percepcion.ts';
+
 /** Medida de una serie (contrato del back, US14): repeticiones o segundos, y peso si corresponde. */
 export interface MedidaSerie {
   repeticiones: number | null;
@@ -48,6 +50,8 @@ export interface Entrenamiento {
   series?: SerieRealizada[];
   fin?: string;
   resumen?: ResumenEntrenamiento;
+  /** US17: solo en finalizados; `null` si el alumno no la cargó. */
+  percepcion?: Percepcion | null;
 }
 
 export type ResultadoEntrenamiento =

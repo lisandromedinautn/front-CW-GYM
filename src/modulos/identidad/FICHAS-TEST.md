@@ -50,3 +50,16 @@ Fichas de los tests que viven en `src/compartido/` y se escriben con el módulo 
 | PaginaVincularProfesor.int.test.tsx › con un código válido envía { codigo } y muestra "Quedaste vinculado con Laura Gómez" | RN-IDE-09 | Integración | Alumno en `/alumno/vinculo`; escribe "ABC234"; API responde 200 `{ profesor: { nombre: 'Laura', apellido: 'Gómez' } }` | `POST /identidad/alumnos/vinculo` con body `{ codigo: 'ABC234' }`; `role="status"` "Quedaste vinculado con Laura Gómez" | = esperado | 08/11/2026 |
 | PaginaVincularProfesor.int.test.tsx › con un código inválido muestra el mensaje del back en el alert y el campo sigue visible | RN-IDE-11 | Integración | Escribe "ZZZ999"; API responde 400 `{ codigo: 'RN-IDE-11', mensaje: 'El código de profesor no es válido' }` | `role="alert"` con ese mensaje; el campo "Código de profesor" sigue visible | = esperado | 08/11/2026 |
 | PaginaVincularProfesor.int.test.tsx › si ya está vinculado, muestra el mensaje del back y el formulario desaparece | RN-IDE-10 | Integración | Escribe "ABC234"; API responde 409 `{ codigo: 'RN-IDE-10', mensaje: 'Ya estás vinculado con un profesor: no podés vincularte con otro' }` | `role="alert"` con ese mensaje; ya no está el campo "Código de profesor" | = esperado | 08/11/2026 |
+
+## T15 — e2e de navegador (confirmadas por Ulises el 23/11/2026)
+
+Contra el front y el back de test reales (base recién levantada y semilla). Lo que no es parte del flujo se prepara por API en `beforeAll` (`e2e/soporte/api.ts`).
+
+| Test (archivo › caso) | Regla | Nivel | Entrada | Esperado | Obtenido (último run) | Fecha |
+| :-- | :-- | :-- | :-- | :-- | :-- | :-- |
+| `e2e/identidad/ingreso-y-vinculo.e2e.ts` › muestra el mensaje genérico y se queda en el ingreso | RN-IDE-01 | e2e navegador | profesor01 con una contraseña incorrecta | alert "Email o contraseña incorrectos" y sigue el heading "Ingresar al sistema" | = esperado | 23/11/2026 |
+| `e2e/identidad/ingreso-y-vinculo.e2e.ts` › vincula con un código válido y rechaza un segundo vínculo (1.ª parte) | RN-IDE-08, 09 | e2e navegador | profesor02 genera el código en "Mi código"; alumno11 lo escribe en "Vincularme con mi profesor" | status "Quedaste vinculado con Diego Fernández" | = esperado | 23/11/2026 |
+| `e2e/identidad/ingreso-y-vinculo.e2e.ts` › vincula con un código válido y rechaza un segundo vínculo (2.ª parte) | RN-IDE-10 | e2e navegador | alumno11 (ya vinculado) vuelve a escribir el código | alert "Ya estás vinculado con un profesor: no podés vincularte con otro" | = esperado | 23/11/2026 |
+| `e2e/identidad/ingreso-y-vinculo.e2e.ts` › muestra el error del back | RN-IDE-11 | e2e navegador | alumno12 escribe "ZZZZZZ" | alert "El código de profesor no es válido" | = esperado | 23/11/2026 |
+
+El vínculo válido y el segundo vínculo rechazado van en un mismo test porque el segundo depende del primero. Comprobación por mutación (23/11/2026): mostrar el mensaje genérico en lugar del de `RN-IDE-01` (`usarIngresarAlSistema.ts`), el genérico en lugar del mensaje del back al vincular (`usarVincularAlumno.ts`, rompe RN-IDE-10 y 11) y quitar el apellido del mensaje de éxito (rompe RN-IDE-09): las tres veces el rojo fue por aserción; se restauró el código.

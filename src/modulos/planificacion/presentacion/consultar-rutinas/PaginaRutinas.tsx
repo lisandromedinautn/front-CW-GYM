@@ -3,7 +3,6 @@ import { Link } from 'react-router';
 import { Paginador } from '../../../../compartido/presentacion/paginador/Paginador.tsx';
 import { usarConsultarRutinas } from '../../aplicacion/consultar-rutinas/usarConsultarRutinas.ts';
 import { usarEjerciciosParaRutina } from '../../aplicacion/editor-rutina/usarEjerciciosParaRutina.ts';
-import { usarRenombrarRutina } from '../../aplicacion/renombrar-rutina/usarRenombrarRutina.ts';
 import { usarImportarRutina } from '../../aplicacion/importar-rutina/usarImportarRutina.ts';
 import {
   ejerciciosDeRutina,
@@ -81,7 +80,6 @@ export function PaginaRutinas() {
                 key={rutina.id}
                 rutina={rutina}
                 porId={porId}
-                alRenombrar={consulta.reemplazar}
                 alImportar={() => void copiar(rutina.id)}
                 importando={importando}
               />
@@ -103,7 +101,6 @@ export function PaginaRutinas() {
 function TarjetaRutina(props: {
   rutina: RutinaCreada;
   porId: Map<string, EjercicioParaRutina>;
-  alRenombrar: (rutina: RutinaCreada) => void;
   alImportar: () => void;
   importando: boolean;
 }) {
@@ -115,7 +112,6 @@ function TarjetaRutina(props: {
       <div className="tarjeta-rutina-cabecera">
         <NombreRutina
           rutina={props.rutina}
-          alRenombrar={props.alRenombrar}
           alImportar={props.alImportar}
           importando={props.importando}
         />
@@ -142,105 +138,55 @@ function TarjetaRutina(props: {
   );
 }
 
-/** Nombre de la rutina como título, con edición en el lugar (RN-PLAN-21). */
+/** Nombre de la rutina como título; el lápiz abre la rutina en el editor (US06, RN-PLAN-07). */
 function NombreRutina(props: {
   rutina: RutinaCreada;
-  alRenombrar: (rutina: RutinaCreada) => void;
   alImportar: () => void;
   importando: boolean;
 }) {
-  const { renombrar, error, guardando, limpiarError } = usarRenombrarRutina(props.rutina.id);
-  const [editando, setEditando] = useState(false);
-  const [texto, setTexto] = useState(props.rutina.nombre);
-
-  const abrir = () => {
-    setTexto(props.rutina.nombre);
-    limpiarError();
-    setEditando(true);
-  };
-  const cancelar = () => {
-    limpiarError();
-    setEditando(false);
-  };
-  const guardar = async () => {
-    const actualizada = await renombrar(texto);
-    if (!actualizada) return;
-    props.alRenombrar(actualizada);
-    setEditando(false);
-  };
-
-  if (!editando) {
-    return (
-      <div className="nombre-rutina">
-        <h2>{props.rutina.nombre}</h2>
-        <button
-          type="button"
-          className="secundario boton-icono"
-          onClick={abrir}
-          aria-label="Editar nombre"
-          title="Editar nombre"
-        >
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden="true"
-          >
-            <path d="M12 20h9" />
-            <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L9 17l-4 1 1-4Z" />
-          </svg>
-        </button>
-        <button
-          type="button"
-          className="secundario boton-icono"
-          onClick={props.alImportar}
-          disabled={props.importando}
-          aria-label="Importar como copia"
-          title="Importar como copia"
-        >
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden="true"
-          >
-            <rect x="8" y="8" width="12" height="12" rx="2" />
-            <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" />
-          </svg>
-        </button>
-      </div>
-    );
-  }
   return (
-    <div className="nombre-rutina nombre-rutina-edicion">
-      <label>
-        Nombre de la rutina
-        <input
-          type="text"
-          value={texto}
-          aria-invalid={error ? 'true' : undefined}
-          onChange={(e) => setTexto(e.target.value)}
-        />
-      </label>
-      {error && (
-        <p role="alert" className="error-campo">
-          {error}
-        </p>
-      )}
-      <div className="acciones">
-        <button type="button" disabled={guardando} onClick={() => void guardar()}>
-          Guardar
-        </button>
-        <button type="button" className="secundario" onClick={cancelar}>
-          Cancelar
-        </button>
-      </div>
+    <div className="nombre-rutina">
+      <h2>{props.rutina.nombre}</h2>
+      <Link
+        to={`/profesor/rutinas/${props.rutina.id}`}
+        className="boton secundario boton-icono"
+        aria-label="Editar rutina"
+        title="Editar rutina"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M12 20h9" />
+          <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L9 17l-4 1 1-4Z" />
+        </svg>
+      </Link>
+      <button
+        type="button"
+        className="secundario boton-icono"
+        onClick={props.alImportar}
+        disabled={props.importando}
+        aria-label="Importar como copia"
+        title="Importar como copia"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+        >
+          <rect x="8" y="8" width="12" height="12" rx="2" />
+          <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" />
+        </svg>
+      </button>
     </div>
   );
 }

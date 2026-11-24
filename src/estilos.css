@@ -472,13 +472,6 @@ input:focus-visible {
   width: 1.1rem;
   height: 1.1rem;
 }
-.nombre-rutina-edicion {
-  display: grid;
-  flex: 1;
-}
-.nombre-rutina-edicion .error-campo {
-  margin: 0;
-}
 
 /* Listado de planes (RN-PLAN-22): badge de estado y alumnos de cada tarjeta */
 .estado-plan {

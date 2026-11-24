@@ -10,7 +10,23 @@ const base = 'http://localhost:3000';
 const entrenamiento = {
   id: 'ent-1',
   inicio: '2026-11-22T10:00:00.000Z',
-  rutina: { nombre: 'Fuerza' },
+  // Un bloque de una serie: el único paso es el último, donde está «Finalizar».
+  rutina: {
+    nombre: 'Fuerza',
+    bloques: [
+      {
+        ejercicioId: 'press',
+        nombre: 'lever chest press',
+        repeticiones: 10,
+        segundos: null,
+        pesoKg: null,
+        orden: 1,
+        series: 1,
+        micropausaSegundos: 0,
+        macropausaSegundos: 0,
+      },
+    ],
+  },
 };
 function abrir() {
   return render(
