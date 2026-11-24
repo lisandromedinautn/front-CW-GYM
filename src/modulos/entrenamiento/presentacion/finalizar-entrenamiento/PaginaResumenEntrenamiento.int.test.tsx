@@ -62,7 +62,23 @@ describe('RN-ENT-05, 06, 09, 17 · finalizar y ver el resumen', () => {
           entrenamiento: {
             id: 'ent-1',
             inicio: '2026-11-22T10:00:00.000Z',
-            rutina: { nombre: 'Ejercicios de prueba US12' },
+            // Un bloque de una serie: el único paso es el último, donde está «Finalizar» (US15).
+            rutina: {
+              nombre: 'Ejercicios de prueba US12',
+              bloques: [
+                {
+                  ejercicioId: 'f3a1734b-2daf-4576-80f9-f168a0a75690',
+                  nombre: 'kettlebell hang clean',
+                  repeticiones: 12,
+                  segundos: null,
+                  pesoKg: null,
+                  orden: 1,
+                  series: 1,
+                  micropausaSegundos: 0,
+                  macropausaSegundos: 0,
+                },
+              ],
+            },
           },
         }),
       ),
