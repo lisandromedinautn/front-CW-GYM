@@ -58,9 +58,9 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | identidad | `PaginaVincularProfesor.tsx` | `usarVincularAlumno.ts` | `POST /identidad/alumnos/vinculo` | US05 | ✅ |
 | catalogo | ~~`PaginaRegistrarEjercicio.tsx`~~ solo botón deshabilitado en ListaEjercicios (DT-06) | ~~`usarRegistrarEjercicio.ts`~~ | ~~`POST /catalogo/ejercicios`~~ | US01 (DT-06) | — |
 | catalogo | `ListaEjercicios.tsx` | `usarConsultarEjercicios.ts` | `GET /catalogo/ejercicios/consulta` | T01, T06, T07 | ✅ |
-| planificacion | `PaginaRutinas.tsx` (ruta `/profesor/rutinas`) | `usarConsultarRutinas.ts`, `usarRenombrarRutina.ts` | `GET /planificacion/rutinas`, `PATCH /planificacion/rutinas/:id/nombre` | T06, T08, T09 | ✅ |
+| planificacion | `PaginaRutinas.tsx` (ruta `/profesor/rutinas`) | `usarConsultarRutinas.ts` | `GET /planificacion/rutinas` | T06, T08, T09 | ✅ (el lápiz abre el editor de la rutina) |
 | planificacion | `EditorRutina.tsx` (ruta `/profesor/rutinas`, menú "Rutinas") | `usarCrearRutina.ts`, `usarEjerciciosParaRutina.ts` | `GET /catalogo/ejercicios`, `POST /planificacion/rutinas` | US06, US09, US10 | ✅ crear con bloques (US06), con circuitos (US09) y mixta (US10) |
-| planificacion | `editar-rutina/PaginaEditarRutina.tsx` (ruta `/profesor/rutinas/:id`, desde "Ver y editar" en la tarjeta; muestra `EditorRutina` precargado) | `editar-rutina/usarEditarRutina.ts` | `GET /planificacion/rutinas/:id`, `PUT /planificacion/rutinas/:id` | US06 | ✅ |
+| planificacion | `editar-rutina/PaginaEditarRutina.tsx` (ruta `/profesor/rutinas/:id`, desde el lápiz "Editar rutina" de la tarjeta; muestra `EditorRutina` precargado) | `editar-rutina/usarEditarRutina.ts` | `GET /planificacion/rutinas/:id`, `PUT /planificacion/rutinas/:id` | US06 | ✅ |
 | planificacion | `PaginaRutinas.tsx` (acción "Importar como copia") | `usarImportarRutina.ts` | `POST /planificacion/rutinas/:id/importacion` | US20 | ✅ |
 | planificacion | `PaginaCrearPlan.tsx` (ruta `/profesor/planes`) | `usarCrearPlan.ts`, `usarDatosParaPlan.ts` | `GET /identidad/alumnos`, `GET /planificacion/rutinas`, `POST /planificacion/planes` | US07 | ✅ |
 | planificacion | `PaginaPlanes.tsx` (`consultar-planes/`, ruta `/profesor/planes`, menú "Planes"; "Nuevo plan" navega a `/profesor/planes/nuevo`, `crear-plan/PaginaNuevoPlan.tsx`, que muestra `PaginaCrearPlan`) | `usarConsultarPlanes.ts` (`consultar-planes/`) | `GET /planificacion/planes`, `GET /identidad/alumnos` | T13 | ✅ |
@@ -82,7 +82,7 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | :-- | :-- | :-- |
 | `src/modulos/identidad/infraestructura/api/apiIdentidad.ts` | Ingreso, alta de profesor, código de profesor y vínculo del alumno | ✅ |
 | `src/modulos/catalogo/infraestructura/api/apiCatalogo.ts` | Consulta paginada de ejercicios con filtros | ✅ |
-| `src/modulos/planificacion/infraestructura/api/apiPlanificacion.ts` | Catálogo para el editor, listado, alta y renombrado de rutinas; alumnos del profesor, rutinas y alta de plan (US07); rutina del día del alumno (US08) | ✅ |
+| `src/modulos/planificacion/infraestructura/api/apiPlanificacion.ts` | Catálogo para el editor, listado, alta, detalle y edición de rutinas; alumnos del profesor, rutinas y alta de plan (US07); rutina del día del alumno (US08) | ✅ |
 | `src/modulos/entrenamiento/infraestructura/api/apiEntrenamiento.ts` | Inicio y consulta del entrenamiento (US13); registro de una serie realizada (US14); alumnos vinculados y entrenamientos de un alumno, paginados (US18) | ✅ |
 
 ## Compartido (`src/compartido/`)
@@ -121,7 +121,7 @@ Los tests viven junto a la pantalla o componente que prueban. Las fichas de cada
 | `src/modulos/catalogo/presentacion/lista-ejercicios/ListaEjerciciosPaginada.int.test.tsx` | RN-CAT-09, T06, RN-UI-LIS-01, 02, 03 | ✅ |
 | `src/compartido/presentacion/paginador/Paginador.test.tsx` | T06 | ✅ |
 | `src/modulos/planificacion/dominio/rutina/nombreRutina.test.ts` | RN-PLAN-21 | ✅ |
-| `src/modulos/planificacion/presentacion/consultar-rutinas/PaginaRutinas.int.test.tsx` | RN-PLAN-21, 08, T06 | ✅ |
+| `src/modulos/planificacion/presentacion/consultar-rutinas/PaginaRutinas.int.test.tsx` | RN-PLAN-08, T06 | ✅ |
 | `src/modulos/planificacion/presentacion/editar-rutina/PaginaEditarRutina.int.test.tsx` | RN-PLAN-07, 08, 21 (US06) | ✅ |
 | `src/modulos/planificacion/presentacion/crear-plan/PaginaCrearPlan.int.test.tsx` | RN-PLAN-09, 11, 12, 13, 14, US07 | ✅ |
 | `src/modulos/planificacion/presentacion/consultar-planes/PaginaPlanes.int.test.tsx` | RN-PLAN-22, RN-UI-LIS-01, 02, 03 | ✅ |
@@ -145,7 +145,7 @@ Decidido por Lisandro el 08/11/2026 (igual que en el back): en todas las capas d
 | catalogo | aplicacion · presentacion | consultar-ejercicios · lista-ejercicios |
 | catalogo | infraestructura | api (`apiCatalogo.ts`) |
 | planificacion | dominio | bloque (`reglasBloque.ts` y su test), circuito (`reglasCircuito.ts` y su test), rutina (tipos del contrato y `nombreRutina.ts` con su test), plan (fechas del plan y tipos del contrato, con su test) |
-| planificacion | aplicacion · presentacion | editor-rutina · editor-rutina; consultar-rutinas · consultar-rutinas; renombrar-rutina (solo aplicacion); crear-plan · crear-plan; consultar-planes · consultar-planes; consultar-rutina-del-dia · rutina-del-dia; consultar-plan-del-alumno · mi-plan; detalle-rutina (componente compartido del módulo) |
+| planificacion | aplicacion · presentacion | editor-rutina · editor-rutina; consultar-rutinas · consultar-rutinas; editar-rutina · editar-rutina; crear-plan · crear-plan; consultar-planes · consultar-planes; consultar-rutina-del-dia · rutina-del-dia; consultar-plan-del-alumno · mi-plan; detalle-rutina (componente compartido del módulo) |
 | planificacion | infraestructura | api (`apiPlanificacion.ts`) |
 | compartido | dominio | error-api, menu, paginacion, sesion |
 | compartido | aplicacion · infraestructura | paginacion, sesion · sesion, cliente-http |

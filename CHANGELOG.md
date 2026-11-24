@@ -8,7 +8,7 @@ Categorías: Agregado, Cambiado, Corregido, Eliminado, Seguridad. Cada entrada c
 
 ### Agregado
 
-- Ver y editar una rutina (US06): "Ver y editar" en cada tarjeta de `/profesor/rutinas` abre la rutina en el editor precargado (`/profesor/rutinas/:id`), donde se cambian nombre, ejercicios, series, objetivos, peso, pausas y orden con "Guardar cambios" (RN-PLAN-07, 08, 21).
+- Ver y editar una rutina (US06): el lápiz de cada tarjeta de `/profesor/rutinas` ("Editar rutina") abre la rutina en el editor precargado (`/profesor/rutinas/:id`), donde se cambian nombre, ejercicios, series, objetivos, peso, pausas y orden con "Guardar cambios" (RN-PLAN-07, 08, 21).
 - Percepción del alumno (US17, CG-62).
   - En el resumen del entrenamiento finalizado, el alumno carga una sola vez el RPE (1 a 10) y la sensación de fuerza (1 a 5) con "Guardar percepción". Se validan antes de enviar y después se muestran como "RPE: N · Sensación de fuerza: N".
   - El profesor la ve en los entrenamientos de sus alumnos y en la notificación.
@@ -34,6 +34,8 @@ Categorías: Agregado, Cambiado, Corregido, Eliminado, Seguridad. Cada entrada c
 - e2e de navegador de los cuatro flujos del MVP: ingreso y vínculo, plan del día, entrenamiento (iniciar, registrar, retomar y finalizar) y seguimiento del profesor, contra el back de test con la base recién sembrada (CG-86, T15).
 
 ### Cambiado
+
+- El lápiz de la tarjeta de rutina ya no edita solo el nombre en el lugar: abre el editor de la rutina, donde también se cambia el nombre (US06).
 
 - La creación del plan pasa a `/profesor/planes/nuevo` y se abre con "Nuevo plan" desde el listado; tiene "Volver al listado" (T13).
 - Crear plan muestra los 28 días como calendario de 5 semanas, de lunes a domingo; los días fuera del plan aparecen en gris y con blur. En pantallas chicas sigue como lista (T12).

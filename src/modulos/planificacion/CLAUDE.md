@@ -11,9 +11,9 @@ Editor de rutinas, importación, creación de planes, gestión de alumnos del pl
 | RN-PLAN-03 | Un circuito pide 2 o más ejercicios, vueltas y macropausa. No muestra micropausa | Vigente |
 | RN-PLAN-04 | Según el tipo del ejercicio, se pide repeticiones o tiempo, nunca los dos | Vigente |
 | RN-PLAN-05 | El campo peso solo aparece si el tipo de carga incluye Peso Extra, y es opcional | Vigente |
-| RN-PLAN-21 | La tarjeta muestra el nombre y un botón de lápiz accesible como "Editar nombre", con edición en el lugar ("Guardar", "Cancelar"). Antes de enviar valida de 1 a 60 caracteres sin contar los extremos ("Completá el nombre", "Máximo 60 caracteres"); "Cancelar" no envía nada y los errores del back (409 por nombre repetido) van en un `alert` | Vigente ✅ |
+| RN-PLAN-21 | La tarjeta muestra el nombre. Desde el 24/11/2026 se cambia en el campo "Nombre" del editor de la rutina (antes, con el lápiz de la tarjeta y edición en el lugar). Antes de enviar valida de 1 a 60 caracteres sin contar los extremos ("Completá el nombre", "Máximo 60 caracteres") y los errores del back (409 por nombre repetido) van en un `alert` | Vigente ✅ |
 | RN-PLAN-20 | Antes de enviar, avisa si un circuito repite un ejercicio ("No repitas ejercicios en el circuito") | Vigente |
-| RN-PLAN-07 | Cada tarjeta de `/profesor/rutinas` tiene "Ver y editar", que abre la rutina en el editor precargado (`/profesor/rutinas/:id`): se cambian nombre, ejercicios, series, objetivos, peso, pausas y orden, y "Guardar cambios" la reemplaza | Vigente ✅ (US06) |
+| RN-PLAN-07 | El lápiz de cada tarjeta de `/profesor/rutinas` ("Editar rutina") abre la rutina en el editor precargado (`/profesor/rutinas/:id`): se cambian nombre, ejercicios, series, objetivos, peso, pausas y orden, y "Guardar cambios" la reemplaza | Vigente ✅ (US06) |
 | RN-PLAN-08 | Solo se listan para importar las rutinas del propio profesor; la importación crea una copia independiente | Vigente |
 | RN-PLAN-09 | Al elegir la fecha de inicio, muestra la fecha de fin calculada (inicio + 27) sin permitir editarla | Vigente |
 | RN-PLAN-10 | Cada uno de los 28 días se puede marcar como descanso o asignarle una rutina | Vigente |
@@ -31,7 +31,7 @@ Editor de rutinas, importación, creación de planes, gestión de alumnos del pl
 | :-- | :-- | :-- |
 | `EditorRutina.tsx` (con `EditorBloque.tsx`, `EditorCircuito.tsx`, `BotonesOrden.tsx`, `CamposObjetivo.tsx`, `CampoNumero.tsx` y `edicion.ts`) | `usarCrearRutina.ts` ✅ (US06 bloques, US09 circuitos, US10 mixta), `usarEjerciciosParaRutina.ts` ✅ | US06, US09, US10 |
 | `editar-rutina/PaginaEditarRutina.tsx` ✅ (muestra `EditorRutina` con `rutina` y `edicion`) | `editar-rutina/usarEditarRutina.ts` ✅ | US06 |
-| `PaginaRutinas.tsx` (`consultar-rutinas/`) ✅ | `usarConsultarRutinas.ts` ✅, `usarRenombrarRutina.ts` (`renombrar-rutina/`) ✅ | T06, T08, T09 |
+| `PaginaRutinas.tsx` (`consultar-rutinas/`) ✅ | `usarConsultarRutinas.ts` ✅ (`usarRenombrarRutina.ts` se quitó el 24/11/2026: el nombre se cambia en el editor) | T06, T08, T09 |
 | `PaginaRutinas.tsx` (acción "Importar como copia") | `usarImportarRutina.ts` | US20 ✅ |
 | `consultar-planes/PaginaPlanes.tsx` ✅ | `consultar-planes/usarConsultarPlanes.ts` ✅ | T13 |
 | `PaginaCrearPlan.tsx` ✅ (`crear-plan/`) | `usarCrearPlan.ts` ✅, `usarDatosParaPlan.ts` ✅ | US07 |
@@ -52,6 +52,7 @@ Editor de rutinas, importación, creación de planes, gestión de alumnos del pl
 | 17/11/2026 | RN-PLAN-08 | Se elimina la pregunta sobre si la copia modificada es una rutina nueva (CG-40, US20) | Desarrollador |
 | 21/11/2026 | RN-PLAN-22 | Se refleja la regla nueva del back: listado de planes del profesor con estado y filtros (T13) | Lisandro |
 | 24/11/2026 | RN-PLAN-07 | Se implementa la edición del contenido de la rutina (US06), que faltaba | Martina |
+| 24/11/2026 | RN-PLAN-21 | El lápiz de la tarjeta abre el editor de la rutina; el nombre se cambia ahí y no en la tarjeta | Martina |
 
 ## Nota para US12 (Martina): qué cambió con T12 y T13 (21/11/2026)
 
@@ -107,10 +108,11 @@ T12 y T13 (CG-84) ya están en `develop` y cambian la pantalla de planes. Antes 
 
 ## Decisiones de implementación (US06, consultar y editar)
 
-* Pedido por Martina el 24/11/2026: hasta ahora solo se podía cambiar el nombre. "Ver y editar" en la tarjeta abre `/profesor/rutinas/:id` (`PaginaEditarRutina`), que pide `GET /planificacion/rutinas/:id` y muestra el mismo `EditorRutina` precargado. No hay una pantalla de detalle aparte: el editor precargado es el detalle.
+* Pedido por Martina el 24/11/2026: hasta ahora solo se podía cambiar el nombre. El lápiz de la tarjeta ("Editar rutina", antes "Editar nombre") abre `/profesor/rutinas/:id` (`PaginaEditarRutina`), que pide `GET /planificacion/rutinas/:id` y muestra el mismo `EditorRutina` precargado. No hay una pantalla de detalle aparte: el editor precargado es el detalle.
 * `rutinaAEdicion` (`edicion.ts`) pasa la rutina al estado del editor y arma la `secuencia` con el `orden` del back (sin `orden`, bloques primero).
 * En modo edición el editor suma el campo "Nombre" (validado con `validarNombreRutina`, RN-PLAN-21), el botón dice "Guardar cambios" y manda `PUT /planificacion/rutinas/:id` con el nombre y el mismo body que crear. Al guardar no se vacía: muestra "Cambios guardados". Los errores del back van en el `alert`.
 * La ruta `/profesor/rutinas/nueva` sigue siendo la de crear: react-router prioriza la ruta fija sobre `:id`.
+* Martina pidió el 24/11/2026 que el lápiz abra la rutina completa en lugar de editar solo el nombre en la tarjeta. Se quitaron el botón "Ver y editar", la edición en el lugar, `usarRenombrarRutina`, el cliente `renombrarRutina` y `reemplazar` de `usarConsultarRutinas`. Los 3 tests de renombrar en la tarjeta se reemplazaron por el cambio de nombre en el editor (aprobado por Martina). El back conserva `PATCH /planificacion/rutinas/:id/nombre`.
 
 ## Decisiones de implementación (US06)
 
