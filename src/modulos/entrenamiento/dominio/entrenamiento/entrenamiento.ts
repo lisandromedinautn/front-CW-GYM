@@ -1,3 +1,4 @@
+import type { RecordBatido } from '../record-batido/record-batido.ts';
 /** Medida de una serie (contrato del back, US14): repeticiones o segundos, y peso si corresponde. */
 export interface MedidaSerie {
   repeticiones: number | null;
@@ -57,4 +58,8 @@ export interface ResumenEntrenamiento {
   volumenKg: number;
   duracionSegundos: number;
   gruposMusculares: string[];
+}
+
+export interface RespuestaFinalizacionEntrenamiento extends ResumenEntrenamiento {
+  recordsBatidos?: RecordBatido[];
 }

@@ -66,8 +66,8 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | planificacion | `PaginaRutinaDelDia.tsx` (`presentacion/rutina-del-dia/`, ruta `/alumno/rutina-del-dia`) | `usarRutinaDelDia.ts` (`aplicacion/consultar-rutina-del-dia/`) | `GET /planificacion/mi-rutina-del-dia` | US08 | ✅ |
 | planificacion | `mi-plan/PaginaMiPlan.tsx` | `consultar-plan-del-alumno/usarMiPlan.ts` | `GET /planificacion/mi-plan` | US11 | ✅ `PaginaMiPlan.int.test.tsx` (9 casos) |
 | entrenamiento | `AccionesEntrenamiento.tsx`, `PaginaEntrenamientoEnCurso.tsx` (`/alumno/entrenamiento`) | `usarIniciarEntrenamiento.ts`, `usarEntrenamientoEnCurso.ts` | `POST /entrenamiento/entrenamientos`, `GET /entrenamiento/mi-entrenamiento-en-curso` | US13 | ✅ `entrenamiento.int.test.tsx` |
-| entrenamiento | `PaginaEntrenamientoEnCurso.tsx`, `PasoActual.tsx` (paso a paso), `FormularioSerie.tsx` y `ListaSeries.tsx` (solo lectura si está abandonado), en `/alumno/entrenamiento` | `usarRegistrarSerie.ts` (`aplicacion/registrar-serie/`) | `POST /entrenamiento/entrenamientos/:id/series` | US14 | ✅ `RegistrarSerie.int.test.tsx`; dominio `serie/serie.ts` (validación, `serie.test.ts`) y `serie/filasSeries.ts` (pasos por bloque y vuelta, con el GIF de cada ejercicio, T14) |
-| entrenamiento | `ResumenEntrenamiento.tsx`, `PaginaEntrenamientoEnCurso.tsx` | `usarFinalizarEntrenamiento.ts` | `POST .../:id/finalizacion` | US15 | ✅ 4 pruebas de integración |
+| entrenamiento | `PaginaEntrenamientoEnCurso.tsx` (percepción en el resumen o desde el entrenamiento finalizado) | `usarRegistrarPercepcion.ts` | `PUT /entrenamiento/entrenamientos/:id/percepcion` | US17 | 📄 |
+| entrenamiento | `ResumenEntrenamiento.tsx`, `PaginaEntrenamientoEnCurso.tsx` | `usarFinalizarEntrenamiento.ts` | `POST /entrenamiento/entrenamientos/:id/finalizacion` | US16 | ✅ Récords recibidos en recordsBatidos y mostrados en el resumen; reutiliza aplanarRecords |
 | entrenamiento | `PaginaResumenEntrenamiento.tsx` (planificada; récords en US16, percepción en US17) | `usarRegistrarPercepcion.ts` | `PUT .../:id/percepcion` | US16, US17 | 📄 |
 | entrenamiento | `PaginaEntrenamientosDeAlumnos.tsx` (`presentacion/entrenamientos-de-alumnos/`, ruta `/profesor/entrenamientos`, menú "Entrenamientos") | `usarEntrenamientosDeAlumnos.ts` (`aplicacion/consultar-entrenamientos-de-alumnos/`) | `GET /identidad/alumnos`, `GET /entrenamiento/alumnos/:alumnoId/entrenamientos` | US18 | ✅ `PaginaEntrenamientosDeAlumnos.int.test.tsx` (8 casos); dominio `entrenamientos-de-alumnos/entrenamientosDeAlumnos.ts` (fecha en hora de Argentina, estado, orden y total de series; `entrenamientosDeAlumnos.test.ts`) |
 
@@ -78,7 +78,7 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | `src/modulos/identidad/infraestructura/api/apiIdentidad.ts` | Ingreso, alta de profesor, código de profesor y vínculo del alumno | ✅ |
 | `src/modulos/catalogo/infraestructura/api/apiCatalogo.ts` | Consulta paginada de ejercicios con filtros | ✅ |
 | `src/modulos/planificacion/infraestructura/api/apiPlanificacion.ts` | Catálogo para el editor, listado, alta y renombrado de rutinas; alumnos del profesor, rutinas y alta de plan (US07); rutina del día del alumno (US08) | ✅ |
-| `src/modulos/entrenamiento/infraestructura/api/apiEntrenamiento.ts` | Inicio y consulta del entrenamiento (US13); registro de una serie realizada (US14); alumnos vinculados y entrenamientos de un alumno, paginados (US18) | ✅ |
+| `src/modulos/entrenamiento/infraestructura/api/apiEntrenamiento.ts` | Inicio y consulta del entrenamiento (US13); registro de series (US14); finalización y obtención del resumen con récords batidos (US15, US16); alumnos vinculados y entrenamientos de un alumno, paginados (US18) | ✅ |
 
 ## Compartido (`src/compartido/`)
 
@@ -122,6 +122,7 @@ Los tests viven junto a la pantalla o componente que prueban. Las fichas de cada
 | `src/modulos/planificacion/dominio/plan/rutinaDelDia.test.ts` | Objetivos y etiqueta del día (US08) | ✅ |
 | `src/modulos/planificacion/presentacion/rutina-del-dia/PaginaRutinaDelDia.int.test.tsx` | RN-PLAN-11, 18; rutina, descanso, sin plan y error HTTP | ✅ |
 | `src/modulos/planificacion/presentacion/rutina-del-dia/PaginaRutinaDelDiaDetalles.int.test.tsx` | RN-PLAN-11, 18, 02, 03; fecha, pausas y acceso por rol (RN-IDE-03) | ✅ |
+| `src/modulos/entrenamiento/presentacion/finalizar-entrenamiento/PaginaResumenEntrenamiento.int.test.tsx` | RN-ENT-13, RN-ENT-17; visualización de récords batidos en el resumen (US16) | ✅ |
 
 ## Carpetas por concepto
 
@@ -140,6 +141,9 @@ Decidido por Lisandro el 08/11/2026 (igual que en el back): en todas las capas d
 | compartido | dominio | error-api, menu, paginacion, sesion |
 | compartido | aplicacion · infraestructura | paginacion, sesion · sesion, cliente-http |
 | compartido | presentacion | menu, inicio, paginador, proximamente, ruta-protegida |
+| entrenamiento | dominio | entrenamiento, record-batido, serie |
+| entrenamiento | aplicacion · presentacion | iniciar-entrenamiento · entrenamiento-en-curso; registrar-serie · entrenamiento-en-curso; finalizar-entrenamiento · finalizar-entrenamiento |
+| entrenamiento | infraestructura | api (`apiEntrenamiento.ts`) |
 
 ## Nombres de archivo
 

@@ -8,7 +8,7 @@ import type {
   Entrenamiento,
   RegistroSerie,
   ResultadoEntrenamiento,
-  ResumenEntrenamiento,
+  RespuestaFinalizacionEntrenamiento,
   SerieRealizada,
 } from '../../dominio/entrenamiento/entrenamiento.ts';
 
@@ -20,7 +20,7 @@ export function iniciarEntrenamiento(): Promise<Entrenamiento> {
   return pedir('/entrenamiento/entrenamientos', { metodo: 'POST' });
 }
 
-export function finalizarEntrenamiento(id: string): Promise<ResumenEntrenamiento> {
+export function finalizarEntrenamiento(id: string): Promise<RespuestaFinalizacionEntrenamiento> {
   return pedir(`/entrenamiento/entrenamientos/${id}/finalizacion`, { metodo: 'POST' });
 }
 

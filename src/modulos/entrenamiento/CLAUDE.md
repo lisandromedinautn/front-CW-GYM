@@ -22,15 +22,15 @@ Ejecución del entrenamiento (iniciar, registrar series y finalizar), resumen co
 | RN-ENT-18 | El profesor solo elige entre sus alumnos vinculados; si el back responde `RN-ENT-18`, se muestra su mensaje | Vigente |
 | RN-UI-ENT-04 | El profesor elige uno de sus alumnos vinculados y ve sus entrenamientos del más nuevo al más viejo, paginados, cada uno con fecha y hora de inicio (hora de Argentina), rutina, estado, peso del día, cuántas series registró sobre el total y cada serie realizada junto a lo prescripto | Vigente |
 
-## Pantallas y hooks planificados
+## Pantallas y hooks
 
 | Pantalla (`presentacion/`) | Hook (`aplicacion/`) | US |
 | :-- | :-- | :-- |
 | `AccionesEntrenamiento.tsx`, `PaginaEntrenamientoEnCurso.tsx` ✅ | `usarIniciarEntrenamiento.ts`, `usarEntrenamientoEnCurso.ts` ✅ | US13 |
-| `AccionesEntrenamiento.tsx`, `PaginaEntrenamientoEnCurso.tsx` ✅ | `usarIniciarEntrenamiento.ts`, `usarEntrenamientoEnCurso.ts` ✅ | US13 |
 | `PaginaEntrenamientoEnCurso.tsx`, `ListaSeries.tsx` ✅ | `usarRegistrarSerie.ts` ✅ | US14 |
 | `finalizar-entrenamiento/ResumenEntrenamiento.tsx`, `PaginaEntrenamientoEnCurso.tsx` ✅ | `usarFinalizarEntrenamiento.ts` ✅ | US15 |
-| `PaginaEntrenamientoEnCurso.tsx` (mismo resumen, récords y percepción) | `usarRegistrarPercepcion.ts` | US16, US17 |
+| `finalizar-entrenamiento/ResumenEntrenamiento.tsx`, `PaginaEntrenamientoEnCurso.tsx` ✅ | Sin hook adicional: los récords llegan en la respuesta de finalización | US16 |
+| `PaginaEntrenamientoEnCurso.tsx` | `usarRegistrarPercepcion.ts` | US17 |
 | `PaginaEntrenamientosDeAlumnos.tsx` ✅ | `usarEntrenamientosDeAlumnos.ts` ✅ | US18 |
 
 ## Historial de cambios de reglas de UI
@@ -41,6 +41,7 @@ Ejecución del entrenamiento (iniciar, registrar series y finalizar), resumen co
 | 01/11/2026 | RN-ENT-01, 09, 13, 16, RN-UI-ENT-02 | Se reflejan ZG-08 a ZG-12 | Lisandro |
 | 23/11/2026 | RN-ENT-18 (UI) y nueva RN-UI-ENT-04 | Consulta de entrenamientos de alumnos (US18) | Ulises |
 | 22/11/2026 | Nueva RN-UI-ENT-03 | Registro paso a paso con GIF y contador siempre visible (US14, T14) | Ulises |
+| 24/11/2026 | RN-ENT-13 y RN-ENT-17 | Visualización de récords personales en el resumen de finalización (US16) | Ramiro |
 
 ## Decisiones de implementación (CG-46, US13)
 
@@ -69,7 +70,7 @@ Decididas por Ulises el 22/11/2026.
 * El entrenamiento en curso ofrece «Finalizar entrenamiento» y presenta volumen, grupos y duración. Sin series informa cero y ningún grupo registrado.
 * Al recargar, el estado `finalizado` recupera el resumen guardado.
 * El resumen vive dentro de `PaginaEntrenamientoEnCurso.tsx` (no en una página aparte): el mismo contenedor muestra el entrenamiento en curso y, al finalizar, el resumen con su estado persistido.
-* Los récords (US16) y la percepción (US17) se suman al mismo resumen; hoy no se muestran.
+* Los récords personales (US16) se muestran en el mismo resumen cuando el back devuelve elementos en `recordsBatidos`. No se calculan en el front: se presentan los valores anteriores y nuevos informados por el servidor.
 
 ## Decisiones de implementación (CG-68, US18)
 
@@ -80,3 +81,14 @@ Decididas por Ulises el 23/11/2026.
 * Cada entrenamiento es una tarjeta: fecha y hora de inicio en hora de Argentina (`America/Argentina/Buenos_Aires`, para que no dependa del navegador), rutina y estado (En curso, Abandonado; Finalizado cuando llegue US15), peso del día, "Series registradas: N de M" (M son los pasos de la copia, como en US14) y cada serie en el orden de la rutina con lo prescripto y lo realizado.
 * Paginado con el `Paginador` compartido (10 por defecto, clave `entrenamientos-de-alumnos`). Cambiar de alumno vuelve a la página 1. Sin filtros: el back no los tiene (RN-UI-LIS-04).
 * Los errores del back se muestran por su mensaje en un `alert` (por ejemplo `RN-ENT-18`).
+
+## Decisiones de implementación (US16)
+
+Decididas por Ramiro el 24/11/2026
+
+* La respuesta de finalización se tipa como `RespuestaFinalizacionEntrenamiento`, que extiende `ResumenEntrenamiento` y agrega `recordsBatidos?: RecordBatido[]`. El campo es opcional para mantener compatibilidad con respuestas que no lo incluyan.
+* `usarFinalizarEntrenamiento.ts` conserva la respuesta completa del back en el estado `resumen`.
+* `PaginaEntrenamientoEnCurso.tsx` pasa `recordsBatidos` a `ResumenEntrenamiento.tsx`. Si el campo no existe, se utiliza un arreglo vacío.
+* `ResumenEntrenamiento.tsx` muestra la sección «¡Nuevos récords personales!» únicamente cuando recibe récords. Para cada uno presenta el nombre del ejercicio, el tipo de récord, el valor anterior y el nuevo, junto con su unidad.
+* La presentación reutiliza `aplanarRecords` del dominio `record-batido`; el front no calcula, compara ni determina si se batió un récord. Esa responsabilidad corresponde al back.
+* La prueba de integración de `PaginaResumenEntrenamiento` verifica que, ante una respuesta de finalización con un récord, se muestra su nombre y la progresión del valor anterior al nuevo.

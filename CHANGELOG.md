@@ -8,7 +8,9 @@ Categorías: Agregado, Cambiado, Corregido, Eliminado, Seguridad. Cada entrada c
 
 ### Agregado
 
-- US15: finalización del entrenamiento y resumen de volumen, grupos musculares y duración.
+- US15: finalización del entrenamiento y resumen de volumen, grupos musculares trabajados y duración, con recuperación del resumen al recargar la página.
+
+- US16: visualización de récords personales batidos en el resumen de finalización del entrenamiento. Se muestra el ejercicio, el tipo de récord y la comparación entre el valor anterior y el nuevo, utilizando los datos devueltos por el back (RN-ENT-13, RN-ENT-17; US16).
 
 - US12: gestión de alumnos de planes vigentes por su profesor, con validaciones de vínculo y plan vigente.
 
