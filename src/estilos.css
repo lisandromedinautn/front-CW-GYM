@@ -1,0 +1,533 @@
+:root {
+  font-family: system-ui, sans-serif;
+  color: #1f2933;
+  background: #f4f6f8;
+}
+body {
+  margin: 0;
+}
+h1 {
+  font-size: 1.4rem;
+  margin: 0 0 1rem;
+}
+.ingreso {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+}
+.tarjeta {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 22rem;
+  display: grid;
+  gap: 1rem;
+  box-shadow: 0 1px 4px rgb(0 0 0 / 15%);
+}
+label {
+  display: grid;
+  gap: 0.25rem;
+  font-size: 0.9rem;
+}
+input {
+  padding: 0.6rem;
+  font-size: 1rem;
+  border: 1px solid #9aa5b1;
+  border-radius: 4px;
+}
+button {
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  border: 0;
+  border-radius: 4px;
+  background: #1d4ed8;
+  color: #fff;
+  cursor: pointer;
+}
+button:disabled {
+  opacity: 0.6;
+}
+.error {
+  margin: 0;
+  color: #b42318;
+}
+.menu {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: #fff;
+  border-bottom: 1px solid #d9e2ec;
+}
+.menu a {
+  color: #1d4ed8;
+  text-decoration: none;
+  padding: 0.4rem 0.2rem;
+}
+.menu button {
+  margin-left: auto;
+}
+.contenido {
+  padding: 1rem;
+}
+.pagina {
+  display: grid;
+  gap: 1rem;
+  max-width: 40rem;
+  margin: 0 auto;
+}
+.pagina h1 {
+  margin: 0;
+}
+.formulario {
+  background: #fff;
+  padding: 1.25rem;
+  border-radius: 8px;
+  display: grid;
+  gap: 1rem;
+  box-shadow: 0 1px 4px rgb(0 0 0 / 15%);
+}
+.barra {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: end;
+}
+.barra label {
+  flex: 1 1 12rem;
+}
+select {
+  max-width: 100%;
+  min-width: 0;
+  padding: 0.6rem;
+  font-size: 1rem;
+  border: 1px solid #9aa5b1;
+  border-radius: 4px;
+  background: #fff;
+}
+input[aria-invalid='true'] {
+  border-color: #b42318;
+}
+.lista-tarjetas {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+.tarjeta-item {
+  background: #fff;
+  padding: 0.75rem;
+  border-radius: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.75rem;
+  align-items: center;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 12%);
+}
+.enlace {
+  background: none;
+  color: #1d4ed8;
+  padding: 0.25rem 0;
+  font-weight: 600;
+  text-align: left;
+}
+.etiqueta {
+  background: #e0e7ff;
+  border-radius: 999px;
+  padding: 0.1rem 0.6rem;
+  font-size: 0.85rem;
+}
+.fondo-dialog {
+  position: fixed;
+  inset: 0;
+  background: rgb(0 0 0 / 50%);
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  z-index: 10;
+}
+.dialog {
+  background: #fff;
+  border-radius: 8px;
+  padding: 1.25rem;
+  width: 100%;
+  max-width: 28rem;
+  max-height: 90vh;
+  overflow: auto;
+  display: grid;
+  gap: 0.75rem;
+}
+.dialog h2 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+.gif {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+.acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+.secundario {
+  background: #e4e7eb;
+  color: #1f2933;
+}
+.exito {
+  margin: 0;
+  color: #067647;
+}
+.codigo {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 0.2rem;
+  margin: 0;
+}
+.error-campo {
+  color: #b42318;
+  font-size: 0.85rem;
+}
+.campo {
+  display: grid;
+  gap: 0.25rem;
+}
+.bloque {
+  /* Un fieldset tiene min-width: min-content: sin esto, un nombre largo desborda en mobile. */
+  min-width: 0;
+  display: grid;
+  gap: 0.75rem;
+  border: 1px solid #d9e2ec;
+  border-radius: 8px;
+  padding: 1rem;
+  background: #fff;
+}
+.bloque legend {
+  font-weight: 600;
+  padding: 0 0.25rem;
+}
+
+/* Días del plan (US07): tarjetas del mismo ancho y alto, en columnas parejas. */
+/* Crear plan: calendario de 5 semanas (lunes a domingo). En móvil, lista sin relleno. */
+.solo-lectores {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+.calendario-plan-semana {
+  display: none;
+}
+.dias-del-plan {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+  gap: 0.5rem;
+}
+.dia-del-plan {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 0.4rem;
+  background: #fff;
+  border: 1px solid #d9e2ec;
+  border-radius: 6px;
+  padding: 0.5rem;
+  min-width: 0;
+}
+.dia-del-plan-encabezado {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.25rem;
+  margin: 0;
+}
+.dia-del-plan-numero {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+.dia-del-plan-fecha {
+  font-size: 0.75rem;
+  color: #52606d;
+}
+.dia-del-plan select {
+  width: 100%;
+  min-width: 0;
+  padding: 0.35rem;
+  font-size: 0.85rem;
+}
+.dia-fuera-del-plan {
+  display: none;
+}
+@media (min-width: 48rem) {
+  .calendario-plan-semana {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 0.5rem;
+    margin-bottom: 0.4rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #52606d;
+    text-align: center;
+    text-transform: uppercase;
+  }
+  .dias-del-plan {
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+  }
+  .dia-fuera-del-plan {
+    display: block;
+    min-height: 4.5rem;
+    padding: 0.5rem;
+    border: 1px dashed #d9e2ec;
+    border-radius: 6px;
+    background: #eef1f4;
+    color: #9aa5b1;
+    font-size: 0.75rem;
+    filter: blur(1px);
+    opacity: 0.6;
+    user-select: none;
+  }
+}
+
+/* Rutinas: consulta paginada (Profesor, responsive) */
+.pagina-ancha {
+  max-width: 64rem;
+}
+.encabezado {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+.boton {
+  display: inline-block;
+  padding: 0.6rem 1rem;
+  border-radius: 4px;
+  background: #1d4ed8;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.boton:hover,
+button:not(.secundario, .enlace):hover {
+  background: #1e40af;
+}
+.tenue {
+  margin: 0;
+  color: #616e7c;
+  font-size: 0.9rem;
+}
+.vacio {
+  background: #fff;
+  border: 2px dashed #cbd2d9;
+  border-radius: 12px;
+  padding: 2.5rem 1.5rem;
+  display: grid;
+  justify-items: center;
+  gap: 0.75rem;
+  text-align: center;
+}
+.vacio-titulo {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+.grilla-rutinas {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: 1fr;
+}
+.tarjeta-rutina {
+  background: #fff;
+  border-radius: 10px;
+  padding: 1rem;
+  display: grid;
+  gap: 0.5rem;
+  align-content: start;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 12%);
+  border: 1px solid #d9e2ec;
+}
+.tarjeta-rutina-cabecera {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+.tarjeta-rutina h2 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+.ejercicios-rutina {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.4rem;
+}
+.ejercicios-rutina li {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.9rem;
+  text-transform: capitalize;
+}
+.miniatura {
+  width: 2.5rem;
+  height: 2.5rem;
+  flex: none;
+  object-fit: cover;
+  border-radius: 6px;
+  background: #e4e7eb;
+}
+.paginacion {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+/* Vista previa del ejercicio elegido en el editor: chica para no tapar el formulario. */
+.gif-vista-previa {
+  display: block;
+  margin: 0.25rem auto 0;
+  width: 7.5rem;
+  height: 7.5rem;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #d9e2ec;
+  background: #fff;
+}
+a:focus-visible,
+button:focus-visible,
+select:focus-visible,
+input:focus-visible {
+  outline: 2px solid #1d4ed8;
+  outline-offset: 2px;
+}
+.volver {
+  color: #1d4ed8;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+@media (min-width: 40rem) {
+  .grilla-rutinas {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 64rem) {
+  .grilla-rutinas {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.formulario > .etiqueta {
+  justify-self: start;
+}
+
+/* Paginador compartido, filtros del catálogo y nombre editable de la rutina */
+.paginacion {
+  flex-wrap: wrap;
+}
+.por-pagina {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.tarjeta-item .miniatura {
+  width: 3rem;
+  height: 3rem;
+}
+.nombre-rutina {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.6rem;
+  min-width: 0;
+}
+.nombre-rutina h2 {
+  overflow-wrap: anywhere;
+}
+.nombre-rutina .boton-icono {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  flex: none;
+}
+.boton-icono svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+/* Listado de planes (RN-PLAN-22): badge de estado y alumnos de cada tarjeta */
+.estado-plan {
+  border-radius: 999px;
+  padding: 0.1rem 0.6rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.estado-plan-proximo {
+  background: #fef3c7;
+  color: #78350f;
+}
+.estado-plan-vigente {
+  background: #d1fae5;
+  color: #065f46;
+}
+.estado-plan-finalizado {
+  background: #e4e7eb;
+  color: #323f4b;
+}
+.alumnos-plan {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Entrenamiento paso a paso (RN-UI-ENT-03): el contador queda fijo arriba y el GIF no empuja
+   los campos fuera de la pantalla. */
+.contador {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  margin: 0;
+  padding: 0.5rem 0;
+  background: #f4f6f8;
+  font-size: 1.5rem;
+  font-variant-numeric: tabular-nums;
+}
+.gif-paso {
+  display: block;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 14rem;
+  height: auto;
+  border-radius: 8px;
+}
+
+/* US18: cada serie del alumno en una fila, con lo prescripto y lo realizado separados. */
+.series-alumno {
+  display: grid;
+  gap: 0.35rem;
+  padding-left: 1.1rem;
+}
+.series-alumno li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+}
