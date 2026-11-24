@@ -48,6 +48,8 @@ export interface PedidoCircuito {
  * rutina mixta (US10) van las dos, y cada bloque y circuito lleva su `orden`.
  */
 export interface PedidoRutina {
+  /** RN-PLAN-21. Solo al editar (US06); al crear, el back pone "Rutina N". */
+  nombre?: string;
   bloques?: PedidoBloque[];
   circuitos?: PedidoCircuito[];
 }
@@ -58,7 +60,9 @@ export interface RutinaCreada {
   /** RN-PLAN-21: de 1 a 60 caracteres. */
   nombre: string;
   tipo: string;
+  /** US10: `orden` es la posición del bloque o circuito en la rutina (1..N). */
   bloques: {
+    orden?: number;
     ejercicioId: string;
     series: number;
     micropausaSegundos: number;
@@ -68,6 +72,7 @@ export interface RutinaCreada {
     pesoKg: number | null;
   }[];
   circuitos: {
+    orden?: number;
     vueltas: number;
     macropausaSegundos: number;
     ejercicios: {

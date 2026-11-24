@@ -32,6 +32,16 @@ export function crearRutina(pedido: PedidoRutina): Promise<RutinaCreada> {
   return pedir<RutinaCreada>('/planificacion/rutinas', { metodo: 'POST', cuerpo: pedido });
 }
 
+/** US06: el detalle de una rutina propia (404 RN-PLAN-08 si es ajena). */
+export function obtenerRutina(id: string): Promise<RutinaCreada> {
+  return pedir<RutinaCreada>(`/planificacion/rutinas/${id}`);
+}
+
+/** US06: reemplaza el contenido de una rutina propia y conserva su id (RN-PLAN-07). */
+export function editarRutina(id: string, pedido: PedidoRutina): Promise<RutinaCreada> {
+  return pedir<RutinaCreada>(`/planificacion/rutinas/${id}`, { metodo: 'PUT', cuerpo: pedido });
+}
+
 /** RN-PLAN-08: crea una copia independiente de una rutina propia. */
 export function importarRutina(id: string): Promise<RutinaCreada> {
   return pedir<RutinaCreada>(`/planificacion/rutinas/${id}/importacion`, { metodo: 'POST' });
