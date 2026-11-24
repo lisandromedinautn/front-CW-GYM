@@ -138,6 +138,13 @@ function TarjetaRutina(props: {
         })}
       </ul>
       {restantes > 0 && <p className="tenue">+{restantes} más</p>}
+      <Link
+        to={`/profesor/rutinas/${props.rutina.id}`}
+        className="boton secundario"
+        aria-label={`Ver y editar ${props.rutina.nombre}`}
+      >
+        Ver y editar
+      </Link>
     </li>
   );
 }

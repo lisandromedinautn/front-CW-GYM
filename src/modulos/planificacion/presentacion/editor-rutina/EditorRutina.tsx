@@ -3,7 +3,8 @@ import { Link } from 'react-router';
 import { usarCrearRutina } from '../../aplicacion/editor-rutina/usarCrearRutina.ts';
 import { usarEjerciciosParaRutina } from '../../aplicacion/editor-rutina/usarEjerciciosParaRutina.ts';
 import { tipoDeRutina } from '../../dominio/bloque/reglasBloque.ts';
-import type { PedidoRutina } from '../../dominio/rutina/rutina.ts';
+import { validarNombreRutina } from '../../dominio/rutina/nombreRutina.ts';
+import type { PedidoRutina, RutinaCreada } from '../../dominio/rutina/rutina.ts';
 import { mover } from '../../dominio/rutina/secuenciaRutina.ts';
 import {
   type BloqueEnEdicion,
@@ -13,6 +14,7 @@ import {
   circuitoAPedido,
   circuitoVacio,
   ejercicioCircuitoVacio,
+  rutinaAEdicion,
   type Errores,
   type ObjetivoEnEdicion,
   sinErrores,
@@ -25,16 +27,26 @@ import { EditorCircuito } from './EditorCircuito.tsx';
 /**
  * US06, US09 y US10: el profesor arma una rutina por bloques, por circuitos o mixta. Los bloques
  * y circuitos se muestran en el orden de la rutina (`secuencia`), que se cambia con "Subir" y
- * "Bajar" (RN-PLAN-01).
+ * "Bajar" (RN-PLAN-01). US06: con `rutina` y `edicion`, muestra esa rutina y guarda sus cambios.
  */
-export function EditorRutina() {
+export function EditorRutina(props: {
+  rutina?: RutinaCreada;
+  edicion?: Pick<ReturnType<typeof usarCrearRutina>, 'avisar' | 'error' | 'exito' | 'enviando'> & {
+    guardar: (pedido: PedidoRutina) => Promise<boolean>;
+  };
+}) {
   const { ejercicios, error: errorCatalogo } = usarEjerciciosParaRutina();
-  const { crear, avisar, error, exito, enviando } = usarCrearRutina();
-  const [bloques, setBloques] = useState<BloqueEnEdicion[]>([]);
-  const [circuitos, setCircuitos] = useState<CircuitoEnEdicion[]>([]);
+  const creacion = usarCrearRutina();
+  const { avisar, error, exito, enviando } = props.edicion ?? creacion;
+  const [inicial] = useState(() =>
+    props.rutina ? rutinaAEdicion(props.rutina) : { bloques: [], circuitos: [], secuencia: [] },
+  );
+  const [nombre, setNombre] = useState(props.rutina?.nombre ?? '');
+  const [bloques, setBloques] = useState<BloqueEnEdicion[]>(inicial.bloques);
+  const [circuitos, setCircuitos] = useState<CircuitoEnEdicion[]>(inicial.circuitos);
   const [errores, setErrores] = useState<Record<number, Errores>>({});
   /** Claves de bloques y circuitos en el orden de la rutina (RN-PLAN-01). */
-  const [secuencia, setSecuencia] = useState<number[]>([]);
+  const [secuencia, setSecuencia] = useState<number[]>(inicial.secuencia);
 
   const catalogo = ejercicios ?? [];
   const buscar = (id: string) => catalogo.find((e) => e.id === id);
@@ -122,6 +134,12 @@ export function EditorRutina() {
     );
     setErrores(encontrados);
     if (!sinErrores(encontrados)) return;
+    // RN-PLAN-21 reflejada: al editar, el nombre va de 1 a 60 caracteres.
+    const avisoNombre = props.edicion ? validarNombreRutina(nombre) : null;
+    if (avisoNombre) {
+      avisar(avisoNombre);
+      return;
+    }
 
     // Se manda solo la lista que tiene contenido (contrato de US06 y US09). En una rutina mixta
     // van las dos y cada bloque y circuito lleva su `orden` en la rutina (US10).
@@ -129,6 +147,7 @@ export function EditorRutina() {
     const conOrden = <T,>(clave: number, pedido: T) =>
       mixta ? { orden: orden(clave), ...pedido } : pedido;
     const pedido: PedidoRutina = {
+      ...(props.edicion && { nombre: nombre.trim() }),
       ...(bloques.length > 0 && {
         bloques: bloquesEnOrden.map((b) => conOrden(b.clave, bloqueAPedido(b, buscar))),
       }),
@@ -136,7 +155,9 @@ export function EditorRutina() {
         circuitos: circuitosEnOrden.map((c) => conOrden(c.clave, circuitoAPedido(c, buscar))),
       }),
     };
-    if (await crear(pedido)) {
+    if (props.edicion) {
+      await props.edicion.guardar(pedido);
+    } else if (await creacion.crear(pedido)) {
       setBloques([]);
       setCircuitos([]);
       setSecuencia([]);
@@ -149,13 +170,19 @@ export function EditorRutina() {
       <Link to="/profesor/rutinas" className="volver">
         Volver a rutinas
       </Link>
-      <h1>Nueva rutina</h1>
+      <h1>{props.rutina ? props.rutina.nombre : 'Nueva rutina'}</h1>
       {errorCatalogo && (
         <p role="alert" className="error">
           {errorCatalogo}
         </p>
       )}
       <form className="formulario" onSubmit={(e) => void guardar(e)} noValidate>
+        {props.edicion && (
+          <label>
+            Nombre
+            <input type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} />
+          </label>
+        )}
         {tipo && <p className="etiqueta">Tipo de rutina: {tipo}</p>}
         {secuencia.map((clave) => {
           const bloque = bloques.find((b) => b.clave === clave);
@@ -225,7 +252,7 @@ export function EditorRutina() {
           </p>
         )}
         <button type="submit" disabled={enviando}>
-          Guardar rutina
+          {props.edicion ? 'Guardar cambios' : 'Guardar rutina'}
         </button>
       </form>
     </section>
