@@ -69,3 +69,8 @@ Implementado el 24/11/2026.
 * **Actualización inmediata:** al marcar, `usarMarcarLeida` llama a `avisarCambioNoLeidas()` (`aplicacion/cambios-no-leidas.ts`, un aviso interno del módulo), y `usarContadorNoLeidas` vuelve a consultar.
 * **Errores de red del contador:** se ignoran y queda el último valor. Por eso los tests de otras pantallas del Profesor, que no declaran esa respuesta en MSW, no se rompieron.
 * **Percepción:** `Percepcion` ya tiene la forma del back (`{ rpe, sensacionFuerza }`), aunque hasta US17 llega `null`.
+
+## Decisiones de implementación (CG-62, US17)
+
+* **Percepción en la tarjeta:** la tarjeta muestra "RPE: N · Sensación de fuerza: N" con `describirPercepcion`. El tipo `Percepcion` del front tiene los dos valores siempre numéricos, porque US17 los carga juntos; la notificación trae `percepcion: null` si no hay.
+* **Notificación solo por percepción:** con `seriesPorDebajo` vacío, la tarjeta muestra "Percepción mala" y no muestra la sección de series.

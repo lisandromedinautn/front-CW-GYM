@@ -19,10 +19,10 @@ export interface SeriePorDebajo {
   realizada: MedidaSerie | null;
 }
 
-/** RN-NOT-05 (a confirmar con US17): hasta entonces llega `null`. */
+/** RN-NOT-05 (US17): RPE y sensación llegan juntos; la notificación trae `null` si no hay percepción. */
 export interface Percepcion {
-  rpe: number | null;
-  sensacionFuerza: number | null;
+  rpe: number;
+  sensacionFuerza: number;
 }
 
 export interface Notificacion {
@@ -64,6 +64,11 @@ export function describirMedida(medida: MedidaSerie): string {
 /** RN-NOT-01: lo realizado, o «Sin registrar» si la serie no se registró. */
 export function describirRealizada(realizada: MedidaSerie | null): string {
   return realizada === null ? 'Sin registrar' : describirMedida(realizada);
+}
+
+/** RN-NOT-05: «RPE: 10 · Sensación de fuerza: 1». */
+export function describirPercepcion(percepcion: Percepcion): string {
+  return `RPE: ${percepcion.rpe} · Sensación de fuerza: ${percepcion.sensacionFuerza}`;
 }
 
 /** «Serie 3 · press» en un bloque; «Vuelta 2 · plancha» en un circuito. */
