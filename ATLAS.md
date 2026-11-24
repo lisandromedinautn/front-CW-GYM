@@ -45,6 +45,7 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | Catálogo | `src/modulos/catalogo/CLAUDE.md` | `src/modulos/catalogo/FICHAS-TEST.md` | `../back-CW-GYM/src/modulos/catalogo/CLAUDE.md` |
 | Planificación | `src/modulos/planificacion/CLAUDE.md` | `src/modulos/planificacion/FICHAS-TEST.md` | `../back-CW-GYM/src/modulos/planificacion/CLAUDE.md` |
 | Entrenamiento | `src/modulos/entrenamiento/CLAUDE.md` | `src/modulos/entrenamiento/FICHAS-TEST.md` | `../back-CW-GYM/src/modulos/entrenamiento/CLAUDE.md` |
+| Notificaciones (US21) | `src/modulos/notificaciones/CLAUDE.md` | `src/modulos/notificaciones/FICHAS-TEST.md` | `../back-CW-GYM/src/modulos/notificaciones/CLAUDE.md` |
 | Compartido | `src/compartido/CLAUDE.md` | — | — |
 
 ## Pantallas → hook → endpoint del back
@@ -70,6 +71,8 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | entrenamiento | `ResumenEntrenamiento.tsx`, `PaginaEntrenamientoEnCurso.tsx` | `usarFinalizarEntrenamiento.ts` | `POST .../:id/finalizacion` | US15 | ✅ 4 pruebas de integración |
 | entrenamiento | `PaginaResumenEntrenamiento.tsx` (planificada; récords en US16, percepción en US17) | `usarRegistrarPercepcion.ts` | `PUT .../:id/percepcion` | US16, US17 | 📄 |
 | entrenamiento | `PaginaEntrenamientosDeAlumnos.tsx` (`presentacion/entrenamientos-de-alumnos/`, ruta `/profesor/entrenamientos`, menú "Entrenamientos") | `usarEntrenamientosDeAlumnos.ts` (`aplicacion/consultar-entrenamientos-de-alumnos/`) | `GET /identidad/alumnos`, `GET /entrenamiento/alumnos/:alumnoId/entrenamientos` | US18 | ✅ `PaginaEntrenamientosDeAlumnos.int.test.tsx` (8 casos); dominio `entrenamientos-de-alumnos/entrenamientosDeAlumnos.ts` (fecha en hora de Argentina, estado, orden y total de series; `entrenamientosDeAlumnos.test.ts`) |
+| notificaciones | `PaginaNotificaciones.tsx`, `TarjetaNotificacion.tsx` (`presentacion/bandeja/`, ruta `/profesor/notificaciones`, menú "Notificaciones") | `usarNotificaciones.ts`, `usarMarcarLeida.ts` | `GET /notificaciones/mis-notificaciones`, `PUT /notificaciones/mis-notificaciones/:id/lectura` | US21 | ✅ `PaginaNotificaciones.int.test.tsx` (6 casos, incluido el enlace de RN-UI-NOT-02); dominio `notificacion/notificacion.ts` (`notificacion.test.ts`, 3 casos); e2e `e2e/notificaciones/notificacion.e2e.ts` |
+| notificaciones | `ContadorNoLeidas.tsx` (`presentacion/contador/`, en el menú del Profesor, compuesto desde `Aplicacion.tsx`) | `usarContadorNoLeidas.ts` (cada 60 s) | `GET /notificaciones/mis-notificaciones/no-leidas` | US21 | ✅ `ContadorNoLeidas.int.test.tsx` (2 casos); se actualiza al marcar por `aplicacion/cambios-no-leidas.ts` |
 
 ## Clientes de API del módulo
 
@@ -94,7 +97,7 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | `infraestructura/cliente-http/clienteHttp.ts` | `pedir()`: URL base, JWT, traducción a `ErrorApi` y cierre de sesión ante 401 (RN-UI-IDE-02) | ✅ |
 | `aplicacion/sesion/usarSesion.ts` | Hook de sesión sobre `useSyncExternalStore` | ✅ |
 | `presentacion/ruta-protegida/RutaProtegida.tsx` | Guard por rol: sin sesión lleva al ingreso, con otro rol muestra "sin acceso" (RN-IDE-03) | ✅ |
-| `presentacion/menu/MenuPrincipal.tsx` | Menú por rol y "Salir" (RN-UI-IDE-01) | ✅ |
+| `presentacion/menu/MenuPrincipal.tsx` | Menú por rol y "Salir" (RN-UI-IDE-01). Recibe contenido extra por ruta (`extras`), que compone `Aplicacion.tsx` (contador de notificaciones, US21) | ✅ |
 | `presentacion/menu/DisenioConMenu.tsx` | Layout con el menú para las rutas por rol | ✅ |
 | `presentacion/inicio/PaginaInicio.tsx` | Inicio de cada rol (placeholder "Panel del {rol}") | ✅ |
 | `presentacion/proximamente/Proximamente.tsx` | Texto para las rutas que todavía no tienen página | ✅ |
@@ -122,6 +125,9 @@ Los tests viven junto a la pantalla o componente que prueban. Las fichas de cada
 | `src/modulos/planificacion/dominio/plan/rutinaDelDia.test.ts` | Objetivos y etiqueta del día (US08) | ✅ |
 | `src/modulos/planificacion/presentacion/rutina-del-dia/PaginaRutinaDelDia.int.test.tsx` | RN-PLAN-11, 18; rutina, descanso, sin plan y error HTTP | ✅ |
 | `src/modulos/planificacion/presentacion/rutina-del-dia/PaginaRutinaDelDiaDetalles.int.test.tsx` | RN-PLAN-11, 18, 02, 03; fecha, pausas y acceso por rol (RN-IDE-03) | ✅ |
+| `src/modulos/notificaciones/presentacion/bandeja/PaginaNotificaciones.int.test.tsx` | RN-NOT-01, 02, 03, 04, RN-UI-NOT-02 (US21) | ✅ |
+| `src/modulos/notificaciones/presentacion/contador/ContadorNoLeidas.int.test.tsx` | RN-UI-NOT-01 (US21) | ✅ |
+| `src/modulos/notificaciones/dominio/notificacion/notificacion.test.ts` | RN-NOT-01: textos de series por tiempo, de circuito y con decimales (US21) | ✅ |
 
 ## Carpetas por concepto
 
@@ -129,6 +135,7 @@ Decidido por Lisandro el 08/11/2026 (igual que en el back): en todas las capas d
 
 | Módulo | Capa | Carpetas |
 | :-- | :-- | :-- |
+| notificaciones | todas | dominio `notificacion`; aplicacion `consultar-notificaciones`, `marcar-leida`, `contar-no-leidas` y `cambios-no-leidas.ts`; infraestructura `apiNotificaciones.ts`; presentacion `bandeja` y `contador` (US21) |
 | identidad | aplicacion · presentacion | ingreso, alta-profesor, codigo-profesor, vinculo (hook y página de cada pantalla, con el mismo nombre de carpeta en las dos capas) |
 | identidad | infraestructura | api (`apiIdentidad.ts`) |
 | catalogo | dominio | ejercicio (`ejercicio.ts`, `clasificacion.ts`) |

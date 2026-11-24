@@ -1,5 +1,5 @@
 import { PaginaAlumnosDelPlan } from './modulos/planificacion/presentacion/alumnos-del-plan/PaginaAlumnosDelPlan.tsx';
-import type { ReactElement } from 'react';
+import type { ReactElement, ReactNode } from 'react';
 import { Navigate, Route, Routes } from 'react-router';
 import { usarSesion } from './compartido/aplicacion/sesion/usarSesion.ts';
 import { OPCIONES_MENU } from './compartido/dominio/menu/opcionesMenu.ts';
@@ -14,6 +14,8 @@ import { PaginaCodigoProfesor } from './modulos/identidad/presentacion/codigo-pr
 import { PaginaVincularProfesor } from './modulos/identidad/presentacion/vinculo/PaginaVincularProfesor.tsx';
 import { PaginaIngreso } from './modulos/identidad/presentacion/ingreso/PaginaIngreso.tsx';
 import { PaginaEntrenamientosDeAlumnos } from './modulos/entrenamiento/presentacion/entrenamientos-de-alumnos/PaginaEntrenamientosDeAlumnos.tsx';
+import { ContadorNoLeidas } from './modulos/notificaciones/presentacion/contador/ContadorNoLeidas.tsx';
+import { PaginaNotificaciones } from './modulos/notificaciones/presentacion/bandeja/PaginaNotificaciones.tsx';
 import { PaginaPlanes } from './modulos/planificacion/presentacion/consultar-planes/PaginaPlanes.tsx';
 import { PaginaNuevoPlan } from './modulos/planificacion/presentacion/crear-plan/PaginaNuevoPlan.tsx';
 import { PaginaRutinas } from './modulos/planificacion/presentacion/consultar-rutinas/PaginaRutinas.tsx';
@@ -27,6 +29,11 @@ import './estilos.css';
 
 const ROLES: Rol[] = ['Admin', 'Profesor', 'Alumno'];
 
+/** Contenido que cada módulo suma a una opción de menú, solo para el rol que lo usa (RN-UI-NOT-01). */
+const EXTRAS_MENU: Partial<Record<Rol, Record<string, ReactNode>>> = {
+  Profesor: { '/profesor/notificaciones': <ContadorNoLeidas /> },
+};
+
 /** Páginas implementadas por ruta; las que faltan muestran "Próximamente". */
 const PAGINAS: Record<string, ReactElement> = {
   '/admin/ejercicios': <ListaEjercicios />,
@@ -37,6 +44,7 @@ const PAGINAS: Record<string, ReactElement> = {
   '/profesor/rutinas': <PaginaRutinas />,
   '/profesor/planes': <PaginaPlanes />,
   '/profesor/entrenamientos': <PaginaEntrenamientosDeAlumnos />,
+  '/profesor/notificaciones': <PaginaNotificaciones />,
   '/alumno/mi-plan': <PaginaMiPlan />,
   '/alumno/rutina-del-dia': (
     <PaginaRutinaDelDia acciones={(hayRutina) => <AccionesEntrenamiento hayRutina={hayRutina} />} />
@@ -74,7 +82,7 @@ export function Aplicacion() {
           path={RUTA_INICIO[rol]}
           element={
             <RutaProtegida rol={rol}>
-              <DisenioConMenu />
+              <DisenioConMenu extrasMenu={EXTRAS_MENU[rol]} />
             </RutaProtegida>
           }
         >

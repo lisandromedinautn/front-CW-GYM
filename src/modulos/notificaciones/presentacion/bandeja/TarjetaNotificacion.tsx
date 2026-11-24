@@ -1,0 +1,48 @@
+import { Link } from 'react-router';
+import {
+  describirMedida,
+  describirRealizada,
+  etiquetaDeGravedad,
+  fechaHora,
+  type Notificacion,
+  tituloDeSerie,
+} from '../../dominio/notificacion/notificacion.ts';
+
+interface Props {
+  notificacion: Notificacion;
+  alMarcarLeida: (id: string) => void;
+}
+
+/** RN-NOT-01, 02, 04 y RN-UI-NOT-02: una notificación con sus series por debajo. */
+export function TarjetaNotificacion({ notificacion, alMarcarLeida }: Props) {
+  const { alumno, entrenamiento, seriesPorDebajo } = notificacion;
+  const nombre = `${alumno.apellido}, ${alumno.nombre}`;
+  return (
+    <article className="tarjeta-plan">
+      <h2>{etiquetaDeGravedad(notificacion.gravedad)}</h2>
+      <p>{nombre}</p>
+      <p>{entrenamiento.rutina}</p>
+      <p>{fechaHora(entrenamiento.inicio)}</p>
+      <p>
+        Series por debajo: {seriesPorDebajo.length} de {notificacion.totalSeries}
+      </p>
+      <ul className="series-alumno">
+        {seriesPorDebajo.map((serie) => (
+          <li key={`${serie.orden}-${serie.numero}-${serie.posicion ?? 0}`}>
+            <strong>{tituloDeSerie(serie)}</strong>
+            <span>Prescripto: {describirMedida(serie.prescripta)}</span>
+            <span>Realizado: {describirRealizada(serie.realizada)}</span>
+          </li>
+        ))}
+      </ul>
+      <Link to={`/profesor/entrenamientos?alumno=${alumno.id}`}>
+        Ver entrenamientos de {nombre}
+      </Link>
+      {!notificacion.leida && (
+        <button type="button" onClick={() => alMarcarLeida(notificacion.id)}>
+          Marcar como leída
+        </button>
+      )}
+    </article>
+  );
+}
