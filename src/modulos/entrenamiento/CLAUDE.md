@@ -14,13 +14,13 @@ Ejecución del entrenamiento (iniciar, registrar series y finalizar), resumen co
 | RN-ENT-15 | La sensación de fuerza solo acepta enteros de 1 a 5 | Vigente |
 | RN-ENT-09 | El resumen muestra los grupos de los músculos principal y secundario | Vigente |
 | RN-ENT-13 | Solo se anuncian los récords estrictamente mayores; en la primera vez que se hace un ejercicio no se anuncian récords | Vigente |
-| RN-ENT-16 | RPE y sensación son opcionales: se pueden cargar en el resumen o más tarde, desde el entrenamiento finalizado | Vigente |
+| RN-ENT-16 | RPE y sensación son opcionales y no se piden para finalizar. En el resumen del entrenamiento finalizado (al finalizar o al volver más tarde) hay un formulario con los dos campos, obligatorios, y el botón "Guardar percepción". Se guardan una sola vez: después se muestran como texto ("RPE: 9 · Sensación de fuerza: 2") y el formulario no aparece. Un error del back (`RN-ENT-14`, `15` o `16`) se muestra con su mensaje | Vigente |
 | RN-ENT-17 | El resumen muestra peso total levantado, grupos musculares trabajados, duración y récords batidos | Vigente |
 | RN-UI-ENT-01 | Registrar una serie realizada no requiere más de una pantalla ni más de una confirmación (OKR O3: 10 segundos o menos) | Vigente |
 | RN-UI-ENT-02 | Si se recarga la página con un entrenamiento en curso del día, se retoma ese entrenamiento. Uno abandonado (RN-ENT-20) se muestra como abandonado | Vigente |
 | RN-UI-ENT-03 | Durante el entrenamiento en curso se muestra un paso por vez (una serie de bloque o un ejercicio en una vuelta de circuito), con el GIF del ejercicio y su atribución si lo tiene. Registrar avanza al paso siguiente; "Anterior" y "Siguiente" mueven sin registrar. El contador está siempre visible | Vigente |
 | RN-ENT-18 | El profesor solo elige entre sus alumnos vinculados; si el back responde `RN-ENT-18`, se muestra su mensaje | Vigente |
-| RN-UI-ENT-04 | El profesor elige uno de sus alumnos vinculados y ve sus entrenamientos del más nuevo al más viejo, paginados, cada uno con fecha y hora de inicio (hora de Argentina), rutina, estado, peso del día, cuántas series registró sobre el total y cada serie realizada junto a lo prescripto | Vigente |
+| RN-UI-ENT-04 | El profesor elige uno de sus alumnos vinculados y ve sus entrenamientos del más nuevo al más viejo, paginados, cada uno con fecha y hora de inicio (hora de Argentina), rutina, estado, peso del día, cuántas series registró sobre el total y cada serie realizada junto a lo prescripto. En un entrenamiento finalizado con percepción, también "RPE: N · Sensación de fuerza: N" (US17) | Vigente |
 
 ## Pantallas y hooks planificados
 
@@ -30,7 +30,7 @@ Ejecución del entrenamiento (iniciar, registrar series y finalizar), resumen co
 | `AccionesEntrenamiento.tsx`, `PaginaEntrenamientoEnCurso.tsx` ✅ | `usarIniciarEntrenamiento.ts`, `usarEntrenamientoEnCurso.ts` ✅ | US13 |
 | `PaginaEntrenamientoEnCurso.tsx`, `ListaSeries.tsx` ✅ | `usarRegistrarSerie.ts` ✅ | US14 |
 | `finalizar-entrenamiento/ResumenEntrenamiento.tsx`, `PaginaEntrenamientoEnCurso.tsx` ✅ | `usarFinalizarEntrenamiento.ts` ✅ | US15 |
-| `PaginaEntrenamientoEnCurso.tsx` (mismo resumen, récords y percepción) | `usarRegistrarPercepcion.ts` | US16, US17 |
+| `PaginaEntrenamientoEnCurso.tsx` y `finalizar-entrenamiento/ResumenEntrenamiento.tsx` (percepción en el resumen; récords con US16) | `registrar-percepcion/usarRegistrarPercepcion.ts` | US16, US17 |
 | `PaginaEntrenamientosDeAlumnos.tsx` ✅ | `usarEntrenamientosDeAlumnos.ts` ✅ | US18 |
 
 ## Historial de cambios de reglas de UI
@@ -41,6 +41,7 @@ Ejecución del entrenamiento (iniciar, registrar series y finalizar), resumen co
 | 01/11/2026 | RN-ENT-01, 09, 13, 16, RN-UI-ENT-02 | Se reflejan ZG-08 a ZG-12 | Lisandro |
 | 23/11/2026 | RN-ENT-18 (UI) y nueva RN-UI-ENT-04 | Consulta de entrenamientos de alumnos (US18) | Ulises |
 | 22/11/2026 | Nueva RN-UI-ENT-03 | Registro paso a paso con GIF y contador siempre visible (US14, T14) | Ulises |
+| 24/11/2026 | RN-ENT-16 (UI) y RN-UI-ENT-04 | La percepción se carga una sola vez, con los dos campos obligatorios, desde el resumen; el profesor la ve en los entrenamientos de alumnos (US17, decisión 46) | Ulises |
 
 ## Decisiones de implementación (CG-46, US13)
 
