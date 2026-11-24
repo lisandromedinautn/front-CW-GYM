@@ -1,4 +1,5 @@
 import type { ResumenEntrenamiento as DatosResumen } from '../../dominio/entrenamiento/entrenamiento.ts';
+import { Link } from 'react-router';
 import type { RecordBatido } from '../../dominio/record-batido/record-batido.ts';
 import { aplanarRecords } from '../../dominio/record-batido/aplanarRecords.ts';
 
@@ -44,6 +45,10 @@ export function ResumenEntrenamiento({ resumen, recordsBatidos = [] }: Props) {
           </ul>
         </section>
       )}
+
+      <p>
+        <Link to="/alumno/rutina-del-dia">Volver al inicio</Link>
+      </p>
     </section>
   );
 }

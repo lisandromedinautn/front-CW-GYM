@@ -119,4 +119,64 @@ describe('RN-ENT-05, 06, 09, 17 · finalizar y ver el resumen', () => {
     expect(screen.getByText('kettlebell hang clean')).toBeVisible();
     expect(screen.getByText(/Repeticiones: 12 → 13/)).toBeVisible();
   });
+
+  it('al finalizar muestra Volver al inicio y lleva a Mi rutina del día', async () => {
+    servidorRedFalsa.use(
+      http.get('http://localhost:3000/entrenamiento/mi-entrenamiento-en-curso', () =>
+        HttpResponse.json({
+          estado: 'en-curso',
+          entrenamiento: {
+            id: 'ent-1',
+            inicio: '2026-11-22T10:00:00.000Z',
+            // Un bloque de una serie: el único paso es el último, donde está «Finalizar».
+            rutina: {
+              nombre: 'Fuerza',
+              bloques: [
+                {
+                  ejercicioId: 'press',
+                  nombre: 'lever chest press',
+                  repeticiones: 10,
+                  segundos: null,
+                  pesoKg: null,
+                  orden: 1,
+                  series: 1,
+                  micropausaSegundos: 0,
+                  macropausaSegundos: 0,
+                },
+              ],
+            },
+          },
+        }),
+      ),
+      http.post('http://localhost:3000/entrenamiento/entrenamientos/ent-1/finalizacion', () =>
+        HttpResponse.json(
+          { volumenKg: 0, duracionSegundos: 1800, gruposMusculares: [] },
+          { status: 201 },
+        ),
+      ),
+      http.get('http://localhost:3000/planificacion/mi-rutina-del-dia', () =>
+        HttpResponse.json({
+          estado: 'rutina',
+          fecha: '2026-11-24',
+          numeroDia: 1,
+          rutina: {
+            id: 'r1',
+            nombre: 'Fuerza',
+            tipo: 'Mixta',
+            bloques: [],
+            circuitos: [],
+          },
+        }),
+      ),
+    );
+    localStorage.setItem('cwgym.sesion', JSON.stringify({ token: 't', rol: 'Alumno' }));
+    render(
+      <MemoryRouter initialEntries={['/alumno/entrenamiento']}>
+        <Aplicacion />
+      </MemoryRouter>,
+    );
+    await userEvent.click(await screen.findByRole('button', { name: 'Finalizar entrenamiento' }));
+    await userEvent.click(await screen.findByRole('link', { name: 'Volver al inicio' }));
+    expect(await screen.findByRole('heading', { name: 'Mi rutina del día' })).toBeVisible();
+  });
 });
