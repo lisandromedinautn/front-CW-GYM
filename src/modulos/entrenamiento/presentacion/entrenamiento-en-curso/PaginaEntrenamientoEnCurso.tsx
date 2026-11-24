@@ -1,5 +1,6 @@
 import { usarFinalizarEntrenamiento } from '../../aplicacion/finalizar-entrenamiento/usarFinalizarEntrenamiento.ts';
 import { ResumenEntrenamiento } from '../finalizar-entrenamiento/ResumenEntrenamiento.tsx';
+import { PercepcionDelResumen } from '../finalizar-entrenamiento/PercepcionDelResumen.tsx';
 import { useEffect, useState } from 'react';
 import { usarEntrenamientoEnCurso } from '../../aplicacion/consultar-entrenamiento-en-curso/usarEntrenamientoEnCurso.ts';
 import { usarRegistrarSerie } from '../../aplicacion/registrar-serie/usarRegistrarSerie.ts';
@@ -25,7 +26,13 @@ export function PaginaEntrenamientoEnCurso() {
         <>
           <h2>{resultado.entrenamiento.rutina.nombre}</h2>
           {resumen ? (
-            <ResumenEntrenamiento resumen={resumen} />
+            <>
+              <ResumenEntrenamiento resumen={resumen} />
+              <PercepcionDelResumen
+                entrenamientoId={resultado.entrenamiento.id}
+                percepcion={resultado.entrenamiento.percepcion}
+              />
+            </>
           ) : resultado.estado === 'abandonado' ? (
             <DetalleEntrenamiento
               entrenamiento={resultado.entrenamiento}

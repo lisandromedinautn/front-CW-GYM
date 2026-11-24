@@ -1,5 +1,6 @@
 import { pedir } from '../../../../compartido/infraestructura/cliente-http/clienteHttp.ts';
 import type { Pagina } from '../../../../compartido/dominio/paginacion/paginacion.ts';
+import type { Percepcion } from '../../dominio/percepcion/percepcion.ts';
 import type {
   AlumnoVinculado,
   EntrenamientoDeAlumno,
@@ -42,4 +43,11 @@ export function consultarEntrenamientosDeAlumno(
 ): Promise<Pagina<EntrenamientoDeAlumno>> {
   const query = new URLSearchParams({ pagina: String(pagina), tamanio: String(tamanio) });
   return pedir(`/entrenamiento/alumnos/${alumnoId}/entrenamientos?${query.toString()}`);
+}
+/** US17 (RN-ENT-16): guarda la percepción del entrenamiento finalizado, una sola vez. */
+export function registrarPercepcion(id: string, percepcion: Percepcion): Promise<Percepcion> {
+  return pedir(`/entrenamiento/entrenamientos/${id}/percepcion`, {
+    metodo: 'POST',
+    cuerpo: percepcion,
+  });
 }

@@ -30,7 +30,7 @@ Ejecución del entrenamiento (iniciar, registrar series y finalizar), resumen co
 | `AccionesEntrenamiento.tsx`, `PaginaEntrenamientoEnCurso.tsx` ✅ | `usarIniciarEntrenamiento.ts`, `usarEntrenamientoEnCurso.ts` ✅ | US13 |
 | `PaginaEntrenamientoEnCurso.tsx`, `ListaSeries.tsx` ✅ | `usarRegistrarSerie.ts` ✅ | US14 |
 | `finalizar-entrenamiento/ResumenEntrenamiento.tsx`, `PaginaEntrenamientoEnCurso.tsx` ✅ | `usarFinalizarEntrenamiento.ts` ✅ | US15 |
-| `PaginaEntrenamientoEnCurso.tsx` y `finalizar-entrenamiento/ResumenEntrenamiento.tsx` (percepción en el resumen; récords con US16) | `registrar-percepcion/usarRegistrarPercepcion.ts` | US16, US17 |
+| `PaginaEntrenamientoEnCurso.tsx` y `finalizar-entrenamiento/PercepcionDelResumen.tsx` ✅ (percepción en el resumen; récords con US16) | `registrar-percepcion/usarRegistrarPercepcion.ts` ✅ | US16, US17 |
 | `PaginaEntrenamientosDeAlumnos.tsx` ✅ | `usarEntrenamientosDeAlumnos.ts` ✅ | US18 |
 
 ## Historial de cambios de reglas de UI
@@ -82,3 +82,17 @@ Decididas por Ulises el 23/11/2026.
 * Paginado con el `Paginador` compartido (10 por defecto, clave `entrenamientos-de-alumnos`). Cambiar de alumno vuelve a la página 1. Sin filtros: el back no los tiene (RN-UI-LIS-04).
 * Los errores del back se muestran por su mensaje en un `alert` (por ejemplo `RN-ENT-18`).
 * Con US21 (RN-UI-NOT-02, decidido por Ulises el 24/11/2026), la página acepta `?alumno=<id>` y elige ese alumno al abrir, para llegar desde una notificación. Implementado el 24/11 en `usarEntrenamientosDeAlumnos(alumnoInicial)`: solo elige el alumno si está entre los vinculados.
+
+## Decisiones de implementación (CG-62, US17)
+
+Implementado el 24/11/2026.
+
+* **Formulario de percepción** (`finalizar-entrenamiento/PercepcionDelResumen.tsx`): debajo del resumen, con `aria-label` "Percepción del entrenamiento" y los campos "RPE (1 a 10)" y "Sensación de fuerza (1 a 5)".
+  * Valida en el dominio antes de enviar (`dominio/percepcion/percepcion.ts`) y no envía nada si hay un error.
+  * Los errores se enlazan a cada campo, como en el registro de series.
+  * Un error del back se muestra con su mensaje en un `alert`; si no viene del back, dice "No se pudo guardar la percepción".
+* **Cuándo aparece el formulario:**
+  * Al finalizar en la misma pantalla, el entrenamiento todavía no trae `percepcion`, así que aparece.
+  * Al recargar, se ve el texto si la percepción vino cargada, o el formulario si vino en `null`.
+* **US18:** la tarjeta de un entrenamiento con percepción muestra "RPE: N · Sensación de fuerza: N".
+* **e2e:** el alumno llega al resumen por "Mi rutina del día" y el enlace "Ver resumen del entrenamiento".
