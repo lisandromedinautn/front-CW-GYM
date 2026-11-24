@@ -50,12 +50,5 @@ export function usarConsultarRutinas() {
       setTamanio(nuevo);
       setPagina(1);
     },
-    /** Reemplaza una rutina ya listada (por ejemplo, tras renombrarla). */
-    reemplazar: (rutina: RutinaCreada) =>
-      setResultado((actual) =>
-        actual
-          ? { ...actual, items: actual.items.map((r) => (r.id === rutina.id ? rutina : r)) }
-          : actual,
-      ),
   };
 }

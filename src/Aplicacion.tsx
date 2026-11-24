@@ -19,6 +19,7 @@ import { PaginaNotificaciones } from './modulos/notificaciones/presentacion/band
 import { PaginaPlanes } from './modulos/planificacion/presentacion/consultar-planes/PaginaPlanes.tsx';
 import { PaginaNuevoPlan } from './modulos/planificacion/presentacion/crear-plan/PaginaNuevoPlan.tsx';
 import { PaginaRutinas } from './modulos/planificacion/presentacion/consultar-rutinas/PaginaRutinas.tsx';
+import { PaginaEditarRutina } from './modulos/planificacion/presentacion/editar-rutina/PaginaEditarRutina.tsx';
 import { EditorRutina } from './modulos/planificacion/presentacion/editor-rutina/EditorRutina.tsx';
 import { PaginaRutinaDelDia } from './modulos/planificacion/presentacion/rutina-del-dia/PaginaRutinaDelDia.tsx';
 import { PaginaMiPlan } from './modulos/planificacion/presentacion/mi-plan/PaginaMiPlan.tsx';
@@ -56,6 +57,7 @@ const SUBPAGINAS: Record<Rol, Record<string, ReactElement>> = {
   Admin: {},
   Profesor: {
     '/profesor/rutinas/nueva': <EditorRutina />,
+    '/profesor/rutinas/:id': <PaginaEditarRutina />,
     '/profesor/planes/nuevo': <PaginaNuevoPlan />,
     '/profesor/planes/:id/alumnos': <PaginaAlumnosDelPlan />,
   },
