@@ -97,3 +97,25 @@ export function etiquetaDeFecha(fecha: string): string {
   const diaDeLaSemana = new Date(Date.UTC(anio, mes - 1, dia)).getUTCDay();
   return `${dias[diaDeLaSemana]} ${dosDigitos(dia)}/${dosDigitos(mes)}`;
 }
+
+/** Un día del plan tal como lo devuelve el back (RN-PLAN-23). */
+export interface DiaConsultado {
+  numero: number;
+  fecha: string;
+  rutinaId: string | null;
+  esDescanso: boolean;
+}
+
+/** Respuesta de `GET /planificacion/planes/:id`. */
+export interface PlanConDias {
+  id: string;
+  fechaInicio: string;
+  fechaFin: string;
+  estado: 'proximo' | 'vigente' | 'finalizado';
+  dias: DiaConsultado[];
+}
+
+/** RN-PLAN-23: un día anterior a hoy (fecha UTC) ya no se edita; el back lo rechaza con 409. */
+export function diaEsEditable(fecha: string, hoy: string = hoyIso()): boolean {
+  return fecha >= hoy;
+}
