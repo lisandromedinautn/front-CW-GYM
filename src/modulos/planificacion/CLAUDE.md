@@ -23,6 +23,7 @@ Editor de rutinas, importación, creación de planes, gestión de alumnos del pl
 | RN-PLAN-17 | No hay opción para finalizar un plan antes de tiempo | Vigente |
 | RN-PLAN-18 | La rutina del día muestra la rutina con sus ejercicios y objetivos, "Hoy es día de descanso." o "No tenés un plan vigente." | Vigente ✅ |
 | RN-PLAN-22 | `/profesor/planes` lista solo los planes del profesor, paginados, con su estado (Próximo, Vigente, Finalizado) y filtros por estado, alumno y rango de fecha de inicio (RN-UI-LIS-01 a 04) | Vigente (T13) |
+| RN-PLAN-23 | `/profesor/planes/:id/dias` muestra los 28 días con fecha y rutina o "Descanso". Los días con fecha anterior a hoy (UTC) no tienen selector; el resto tiene selector (rutinas + "Descanso") y "Guardar". Los rechazos del back (409/404) van en un `alert` | Vigente ✅ (US22) |
 | RN-PLAN-19 | Mi plan muestra los 28 días ordenados con sus fechas, rutina o descanso y detalle desplegable de ejercicios, objetivos y pausas | Vigente ✅ |
 
 ## Pantallas y hooks planificados
@@ -36,6 +37,7 @@ Editor de rutinas, importación, creación de planes, gestión de alumnos del pl
 | `consultar-planes/PaginaPlanes.tsx` ✅ | `consultar-planes/usarConsultarPlanes.ts` ✅ | T13 |
 | `PaginaCrearPlan.tsx` ✅ (`crear-plan/`) | `usarCrearPlan.ts` ✅, `usarDatosParaPlan.ts` ✅ | US07 |
 | `alumnos-del-plan/PaginaAlumnosDelPlan.tsx` ✅ | `alumnos-del-plan/usarAlumnosDelPlan.ts` ✅ | US12 |
+| `editar-dias-plan/PaginaEditarDiasPlan.tsx` ✅ | `editar-dias-plan/usarEditarDiasPlan.ts` ✅ | US22 |
 | `rutina-del-dia/PaginaRutinaDelDia.tsx` ✅ | `consultar-rutina-del-dia/usarRutinaDelDia.ts` ✅ | US08 |
 | `mi-plan/PaginaMiPlan.tsx` ✅ | `consultar-plan-del-alumno/usarMiPlan.ts` ✅ | US11 |
 
@@ -135,6 +137,13 @@ T12 y T13 (CG-84) ya están en `develop` y cambian la pantalla de planes. Antes 
 * `usarMiPlan` consulta `GET /planificacion/mi-plan` a través del cliente del módulo. No envía parámetros de alumno ni calcula vigencia en el navegador. El contrato `dominio/plan/miPlan.ts` conserva las fechas del back y reutiliza `RutinaDelDiaDetalle`.
 * Los días se muestran en el orden recibido, con fechas formateadas por `etiquetaDeFecha`. Una rutina nula se muestra como Descanso. Cada rutina se despliega con `details`/`summary` nativos y reutiliza `DetalleRutina`, con el número de día correspondiente.
 * Sin plan vigente se muestra No tenés un plan vigente.; los errores se informan en un alert y la carga tiene un estado accesible.
+
+## Decisiones de implementación (US22)
+
+* Confirmado por Lisandro el 24/11/2026. Enlace "Editar días" en la tarjeta de `PaginaPlanes` (planes Próximo o Vigente) hacia `/profesor/planes/:id/dias`, subpágina en `SUBPAGINAS`.
+* `usarEditarDiasPlan` pide `GET /planificacion/planes/:id` y las rutinas (`listarTodasLasRutinas`); `PUT .../dias/:numero` con `{ rutinaId }` (`null` = descanso) y reemplaza solo ese día con la respuesta.
+* `diaEsEditable(fecha, hoy)` (`dominio/plan/plan.ts`) compara fechas `AAAA-MM-DD` en UTC: hoy sigue siendo editable. La regla real la aplica el back; la UI solo evita ofrecer el selector.
+* Grilla responsive reutilizando `grilla-rutinas` y `tarjeta-rutina`.
 
 ## Implementación US12
 
