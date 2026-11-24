@@ -56,3 +56,9 @@ El e2e de navegador primero dio rojo en el último paso, porque el contador solo
 | `PaginaNotificaciones.int.test.tsx` › (mismo `describe`) solo por percepción | RN-NOT-06 | Int | Notificación Grave con `seriesPorDebajo: []` y `percepcion: { rpe: 10, sensacionFuerza: 1 }` | Se ven "Percepción mala" y "RPE: 10 · Sensación de fuerza: 1"; no aparece "Series por debajo" | = esperado (verde el 24/11/2026) | 24/11/2026 |
 
 Comprobación por mutación US17 (24/11/2026): no mostrar la percepción (caen los dos casos) y mostrar "Series por debajo" aunque no haya series (cae "solo por percepción"). Ambas se restauraron.
+
+## US23 — Alerta de incumplimiento (confirmadas por Lisandro el 24/11/2026)
+
+| Test (archivo › caso) | RN | Nivel | Entrada | Esperado | Obtenido (último run) | Fecha |
+| :-- | :-- | :-- | :-- | :-- | :-- | :-- |
+| `presentacion/bandeja/PaginaNotificaciones.alerta.int.test.tsx` › F1 | RN-NOT-08 | Int | Sesión de Profesor; la bandeja trae una alerta de Pérez, Martín (`a7`) con 3 entrenamientos (20/11 Fuerza, 22/11 Torso, 24/11 Piernas) | Se ve "Pérez, Martín: 3 entrenamientos seguidos por debajo de lo prescripto", las 3 fechas con su rutina y el enlace "Ver entrenamientos" a `/profesor/entrenamientos?alumno=a7` | = esperado (rojo antes de implementar; verde el 24/11/2026) | 24/11/2026 |

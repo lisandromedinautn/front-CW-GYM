@@ -4,6 +4,7 @@ import {
   describirPercepcion,
   describirRealizada,
   etiquetaDeGravedad,
+  fechaCorta,
   fechaHora,
   type Notificacion,
   tituloDeSerie,
@@ -18,6 +19,27 @@ interface Props {
 export function TarjetaNotificacion({ notificacion, alMarcarLeida }: Props) {
   const { alumno, entrenamiento, seriesPorDebajo } = notificacion;
   const nombre = `${alumno.apellido}, ${alumno.nombre}`;
+  if (notificacion.tipo === 'alerta-incumplimiento') {
+    return (
+      <article className="tarjeta-plan">
+        <h2>{etiquetaDeGravedad(notificacion.gravedad)}</h2>
+        <p>{nombre}: 3 entrenamientos seguidos por debajo de lo prescripto</p>
+        <ul className="series-alumno">
+          {(notificacion.entrenamientos ?? []).map((e) => (
+            <li key={e.id}>
+              {fechaCorta(e.fecha)} · {e.rutina}
+            </li>
+          ))}
+        </ul>
+        <Link to={`/profesor/entrenamientos?alumno=${alumno.id}`}>Ver entrenamientos</Link>
+        {!notificacion.leida && (
+          <button type="button" onClick={() => alMarcarLeida(notificacion.id)}>
+            Marcar como leída
+          </button>
+        )}
+      </article>
+    );
+  }
   return (
     <article className="tarjeta-plan">
       <h2>{etiquetaDeGravedad(notificacion.gravedad)}</h2>

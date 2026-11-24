@@ -12,6 +12,7 @@ Bandeja del Profesor con los avisos de entrenamientos de sus alumnos que quedaro
 | RN-NOT-04 | Cada notificación no leída tiene el botón "Marcar como leída". Al marcarla deja de contarse como no leída. Si el back responde 404, se muestra su mensaje | Vigente |
 | RN-NOT-05 | Si la notificación trae `percepcion`, se muestra "RPE: N · Sensación de fuerza: N". Una notificación que volvió a no leída por la percepción se ve y se cuenta como cualquier no leída | Vigente |
 | RN-NOT-06 | Una notificación solo por percepción mala (`seriesPorDebajo` vacío) no muestra "Series por debajo" ni la lista de series: muestra "Percepción mala" junto a la percepción | Vigente |
+| RN-NOT-08 (UI) | Si la notificación es de `tipo` `alerta-incumplimiento`, la tarjeta muestra "<Apellido>, <Nombre>: 3 entrenamientos seguidos por debajo de lo prescripto", la lista de sus 3 entrenamientos ("dd/mm/aaaa · rutina") y el enlace "Ver entrenamientos" a `/profesor/entrenamientos?alumno=<id>`. No muestra series ni percepción. Se puede marcar como leída | Vigente |
 | RN-UI-NOT-01 | La opción "Notificaciones" del menú del Profesor muestra la cantidad de no leídas, si hay alguna. Se consulta al ingresar al sistema, cada 60 segundos mientras la sesión esté abierta y enseguida después de marcar una como leída | Vigente |
 | RN-UI-NOT-02 | Cada notificación tiene un enlace a los entrenamientos de ese alumno (`/profesor/entrenamientos?alumno=<id>`). La página de US18 tiene que aceptar el alumno por la URL y elegirlo al abrir | Vigente |
 
@@ -49,6 +50,7 @@ Bandeja del Profesor con los avisos de entrenamientos de sus alumnos que quedaro
 | 24/11/2026 | RN-NOT-01 a 05 (UI), RN-UI-NOT-01 y 02 | Versión inicial (US21) | Ulises |
 | 24/11/2026 | RN-UI-NOT-01 | El contador también se actualiza enseguida después de marcar una como leída. Lo pide la ficha del e2e confirmada ("el menú vuelve a Notificaciones") | Ulises |
 | 24/11/2026 | RN-NOT-05 (UI), nueva RN-NOT-06 (UI) | Percepción en la notificación y notificación solo por percepción mala (US17, decisión 46) | Ulises |
+| 24/11/2026 | Nueva RN-NOT-08 (UI) | Tarjeta de alerta de incumplimiento repetido (US23) | Lisandro |
 
 ## Decisiones de implementación (CG-90, US21)
 
