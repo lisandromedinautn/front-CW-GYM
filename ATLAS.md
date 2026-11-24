@@ -45,6 +45,7 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | Catálogo | `src/modulos/catalogo/CLAUDE.md` | `src/modulos/catalogo/FICHAS-TEST.md` | `../back-CW-GYM/src/modulos/catalogo/CLAUDE.md` |
 | Planificación | `src/modulos/planificacion/CLAUDE.md` | `src/modulos/planificacion/FICHAS-TEST.md` | `../back-CW-GYM/src/modulos/planificacion/CLAUDE.md` |
 | Entrenamiento | `src/modulos/entrenamiento/CLAUDE.md` | `src/modulos/entrenamiento/FICHAS-TEST.md` | `../back-CW-GYM/src/modulos/entrenamiento/CLAUDE.md` |
+| Notificaciones (US21) | `src/modulos/notificaciones/CLAUDE.md` | 📄 `src/modulos/notificaciones/FICHAS-TEST.md` (se crea con las fichas) | `../back-CW-GYM/src/modulos/notificaciones/CLAUDE.md` |
 | Compartido | `src/compartido/CLAUDE.md` | — | — |
 
 ## Pantallas → hook → endpoint del back
@@ -70,6 +71,8 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | entrenamiento | `ResumenEntrenamiento.tsx`, `PaginaEntrenamientoEnCurso.tsx` | `usarFinalizarEntrenamiento.ts` | `POST .../:id/finalizacion` | US15 | ✅ 4 pruebas de integración |
 | entrenamiento | `PaginaResumenEntrenamiento.tsx` (planificada; récords en US16, percepción en US17) | `usarRegistrarPercepcion.ts` | `PUT .../:id/percepcion` | US16, US17 | 📄 |
 | entrenamiento | `PaginaEntrenamientosDeAlumnos.tsx` (`presentacion/entrenamientos-de-alumnos/`, ruta `/profesor/entrenamientos`, menú "Entrenamientos") | `usarEntrenamientosDeAlumnos.ts` (`aplicacion/consultar-entrenamientos-de-alumnos/`) | `GET /identidad/alumnos`, `GET /entrenamiento/alumnos/:alumnoId/entrenamientos` | US18 | ✅ `PaginaEntrenamientosDeAlumnos.int.test.tsx` (8 casos); dominio `entrenamientos-de-alumnos/entrenamientosDeAlumnos.ts` (fecha en hora de Argentina, estado, orden y total de series; `entrenamientosDeAlumnos.test.ts`) |
+| notificaciones | `PaginaNotificaciones.tsx`, `TarjetaNotificacion.tsx` (`presentacion/bandeja/`, ruta `/profesor/notificaciones`, menú "Notificaciones") | `usarNotificaciones.ts`, `usarMarcarLeida.ts` | `GET /notificaciones/mis-notificaciones`, `PUT /notificaciones/mis-notificaciones/:id/lectura` | US21 | 📄 |
+| notificaciones | `ContadorNoLeidas.tsx` (`presentacion/contador/`, en el menú del Profesor, compuesto desde `Aplicacion.tsx`) | `usarContadorNoLeidas.ts` (cada 60 s) | `GET /notificaciones/mis-notificaciones/no-leidas` | US21 | 📄 |
 
 ## Clientes de API del módulo
 
