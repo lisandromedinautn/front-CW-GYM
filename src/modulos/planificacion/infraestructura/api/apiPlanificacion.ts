@@ -47,14 +47,6 @@ export function importarRutina(id: string): Promise<RutinaCreada> {
   return pedir<RutinaCreada>(`/planificacion/rutinas/${id}/importacion`, { metodo: 'POST' });
 }
 
-/** RN-PLAN-21: renombra una rutina propia (409 si ya tiene otra con ese nombre). */
-export function renombrarRutina(id: string, nombre: string): Promise<RutinaCreada> {
-  return pedir<RutinaCreada>(`/planificacion/rutinas/${id}/nombre`, {
-    metodo: 'PATCH',
-    cuerpo: { nombre },
-  });
-}
-
 /** US07: alumnos vinculados al profesor, los únicos que puede asignar (RN-PLAN-13). */
 export function listarAlumnosDelProfesor(): Promise<AlumnoDelProfesor[]> {
   return pedir<AlumnoDelProfesor[]>('/identidad/alumnos');
