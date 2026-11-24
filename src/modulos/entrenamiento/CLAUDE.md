@@ -80,4 +80,4 @@ Decididas por Ulises el 23/11/2026.
 * Cada entrenamiento es una tarjeta: fecha y hora de inicio en hora de Argentina (`America/Argentina/Buenos_Aires`, para que no dependa del navegador), rutina y estado (En curso, Abandonado; Finalizado cuando llegue US15), peso del día, "Series registradas: N de M" (M son los pasos de la copia, como en US14) y cada serie en el orden de la rutina con lo prescripto y lo realizado.
 * Paginado con el `Paginador` compartido (10 por defecto, clave `entrenamientos-de-alumnos`). Cambiar de alumno vuelve a la página 1. Sin filtros: el back no los tiene (RN-UI-LIS-04).
 * Los errores del back se muestran por su mensaje en un `alert` (por ejemplo `RN-ENT-18`).
-* Con US21 (RN-UI-NOT-02, decidido por Ulises el 24/11/2026), la página acepta `?alumno=<id>` y elige ese alumno al abrir, para llegar desde una notificación. Planificado, sin código.
+* Con US21 (RN-UI-NOT-02, decidido por Ulises el 24/11/2026), la página acepta `?alumno=<id>` y elige ese alumno al abrir, para llegar desde una notificación. Implementado el 24/11 en `usarEntrenamientosDeAlumnos(alumnoInicial)`: solo elige el alumno si está entre los vinculados.

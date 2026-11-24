@@ -8,6 +8,9 @@ Categorías: Agregado, Cambiado, Corregido, Eliminado, Seguridad. Cada entrada c
 
 ### Agregado
 
+- Bandeja de notificaciones del Profesor en `/profesor/notificaciones` (US21, CG-90). Cada notificación muestra la gravedad (Leve o Grave), el alumno, la rutina, la fecha y las series por debajo de lo prescripto, con el botón "Marcar como leída" y un enlace a los entrenamientos del alumno. La lista está paginada y muestra arriba cuántas faltan leer. La opción "Notificaciones" del menú muestra esa cantidad, que se actualiza cada 60 s y al marcar una (RN-NOT-01 a 04, RN-UI-NOT-01 y 02).
+- La página de entrenamientos de alumnos acepta `?alumno=<id>` y elige ese alumno al abrir (RN-UI-NOT-02; US21).
+
 - US15: finalización del entrenamiento y resumen de volumen, grupos musculares y duración.
 
 - US12: gestión de alumnos de planes vigentes por su profesor, con validaciones de vínculo y plan vigente.
