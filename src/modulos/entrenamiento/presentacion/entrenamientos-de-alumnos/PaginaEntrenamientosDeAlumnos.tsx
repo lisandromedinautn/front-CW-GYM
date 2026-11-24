@@ -9,6 +9,7 @@ import {
   tituloDeSerie,
   totalDeSeries,
 } from '../../dominio/entrenamientos-de-alumnos/entrenamientosDeAlumnos.ts';
+import { describirPercepcion } from '../../dominio/percepcion/percepcion.ts';
 import { describirMedida } from '../../dominio/serie/filasSeries.ts';
 
 export const RUTA_ENTRENAMIENTOS_DE_ALUMNOS = '/profesor/entrenamientos';
@@ -76,6 +77,7 @@ function TarjetaEntrenamiento({ entrenamiento }: { entrenamiento: EntrenamientoD
       <p>
         Series registradas: {series.length} de {totalDeSeries(entrenamiento)}
       </p>
+      {entrenamiento.percepcion && <p>{describirPercepcion(entrenamiento.percepcion)}</p>}
       {series.length === 0 ? (
         <p>Sin series registradas</p>
       ) : (

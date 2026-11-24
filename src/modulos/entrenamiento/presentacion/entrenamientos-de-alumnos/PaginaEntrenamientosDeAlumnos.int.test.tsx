@@ -236,3 +236,20 @@ describe('RN-UI-IDE-01 · el menú del Profesor ofrece sus entrenamientos de alu
     );
   });
 });
+
+describe('RN-UI-ENT-04 · la tarjeta muestra la percepción del alumno', () => {
+  it('un entrenamiento finalizado con percepción 9 y 2 muestra "RPE: 9 · Sensación de fuerza: 2"', async () => {
+    const finalizado = {
+      ...e1,
+      id: 'e3',
+      estado: 'finalizado',
+      percepcion: { rpe: 9, sensacionFuerza: 2 },
+    };
+    preparar({
+      pagina: () => HttpResponse.json({ items: [finalizado], total: 1, pagina: 1, tamanio: 10 }),
+    });
+    abrir();
+    await elegirAlumno('Pérez, Martín');
+    expect(await screen.findByText('RPE: 9 · Sensación de fuerza: 2')).toBeVisible();
+  });
+});

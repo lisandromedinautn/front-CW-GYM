@@ -10,7 +10,8 @@ Bandeja del Profesor con los avisos de entrenamientos de sus alumnos que quedaro
 | RN-NOT-02 | La gravedad se muestra como texto, "Leve" o "Grave", no solo con color | Vigente |
 | RN-NOT-03 | Las notificaciones se listan de la más nueva a la más vieja, con el `Paginador` compartido. Arriba se muestra la cantidad de no leídas | Vigente |
 | RN-NOT-04 | Cada notificación no leída tiene el botón "Marcar como leída". Al marcarla deja de contarse como no leída. Si el back responde 404, se muestra su mensaje | Vigente |
-| RN-NOT-05 | Si la notificación trae `percepcion` (US17), se muestran el RPE y la sensación de fuerza. Hasta US17 llega `null` y no se muestra nada | **A confirmar** (con US17): no se testea |
+| RN-NOT-05 | Si la notificación trae `percepcion`, se muestra "RPE: N · Sensación de fuerza: N". Una notificación que volvió a no leída por la percepción se ve y se cuenta como cualquier no leída | Vigente |
+| RN-NOT-06 | Una notificación solo por percepción mala (`seriesPorDebajo` vacío) no muestra "Series por debajo" ni la lista de series: muestra "Percepción mala" junto a la percepción | Vigente |
 | RN-UI-NOT-01 | La opción "Notificaciones" del menú del Profesor muestra la cantidad de no leídas, si hay alguna. Se consulta al ingresar al sistema, cada 60 segundos mientras la sesión esté abierta y enseguida después de marcar una como leída | Vigente |
 | RN-UI-NOT-02 | Cada notificación tiene un enlace a los entrenamientos de ese alumno (`/profesor/entrenamientos?alumno=<id>`). La página de US18 tiene que aceptar el alumno por la URL y elegirlo al abrir | Vigente |
 
@@ -47,6 +48,7 @@ Bandeja del Profesor con los avisos de entrenamientos de sus alumnos que quedaro
 | :-- | :-- | :-- | :-- |
 | 24/11/2026 | RN-NOT-01 a 05 (UI), RN-UI-NOT-01 y 02 | Versión inicial (US21) | Ulises |
 | 24/11/2026 | RN-UI-NOT-01 | El contador también se actualiza enseguida después de marcar una como leída. Lo pide la ficha del e2e confirmada ("el menú vuelve a Notificaciones") | Ulises |
+| 24/11/2026 | RN-NOT-05 (UI), nueva RN-NOT-06 (UI) | Percepción en la notificación y notificación solo por percepción mala (US17, decisión 46) | Ulises |
 
 ## Decisiones de implementación (CG-90, US21)
 
@@ -67,3 +69,8 @@ Implementado el 24/11/2026.
 * **Actualización inmediata:** al marcar, `usarMarcarLeida` llama a `avisarCambioNoLeidas()` (`aplicacion/cambios-no-leidas.ts`, un aviso interno del módulo), y `usarContadorNoLeidas` vuelve a consultar.
 * **Errores de red del contador:** se ignoran y queda el último valor. Por eso los tests de otras pantallas del Profesor, que no declaran esa respuesta en MSW, no se rompieron.
 * **Percepción:** `Percepcion` ya tiene la forma del back (`{ rpe, sensacionFuerza }`), aunque hasta US17 llega `null`.
+
+## Decisiones de implementación (CG-62, US17)
+
+* **Percepción en la tarjeta:** la tarjeta muestra "RPE: N · Sensación de fuerza: N" con `describirPercepcion`. El tipo `Percepcion` del front tiene los dos valores siempre numéricos, porque US17 los carga juntos; la notificación trae `percepcion: null` si no hay.
+* **Notificación solo por percepción:** con `seriesPorDebajo` vacío, la tarjeta muestra "Percepción mala" y no muestra la sección de series.

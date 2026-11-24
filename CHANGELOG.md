@@ -8,6 +8,11 @@ Categorías: Agregado, Cambiado, Corregido, Eliminado, Seguridad. Cada entrada c
 
 ### Agregado
 
+- Percepción del alumno (US17, CG-62).
+  - En el resumen del entrenamiento finalizado, el alumno carga una sola vez el RPE (1 a 10) y la sensación de fuerza (1 a 5) con "Guardar percepción". Se validan antes de enviar y después se muestran como "RPE: N · Sensación de fuerza: N".
+  - El profesor la ve en los entrenamientos de sus alumnos y en la notificación.
+  - Una notificación que nace solo por percepción mala muestra "Percepción mala" (RN-ENT-14, 15, 16, RN-NOT-05, 06).
+
 - Bandeja de notificaciones del Profesor en `/profesor/notificaciones` (US21, CG-90). Cada notificación muestra la gravedad (Leve o Grave), el alumno, la rutina, la fecha y las series por debajo de lo prescripto, con el botón "Marcar como leída" y un enlace a los entrenamientos del alumno. La lista está paginada y muestra arriba cuántas faltan leer. La opción "Notificaciones" del menú muestra esa cantidad, que se actualiza cada 60 s y al marcar una (RN-NOT-01 a 04, RN-UI-NOT-01 y 02).
 - La página de entrenamientos de alumnos acepta `?alumno=<id>` y elige ese alumno al abrir (RN-UI-NOT-02; US21).
 

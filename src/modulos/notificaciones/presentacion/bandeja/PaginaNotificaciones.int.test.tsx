@@ -189,3 +189,26 @@ describe('RN-UI-NOT-02 · el enlace lleva a los entrenamientos del alumno de la 
     ]);
   });
 });
+
+describe('RN-NOT-05, 06 · la percepción se muestra; sin series por debajo, la notificación es por percepción mala', () => {
+  it('muestra la percepción', async () => {
+    preparar({ notificacion: { percepcion: { rpe: 10, sensacionFuerza: 1 } } });
+    abrir();
+    const tarjeta = within(await screen.findByRole('article'));
+
+    expect(tarjeta.getByText('RPE: 10 · Sensación de fuerza: 1')).toBeVisible();
+  });
+
+  it('solo por percepción mala', async () => {
+    preparar({
+      notificacion: { seriesPorDebajo: [], percepcion: { rpe: 10, sensacionFuerza: 1 } },
+    });
+    abrir();
+    const tarjeta = within(await screen.findByRole('article'));
+
+    expect(tarjeta.getByText('Percepción mala')).toBeVisible();
+    expect(tarjeta.getByText('RPE: 10 · Sensación de fuerza: 1')).toBeVisible();
+    expect(tarjeta.queryByText(/Series por debajo/)).not.toBeInTheDocument();
+    expect(tarjeta.queryByText(/Serie 3 · lever chest press/)).not.toBeInTheDocument();
+  });
+});

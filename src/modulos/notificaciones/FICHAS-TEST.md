@@ -47,3 +47,12 @@ Comprobación por mutación US21 (24/11/2026). En cada caso se rompió la línea
 * **Dominio:** "segundos" → "s", sin coma decimal y "Vuelta" → "Serie" (caen los tres casos de `notificacion.test.ts`).
 
 El e2e de navegador primero dio rojo en el último paso, porque el contador solo se actualizaba cada 60 s. Se agregó el aviso interno del módulo (`aplicacion/cambios-no-leidas.ts`).
+
+## US17 — Percepción en la notificación (confirmadas por Ulises el 24/11/2026)
+
+| Test (archivo › caso) | Regla | Nivel | Entrada | Esperado | Obtenido (último run) | Fecha |
+| :-- | :-- | :-- | :-- | :-- | :-- | :-- |
+| `presentacion/bandeja/PaginaNotificaciones.int.test.tsx` › (`describe` nuevo) muestra la percepción | RN-NOT-05 | Int | La notificación de referencia con `percepcion: { rpe: 10, sensacionFuerza: 1 }` | Se ve "RPE: 10 · Sensación de fuerza: 1" | = esperado (verde el 24/11/2026) | 24/11/2026 |
+| `PaginaNotificaciones.int.test.tsx` › (mismo `describe`) solo por percepción | RN-NOT-06 | Int | Notificación Grave con `seriesPorDebajo: []` y `percepcion: { rpe: 10, sensacionFuerza: 1 }` | Se ven "Percepción mala" y "RPE: 10 · Sensación de fuerza: 1"; no aparece "Series por debajo" | = esperado (verde el 24/11/2026) | 24/11/2026 |
+
+Comprobación por mutación US17 (24/11/2026): no mostrar la percepción (caen los dos casos) y mostrar "Series por debajo" aunque no haya series (cae "solo por percepción"). Ambas se restauraron.

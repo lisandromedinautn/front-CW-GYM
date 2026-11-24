@@ -14,13 +14,13 @@ Ejecución del entrenamiento (iniciar, registrar series y finalizar), resumen co
 | RN-ENT-15 | La sensación de fuerza solo acepta enteros de 1 a 5 | Vigente |
 | RN-ENT-09 | El resumen muestra los grupos de los músculos principal y secundario | Vigente |
 | RN-ENT-13 | Solo se anuncian los récords estrictamente mayores; en la primera vez que se hace un ejercicio no se anuncian récords | Vigente |
-| RN-ENT-16 | RPE y sensación son opcionales: se pueden cargar en el resumen o más tarde, desde el entrenamiento finalizado | Vigente |
+| RN-ENT-16 | RPE y sensación son opcionales y no se piden para finalizar. En el resumen del entrenamiento finalizado (al finalizar o al volver más tarde) hay un formulario con los dos campos, obligatorios, y el botón "Guardar percepción". Se guardan una sola vez: después se muestran como texto ("RPE: 9 · Sensación de fuerza: 2") y el formulario no aparece. Un error del back (`RN-ENT-14`, `15` o `16`) se muestra con su mensaje | Vigente |
 | RN-ENT-17 | El resumen muestra peso total levantado, grupos musculares trabajados, duración y récords batidos | Vigente |
 | RN-UI-ENT-01 | Registrar una serie realizada no requiere más de una pantalla ni más de una confirmación (OKR O3: 10 segundos o menos) | Vigente |
 | RN-UI-ENT-02 | Si se recarga la página con un entrenamiento en curso del día, se retoma ese entrenamiento. Uno abandonado (RN-ENT-20) se muestra como abandonado | Vigente |
 | RN-UI-ENT-03 | Durante el entrenamiento en curso se muestra un paso por vez (una serie de bloque o un ejercicio en una vuelta de circuito), con el GIF del ejercicio y su atribución si lo tiene. Registrar avanza al paso siguiente; "Anterior" y "Siguiente" mueven sin registrar. El contador está siempre visible | Vigente |
 | RN-ENT-18 | El profesor solo elige entre sus alumnos vinculados; si el back responde `RN-ENT-18`, se muestra su mensaje | Vigente |
-| RN-UI-ENT-04 | El profesor elige uno de sus alumnos vinculados y ve sus entrenamientos del más nuevo al más viejo, paginados, cada uno con fecha y hora de inicio (hora de Argentina), rutina, estado, peso del día, cuántas series registró sobre el total y cada serie realizada junto a lo prescripto | Vigente |
+| RN-UI-ENT-04 | El profesor elige uno de sus alumnos vinculados y ve sus entrenamientos del más nuevo al más viejo, paginados, cada uno con fecha y hora de inicio (hora de Argentina), rutina, estado, peso del día, cuántas series registró sobre el total y cada serie realizada junto a lo prescripto. En un entrenamiento finalizado con percepción, también "RPE: N · Sensación de fuerza: N" (US17) | Vigente |
 
 ## Pantallas y hooks planificados
 
@@ -30,7 +30,7 @@ Ejecución del entrenamiento (iniciar, registrar series y finalizar), resumen co
 | `AccionesEntrenamiento.tsx`, `PaginaEntrenamientoEnCurso.tsx` ✅ | `usarIniciarEntrenamiento.ts`, `usarEntrenamientoEnCurso.ts` ✅ | US13 |
 | `PaginaEntrenamientoEnCurso.tsx`, `ListaSeries.tsx` ✅ | `usarRegistrarSerie.ts` ✅ | US14 |
 | `finalizar-entrenamiento/ResumenEntrenamiento.tsx`, `PaginaEntrenamientoEnCurso.tsx` ✅ | `usarFinalizarEntrenamiento.ts` ✅ | US15 |
-| `PaginaEntrenamientoEnCurso.tsx` (mismo resumen, récords y percepción) | `usarRegistrarPercepcion.ts` | US16, US17 |
+| `PaginaEntrenamientoEnCurso.tsx` y `finalizar-entrenamiento/PercepcionDelResumen.tsx` ✅ (percepción en el resumen; récords con US16) | `registrar-percepcion/usarRegistrarPercepcion.ts` ✅ | US16, US17 |
 | `PaginaEntrenamientosDeAlumnos.tsx` ✅ | `usarEntrenamientosDeAlumnos.ts` ✅ | US18 |
 
 ## Historial de cambios de reglas de UI
@@ -41,6 +41,7 @@ Ejecución del entrenamiento (iniciar, registrar series y finalizar), resumen co
 | 01/11/2026 | RN-ENT-01, 09, 13, 16, RN-UI-ENT-02 | Se reflejan ZG-08 a ZG-12 | Lisandro |
 | 23/11/2026 | RN-ENT-18 (UI) y nueva RN-UI-ENT-04 | Consulta de entrenamientos de alumnos (US18) | Ulises |
 | 22/11/2026 | Nueva RN-UI-ENT-03 | Registro paso a paso con GIF y contador siempre visible (US14, T14) | Ulises |
+| 24/11/2026 | RN-ENT-16 (UI) y RN-UI-ENT-04 | La percepción se carga una sola vez, con los dos campos obligatorios, desde el resumen; el profesor la ve en los entrenamientos de alumnos (US17, decisión 46) | Ulises |
 
 ## Decisiones de implementación (CG-46, US13)
 
@@ -81,3 +82,17 @@ Decididas por Ulises el 23/11/2026.
 * Paginado con el `Paginador` compartido (10 por defecto, clave `entrenamientos-de-alumnos`). Cambiar de alumno vuelve a la página 1. Sin filtros: el back no los tiene (RN-UI-LIS-04).
 * Los errores del back se muestran por su mensaje en un `alert` (por ejemplo `RN-ENT-18`).
 * Con US21 (RN-UI-NOT-02, decidido por Ulises el 24/11/2026), la página acepta `?alumno=<id>` y elige ese alumno al abrir, para llegar desde una notificación. Implementado el 24/11 en `usarEntrenamientosDeAlumnos(alumnoInicial)`: solo elige el alumno si está entre los vinculados.
+
+## Decisiones de implementación (CG-62, US17)
+
+Implementado el 24/11/2026.
+
+* **Formulario de percepción** (`finalizar-entrenamiento/PercepcionDelResumen.tsx`): debajo del resumen, con `aria-label` "Percepción del entrenamiento" y los campos "RPE (1 a 10)" y "Sensación de fuerza (1 a 5)".
+  * Valida en el dominio antes de enviar (`dominio/percepcion/percepcion.ts`) y no envía nada si hay un error.
+  * Los errores se enlazan a cada campo, como en el registro de series.
+  * Un error del back se muestra con su mensaje en un `alert`; si no viene del back, dice "No se pudo guardar la percepción".
+* **Cuándo aparece el formulario:**
+  * Al finalizar en la misma pantalla, el entrenamiento todavía no trae `percepcion`, así que aparece.
+  * Al recargar, se ve el texto si la percepción vino cargada, o el formulario si vino en `null`.
+* **US18:** la tarjeta de un entrenamiento con percepción muestra "RPE: N · Sensación de fuerza: N".
+* **e2e:** el alumno llega al resumen por "Mi rutina del día" y el enlace "Ver resumen del entrenamiento".

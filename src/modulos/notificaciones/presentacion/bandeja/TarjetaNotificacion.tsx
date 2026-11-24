@@ -1,6 +1,7 @@
 import { Link } from 'react-router';
 import {
   describirMedida,
+  describirPercepcion,
   describirRealizada,
   etiquetaDeGravedad,
   fechaHora,
@@ -23,18 +24,25 @@ export function TarjetaNotificacion({ notificacion, alMarcarLeida }: Props) {
       <p>{nombre}</p>
       <p>{entrenamiento.rutina}</p>
       <p>{fechaHora(entrenamiento.inicio)}</p>
-      <p>
-        Series por debajo: {seriesPorDebajo.length} de {notificacion.totalSeries}
-      </p>
-      <ul className="series-alumno">
-        {seriesPorDebajo.map((serie) => (
-          <li key={`${serie.orden}-${serie.numero}-${serie.posicion ?? 0}`}>
-            <strong>{tituloDeSerie(serie)}</strong>
-            <span>Prescripto: {describirMedida(serie.prescripta)}</span>
-            <span>Realizado: {describirRealizada(serie.realizada)}</span>
-          </li>
-        ))}
-      </ul>
+      {notificacion.percepcion !== null && <p>{describirPercepcion(notificacion.percepcion)}</p>}
+      {seriesPorDebajo.length === 0 ? (
+        <p>Percepción mala</p>
+      ) : (
+        <>
+          <p>
+            Series por debajo: {seriesPorDebajo.length} de {notificacion.totalSeries}
+          </p>
+          <ul className="series-alumno">
+            {seriesPorDebajo.map((serie) => (
+              <li key={`${serie.orden}-${serie.numero}-${serie.posicion ?? 0}`}>
+                <strong>{tituloDeSerie(serie)}</strong>
+                <span>Prescripto: {describirMedida(serie.prescripta)}</span>
+                <span>Realizado: {describirRealizada(serie.realizada)}</span>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
       <Link to={`/profesor/entrenamientos?alumno=${alumno.id}`}>
         Ver entrenamientos de {nombre}
       </Link>
