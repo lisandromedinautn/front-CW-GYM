@@ -9,16 +9,19 @@ Categorías: Agregado, Cambiado, Corregido, Eliminado, Seguridad. Cada entrada c
 ### Agregado
 
 - Ver y editar una rutina (US06): el lápiz de cada tarjeta de `/profesor/rutinas` ("Editar rutina") abre la rutina en el editor precargado (`/profesor/rutinas/:id`), donde se cambian nombre, ejercicios, series, objetivos, peso, pausas y orden con "Guardar cambios" (RN-PLAN-07, 08, 21).
+
+- US15: finalización del entrenamiento y resumen de volumen, grupos musculares trabajados y duración, con recuperación del resumen al recargar la página.
+
+- US16: visualización de récords personales batidos en el resumen de finalización del entrenamiento. Se muestra el ejercicio, el tipo de récord y la comparación entre el valor anterior y el nuevo, utilizando los datos devueltos por el back (RN-ENT-13, RN-ENT-17).
+
 - Percepción del alumno (US17, CG-62).
   - En el resumen del entrenamiento finalizado, el alumno carga una sola vez el RPE (1 a 10) y la sensación de fuerza (1 a 5) con "Guardar percepción". Se validan antes de enviar y después se muestran como "RPE: N · Sensación de fuerza: N".
   - El profesor la ve en los entrenamientos de sus alumnos y en la notificación.
   - Una notificación que nace solo por percepción mala muestra "Percepción mala" (RN-ENT-14, 15, 16, RN-NOT-05, 06).
 
 - Bandeja de notificaciones del Profesor en `/profesor/notificaciones` (US21, CG-90). Cada notificación muestra la gravedad (Leve o Grave), el alumno, la rutina, la fecha y las series por debajo de lo prescripto, con el botón "Marcar como leída" y un enlace a los entrenamientos del alumno. La lista está paginada y muestra arriba cuántas faltan leer. La opción "Notificaciones" del menú muestra esa cantidad, que se actualiza cada 60 s y al marcar una (RN-NOT-01 a 04, RN-UI-NOT-01 y 02).
+
 - La página de entrenamientos de alumnos acepta `?alumno=<id>` y elige ese alumno al abrir (RN-UI-NOT-02; US21).
-
-- US15: finalización del entrenamiento y resumen de volumen, grupos musculares y duración.
-
 - US12: gestión de alumnos de planes vigentes por su profesor, con validaciones de vínculo y plan vigente.
 
 - Listado de planes en `/profesor/planes`: tarjetas con fechas, estado, alumnos y días con rutina o descanso; filtros por estado, alumno y fecha de inicio, "Limpiar filtros" y paginador (RN-PLAN-22, RN-UI-LIS-01 a 04; CG-84, T13).

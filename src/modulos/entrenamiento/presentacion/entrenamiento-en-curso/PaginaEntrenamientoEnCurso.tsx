@@ -27,7 +27,10 @@ export function PaginaEntrenamientoEnCurso() {
           <h2>{resultado.entrenamiento.rutina.nombre}</h2>
           {resumen ? (
             <>
-              <ResumenEntrenamiento resumen={resumen} />
+              <ResumenEntrenamiento
+                resumen={resumen}
+                recordsBatidos={finalizacion.resumen?.recordsBatidos ?? []}
+              />
               <PercepcionDelResumen
                 entrenamientoId={resultado.entrenamiento.id}
                 percepcion={resultado.entrenamiento.percepcion}

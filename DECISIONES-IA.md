@@ -356,6 +356,18 @@ Registro de cada sesión relevante en la que un desarrollador trabajó con IA. D
 - Verificación: front 33 archivos y 173 tests (9 nuevos), `yarn test:cov` dentro de los umbrales, tipos, lint y Prettier sin errores. Nueve mutaciones (guarda, orden de alumnos, página 1 al cambiar, etiqueta de estado, total de series, título de la serie, sin alumnos, realizado, ruta del menú) hacen fallar los tests.
 - Pendientes: el estado "Finalizado" llega con US15; el commit de documentación de Alex en la rama `feat/US18-consultar-entrenamientos-de-alumnos` del back sigue sin mergear; nada pusheado.
 
+## 2026-11-24 — Mostrar récords personales al finalizar el entrenamiento [US16]
+
+- Desarrollador: Ramiro.
+- Herramienta / modelo: ChatGPT · GPT-6, DeepSeek V4.1 Flash
+- Objetivo: mostrar al alumno los récords personales batidos al finalizar un entrenamiento, utilizando la respuesta extendida que publica el back.
+- Qué hizo la IA: revisó el contrato de finalización y la implementación del front. Extendió el tipo de respuesta con `recordsBatidos`, adaptó el cliente y el hook de finalización, y conectó los récords con el componente `ResumenEntrenamiento`. Reutilizó `aplanarRecords` para presentar cada récord con el nombre del ejercicio, el tipo, el valor anterior y el nuevo. Agregó pruebas unitarias y una prueba de integración para la visualización de un récord.
+- Decisiones del desarrollador: conservar el cálculo y la detección de récords en el back; el front únicamente interpreta y presenta `recordsBatidos`. La propiedad es opcional y la sección de nuevos récords se muestra cuando hay registros para presentar.
+- Ideas descartadas: duplicar en el front los cálculos de récords o modificar el mecanismo de persistencia del back.
+- Reglas afectadas: visualización de récords personales en el resumen de finalización; sin reglas de negocio nuevas.
+- Verificación: el recorrido manual mostró correctamente un récord de `kettlebell hang clean`, de 12 a 13 repeticiones. También se comprobó en PostgreSQL que el récord de valor 13 quedó persistido. TypeScript, ESLint, build y Prettier aprobados. Vitest: 6/6 pruebas unitarias de `aplanarRecords` y 2/2 pruebas de integración de `PaginaResumenEntrenamiento`.
+- Pendientes: revisión final e integración mediante Pull Request.
+
 ## 2026-11-23 — Finalizar en el último paso y e2e de navegador del MVP [US15, T15]
 - Desarrollador: Ulises
 - Herramienta / modelo / esfuerzo: Claude Code · Opus 5.5 (orquestador) + Sonnet 5.5 medium (1 subagente: P1, E1–E3 y S1, en serie porque comparten la base de test y los puertos)

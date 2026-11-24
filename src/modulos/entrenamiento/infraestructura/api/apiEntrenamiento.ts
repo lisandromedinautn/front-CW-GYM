@@ -9,7 +9,7 @@ import type {
   Entrenamiento,
   RegistroSerie,
   ResultadoEntrenamiento,
-  ResumenEntrenamiento,
+  RespuestaFinalizacionEntrenamiento,
   SerieRealizada,
 } from '../../dominio/entrenamiento/entrenamiento.ts';
 
@@ -21,7 +21,7 @@ export function iniciarEntrenamiento(): Promise<Entrenamiento> {
   return pedir('/entrenamiento/entrenamientos', { metodo: 'POST' });
 }
 
-export function finalizarEntrenamiento(id: string): Promise<ResumenEntrenamiento> {
+export function finalizarEntrenamiento(id: string): Promise<RespuestaFinalizacionEntrenamiento> {
   return pedir(`/entrenamiento/entrenamientos/${id}/finalizacion`, { metodo: 'POST' });
 }
 
@@ -44,6 +44,7 @@ export function consultarEntrenamientosDeAlumno(
   const query = new URLSearchParams({ pagina: String(pagina), tamanio: String(tamanio) });
   return pedir(`/entrenamiento/alumnos/${alumnoId}/entrenamientos?${query.toString()}`);
 }
+
 /** US17 (RN-ENT-16): guarda la percepción del entrenamiento finalizado, una sola vez. */
 export function registrarPercepcion(id: string, percepcion: Percepcion): Promise<Percepcion> {
   return pedir(`/entrenamiento/entrenamientos/${id}/percepcion`, {

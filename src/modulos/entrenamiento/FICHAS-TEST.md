@@ -43,6 +43,19 @@ Una fila por caso de test. La entrada (acciones de la persona y respuesta de la 
 23/11/2026: las dos pruebas que finalizan (`finaliza sin series` y `error`) pasan a usar una rutina con un bloque de una serie, porque «Finalizar entrenamiento» está solo en el último paso. Cambia solo la entrada (la rutina falsa); los esperados siguen iguales. Aprobado por Ulises.
 
 Comprobación por mutación US15: el cálculo de peso corporal con carga extra y la visualización de 540 kg fallaron al alterarse; se restauraron los archivos con las mismas huellas que las versiones aprobadas.
+
+## US16 — Récords personales (front)
+
+| Test (archivo › caso) | Regla | Nivel | Entrada | Esperado | Obtenido (último run) | Fecha |
+| :-- | :-- | :-- | :-- | :-- | :-- | :-- |
+| `aplanarRecords.test.ts` › sin récords | RN-ENT-13 | Unit | `[]` | `[]` | = esperado | 23/11/2026 |
+| `aplanarRecords.test.ts` › un récord | RN-ENT-13 | Unit | `repeticiones` 8 → 10 | Fila `{ nombre: 'Sentadilla', etiqueta: 'Repeticiones', valorAnterior: 8, valorNuevo: 10, unidad: '' }` | = esperado | 23/11/2026 |
+| `aplanarRecords.test.ts` › varios tipos del mismo ejercicio | RN-ENT-13 | Unit | `repeticiones` 8→10, `volumen` 240→300, `1rm` 38→40 del mismo ejercicio | 3 filas con etiquetas `Repeticiones`, `Volumen`, `1RM`, en el orden de entrada | = esperado | 23/11/2026 |
+| `aplanarRecords.test.ts` › varios ejercicios | RN-ENT-13 | Unit | `press` y `sentadilla` | 2 filas en el orden de entrada | = esperado | 23/11/2026 |
+| `aplanarRecords.test.ts` › etiqueta por tipo | RN-ENT-13 | Unit | los 4 tipos | `'Repeticiones'`, `'Volumen'`, `'1RM'`, `'Tiempo'` | = esperado | 23/11/2026 |
+| `aplanarRecords.test.ts` › unidad por tipo | RN-ENT-13 | Unit | los 4 tipos | `''`, `'kg'`, `'kg'`, `'s'` | = esperado | 23/11/2026 |
+| `finalizar-entrenamiento/PaginaResumenEntrenamiento.int.test.tsx` › muestra los récords personales devueltos al finalizar | RN-ENT-13, 17 | Integración | Respuesta de finalización con un récord de 12 a 13 repeticiones para kettlebell hang clean | Muestra el encabezado de récords, el ejercicio y `Repeticiones: 12 → 13` | = esperado | 24/11/2026 |
+
 ## T15 — e2e de navegador (confirmadas por Ulises el 23/11/2026)
 
 Rutina de prueba: un bloque de lever chest press, 2 series de 10 repeticiones con 30 kg (2 pasos). Volumen esperado según RN-ENT-06 y 07: 30 × 10 × 2 = 600 kg.

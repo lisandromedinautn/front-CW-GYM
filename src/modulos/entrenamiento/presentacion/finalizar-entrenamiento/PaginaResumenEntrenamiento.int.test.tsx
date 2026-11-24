@@ -54,4 +54,53 @@ describe('RN-ENT-05, 06, 09, 17 · finalizar y ver el resumen', () => {
     expect(screen.getByText(/30 min/)).toBeVisible();
     expect(screen.getByText(/Sin grupos musculares/)).toBeVisible();
   });
+  it('muestra los récords personales devueltos al finalizar', async () => {
+    servidorRedFalsa.use(
+      http.get('http://localhost:3000/entrenamiento/mi-entrenamiento-en-curso', () =>
+        HttpResponse.json({
+          estado: 'en-curso',
+          entrenamiento: {
+            id: 'ent-1',
+            inicio: '2026-11-22T10:00:00.000Z',
+            rutina: { nombre: 'Ejercicios de prueba US12' },
+          },
+        }),
+      ),
+      http.post('http://localhost:3000/entrenamiento/entrenamientos/ent-1/finalizacion', () =>
+        HttpResponse.json(
+          {
+            volumenKg: 2730,
+            duracionSegundos: 49,
+            gruposMusculares: ['Core', 'Espalda', 'Piernas'],
+            recordsBatidos: [
+              {
+                ejercicioId: 'f3a1734b-2daf-4576-80f9-f168a0a75690',
+                nombre: 'kettlebell hang clean',
+                tipo: 'repeticiones',
+                valorAnterior: 12,
+                valorNuevo: 13,
+              },
+            ],
+          },
+          { status: 201 },
+        ),
+      ),
+    );
+
+    localStorage.setItem('cwgym.sesion', JSON.stringify({ token: 't', rol: 'Alumno' }));
+
+    render(
+      <MemoryRouter initialEntries={['/alumno/entrenamiento']}>
+        <Aplicacion />
+      </MemoryRouter>,
+    );
+
+    await userEvent.click(await screen.findByRole('button', { name: 'Finalizar entrenamiento' }));
+
+    expect(
+      await screen.findByRole('heading', { name: '¡Nuevos récords personales!' }),
+    ).toBeVisible();
+    expect(screen.getByText('kettlebell hang clean')).toBeVisible();
+    expect(screen.getByText(/Repeticiones: 12 → 13/)).toBeVisible();
+  });
 });

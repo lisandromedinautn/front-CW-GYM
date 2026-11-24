@@ -70,8 +70,8 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | entrenamiento | `AccionesEntrenamiento.tsx`, `PaginaEntrenamientoEnCurso.tsx` (`/alumno/entrenamiento`) | `usarIniciarEntrenamiento.ts`, `usarEntrenamientoEnCurso.ts` | `POST /entrenamiento/entrenamientos`, `GET /entrenamiento/mi-entrenamiento-en-curso` | US13 | ✅ `entrenamiento.int.test.tsx` |
 | entrenamiento | `PaginaEntrenamientoEnCurso.tsx`, `PasoActual.tsx` (paso a paso), `FormularioSerie.tsx` y `ListaSeries.tsx` (solo lectura si está abandonado), en `/alumno/entrenamiento` | `usarRegistrarSerie.ts` (`aplicacion/registrar-serie/`) | `POST /entrenamiento/entrenamientos/:id/series` | US14 | ✅ `RegistrarSerie.int.test.tsx`; dominio `serie/serie.ts` (validación, `serie.test.ts`) y `serie/filasSeries.ts` (pasos por bloque y vuelta, con el GIF de cada ejercicio, T14) |
 | entrenamiento | `ResumenEntrenamiento.tsx`, `PaginaEntrenamientoEnCurso.tsx` | `usarFinalizarEntrenamiento.ts` | `POST .../:id/finalizacion` | US15 | ✅ 4 pruebas de integración |
-| entrenamiento | `ResumenEntrenamiento.tsx` (formulario de percepción en el resumen del entrenamiento finalizado; récords con US16) | `usarRegistrarPercepcion.ts` (`aplicacion/registrar-percepcion/`) | `POST /entrenamiento/entrenamientos/:id/percepcion` | US16, US17 | ✅ US17: `PercepcionDelResumen.tsx`, `PercepcionEnResumen.int.test.tsx` (4 casos), percepción en US18 (`PaginaEntrenamientosDeAlumnos.int.test.tsx`) y `e2e/entrenamiento/percepcion.e2e.ts`; récords (US16) pendientes |
-| `src/modulos/entrenamiento/presentacion/finalizar-entrenamiento/PercepcionEnResumen.int.test.tsx` | RN-ENT-14, 15, 16 (US17) | ✅ |
+| entrenamiento | `ResumenEntrenamiento.tsx`, `PaginaEntrenamientoEnCurso.tsx` | `usarFinalizarEntrenamiento.ts` | `POST /entrenamiento/entrenamientos/:id/finalizacion` | US16 | ✅ Récords recibidos en `recordsBatidos` y mostrados en el resumen; reutiliza `aplanarRecords` |
+| entrenamiento | `ResumenEntrenamiento.tsx` (formulario de percepción en el resumen del entrenamiento finalizado; percepción también desde el entrenamiento en curso) | `usarRegistrarPercepcion.ts` (`aplicacion/registrar-percepcion/`) | `POST /entrenamiento/entrenamientos/:id/percepcion` | US17 | ✅ `PercepcionDelResumen.tsx`, `PercepcionEnResumen.int.test.tsx` (4 casos), percepción en US18 (`PaginaEntrenamientosDeAlumnos.int.test.tsx`) y `e2e/entrenamiento/percepcion.e2e.ts` |
 | entrenamiento | `PaginaEntrenamientosDeAlumnos.tsx` (`presentacion/entrenamientos-de-alumnos/`, ruta `/profesor/entrenamientos`, menú "Entrenamientos") | `usarEntrenamientosDeAlumnos.ts` (`aplicacion/consultar-entrenamientos-de-alumnos/`) | `GET /identidad/alumnos`, `GET /entrenamiento/alumnos/:alumnoId/entrenamientos` | US18 | ✅ `PaginaEntrenamientosDeAlumnos.int.test.tsx` (8 casos); dominio `entrenamientos-de-alumnos/entrenamientosDeAlumnos.ts` (fecha en hora de Argentina, estado, orden y total de series; `entrenamientosDeAlumnos.test.ts`) |
 | notificaciones | `PaginaNotificaciones.tsx`, `TarjetaNotificacion.tsx` (`presentacion/bandeja/`, ruta `/profesor/notificaciones`, menú "Notificaciones") | `usarNotificaciones.ts`, `usarMarcarLeida.ts` | `GET /notificaciones/mis-notificaciones`, `PUT /notificaciones/mis-notificaciones/:id/lectura` | US21 | ✅ `PaginaNotificaciones.int.test.tsx` (6 casos, incluido el enlace de RN-UI-NOT-02); dominio `notificacion/notificacion.ts` (`notificacion.test.ts`, 3 casos); e2e `e2e/notificaciones/notificacion.e2e.ts` |
 | notificaciones | `ContadorNoLeidas.tsx` (`presentacion/contador/`, en el menú del Profesor, compuesto desde `Aplicacion.tsx`) | `usarContadorNoLeidas.ts` (cada 60 s) | `GET /notificaciones/mis-notificaciones/no-leidas` | US21 | ✅ `ContadorNoLeidas.int.test.tsx` (2 casos); se actualiza al marcar por `aplicacion/cambios-no-leidas.ts` |
@@ -82,8 +82,8 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | :-- | :-- | :-- |
 | `src/modulos/identidad/infraestructura/api/apiIdentidad.ts` | Ingreso, alta de profesor, código de profesor y vínculo del alumno | ✅ |
 | `src/modulos/catalogo/infraestructura/api/apiCatalogo.ts` | Consulta paginada de ejercicios con filtros | ✅ |
-| `src/modulos/planificacion/infraestructura/api/apiPlanificacion.ts` | Catálogo para el editor, listado, alta, detalle y edición de rutinas; alumnos del profesor, rutinas y alta de plan (US07); rutina del día del alumno (US08) | ✅ |
-| `src/modulos/entrenamiento/infraestructura/api/apiEntrenamiento.ts` | Inicio y consulta del entrenamiento (US13); registro de una serie realizada (US14); alumnos vinculados y entrenamientos de un alumno, paginados (US18) | ✅ |
+| `src/modulos/planificacion/infraestructura/api/apiPlanificacion.ts` | Catálogo para el editor, listado, alta, detalle, edición y renombrado de rutinas; alumnos del profesor, rutinas y alta de plan (US07); rutina del día del alumno (US08) | ✅ |
+| `src/modulos/entrenamiento/infraestructura/api/apiEntrenamiento.ts` | Inicio y consulta del entrenamiento (US13); registro de una serie realizada (US14); finalización y obtención del resumen con récords batidos (US15, US16); alumnos vinculados y entrenamientos de un alumno, paginados (US18) | ✅ |
 
 ## Compartido (`src/compartido/`)
 
@@ -128,6 +128,7 @@ Los tests viven junto a la pantalla o componente que prueban. Las fichas de cada
 | `src/modulos/planificacion/dominio/plan/rutinaDelDia.test.ts` | Objetivos y etiqueta del día (US08) | ✅ |
 | `src/modulos/planificacion/presentacion/rutina-del-dia/PaginaRutinaDelDia.int.test.tsx` | RN-PLAN-11, 18; rutina, descanso, sin plan y error HTTP | ✅ |
 | `src/modulos/planificacion/presentacion/rutina-del-dia/PaginaRutinaDelDiaDetalles.int.test.tsx` | RN-PLAN-11, 18, 02, 03; fecha, pausas y acceso por rol (RN-IDE-03) | ✅ |
+| `src/modulos/entrenamiento/presentacion/finalizar-entrenamiento/PaginaResumenEntrenamiento.int.test.tsx` | RN-ENT-13, RN-ENT-17; visualización de récords batidos en el resumen (US16) | ✅ |
 | `src/modulos/notificaciones/presentacion/bandeja/PaginaNotificaciones.int.test.tsx` | RN-NOT-01, 02, 03, 04, RN-UI-NOT-02 (US21); RN-NOT-05, 06 (US17) | ✅ |
 | `src/modulos/notificaciones/presentacion/contador/ContadorNoLeidas.int.test.tsx` | RN-UI-NOT-01 (US21) | ✅ |
 | `src/modulos/notificaciones/dominio/notificacion/notificacion.test.ts` | RN-NOT-01: textos de series por tiempo, de circuito y con decimales (US21) | ✅ |
@@ -150,6 +151,9 @@ Decidido por Lisandro el 08/11/2026 (igual que en el back): en todas las capas d
 | compartido | dominio | error-api, menu, paginacion, sesion |
 | compartido | aplicacion · infraestructura | paginacion, sesion · sesion, cliente-http |
 | compartido | presentacion | menu, inicio, paginador, proximamente, ruta-protegida |
+| entrenamiento | dominio | entrenamiento, record-batido, serie |
+| entrenamiento | aplicacion · presentacion | iniciar-entrenamiento · entrenamiento-en-curso; registrar-serie · entrenamiento-en-curso; finalizar-entrenamiento · finalizar-entrenamiento |
+| entrenamiento | infraestructura | api (`apiEntrenamiento.ts`) |
 
 ## Nombres de archivo
 
