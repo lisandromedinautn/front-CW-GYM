@@ -45,7 +45,7 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | Catálogo | `src/modulos/catalogo/CLAUDE.md` | `src/modulos/catalogo/FICHAS-TEST.md` | `../back-CW-GYM/src/modulos/catalogo/CLAUDE.md` |
 | Planificación | `src/modulos/planificacion/CLAUDE.md` | `src/modulos/planificacion/FICHAS-TEST.md` | `../back-CW-GYM/src/modulos/planificacion/CLAUDE.md` |
 | Entrenamiento | `src/modulos/entrenamiento/CLAUDE.md` | `src/modulos/entrenamiento/FICHAS-TEST.md` | `../back-CW-GYM/src/modulos/entrenamiento/CLAUDE.md` |
-| Notificaciones (US21) | `src/modulos/notificaciones/CLAUDE.md` | 📄 `src/modulos/notificaciones/FICHAS-TEST.md` (se crea con las fichas) | `../back-CW-GYM/src/modulos/notificaciones/CLAUDE.md` |
+| Notificaciones (US21) | `src/modulos/notificaciones/CLAUDE.md` | `src/modulos/notificaciones/FICHAS-TEST.md` | `../back-CW-GYM/src/modulos/notificaciones/CLAUDE.md` |
 | Compartido | `src/compartido/CLAUDE.md` | — | — |
 
 ## Pantallas → hook → endpoint del back
