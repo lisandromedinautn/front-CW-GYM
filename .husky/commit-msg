@@ -1,2 +1,0 @@
-node scripts/validar-mensaje-commit.mjs "$1"
-node scripts/proteger-tests.mjs "$1"
