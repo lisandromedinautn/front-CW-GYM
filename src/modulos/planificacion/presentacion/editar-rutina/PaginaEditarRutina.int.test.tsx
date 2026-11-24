@@ -58,14 +58,15 @@ function prepararRed(alEditar?: () => Response) {
     ),
     http.get(URL_RUTINA, () => HttpResponse.json(EMPUJE)),
     http.put(URL_RUTINA, async ({ request }) => {
-      cambios.push(await request.json());
-      return alEditar ? alEditar() : HttpResponse.json(EMPUJE);
+      const cuerpo = (await request.json()) as { nombre?: string };
+      cambios.push(cuerpo);
+      return alEditar ? alEditar() : HttpResponse.json({ ...EMPUJE, nombre: cuerpo.nombre });
     }),
   );
   return cambios;
 }
 
-/** Entra al listado como Profesor y abre el detalle de "Empuje" desde su tarjeta. */
+/** Entra al listado como Profesor y abre el detalle de "Empuje" con el lápiz de su tarjeta. */
 async function abrirDetalleDeEmpuje() {
   localStorage.setItem('cwgym.sesion', JSON.stringify({ token: 't', rol: 'Profesor' }));
   render(
@@ -74,7 +75,7 @@ async function abrirDetalleDeEmpuje() {
     </MemoryRouter>,
   );
   const usuario = userEvent.setup();
-  await usuario.click(await screen.findByRole('link', { name: 'Ver y editar Empuje' }));
+  await usuario.click(await screen.findByRole('link', { name: 'Editar rutina' }));
   return usuario;
 }
 
@@ -136,6 +137,33 @@ describe('RN-PLAN-07 · una rutina se puede editar siempre', () => {
 });
 
 describe('RN-PLAN-21 · el nombre no repite el de otra rutina del profesor', () => {
+  it('cambiar el nombre de "Empuje" a "Piernas" y "Guardar cambios" envía el PUT con el nombre y muestra "Piernas"', async () => {
+    const cambios = prepararRed();
+    const usuario = await abrirDetalleDeEmpuje();
+
+    await screen.findByLabelText('Repeticiones');
+    const nombre = screen.getByRole('textbox', { name: 'Nombre' });
+    await usuario.clear(nombre);
+    await usuario.type(nombre, 'Piernas');
+    await usuario.click(screen.getByRole('button', { name: 'Guardar cambios' }));
+
+    expect(await screen.findByRole('heading', { name: 'Piernas' })).toBeInTheDocument();
+    expect(cambios).toEqual([
+      {
+        nombre: 'Piernas',
+        bloques: [
+          {
+            ejercicioId: 'e-press',
+            series: 3,
+            micropausaSegundos: 60,
+            macropausaSegundos: 120,
+            repeticiones: 10,
+          },
+        ],
+      },
+    ]);
+  });
+
   it('si el back responde 409 RN-PLAN-21, muestra su mensaje en un alert', async () => {
     prepararRed(() =>
       HttpResponse.json(

@@ -8,7 +8,6 @@ import { servidorRedFalsa } from '../../../../pruebas/servidor-red-falsa.ts';
 
 const URL_CATALOGO = 'http://localhost:3000/catalogo/ejercicios';
 const URL_RUTINAS = 'http://localhost:3000/planificacion/rutinas';
-const URL_NOMBRE = 'http://localhost:3000/planificacion/rutinas/:id/nombre';
 
 // Forma exacta de GET /catalogo/ejercicios (back: catalogo.controlador.ts).
 const CATALOGO = [
@@ -49,14 +48,11 @@ const rutina = (id: string, nombre: string) => ({
 type Opciones = {
   /** Respuesta de GET /planificacion/rutinas según la página y el tamaño pedidos. */
   listado: (pagina: number, tamanio: number) => JsonBodyType;
-  /** Respuesta de PATCH /planificacion/rutinas/:id/nombre. Por defecto, 200 con el nombre nuevo. */
-  alRenombrar?: () => Response;
 };
 
-/** Declara la red falsa y guarda los query params de cada listado y los body de cada PATCH. */
+/** Declara la red falsa y guarda los query params de cada listado. */
 function prepararRed(opciones: Opciones) {
   const consultas: URLSearchParams[] = [];
-  const cambios: unknown[] = [];
   servidorRedFalsa.use(
     http.get(URL_CATALOGO, () => HttpResponse.json(CATALOGO)),
     http.get(URL_RUTINAS, ({ request }) => {
@@ -66,14 +62,8 @@ function prepararRed(opciones: Opciones) {
         opciones.listado(Number(parametros.get('pagina')), Number(parametros.get('tamanio'))),
       );
     }),
-    http.patch(URL_NOMBRE, async ({ params, request }) => {
-      const cuerpo = await request.json();
-      cambios.push(cuerpo);
-      if (opciones.alRenombrar) return opciones.alRenombrar();
-      return HttpResponse.json(rutina(String(params.id), (cuerpo as { nombre: string }).nombre));
-    }),
   );
-  return { consultas, cambios };
+  return { consultas };
 }
 
 async function abrirPaginaComoProfesor() {
@@ -87,65 +77,6 @@ async function abrirPaginaComoProfesor() {
 }
 
 afterEach(() => localStorage.clear());
-
-describe('RN-PLAN-21 · la rutina se puede renombrar siempre', () => {
-  it('la tarjeta muestra el nombre; "Editar nombre" abre el campo y "Guardar" envía el PATCH y muestra el nombre nuevo', async () => {
-    const { cambios } = prepararRed({
-      listado: () => ({ items: [rutina('r1', 'Empuje')], total: 1, pagina: 1, tamanio: 10 }),
-    });
-    const usuario = await abrirPaginaComoProfesor();
-
-    expect(await screen.findByRole('heading', { name: 'Empuje' })).toBeInTheDocument();
-    await usuario.click(screen.getByRole('button', { name: 'Editar nombre' }));
-    const campo = screen.getByRole('textbox', { name: 'Nombre de la rutina' });
-    await usuario.clear(campo);
-    await usuario.type(campo, 'Piernas');
-    await usuario.click(screen.getByRole('button', { name: 'Guardar' }));
-
-    expect(await screen.findByRole('heading', { name: 'Piernas' })).toBeInTheDocument();
-    expect(cambios).toEqual([{ nombre: 'Piernas' }]);
-  });
-
-  it('"Cancelar" no envía nada y deja el nombre anterior', async () => {
-    const { cambios } = prepararRed({
-      listado: () => ({ items: [rutina('r1', 'Empuje')], total: 1, pagina: 1, tamanio: 10 }),
-    });
-    const usuario = await abrirPaginaComoProfesor();
-
-    expect(await screen.findByRole('heading', { name: 'Empuje' })).toBeInTheDocument();
-    await usuario.click(screen.getByRole('button', { name: 'Editar nombre' }));
-    const campo = screen.getByRole('textbox', { name: 'Nombre de la rutina' });
-    await usuario.clear(campo);
-    await usuario.type(campo, 'Piernas');
-    await usuario.click(screen.getByRole('button', { name: 'Cancelar' }));
-
-    expect(screen.getByRole('heading', { name: 'Empuje' })).toBeInTheDocument();
-    expect(cambios).toHaveLength(0);
-  });
-
-  it('si el back responde 409 RN-PLAN-21, muestra su mensaje en un alert', async () => {
-    prepararRed({
-      listado: () => ({ items: [rutina('r1', 'Empuje')], total: 1, pagina: 1, tamanio: 10 }),
-      alRenombrar: () =>
-        HttpResponse.json(
-          { codigo: 'RN-PLAN-21', mensaje: 'Ya tenés una rutina con ese nombre' },
-          { status: 409 },
-        ),
-    });
-    const usuario = await abrirPaginaComoProfesor();
-
-    expect(await screen.findByRole('heading', { name: 'Empuje' })).toBeInTheDocument();
-    await usuario.click(screen.getByRole('button', { name: 'Editar nombre' }));
-    const campo = screen.getByRole('textbox', { name: 'Nombre de la rutina' });
-    await usuario.clear(campo);
-    await usuario.type(campo, 'Piernas');
-    await usuario.click(screen.getByRole('button', { name: 'Guardar' }));
-
-    expect(await screen.findByRole('alert')).toHaveTextContent(
-      'Ya tenés una rutina con ese nombre',
-    );
-  });
-});
 
 describe('RN-PLAN-08 · el profesor ve sus rutinas; sin ninguna, lo invita a crear la primera', () => {
   it('con total 0 muestra "Creá tu primera rutina" y el link "Nueva rutina"', async () => {
