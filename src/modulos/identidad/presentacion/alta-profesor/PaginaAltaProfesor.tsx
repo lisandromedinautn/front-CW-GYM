@@ -47,37 +47,55 @@ export function PaginaAltaProfesor() {
     <section className="pagina">
       <h1>Alta de profesor</h1>
       <form className="formulario" onSubmit={(e) => void enviar(e)} noValidate>
-        {CAMPOS_TEXTO.slice(0, 2).map((c) => (
-          <CampoTexto
-            key={c.campo}
-            {...c}
-            valor={datos[c.campo]}
-            faltante={faltantes.includes(c.campo)}
-            alCambiar={cambiar}
-          />
-        ))}
-        <label>
-          Tipo de documento
-          <select
-            value={datos.tipoDocumento}
-            onChange={(e) => cambiar('tipoDocumento', e.target.value)}
-          >
-            {TIPOS_DOCUMENTO.map((t) => (
-              <option key={t} value={t}>
-                {t}
-              </option>
-            ))}
-          </select>
-        </label>
-        {CAMPOS_TEXTO.slice(2).map((c) => (
-          <CampoTexto
-            key={c.campo}
-            {...c}
-            valor={datos[c.campo]}
-            faltante={faltantes.includes(c.campo)}
-            alCambiar={cambiar}
-          />
-        ))}
+        {/* Dos grupos (T20): la persona y su cuenta. Desde escritorio, en dos columnas. */}
+        <fieldset className="bloque grupo-alta">
+          <legend>Datos personales</legend>
+          {CAMPOS_TEXTO.slice(0, 2).map((c) => (
+            <CampoTexto
+              key={c.campo}
+              {...c}
+              valor={datos[c.campo]}
+              faltante={faltantes.includes(c.campo)}
+              alCambiar={cambiar}
+            />
+          ))}
+          <div className="campo">
+            <label>
+              Tipo de documento
+              <select
+                value={datos.tipoDocumento}
+                onChange={(e) => cambiar('tipoDocumento', e.target.value)}
+              >
+                {TIPOS_DOCUMENTO.map((t) => (
+                  <option key={t} value={t}>
+                    {t}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
+          {CAMPOS_TEXTO.slice(2, 3).map((c) => (
+            <CampoTexto
+              key={c.campo}
+              {...c}
+              valor={datos[c.campo]}
+              faltante={faltantes.includes(c.campo)}
+              alCambiar={cambiar}
+            />
+          ))}
+        </fieldset>
+        <fieldset className="bloque grupo-alta">
+          <legend>Cuenta</legend>
+          {CAMPOS_TEXTO.slice(3).map((c) => (
+            <CampoTexto
+              key={c.campo}
+              {...c}
+              valor={datos[c.campo]}
+              faltante={faltantes.includes(c.campo)}
+              alCambiar={cambiar}
+            />
+          ))}
+        </fieldset>
         {error && (
           <p role="alert" className="error">
             {error}
@@ -88,7 +106,7 @@ export function PaginaAltaProfesor() {
             {exito}
           </p>
         )}
-        <button type="submit" disabled={enviando}>
+        <button type="submit" className="accion-principal" disabled={enviando}>
           Dar de alta
         </button>
       </form>

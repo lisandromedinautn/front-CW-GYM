@@ -33,7 +33,7 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | `eslint/reglas-de-hooks.js` | Regla local de lint: reglas de los hooks también para `usar<Accion>` ✅ |
 | `.husky/`, `scripts/` | Hooks, validador de mensajes y verificación de antigüedad de paquetes ✅ |
 | `index.html`, `src/main.tsx`, `src/Aplicacion.tsx` | Arranque y raíz de composición (rutas por rol, US00) ✅ |
-| `src/estilos.css` | Hoja de estilos de la app: importa las fuentes (`@fontsource`), los tokens, la base y los componentes, y conserva solo lo propio de cada pantalla, con variables del sistema de diseño (T17, T18). Desde T21 incluye las pantallas del Profesor: `.tarjeta-acciones`, fechas de tanteador, `.con-rutina`, `.bloque-editor`, `.tarjeta-registro` y `.volver`. Desde T22, las del Alumno: `.tanteador`, `.paso-*`, `.barra-del-dia`, `.lista-ejercicios`, `.dias-alumno` y `.marcador-final` ✅ |
+| `src/estilos.css` | Hoja de estilos de la app: importa las fuentes (`@fontsource`), los tokens, la base y los componentes, y conserva solo lo propio de cada pantalla, con variables del sistema de diseño (T17, T18). Desde T21 incluye las pantallas del Profesor: `.tarjeta-acciones`, fechas de tanteador, `.con-rutina`, `.bloque-editor`, `.tarjeta-registro` y `.volver`. Desde T22, las del Alumno: `.tanteador`, `.paso-*`, `.barra-del-dia`, `.lista-ejercicios`, `.dias-alumno` y `.marcador-final`. Desde T20, el ingreso y el Administrador: `.ingreso-cancha`, `.formulario-ingreso`, `.accesos` y `.grupo-alta` ✅ |
 | `src/vite-env.d.ts` | Tipos de Vite para `import.meta.env` ✅ |
 | `.env.example` | `VITE_URL_API` ✅ |
 | `CHANGELOG.md` | Cambios por versión (decisión 38) ✅ |
@@ -105,7 +105,7 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | `presentacion/ruta-protegida/RutaProtegida.tsx` | Guard por rol: sin sesión lleva al ingreso, con otro rol muestra "sin acceso" (RN-IDE-03) | ✅ |
 | `presentacion/menu/MenuPrincipal.tsx` | Marco de cancha (T19): marca, menú por rol con `NavLink` y color de sección (RN-UI-IDE-01), "Salir" y la franja de la sección actual. Recibe contenido extra por ruta (`extras`), que compone `Aplicacion.tsx` (contador de notificaciones, US21) | ✅ |
 | `presentacion/menu/DisenioConMenu.tsx` | Layout con el menú para las rutas por rol | ✅ |
-| `presentacion/inicio/PaginaInicio.tsx` | Inicio de cada rol (placeholder "Panel del {rol}") | ✅ |
+| `presentacion/inicio/PaginaInicio.tsx` | Inicio de cada rol: "Panel del {rol}" con una tarjeta de acceso por opción del menú (T20) | ✅ |
 | `presentacion/proximamente/Proximamente.tsx` | Texto para las rutas que todavía no tienen página | ✅ |
 | `presentacion/estilos/tokens.css` | Tokens del sistema de diseño (colores, tipografía, rampa de cifras, espaciado, radios, sombras, foco, toque y movimiento), con los contrastes anotados (T17) | ✅ |
 | `presentacion/estilos/base.css` | Estilos globales: reset, fondo, tinta, títulos, enlaces, cifras tabulares, foco, selección y movimiento reducido (T17) | ✅ |
