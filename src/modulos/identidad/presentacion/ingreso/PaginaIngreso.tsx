@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { usarIngresarAlSistema } from '../../aplicacion/ingreso/usarIngresarAlSistema.ts';
+import { Aviso } from '../../../../compartido/presentacion/estados/Aviso.tsx';
 
 export function PaginaIngreso() {
   const { ingresarAlSistema, error, enviando } = usarIngresarAlSistema();
@@ -35,11 +36,7 @@ export function PaginaIngreso() {
             required
           />
         </label>
-        {error && (
-          <p role="alert" className="error">
-            {error}
-          </p>
-        )}
+        {error && <Aviso tipo="error">{error}</Aviso>}
         <button type="submit" disabled={enviando}>
           Ingresar
         </button>

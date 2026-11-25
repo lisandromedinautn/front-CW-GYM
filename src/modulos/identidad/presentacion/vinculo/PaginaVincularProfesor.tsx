@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { usarVincularAlumno } from '../../aplicacion/vinculo/usarVincularAlumno.ts';
+import { Aviso } from '../../../../compartido/presentacion/estados/Aviso.tsx';
 
 export function PaginaVincularProfesor() {
   const { vincular, error, exito, yaVinculado, enviando } = usarVincularAlumno();
@@ -31,16 +32,8 @@ export function PaginaVincularProfesor() {
           </button>
         </form>
       )}
-      {error && (
-        <p role="alert" className="error">
-          {error}
-        </p>
-      )}
-      {exito && (
-        <p role="status" className="exito">
-          {exito}
-        </p>
-      )}
+      {error && <Aviso tipo="error">{error}</Aviso>}
+      {exito && <Aviso tipo="exito">{exito}</Aviso>}
     </section>
   );
 }
