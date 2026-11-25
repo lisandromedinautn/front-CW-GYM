@@ -89,6 +89,20 @@
   padding: var(--esp-2);
   min-width: 0;
 }
+/* Día con rutina: franja lila (color de Planes). Día de descanso: fondo hundido, texto tenue. */
+.dia-del-plan {
+  border-top-width: 4px;
+  border-top-color: var(--color-borde);
+  background: var(--color-superficie-hundida);
+}
+.dia-del-plan.con-rutina {
+  border-top-color: var(--color-seccion-lila);
+  background: var(--color-superficie);
+}
+.dia-del-plan:not(.con-rutina) .dia-del-plan-numero,
+.dia-del-plan:not(.con-rutina) .dia-del-plan-rutina {
+  color: var(--color-tinta-tenue);
+}
 .dia-del-plan-encabezado {
   display: flex;
   align-items: baseline;
@@ -97,10 +111,39 @@
   margin: 0;
 }
 .dia-del-plan-numero {
-  font-weight: var(--peso-semi);
+  margin: 0;
+  font-family: var(--fuente-rotulo);
+  font-weight: var(--peso-fuerte);
+  font-size: var(--texto-base);
+  letter-spacing: var(--tracking-rotulo);
+  text-transform: uppercase;
+}
+.dia-del-plan-rutina {
+  margin: 0;
   font-size: var(--texto-chico);
+  font-weight: var(--peso-semi);
+  overflow-wrap: anywhere;
+}
+/* Editar días (US22): sin días de la semana, en columnas que se ajustan al ancho. */
+.dias-del-plan.dias-editables {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+}
+.dias-editables .dia-del-plan {
+  grid-template-rows: none;
+  align-content: start;
+  padding: var(--esp-3);
+}
+.dias-editables .dia-del-plan-encabezado {
+  flex-wrap: wrap;
+}
+.dias-editables .dia-del-plan-numero {
+  font-size: var(--texto-medio);
 }
 .dia-del-plan-fecha {
+  margin: 0;
   font-size: var(--texto-chico);
   color: var(--color-tinta-tenue);
 }
@@ -137,7 +180,6 @@
     background: var(--color-superficie-hundida);
     color: var(--color-borde-control);
     font-size: var(--texto-chico);
-    filter: blur(1px);
     opacity: var(--opacidad-deshabilitado);
     user-select: none;
   }
@@ -376,6 +418,66 @@ button.enlace.volver {
   list-style: none;
   margin: 0;
   padding: 0;
+}
+
+/* Fechas del plan como tanteador (T21): día y mes en cifra grande, el año chico debajo. */
+.fechas-plan {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-2);
+  margin: 0;
+}
+.fecha-tanteador {
+  display: grid;
+  line-height: var(--interlineado-ajustado);
+}
+.fecha-tanteador-dia {
+  font-family: var(--fuente-rotulo);
+  font-size: var(--cifra-3);
+  font-weight: var(--peso-fuerte);
+  font-variant-numeric: tabular-nums;
+}
+.fecha-tanteador-anio {
+  font-size: var(--texto-chico);
+  color: var(--color-tinta-tenue);
+  font-variant-numeric: tabular-nums;
+}
+.fechas-plan-flecha {
+  width: var(--icono-medio);
+  height: var(--icono-medio);
+  color: var(--color-tinta-tenue);
+  stroke-width: var(--icono-trazo);
+}
+/* Días con rutina y de descanso: cifra y rótulo, en fila. */
+.dias-plan-cifras {
+  display: flex;
+  gap: var(--esp-5);
+  margin: 0;
+}
+.dias-plan-cifras div {
+  display: flex;
+  flex-direction: column-reverse;
+}
+.dias-plan-cifras dt {
+  font-family: var(--fuente-rotulo);
+  font-size: var(--texto-chico);
+  font-weight: var(--peso-semi);
+  letter-spacing: var(--tracking-rotulo);
+  text-transform: uppercase;
+  color: var(--color-tinta-tenue);
+}
+.dias-plan-cifras dd {
+  margin: 0;
+  font-family: var(--fuente-rotulo);
+  font-size: var(--cifra-4);
+  font-weight: var(--peso-fuerte);
+  font-variant-numeric: tabular-nums;
+  line-height: var(--interlineado-ajustado);
+}
+
+/* Alumnos del plan (US12): una fila por alumno con su acción a la derecha. */
+.fila-alumno {
+  justify-content: space-between;
 }
 
 /* Entrenamiento paso a paso (RN-UI-ENT-03): el contador queda fijo arriba y el GIF no empuja

@@ -89,12 +89,12 @@ export function PaginaCrearPlan(props: { alVolver?: () => void } = {}) {
 
   return (
     <section className="pagina pagina-ancha">
-      <h1>Nuevo plan</h1>
       {props.alVolver && (
-        <button type="button" className="secundario" onClick={props.alVolver}>
+        <button type="button" className="enlace volver" onClick={props.alVolver}>
           Volver al listado
         </button>
       )}
+      <h1>Nuevo plan</h1>
       {errorDatos && (
         <p role="alert" className="error">
           {errorDatos}
@@ -155,7 +155,10 @@ export function PaginaCrearPlan(props: { alVolver?: () => void } = {}) {
             {fechas.map((fecha, indice) => {
               const numero = indice + 1;
               return (
-                <div key={numero} className="dia-del-plan">
+                <div
+                  key={numero}
+                  className={`dia-del-plan${rutinaPorDia[numero] ? ' con-rutina' : ''}`}
+                >
                   {/* Texto completo para lectores de pantalla; el visible es compacto. */}
                   <p className="dia-del-plan-titulo solo-lectores">
                     Día {numero} — {etiquetaDeFecha(fecha)}
@@ -205,7 +208,7 @@ export function PaginaCrearPlan(props: { alVolver?: () => void } = {}) {
             Plan creado del {plan.fechaInicio} al {plan.fechaFin}
           </p>
         )}
-        <button type="submit" disabled={enviando}>
+        <button type="submit" className="accion-principal" disabled={enviando}>
           Crear plan
         </button>
       </form>

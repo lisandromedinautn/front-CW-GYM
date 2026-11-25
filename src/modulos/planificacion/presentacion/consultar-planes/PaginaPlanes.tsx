@@ -1,3 +1,4 @@
+import { ArrowRight, CalendarDays, Users } from 'lucide-react';
 import { Link, useNavigate } from 'react-router';
 import { Paginador } from '../../../../compartido/presentacion/paginador/Paginador.tsx';
 import { usarConsultarPlanes } from '../../aplicacion/consultar-planes/usarConsultarPlanes.ts';
@@ -23,7 +24,11 @@ export function PaginaPlanes() {
     <section className="pagina pagina-ancha">
       <header className="encabezado">
         <h1>Planes</h1>
-        <button type="button" onClick={() => void navegar(RUTA_NUEVO_PLAN)}>
+        <button
+          type="button"
+          className="accion-principal"
+          onClick={() => void navegar(RUTA_NUEVO_PLAN)}
+        >
           Nuevo plan
         </button>
       </header>
@@ -113,16 +118,48 @@ export function PaginaPlanes() {
   );
 }
 
+/** "25/11" grande y el año chico, como en un tanteador. Recibe dd/mm/aaaa. */
+function FechaTanteador({ fecha }: { fecha: string }) {
+  return (
+    <span className="fecha-tanteador">
+      <span className="fecha-tanteador-dia">{fecha.slice(0, 5)}</span>
+      <span className="fecha-tanteador-anio">{fecha.slice(6)}</span>
+    </span>
+  );
+}
+
+/**
+ * Tarjeta del plan (T21): las fechas y los días se leen como un tanteador. El título y el resumen
+ * completos quedan para lectores de pantalla; la versión visual es decorativa.
+ */
 function TarjetaPlan(props: { plan: ResumenPlan; nombres: Map<string, string> }) {
   const { plan } = props;
+  const inicio = fechaConBarras(plan.fechaInicio);
+  const fin = fechaConBarras(plan.fechaFin);
   return (
     <li className="tarjeta-rutina">
       <div className="tarjeta-rutina-cabecera">
-        <h2>{`Del ${fechaConBarras(plan.fechaInicio)} al ${fechaConBarras(plan.fechaFin)}`}</h2>
+        <h2 className="solo-lectores">{`Del ${inicio} al ${fin}`}</h2>
+        <p className="fechas-plan" aria-hidden="true">
+          <FechaTanteador fecha={inicio} />
+          <ArrowRight className="fechas-plan-flecha" />
+          <FechaTanteador fecha={fin} />
+        </p>
         <span className={`estado-plan estado-plan-${plan.estado}`}>
           {etiquetaDeEstado(plan.estado)}
         </span>
       </div>
+      <p className="solo-lectores">{`${plan.diasConRutina} días con rutina · ${plan.diasDeDescanso} de descanso`}</p>
+      <dl className="dias-plan-cifras" aria-hidden="true">
+        <div>
+          <dt>Con rutina</dt>
+          <dd>{plan.diasConRutina}</dd>
+        </div>
+        <div>
+          <dt>Descanso</dt>
+          <dd>{plan.diasDeDescanso}</dd>
+        </div>
+      </dl>
       {plan.alumnoIds.length === 0 ? (
         <p className="tenue">Sin alumnos</p>
       ) : (
@@ -132,11 +169,20 @@ function TarjetaPlan(props: { plan: ResumenPlan; nombres: Map<string, string> })
           ))}
         </ul>
       )}
-      {plan.estado === 'vigente' && <Link to={`/profesor/planes/${plan.id}/alumnos`}>Alumnos</Link>}
       {plan.estado !== 'finalizado' && (
-        <Link to={`/profesor/planes/${plan.id}/dias`}>Editar días</Link>
+        <div className="tarjeta-acciones">
+          {plan.estado === 'vigente' && (
+            <Link to={`/profesor/planes/${plan.id}/alumnos`} className="boton secundario">
+              <Users aria-hidden="true" />
+              Alumnos
+            </Link>
+          )}
+          <Link to={`/profesor/planes/${plan.id}/dias`} className="boton secundario">
+            <CalendarDays aria-hidden="true" />
+            Editar días
+          </Link>
+        </div>
       )}
-      <p className="tenue">{`${plan.diasConRutina} días con rutina · ${plan.diasDeDescanso} de descanso`}</p>
     </li>
   );
 }

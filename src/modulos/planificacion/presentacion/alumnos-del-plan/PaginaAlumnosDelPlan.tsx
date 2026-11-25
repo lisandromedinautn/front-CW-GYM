@@ -7,8 +7,10 @@ export function PaginaAlumnosDelPlan() {
 
   return (
     <section className="pagina">
+      <Link to="/profesor/planes" className="volver">
+        Volver a planes
+      </Link>
       <h1>Alumnos del plan</h1>
-      <Link to="/profesor/planes">Volver a planes</Link>
       {error && (
         <p role="alert" className="error">
           {error}
@@ -19,14 +21,17 @@ export function PaginaAlumnosDelPlan() {
         <>
           {asignados.length === 0 && <p>Sin alumnos asignados.</p>}
           {alumnos.length === 0 && <p>No tenés alumnos vinculados.</p>}
-          <ul>
+          <ul className="lista-tarjetas" aria-label="Alumnos">
             {alumnos.map((alumno) => {
               const asignado = asignados.includes(alumno.id);
               return (
-                <li key={alumno.id}>
-                  {alumno.apellido}, {alumno.nombre}{' '}
+                <li key={alumno.id} className="tarjeta-item fila-alumno">
+                  <span>
+                    {alumno.apellido}, {alumno.nombre}
+                  </span>
                   <button
                     type="button"
+                    className={asignado ? 'secundario' : undefined}
                     aria-label={`${asignado ? 'Quitar' : 'Agregar'} a ${alumno.nombre} ${alumno.apellido}`}
                     disabled={ocupado}
                     onClick={() => void cambiar(alumno.id, asignado)}
@@ -39,10 +44,11 @@ export function PaginaAlumnosDelPlan() {
             {asignados
               .filter((alumnoId) => !alumnos.some((alumno) => alumno.id === alumnoId))
               .map((alumnoId) => (
-                <li key={alumnoId}>
-                  Alumno sin vínculo{' '}
+                <li key={alumnoId} className="tarjeta-item fila-alumno">
+                  <span>Alumno sin vínculo</span>
                   <button
                     type="button"
+                    className="secundario"
                     disabled={ocupado}
                     onClick={() => void cambiar(alumnoId, true)}
                   >

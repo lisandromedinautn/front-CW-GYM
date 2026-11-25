@@ -11,8 +11,10 @@ export function PaginaEditarDiasPlan() {
 
   return (
     <section className="pagina pagina-ancha">
+      <Link to="/profesor/planes" className="volver">
+        Volver a planes
+      </Link>
       <h1>Editar días del plan</h1>
-      <Link to="/profesor/planes">Volver a planes</Link>
       {error && (
         <p role="alert" className="error">
           {error}
@@ -20,7 +22,7 @@ export function PaginaEditarDiasPlan() {
       )}
       {!plan && !error && <p role="status">Cargando plan…</p>}
       {plan && (
-        <ul className="grilla-rutinas" aria-label="Días del plan">
+        <ul className="dias-del-plan dias-editables" aria-label="Días del plan">
           {plan.dias.map((dia) => (
             <DiaEditable
               key={dia.numero}
@@ -49,10 +51,12 @@ function DiaEditable(props: {
     : 'Descanso';
 
   return (
-    <li className="tarjeta-rutina">
-      <h2>{`Día ${dia.numero}`}</h2>
-      <p className="tenue">{etiquetaDeFecha(dia.fecha)}</p>
-      <p>{nombre}</p>
+    <li className={`dia-del-plan${dia.rutinaId ? ' con-rutina' : ''}`}>
+      <div className="dia-del-plan-encabezado">
+        <h2 className="dia-del-plan-numero">{`Día ${dia.numero}`}</h2>
+        <p className="dia-del-plan-fecha">{etiquetaDeFecha(dia.fecha)}</p>
+      </div>
+      <p className="dia-del-plan-rutina">{nombre}</p>
       {diaEsEditable(dia.fecha) && (
         <>
           <select
@@ -69,6 +73,7 @@ function DiaEditable(props: {
           </select>
           <button
             type="button"
+            className="secundario"
             disabled={props.ocupado}
             onClick={() => void props.alGuardar(dia.numero, elegida || null)}
           >
