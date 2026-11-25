@@ -2,6 +2,7 @@ import { useId, useState, type FormEvent } from 'react';
 import { usarRegistrarPercepcion } from '../../aplicacion/registrar-percepcion/usarRegistrarPercepcion.ts';
 import type { Percepcion } from '../../dominio/percepcion/percepcion.ts';
 import { describirPercepcion } from '../../dominio/percepcion/percepcion.ts';
+import { Aviso } from '../../../../compartido/presentacion/estados/Aviso.tsx';
 
 /** US17 (RN-ENT-16): con la percepción ya cargada solo se muestra; si no, se pide una vez. */
 export function PercepcionDelResumen(props: {
@@ -28,11 +29,7 @@ export function PercepcionDelResumen(props: {
       aria-label="Percepción del entrenamiento"
       className="formulario formulario-percepcion"
     >
-      {registro.error && (
-        <p role="alert" className="error">
-          {registro.error}
-        </p>
-      )}
+      {registro.error && <Aviso tipo="error">{registro.error}</Aviso>}
       <Campo
         id={`${id}-rpe`}
         etiqueta="RPE (1 a 10)"

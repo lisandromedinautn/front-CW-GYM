@@ -11,6 +11,9 @@ import {
 } from '../../dominio/entrenamientos-de-alumnos/entrenamientosDeAlumnos.ts';
 import { describirPercepcion } from '../../dominio/percepcion/percepcion.ts';
 import { describirMedida } from '../../dominio/serie/filasSeries.ts';
+import { Aviso } from '../../../../compartido/presentacion/estados/Aviso.tsx';
+import { Cargando } from '../../../../compartido/presentacion/estados/Cargando.tsx';
+import { EstadoVacio } from '../../../../compartido/presentacion/estados/EstadoVacio.tsx';
 
 export const RUTA_ENTRENAMIENTOS_DE_ALUMNOS = '/profesor/entrenamientos';
 
@@ -23,13 +26,9 @@ export function PaginaEntrenamientosDeAlumnos() {
   return (
     <section className="pagina pagina-ancha">
       <h1>Entrenamientos de mis alumnos</h1>
-      {error && (
-        <p role="alert" className="error">
-          {error}
-        </p>
-      )}
-      {alumnos === null && !error && <p>Cargando tus alumnos…</p>}
-      {alumnos?.length === 0 && <p>Todavía no tenés alumnos vinculados.</p>}
+      {error && <Aviso tipo="error">{error}</Aviso>}
+      {alumnos === null && !error && <Cargando>Cargando tus alumnos…</Cargando>}
+      {alumnos?.length === 0 && <EstadoVacio titulo="Todavía no tenés alumnos vinculados." />}
       {alumnos && alumnos.length > 0 && (
         <div className="barra">
           <label>
@@ -46,10 +45,10 @@ export function PaginaEntrenamientosDeAlumnos() {
         </div>
       )}
       {alumnos && alumnos.length > 0 && !alumnoId && (
-        <p>Elegí un alumno para ver sus entrenamientos.</p>
+        <Aviso tipo="info">Elegí un alumno para ver sus entrenamientos.</Aviso>
       )}
       {alumnoId && resultado?.items.length === 0 && (
-        <p>Este alumno todavía no tiene entrenamientos.</p>
+        <EstadoVacio titulo="Este alumno todavía no tiene entrenamientos." />
       )}
       {alumnoId && resultado && resultado.items.length > 0 && (
         <>

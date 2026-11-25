@@ -9,6 +9,9 @@ import type { Entrenamiento } from '../../dominio/entrenamiento/entrenamiento.ts
 import { agruparSeries, pasosDelEntrenamiento } from '../../dominio/serie/filasSeries.ts';
 import { ListaSeries } from './ListaSeries.tsx';
 import { PasoActual } from './PasoActual.tsx';
+import { Aviso } from '../../../../compartido/presentacion/estados/Aviso.tsx';
+import { Cargando } from '../../../../compartido/presentacion/estados/Cargando.tsx';
+import { EstadoVacio } from '../../../../compartido/presentacion/estados/EstadoVacio.tsx';
 
 export function PaginaEntrenamientoEnCurso() {
   const { resultado, error } = usarEntrenamientoEnCurso();
@@ -20,13 +23,11 @@ export function PaginaEntrenamientoEnCurso() {
   return (
     <section className="pagina">
       <h1>Mi entrenamiento</h1>
-      {error && (
-        <p role="alert" className="error">
-          {error}
-        </p>
+      {error && <Aviso tipo="error">{error}</Aviso>}
+      {!resultado && !error && <Cargando>Cargando tu entrenamiento…</Cargando>}
+      {resultado?.estado === 'sin-entrenamiento' && (
+        <EstadoVacio titulo="No tenés un entrenamiento en curso." />
       )}
-      {!resultado && !error && <p>Cargando tu entrenamiento…</p>}
-      {resultado?.estado === 'sin-entrenamiento' && <p>No tenés un entrenamiento en curso.</p>}
       {resultado && resultado.estado !== 'sin-entrenamiento' && (
         <>
           <h2>{resultado.entrenamiento.rutina.nombre}</h2>
@@ -52,7 +53,7 @@ export function PaginaEntrenamientoEnCurso() {
               finalizacion={finalizacion}
             />
           ) : resultado.estado === 'finalizado' ? (
-            <p>No se pudo recuperar el resumen.</p>
+            <Aviso tipo="error">No se pudo recuperar el resumen.</Aviso>
           ) : (
             <DetalleEntrenamiento
               entrenamiento={resultado.entrenamiento}
@@ -82,12 +83,12 @@ function DetalleEntrenamiento(props: {
   return (
     <>
       {soloLectura && <p className="etiqueta">Abandonado</p>}
-      {error && <p role="alert">{error}</p>}
+      {error && <Aviso tipo="error">{error}</Aviso>}
       {soloLectura ? (
         <ListaSeries grupos={grupos} />
       ) : (
         <>
-          {finalizacion.error && <p role="alert">{finalizacion.error}</p>}
+          {finalizacion.error && <Aviso tipo="error">{finalizacion.error}</Aviso>}
           <PasoActual
             pasos={pasosDelEntrenamiento(grupos)}
             registrar={registrar}

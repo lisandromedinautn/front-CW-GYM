@@ -326,7 +326,11 @@ Todavía no hay tablas en pantallas; el estilo queda listo. Encabezados en caps 
 Rectángulos de esquinas firmes (4px) en caps condensadas, como los rótulos de un marcador (decidido por Ulises el 24/11/2026). Clases: `.insignia` con `-exito`, `-advertencia`, `-error`, `-info` y `-neutro`; las existentes `.etiqueta` (neutra) y `.estado-plan-proximo/-vigente/-finalizado` comparten el mismo componente.
 
 ### Avisos
-`.error` y `.exito` en su tinta con peso medio. Los errores del back se muestran por `codigo` en `role="alert"`; los éxitos en `role="status"`. El tratamiento unificado de avisos, carga y vacío es de T23.
+Desde T23 hay un único componente por estado (`compartido/presentacion/estados/`):
+
+- **Aviso** (`.aviso-estado-error`, `-exito`, `-advertencia`, `-info`): franja con el fondo de su estado, borde izquierdo de `--borde-grueso` en su tinta, icono de Lucide (`CircleAlert`, `CircleCheck`, `TriangleAlert`, `Info`) a `--icono-medio` y texto en peso medio. El error va en `role="alert"` y el resto en `role="status"`.
+- **Carga** (`.estado-carga`): texto chico y tenue con un `LoaderCircle` que gira (0,9 s). Con movimiento reducido queda quieto.
+- **Vacío** (`.vacio`): caja blanca con borde punteado de `--borde-grueso`, radio grande, un `Inbox` tenue a `--icono-grande`, el título en peso fuerte y, si los hay, una ayuda tenue y la acción principal.
 
 ### Diálogos
 Velo `color-velo` sobre toda la pantalla; el diálogo es la **única capa que flota**: radio grande (10px), `--sombra-capa`, título de nivel 2 y acciones en `.acciones`. Hasta 90 % del alto visible, con desplazamiento interno.
@@ -369,6 +373,6 @@ Lucide (`lucide-react` 1.78.0). En uso desde T21: `Pencil`, `Copy`, `Users`, `Ca
 - **T20 pantallas (CG-98):** aplicar la rampa de cifras.
 - **T22 pantallas del Alumno (CG-100):** ✅ hecho el 25/11/2026: tanteador fijo del entrenamiento (`.contador` a `--cifra-1`), GIF protagonista con tope de alto, campos en fila, barra fija de la acción del día, Mi plan en filas y marcador final con los récords. La "Fecha" de la rutina del día sigue en AAAA-MM-DD porque la lee un test.
 - **T21 pantallas del Profesor (CG-99):** ✅ hecho el 25/11/2026: tarjetas con pie de acciones, fechas de tanteador, calendario con días de rutina marcados, editor en columnas, tarjetas de seguimiento y una acción principal por pantalla. `.codigo` pasó a `--cifra-2` y `.dia-fuera-del-plan` perdió el desenfoque. "Registrar ejercicio" sigue deshabilitado a propósito en el catálogo.
-- **T23 estados (CG-101):** vacío, carga, error y éxito con las variantes de estado.
+- **T23 estados (CG-101):** ✅ hecho el 25/11/2026: `Cargando`, `EstadoVacio` y `Aviso` (error, éxito, advertencia e info) en todas las pantallas, sin cambiar textos.
 - **T24 accesibilidad y cierre (CG-102):** auditoría WCAG 2.2 AA, contraste real, foco, teclado, movimiento reducido y objetivos táctiles.
 - Deudas generales: los iconos de Lucide todavía no están en pantallas; `--sombra-fija` todavía no se usa (T19, si el marco queda fijo).

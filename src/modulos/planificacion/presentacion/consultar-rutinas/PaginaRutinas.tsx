@@ -11,6 +11,9 @@ import {
   type RutinaCreada,
   resumenRutina,
 } from '../../dominio/rutina/rutina.ts';
+import { Aviso } from '../../../../compartido/presentacion/estados/Aviso.tsx';
+import { Cargando } from '../../../../compartido/presentacion/estados/Cargando.tsx';
+import { EstadoVacio } from '../../../../compartido/presentacion/estados/EstadoVacio.tsx';
 
 const RUTA_NUEVA = '/profesor/rutinas/nueva';
 const EJERCICIOS_VISIBLES = 3;
@@ -44,33 +47,21 @@ export function PaginaRutinas() {
         )}
       </header>
 
-      {error && (
-        <p role="alert" className="error">
-          {error}
-        </p>
-      )}
-      {errorImportacion && (
-        <p role="alert" className="error">
-          {errorImportacion}
-        </p>
-      )}
-      {mensaje && (
-        <p role="status" className="exito">
-          {mensaje}
-        </p>
-      )}
-      {cargando && !resultado && <p className="tenue">Cargando rutinas…</p>}
+      {error && <Aviso tipo="error">{error}</Aviso>}
+      {errorImportacion && <Aviso tipo="error">{errorImportacion}</Aviso>}
+      {mensaje && <Aviso tipo="exito">{mensaje}</Aviso>}
+      {cargando && !resultado && <Cargando>Cargando rutinas…</Cargando>}
 
       {vacia && (
-        <div className="vacio">
-          <p className="vacio-titulo">Creá tu primera rutina</p>
-          <p className="tenue">
-            Armala por bloques o por circuitos con los ejercicios del catálogo.
-          </p>
-          <Link to={RUTA_NUEVA} className="boton accion-principal">
-            Nueva rutina
-          </Link>
-        </div>
+        <EstadoVacio
+          titulo="Creá tu primera rutina"
+          descripcion="Armala por bloques o por circuitos con los ejercicios del catálogo."
+          accion={
+            <Link to={RUTA_NUEVA} className="boton accion-principal">
+              Nueva rutina
+            </Link>
+          }
+        />
       )}
 
       {resultado && resultado.items.length > 0 && (

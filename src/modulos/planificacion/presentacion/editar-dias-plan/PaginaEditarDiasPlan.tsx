@@ -3,6 +3,8 @@ import { Link, useParams } from 'react-router';
 import { usarEditarDiasPlan } from '../../aplicacion/editar-dias-plan/usarEditarDiasPlan.ts';
 import { type DiaConsultado, diaEsEditable, etiquetaDeFecha } from '../../dominio/plan/plan.ts';
 import type { RutinaCreada } from '../../dominio/rutina/rutina.ts';
+import { Aviso } from '../../../../compartido/presentacion/estados/Aviso.tsx';
+import { Cargando } from '../../../../compartido/presentacion/estados/Cargando.tsx';
 
 /** RN-PLAN-23: el profesor cambia la rutina de los días de hoy en adelante de un plan. */
 export function PaginaEditarDiasPlan() {
@@ -15,12 +17,8 @@ export function PaginaEditarDiasPlan() {
         Volver a planes
       </Link>
       <h1>Editar días del plan</h1>
-      {error && (
-        <p role="alert" className="error">
-          {error}
-        </p>
-      )}
-      {!plan && !error && <p role="status">Cargando plan…</p>}
+      {error && <Aviso tipo="error">{error}</Aviso>}
+      {!plan && !error && <Cargando>Cargando plan…</Cargando>}
       {plan && (
         <ul className="dias-del-plan dias-editables" aria-label="Días del plan">
           {plan.dias.map((dia) => (

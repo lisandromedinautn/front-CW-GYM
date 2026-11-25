@@ -23,6 +23,7 @@ import {
 } from './edicion.ts';
 import { EditorBloque } from './EditorBloque.tsx';
 import { EditorCircuito } from './EditorCircuito.tsx';
+import { Aviso } from '../../../../compartido/presentacion/estados/Aviso.tsx';
 
 /**
  * US06, US09 y US10: el profesor arma una rutina por bloques, por circuitos o mixta. Los bloques
@@ -171,11 +172,7 @@ export function EditorRutina(props: {
         Volver a rutinas
       </Link>
       <h1>{props.rutina ? props.rutina.nombre : 'Nueva rutina'}</h1>
-      {errorCatalogo && (
-        <p role="alert" className="error">
-          {errorCatalogo}
-        </p>
-      )}
+      {errorCatalogo && <Aviso tipo="error">{errorCatalogo}</Aviso>}
       <form className="formulario" onSubmit={(e) => void guardar(e)} noValidate>
         {props.edicion && (
           <label>
@@ -241,16 +238,8 @@ export function EditorRutina(props: {
             Agregar circuito
           </button>
         </div>
-        {error && (
-          <p role="alert" className="error">
-            {error}
-          </p>
-        )}
-        {exito && (
-          <p role="status" className="exito">
-            {exito}
-          </p>
-        )}
+        {error && <Aviso tipo="error">{error}</Aviso>}
+        {exito && <Aviso tipo="exito">{exito}</Aviso>}
         <button type="submit" className="accion-principal" disabled={enviando}>
           {props.edicion ? 'Guardar cambios' : 'Guardar rutina'}
         </button>

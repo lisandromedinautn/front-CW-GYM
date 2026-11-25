@@ -12,6 +12,8 @@ import {
   hoyIso,
   sumarDias,
 } from '../../dominio/plan/plan.ts';
+import { Aviso } from '../../../../compartido/presentacion/estados/Aviso.tsx';
+import { Cargando } from '../../../../compartido/presentacion/estados/Cargando.tsx';
 
 /** El calendario siempre muestra 5 semanas de lunes a domingo: los 28 días entran en 35 celdas. */
 const CELDAS_DEL_CALENDARIO = 35;
@@ -97,12 +99,8 @@ export function PaginaCrearPlan(props: { alVolver?: () => void } = {}) {
         </button>
       )}
       <h1>Nuevo plan</h1>
-      {errorDatos && (
-        <p role="alert" className="error">
-          {errorDatos}
-        </p>
-      )}
-      {cargando && <p className="tenue">Cargando alumnos y rutinas…</p>}
+      {errorDatos && <Aviso tipo="error">{errorDatos}</Aviso>}
+      {cargando && <Cargando>Cargando alumnos y rutinas…</Cargando>}
 
       <form className="formulario" onSubmit={(e) => void guardar(e)} noValidate>
         <div className="barra">
@@ -120,7 +118,7 @@ export function PaginaCrearPlan(props: { alVolver?: () => void } = {}) {
         <fieldset className="bloque">
           <legend>Alumnos</legend>
           {alumnos !== null && alumnos.length === 0 && (
-            <p className="tenue">No tenés alumnos vinculados todavía.</p>
+            <Aviso tipo="advertencia">No tenés alumnos vinculados todavía.</Aviso>
           )}
           {alumnos?.map((alumno) => (
             <label key={alumno.id} className="campo">
@@ -200,15 +198,11 @@ export function PaginaCrearPlan(props: { alVolver?: () => void } = {}) {
           </div>
         </fieldset>
 
-        {error && (
-          <p role="alert" className="error">
-            {error}
-          </p>
-        )}
+        {error && <Aviso tipo="error">{error}</Aviso>}
         {plan && (
-          <p role="status" className="exito">
+          <Aviso tipo="exito">
             Plan creado del {plan.fechaInicio} al {plan.fechaFin}
-          </p>
+          </Aviso>
         )}
         <button type="submit" className="accion-principal" disabled={enviando}>
           Crear plan

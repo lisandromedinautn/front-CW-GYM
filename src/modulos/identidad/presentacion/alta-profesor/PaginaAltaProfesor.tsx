@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { usarDarAltaProfesor } from '../../aplicacion/alta-profesor/usarDarAltaProfesor.ts';
+import { Aviso } from '../../../../compartido/presentacion/estados/Aviso.tsx';
 
 const TIPOS_DOCUMENTO = ['DNI', 'LC', 'LE', 'Pasaporte'];
 
@@ -78,16 +79,8 @@ export function PaginaAltaProfesor() {
             alCambiar={cambiar}
           />
         ))}
-        {error && (
-          <p role="alert" className="error">
-            {error}
-          </p>
-        )}
-        {exito && (
-          <p role="status" className="exito">
-            {exito}
-          </p>
-        )}
+        {error && <Aviso tipo="error">{error}</Aviso>}
+        {exito && <Aviso tipo="exito">{exito}</Aviso>}
         <button type="submit" disabled={enviando}>
           Dar de alta
         </button>

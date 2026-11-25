@@ -10,6 +10,9 @@ import {
   type ResumenPlan,
 } from '../../dominio/plan/listadoPlanes.ts';
 import { RUTA_NUEVO_PLAN } from '../crear-plan/PaginaNuevoPlan.tsx';
+import { Aviso } from '../../../../compartido/presentacion/estados/Aviso.tsx';
+import { Cargando } from '../../../../compartido/presentacion/estados/Cargando.tsx';
+import { EstadoVacio } from '../../../../compartido/presentacion/estados/EstadoVacio.tsx';
 
 /** RN-PLAN-22: planes del profesor con estado y filtros (RN-UI-LIS-01 a 04), y acceso a crear. */
 export function PaginaPlanes() {
@@ -83,17 +86,15 @@ export function PaginaPlanes() {
         </button>
       </div>
 
-      {error && (
-        <p role="alert" className="error">
-          {error}
-        </p>
-      )}
-      {cargando && !resultado && <p className="tenue">Cargando planes…</p>}
+      {error && <Aviso tipo="error">{error}</Aviso>}
+      {cargando && !resultado && <Cargando>Cargando planes…</Cargando>}
 
       {vacia && (
-        <p className="tenue">
-          {consulta.hayFiltros ? 'No hay planes con esos filtros.' : 'Todavía no creaste planes.'}
-        </p>
+        <EstadoVacio
+          titulo={
+            consulta.hayFiltros ? 'No hay planes con esos filtros.' : 'Todavía no creaste planes.'
+          }
+        />
       )}
 
       {resultado && (

@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { usarCodigoProfesor } from '../../aplicacion/codigo-profesor/usarCodigoProfesor.ts';
+import { Aviso } from '../../../../compartido/presentacion/estados/Aviso.tsx';
+import { EstadoVacio } from '../../../../compartido/presentacion/estados/EstadoVacio.tsx';
 
 export function PaginaCodigoProfesor() {
   const { codigo, cargado, error, aviso, generar, copiar } = usarCodigoProfesor();
@@ -13,20 +15,16 @@ export function PaginaCodigoProfesor() {
   return (
     <section className="pagina">
       <h1>Mi código de profesor</h1>
-      {error && (
-        <p role="alert" className="error">
-          {error}
-        </p>
-      )}
+      {error && <Aviso tipo="error">{error}</Aviso>}
       {cargado && codigo === null && (
-        <div className="formulario">
-          <p>Todavía no generaste tu código</p>
-          <div className="acciones">
+        <EstadoVacio
+          titulo="Todavía no generaste tu código"
+          accion={
             <button type="button" className="accion-principal" onClick={() => void generar()}>
               Generar código
             </button>
-          </div>
-        </div>
+          }
+        />
       )}
       {cargado && codigo !== null && (
         <div className="formulario">
@@ -41,11 +39,7 @@ export function PaginaCodigoProfesor() {
           </div>
         </div>
       )}
-      {aviso && (
-        <p role="status" className="exito">
-          {aviso}
-        </p>
-      )}
+      {aviso && <Aviso tipo="exito">{aviso}</Aviso>}
       {confirmando && (
         <div className="fondo-dialog">
           <div

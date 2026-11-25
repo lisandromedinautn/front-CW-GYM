@@ -3,6 +3,9 @@ import { Link } from 'react-router';
 import { usarRutinaDelDia } from '../../aplicacion/consultar-rutina-del-dia/usarRutinaDelDia.ts';
 import { etiquetaDelDia } from '../../dominio/plan/rutinaDelDia.ts';
 import { DetalleRutina } from '../detalle-rutina/DetalleRutina.tsx';
+import { Aviso } from '../../../../compartido/presentacion/estados/Aviso.tsx';
+import { Cargando } from '../../../../compartido/presentacion/estados/Cargando.tsx';
+import { EstadoVacio } from '../../../../compartido/presentacion/estados/EstadoVacio.tsx';
 
 /**
  * US08: el alumno consulta la rutina del día de su plan vigente. RN-PLAN-18 (rutina, descanso o
@@ -18,12 +21,8 @@ export function PaginaRutinaDelDia({ acciones }: { acciones?: (hayRutina: boolea
         <Link to="/alumno/mi-plan">Ver mi plan completo</Link>
       </p>
 
-      {error && (
-        <p role="alert" className="error">
-          {error}
-        </p>
-      )}
-      {cargando && !resultado && <p className="tenue">Cargando tu rutina…</p>}
+      {error && <Aviso tipo="error">{error}</Aviso>}
+      {cargando && !resultado && <Cargando>Cargando tu rutina…</Cargando>}
 
       {resultado && (
         <p className="tenue">
@@ -31,7 +30,7 @@ export function PaginaRutinaDelDia({ acciones }: { acciones?: (hayRutina: boolea
         </p>
       )}
 
-      {resultado?.estado === 'sin-plan' && <p className="tenue">No tenés un plan vigente.</p>}
+      {resultado?.estado === 'sin-plan' && <EstadoVacio titulo="No tenés un plan vigente." />}
 
       {resultado?.estado === 'descanso' && (
         <>
