@@ -1,0 +1,157 @@
+/*
+ * Sistema de diseño de CW-GYM: «Tanteador de club» (T17, CG-95).
+ * Único lugar donde viven los valores visuales. El resto del CSS usa estas variables y no
+ * repite colores, tamaños ni espaciados sueltos. Documentación: DESIGN.md (raíz del repo).
+ * Contrastes verificados contra WCAG 2.2 AA (texto ≥ 4,5:1; bordes de controles ≥ 3:1).
+ */
+:root {
+  /* Marco de cancha: encabezado, navegación y el tanteador. */
+  --color-cancha: #0e2a20;
+  --color-cancha-alto: #163a2c;
+  --color-cancha-linea: #1e4434;
+  --color-sobre-cancha: #e9efea; /* 13,1:1 sobre la cancha */
+  --color-sobre-cancha-tenue: #a9c2b5; /* 8,1:1 sobre la cancha */
+
+  /* Ámbar de marcador: solo para lo vivo (contador, lo hecho y la acción principal). */
+  --color-ambar: #f2b632; /* 8,4:1 sobre la cancha; con tinta encima, 9,2:1 */
+  --color-ambar-hundido: #d99a12;
+  --color-sobre-ambar: #14201a; /* 9,2:1 */
+
+  /* Acción: hoy verde; T18 decide si la acción principal pasa a ámbar sin mover los enlaces. */
+  --color-accion: #1e5c44; /* con texto blanco encima, 7,9:1 */
+  --color-accion-hover: #163a2c;
+  --color-sobre-accion: #ffffff;
+
+  /* Área de trabajo: fondo claro y frío, superficies blancas, tinta verdosa. */
+  --color-fondo: #eef1ee;
+  --color-superficie: #ffffff;
+  --color-superficie-hundida: #f6f8f6;
+  --color-tinta: #14201a; /* 14,8:1 sobre el fondo */
+  --color-tinta-secundaria: #4b5b52; /* 6,3:1 sobre el fondo */
+  --color-tinta-tenue: #5f6e66; /* 4,7:1 sobre el fondo, 5,4:1 sobre blanco */
+  --color-borde: #d3dbd5; /* separadores, sin función de control */
+  --color-borde-control: #748a7e; /* bordes de campos: 3,3:1 sobre el fondo, 3,7:1 sobre blanco */
+  --color-enlace: #1e5c44; /* 6,9:1 sobre el fondo */
+
+  /*
+   * Estados (gravedad, estados de plan y de entrenamiento, mensajes).
+   * El tono sólido es para bordes, iconos y rellenos; la "tinta" es el texto sobre su fondo o
+   * sobre el fondo general; el "fondo" es la superficie del aviso o de la insignia.
+   */
+  --color-exito: #1f7a4d; /* sólido: bordes e iconos */
+  --color-exito-fondo: #e3f2e9;
+  --color-exito-tinta: #1a6b43; /* 5,6:1 sobre su fondo, 5,7:1 sobre el fondo general */
+  --color-advertencia: #a86f00; /* sólido: 3,7:1 sobre el fondo, solo bordes e iconos */
+  --color-advertencia-fondo: #fff1cc;
+  --color-advertencia-tinta: #7a4e00; /* 6,4:1 sobre su fondo */
+  --color-error: #b3261e; /* sólido y texto: 5,7:1 sobre el fondo, 6,5:1 sobre blanco */
+  --color-error-fondo: #fbe9e7;
+  --color-error-tinta: #9c2119; /* 6,8:1 sobre su fondo */
+  --color-info-fondo: #e6f0f7;
+  --color-info-tinta: #1d4e73; /* 7,6:1 sobre su fondo */
+  --color-neutro-fondo: #e4e9e5;
+  --color-neutro-tinta: #3d4a43; /* 7,6:1 sobre su fondo */
+
+  /*
+   * Color por sección del menú: solo en la pestaña activa y en la franja del encabezado (T19).
+   * Todos superan 5,6:1 sobre la cancha. El ámbar no es de ninguna sección: es solo para lo vivo.
+   */
+  --color-seccion-turquesa: #4fd1c5;
+  --color-seccion-coral: #f07b5a;
+  --color-seccion-celeste: #5db7e8;
+  --color-seccion-lila: #b49af0;
+  --color-seccion-lima: #9bd35a;
+  --color-seccion-rosa: #f28db2;
+
+  /* Tipografía: Barlow para el texto, Barlow Condensed en caps para rótulos y cifras. */
+  --fuente-texto: 'Barlow', system-ui, sans-serif;
+  --fuente-rotulo: 'Barlow Condensed', 'Barlow', system-ui, sans-serif;
+  --peso-normal: 400;
+  --peso-medio: 500;
+  --peso-semi: 600;
+  --peso-fuerte: 700;
+  --interlineado-texto: 1.5;
+  --interlineado-ajustado: 1.1;
+  --tracking-titulo: 0.01em;
+  --tracking-rotulo: 0.06em;
+  --tracking-rotulo-ancho: 0.12em;
+
+  /* Escala de texto. */
+  --texto-chico: 0.875rem;
+  --texto-base: 1rem;
+  --texto-medio: 1.125rem;
+  --texto-titulo-3: 1.25rem;
+  --texto-titulo-2: 1.5rem;
+  --texto-titulo-1: 2rem;
+
+  /* Rampa fija de cuatro tamaños de cifra: la cifra más importante de la pantalla es la más grande. */
+  --cifra-1: 3.5rem; /* contador del entrenamiento */
+  --cifra-2: 2.75rem; /* tanteador prescripto | hecho */
+  --cifra-3: 1.75rem; /* cifras destacadas de un listado */
+  --cifra-4: 1.25rem; /* cifras dentro de una fila */
+
+  /* Espaciado: base de 4 px. */
+  --esp-1: 0.25rem;
+  --esp-2: 0.5rem;
+  --esp-3: 0.75rem;
+  --esp-4: 1rem;
+  --esp-5: 1.25rem;
+  --esp-6: 1.5rem;
+  --esp-7: 2rem;
+  --esp-8: 3rem;
+
+  /* Radios: esquinas firmes de marcador, sin redondeos blandos. */
+  --radio-chico: 4px;
+  --radio-medio: 6px;
+  --radio-grande: 10px;
+  --radio-pildora: 999px;
+
+  /* Sombras: la jerarquía es por escala; solo las capas que flotan llevan sombra. */
+  --sombra-capa: 0 12px 32px rgb(14 42 32 / 22%), 0 2px 6px rgb(14 42 32 / 12%);
+  --sombra-fija: 0 2px 8px rgb(14 42 32 / 14%);
+  --color-velo: rgb(14 42 32 / 55%);
+
+  /*
+   * Foco: visible sobre el fondo claro y sobre la cancha. base.css usa --anillo-foco-actual; el
+   * marco de cancha (T19) lo sobrescribe con --anillo-foco-sobre-cancha sin tocar base.css.
+   */
+  --anillo-foco: #1e5c44;
+  --anillo-foco-sobre-cancha: #f2b632;
+  --anillo-foco-actual: var(--anillo-foco);
+  --grosor-foco: 3px;
+
+  /* Bordes, opacidad y capas. */
+  --borde-fino: 1px;
+  --borde-grueso: 2px;
+  --opacidad-deshabilitado: 0.6;
+  --capa-fija: 1;
+  --capa-dialogo: 10;
+
+  /* Iconos (Lucide): tamaños y trazo únicos para toda la app. */
+  --icono-chico: 1rem;
+  --icono-medio: 1.25rem;
+  --icono-grande: 1.5rem;
+  --icono-trazo: 2;
+
+  /* Anchos de lectura y de página. */
+  --ancho-pagina: 40rem;
+  --ancho-pagina-ancha: 64rem;
+  --ancho-tarjeta-ingreso: 22rem;
+  --ancho-dialogo: 28rem;
+
+  /* Objetivos táctiles (WCAG 2.2: 24 px mínimo; 44 px en lo que el alumno toca entrenando). */
+  --toque-minimo: 24px;
+  --toque-comodo: 44px;
+
+  /* Movimiento: corto y con salida exponencial; nada se anima si se pide menos movimiento. */
+  --duracion-corta: 120ms;
+  --duracion-media: 200ms;
+  --curva-salida: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duracion-corta: 0ms;
+    --duracion-media: 0ms;
+  }
+}
