@@ -890,6 +890,17 @@ button.enlace.volver {
   margin: 0;
   font-weight: var(--peso-semi);
 }
+
+/* Vínculo (US05): el código del profesor se escribe en grande, como se lee en su pantalla. */
+input.campo-codigo {
+  min-height: 3.5rem;
+  font-family: var(--fuente-rotulo);
+  font-size: var(--cifra-3);
+  font-weight: var(--peso-fuerte);
+  letter-spacing: var(--tracking-rotulo-ancho);
+  text-align: center;
+}
+
 /*
  * Registros del seguimiento (T21): entrenamientos de un alumno (US18) y notificaciones (US21).
  * El estado se lee en el texto: la gravedad de una notificación va en la tinta de su estado y,

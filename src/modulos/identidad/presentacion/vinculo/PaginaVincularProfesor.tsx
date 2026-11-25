@@ -18,6 +18,7 @@ export function PaginaVincularProfesor() {
           <label>
             Código de profesor
             <input
+              className="campo-codigo"
               value={codigo}
               onChange={(e) => setCodigo(e.target.value)}
               autoCapitalize="characters"
@@ -25,7 +26,7 @@ export function PaginaVincularProfesor() {
               required
             />
           </label>
-          <button type="submit" disabled={enviando}>
+          <button type="submit" className="accion-principal" disabled={enviando}>
             Vincularme
           </button>
         </form>
