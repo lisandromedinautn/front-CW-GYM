@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { usarCrearPlan } from '../../aplicacion/crear-plan/usarCrearPlan.ts';
 import { usarDatosParaPlan } from '../../aplicacion/crear-plan/usarDatosParaPlan.ts';
+import { fechaConBarras } from '../../dominio/plan/listadoPlanes.ts';
 import {
   DIAS_DEL_PLAN,
   type DiaDelPlan,
@@ -58,7 +59,8 @@ export function PaginaCrearPlan(props: { alVolver?: () => void } = {}) {
 
   const fechaValida = esFechaValida(fechaInicio);
   const fechas = fechaValida ? fechasDeLosDias(fechaInicio) : [];
-  const fechaFin = fechaValida ? fechaFinDelPlan(fechaInicio) : null;
+  // RN-PLAN-09: la fecha de fin se muestra en dd/mm/aaaa (T21, decidido por Ulises el 25/11/2026).
+  const fechaFin = fechaValida ? fechaConBarras(fechaFinDelPlan(fechaInicio)) : null;
 
   function alternarAlumno(alumnoId: string) {
     setSeleccionados((anteriores) =>

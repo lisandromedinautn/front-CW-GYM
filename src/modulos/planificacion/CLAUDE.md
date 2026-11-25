@@ -15,7 +15,7 @@ Editor de rutinas, importación, creación de planes, gestión de alumnos del pl
 | RN-PLAN-20 | Antes de enviar, avisa si un circuito repite un ejercicio ("No repitas ejercicios en el circuito") | Vigente |
 | RN-PLAN-07 | El botón "Editar" (con lápiz) del pie de cada tarjeta de `/profesor/rutinas` (nombre accesible "Editar rutina") abre la rutina en el editor precargado (`/profesor/rutinas/:id`): se cambian nombre, ejercicios, series, objetivos, peso, pausas y orden, y "Guardar cambios" la reemplaza | Vigente ✅ (US06) |
 | RN-PLAN-08 | Solo se listan para importar las rutinas del propio profesor; la importación crea una copia independiente | Vigente |
-| RN-PLAN-09 | Al elegir la fecha de inicio, muestra la fecha de fin calculada (inicio + 27) sin permitir editarla | Vigente |
+| RN-PLAN-09 | Al elegir la fecha de inicio, muestra la fecha de fin calculada (inicio + 27), en dd/mm/aaaa, sin permitir editarla | Vigente |
 | RN-PLAN-10 | Cada uno de los 28 días se puede marcar como descanso o asignarle una rutina | Vigente |
 | RN-PLAN-11 | Cada día muestra su fecha concreta | Vigente |
 | RN-PLAN-13, 14 | Solo ofrece alumnos vinculados al profesor; si el back rechaza por plan vigente, muestra el error | Vigente |
@@ -55,6 +55,7 @@ Editor de rutinas, importación, creación de planes, gestión de alumnos del pl
 | 21/11/2026 | RN-PLAN-22 | Se refleja la regla nueva del back: listado de planes del profesor con estado y filtros (T13) | Lisandro |
 | 24/11/2026 | RN-PLAN-07 | Se implementa la edición del contenido de la rutina (US06), que faltaba | Martina |
 | 24/11/2026 | RN-PLAN-21 | El lápiz de la tarjeta abre el editor de la rutina; el nombre se cambia ahí y no en la tarjeta | Martina |
+| 25/11/2026 | RN-PLAN-09 | La fecha de fin de crear plan se muestra en dd/mm/aaaa en lugar de AAAA-MM-DD (T21); se ajustó la aserción del test de US07 | Ulises |
 
 ## Nota para US12 (Martina): qué cambió con T12 y T13 (21/11/2026)
 
@@ -76,7 +77,7 @@ Decidido por Ulises el 25/11/2026. Solo cambia lo visual: textos del DOM, roles,
 * **Calendario**: en crear plan y en editar días, el día con rutina lleva la clase `con-rutina` (franja lila) y el de descanso va hundido y tenue.
 * **Editor**: los bloques y circuitos llevan `bloque-editor`, los ejercicios de un circuito `ejercicio-circuito`, y "Subir", "Bajar" y "Quitar" van juntos en `acciones-bloque`. "Guardar rutina" o "Guardar cambios" es la acción principal.
 * **Subpáginas**: "Volver a planes", "Volver a rutinas" y "Volver al listado" van arriba del título, como enlace chico. La lista de alumnos del plan usa `lista-tarjetas` (`aria-label="Alumnos"`).
-* La "Fecha de fin" de crear plan sigue en formato ISO: pasarla a dd/mm/aaaa cambia una aserción del test de US07.
+* La "Fecha de fin" de crear plan se muestra en dd/mm/aaaa ("Fecha de fin: 10/12/2026") con `fechaConBarras`. Ulises lo decidió y aprobó cambiar la aserción del test de US07 el 25/11/2026.
 
 ## Decisiones de implementación (T13)
 

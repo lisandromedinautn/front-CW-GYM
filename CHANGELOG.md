@@ -15,7 +15,7 @@ Categorías: Agregado, Cambiado, Corregido, Eliminado, Seguridad. Cada entrada c
   - **Editor de rutinas:** campos numéricos en columnas, GIF al costado y acciones en una fila.
   - **Seguimiento:** los entrenamientos y las notificaciones son tarjetas, con las series en columnas.
   - **Acción principal:** en ámbar, una por pantalla.
-  - **Sin cambios de comportamiento:** los textos, filtros, orden y paginación no cambian.
+  - **Sin cambios de comportamiento:** los textos, filtros, orden y paginación no cambian. La única excepción es la "Fecha de fin" de crear plan, que se muestra en dd/mm/aaaa.
 
 - Estructura general con el marco de cancha (T19, CG-97, épica US24).
   - **Encabezado:** verde, con la marca "CW-GYM", el menú por rol y "Salir".
