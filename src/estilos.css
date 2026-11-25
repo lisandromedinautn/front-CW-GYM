@@ -11,12 +11,18 @@
 @import './compartido/presentacion/estilos/componentes.css';
 @import './compartido/presentacion/estilos/estructura.css';
 
+/* Ingreso (T20): cancha arriba y formulario debajo; desde 48rem, en dos mitades. */
 .ingreso {
   min-height: 100vh;
   min-height: 100dvh;
   display: grid;
-  place-items: center;
-  padding: var(--esp-4);
+  grid-template-rows: auto 1fr;
+}
+@media (min-width: 48rem) {
+  .ingreso {
+    grid-template-rows: none;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
 }
 .barra {
   display: flex;
@@ -983,5 +989,88 @@ input.campo-codigo {
 @media (min-width: 48rem) {
   .series-alumno li {
     grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+
+/*
+ * Ingreso, inicio y Administrador (T20, CG-98).
+ */
+
+/* Ingreso: cancha partida. La cancha hace de marco (el ingreso no tiene menú); en el celular es
+   una banda arriba y en escritorio, la mitad izquierda. La franja repite los colores de sección. */
+.ingreso-cancha {
+  position: relative;
+  display: grid;
+  align-content: center;
+  gap: var(--esp-2);
+  padding: var(--esp-6) var(--esp-4) var(--esp-7);
+  background: var(--color-cancha);
+  color: var(--color-sobre-cancha);
+}
+.ingreso-marca {
+  margin: 0;
+  font-family: var(--fuente-rotulo);
+  font-size: var(--cifra-2);
+  font-weight: var(--peso-fuerte);
+  letter-spacing: var(--tracking-rotulo-ancho);
+  line-height: 1;
+}
+.ingreso-lema {
+  margin: 0;
+  font-family: var(--fuente-rotulo);
+  font-size: var(--texto-medio);
+  font-weight: var(--peso-semi);
+  letter-spacing: var(--tracking-rotulo);
+  text-transform: uppercase;
+  color: var(--color-sobre-cancha-tenue);
+}
+.ingreso-franja {
+  position: absolute;
+  inset: auto 0 0;
+  height: 4px;
+  background: linear-gradient(
+    to right,
+    var(--color-seccion-turquesa) 0 16.66%,
+    var(--color-seccion-lima) 0 33.33%,
+    var(--color-seccion-celeste) 0 50%,
+    var(--color-seccion-lila) 0 66.66%,
+    var(--color-seccion-coral) 0 83.33%,
+    var(--color-seccion-rosa) 0
+  );
+}
+.formulario-ingreso {
+  /* El mismo margen lateral que el resto de las páginas (16 px) en el celular. */
+  width: min(100% - 2 * var(--esp-4), var(--ancho-tarjeta-ingreso));
+  justify-self: center;
+  align-self: start;
+  margin-block: var(--esp-6);
+}
+.formulario-ingreso h1 {
+  margin: 0;
+}
+@media (min-width: 48rem) {
+  .ingreso-cancha {
+    padding: var(--esp-8);
+  }
+  .ingreso-marca {
+    font-size: var(--cifra-1);
+  }
+  .ingreso-franja {
+    inset: 0 0 0 auto;
+    width: 4px;
+    height: auto;
+    background: linear-gradient(
+      to bottom,
+      var(--color-seccion-turquesa) 0 16.66%,
+      var(--color-seccion-lima) 0 33.33%,
+      var(--color-seccion-celeste) 0 50%,
+      var(--color-seccion-lila) 0 66.66%,
+      var(--color-seccion-coral) 0 83.33%,
+      var(--color-seccion-rosa) 0
+    );
+  }
+  .formulario-ingreso {
+    align-self: center;
+    margin: var(--esp-6);
   }
 }

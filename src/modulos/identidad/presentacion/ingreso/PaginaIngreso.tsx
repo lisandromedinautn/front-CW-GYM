@@ -13,7 +13,13 @@ export function PaginaIngreso() {
 
   return (
     <main className="ingreso">
-      <form className="tarjeta" onSubmit={enviar}>
+      {/* Cancha de ingreso (T20): hace de marco, porque el ingreso no tiene menú. Es decorativa. */}
+      <div className="ingreso-cancha" aria-hidden="true">
+        <p className="ingreso-marca">CW-GYM</p>
+        <p className="ingreso-lema">Sistema de Entrenamiento de Gimnasio</p>
+        <span className="ingreso-franja" />
+      </div>
+      <form className="tarjeta formulario-ingreso" onSubmit={enviar}>
         <h1>Ingresar al sistema</h1>
         <label>
           Email
@@ -40,7 +46,7 @@ export function PaginaIngreso() {
             {error}
           </p>
         )}
-        <button type="submit" disabled={enviando}>
+        <button type="submit" className="accion-principal" disabled={enviando}>
           Ingresar
         </button>
       </form>
