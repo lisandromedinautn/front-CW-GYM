@@ -38,7 +38,8 @@ export function PasoActual(props: {
       </h3>
       {paso.urlGif && (
         <figure className="paso-gif">
-          <img src={paso.urlGif} alt={paso.nombre} className="gif-paso" />
+          {/* La clave vuelve a montar la imagen: mientras carga no queda el GIF del paso anterior. */}
+          <img key={paso.urlGif} src={paso.urlGif} alt={paso.nombre} className="gif-paso" />
           <figcaption>
             <small>GIF © Gym visual</small>
           </figcaption>
