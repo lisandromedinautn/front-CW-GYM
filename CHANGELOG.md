@@ -8,6 +8,12 @@ Categorías: Agregado, Cambiado, Corregido, Eliminado, Seguridad. Cada entrada c
 
 ### Agregado
 
+- Estados de interfaz unificados (T23, CG-101, épica US24): todas las pantallas usan los mismos componentes de carga, vacío y avisos.
+  - **Carga:** `Cargando`, con un aro que gira y el texto de cada pantalla, anunciado como `status`.
+  - **Vacío:** `EstadoVacio`, la caja punteada de Rutinas ahora en todos los listados y secciones sin datos.
+  - **Avisos:** `Aviso` de error, éxito, advertencia e información, con icono y el color de su estado.
+  - **Sin cambios de comportamiento:** los textos, los roles y los tests son los mismos.
+
 - Rediseño de las pantallas del Alumno (T22, CG-100, épica US24): vínculo, rutina del día, Mi plan, entrenamiento en curso, resumen y percepción.
   - **Entrenamiento en curso:** un tanteador fijo arriba con el tiempo, el paso y una barra de avance.
   - **Paso actual:** el GIF grande y los campos de la serie en fila, en números grandes, con "Registrar" a todo el ancho.

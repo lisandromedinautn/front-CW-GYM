@@ -107,9 +107,12 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | `presentacion/menu/DisenioConMenu.tsx` | Layout con el menú para las rutas por rol | ✅ |
 | `presentacion/inicio/PaginaInicio.tsx` | Inicio de cada rol (placeholder "Panel del {rol}") | ✅ |
 | `presentacion/proximamente/Proximamente.tsx` | Texto para las rutas que todavía no tienen página | ✅ |
+| `presentacion/estados/Cargando.tsx` | Indicador de carga único: `role="status"`, aro que gira y el texto de la pantalla (T23) | ✅ |
+| `presentacion/estados/EstadoVacio.tsx` | Estado vacío único: caja `.vacio` con icono, título, descripción y acción opcionales (T23) | ✅ |
+| `presentacion/estados/Aviso.tsx` | Aviso único de error (`alert`), éxito, advertencia e info (`status`), con icono y color de estado (T23) | ✅ |
 | `presentacion/estilos/tokens.css` | Tokens del sistema de diseño (colores, tipografía, rampa de cifras, espaciado, radios, sombras, foco, toque y movimiento), con los contrastes anotados (T17) | ✅ |
 | `presentacion/estilos/base.css` | Estilos globales: reset, fondo, tinta, títulos, enlaces, cifras tabulares, foco, selección y movimiento reducido (T17) | ✅ |
-| `presentacion/estilos/componentes.css` | Componentes base: botones (base, `.accion-principal` en ámbar, `.secundario`, `.peligro`, `.enlace`, `.boton-icono`), campos con sus estados, tarjetas, tablas, insignias (`.insignia-*`, `.etiqueta`, `.estado-plan-*`) y diálogos (T18) | ✅ |
+| `presentacion/estilos/componentes.css` | Componentes base: botones (base, `.accion-principal` en ámbar, `.secundario`, `.peligro`, `.enlace`, `.boton-icono`), campos con sus estados, tarjetas, tablas, insignias (`.insignia-*`, `.etiqueta`, `.estado-plan-*`) y diálogos (T18); estados de interfaz `.estado-carga`, `.vacio` y `.aviso-estado-*` (T23) | ✅ |
 | `presentacion/estilos/estructura.css` | Estructura general (T19): marco de cancha, pestañas del menú con color de sección, tira deslizable por debajo de 64rem y distribución de las páginas (`.contenido`, `.pagina`, `.pagina-ancha`) | ✅ |
 
 ## Tests de integración (front)
