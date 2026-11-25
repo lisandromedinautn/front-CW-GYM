@@ -32,3 +32,7 @@ El cliente de la API del módulo está en `infraestructura/api/apiIdentidad.ts` 
 | :-- | :-- | :-- | :-- |
 | 01/11/2026 | Todas | Versión inicial | Lisandro |
 | 01/11/2026 | RN-IDE-01, 04, 08, 11 | Se reflejan ZG-01, ZG-02 y ZG-13 | Lisandro |
+
+## Decisiones de implementación (T21, épica US24)
+
+* En "Mi código", el código se muestra en `--cifra-2`. "Generar código" o "Copiar" es la acción principal (ámbar), y el "Regenerar" del diálogo va en `.peligro` porque invalida el código anterior. Decidido por Ulises el 25/11/2026; solo cambia lo visual.

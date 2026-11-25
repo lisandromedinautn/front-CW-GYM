@@ -26,6 +26,7 @@ Lo mínimo que usan todos los módulos. Acá no va lógica de un módulo en part
   - `MenuPrincipal` es el marco de cancha (`header.marco`): marca "CW-GYM" decorativa (`aria-hidden`), la navegación "Menú principal" con `NavLink` (la opción activa lleva `aria-current="page"`) y "Salir", que queda fuera de la navegación.
   - Cada opción de `opcionesMenu.ts` tiene un color de sección, agrupado por concepto. `opcionActual(rol, ruta)` elige la opción de la ruta actual, que pinta su pestaña y la franja del marco.
   - Por debajo de 64rem el menú es una tira de pestañas que se desliza, con la activa llevada a la vista.
+  - La tira se desplaza solo en horizontal, sin mover la página. Con un `ResizeObserver`, vuelve a hacerlo si la pestaña activa cambia de ancho, por ejemplo cuando llega el contador de no leídas (corregido en T21, 25/11/2026).
   - Las opciones y rutas no cambian (épica US24).
 
 - **Sesión en `localStorage`**: se guarda con la clave `cwgym.sesion` como `{ token, rol }`. El almacén (`infraestructura/sesion/almacenSesion.ts`) avisa a sus suscriptores cuando cambia, y `usarSesion` lo lee con `useSyncExternalStore`. Así el menú y las rutas reaccionan al ingreso y al cierre de sesión sin recargar la página. Si el navegador no permite `localStorage`, la sesión no se puede guardar y el usuario vuelve al ingreso.

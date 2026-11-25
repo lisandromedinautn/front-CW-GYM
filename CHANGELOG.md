@@ -8,6 +8,15 @@ Categorías: Agregado, Cambiado, Corregido, Eliminado, Seguridad. Cada entrada c
 
 ### Agregado
 
+- Rediseño de las pantallas del Profesor (T21, CG-99, épica US24): código, rutinas, editor de rutinas, planes, alumnos del plan, editar días, entrenamientos de alumnos, notificaciones y ejercicios.
+  - **Tarjetas de rutina y de plan:** título a todo el ancho y las acciones al pie, con icono y texto.
+  - **Planes:** las fechas y los días se leen como un tanteador.
+  - **Calendario del plan:** marca los días con rutina y atenúa los de descanso.
+  - **Editor de rutinas:** campos numéricos en columnas, GIF al costado y acciones en una fila.
+  - **Seguimiento:** los entrenamientos y las notificaciones son tarjetas, con las series en columnas.
+  - **Acción principal:** en ámbar, una por pantalla.
+  - **Sin cambios de comportamiento:** los textos, filtros, orden y paginación no cambian.
+
 - Estructura general con el marco de cancha (T19, CG-97, épica US24).
   - **Encabezado:** verde, con la marca "CW-GYM", el menú por rol y "Salir".
   - **Pestaña activa:** marcada con `aria-current="page"` y con el color de su sección, que también pinta la franja del marco.
@@ -62,6 +71,10 @@ Categorías: Agregado, Cambiado, Corregido, Eliminado, Seguridad. Cada entrada c
 
 - La creación del plan pasa a `/profesor/planes/nuevo` y se abre con "Nuevo plan" desde el listado; tiene "Volver al listado" (T13).
 - Crear plan muestra los 28 días como calendario de 5 semanas, de lunes a domingo; los días fuera del plan aparecen en gris y con blur. En pantallas chicas sigue como lista (T12).
+
+### Corregido
+
+- En el celular, la pestaña activa del menú quedaba cortada contra el borde cuando el contador de no leídas llegaba después de cargar la página. Ahora la tira vuelve a llevarla a la vista, sin mover la página (T21, CG-99).
 
 ## [1.3.0] — 2026-11-21
 
