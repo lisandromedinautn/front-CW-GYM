@@ -270,19 +270,38 @@ Esquinas firmes de marcador: `chico` 4px (botones), `medio` 6px (tarjetas), `gra
 
 ## Components
 
-Hoy las pantallas usan clases sueltas de `src/estilos.css`; los componentes base se definen en T18. Lo ya fijado por los tokens:
+Los componentes base viven en `src/compartido/presentacion/estilos/componentes.css` (T18, CG-96). Se aplican por elemento (`button`, `input`, `select`, `table`, `label`) o por las clases que ya usan las pantallas; no cambian textos, roles ni propiedades de React. Lo propio de cada pantalla queda en `src/estilos.css`.
 
 ### Marco y tanteador
-Sobre cancha, texto `sobre-cancha`; las cifras del tanteador en ámbar con la rampa de cifras.
+Sobre cancha, texto `sobre-cancha`; las cifras del tanteador en ámbar con la rampa de cifras (T19 y T22).
 
 ### Botones
-Acción: fondo `accion`, texto blanco, radio chico (4px), relleno esp-3 y esp-4, hover `accion-hover`. Secundario: fondo `neutro-fondo` con tinta. Mínimo 24 px de alto, 44 px en lo que el alumno toca entrenando.
+Todos en caps condensadas (Barlow Condensed 600, `--tracking-rotulo`), 44 px de alto mínimo, radio chico (4px), con transición corta de color.
+- **Base** (`button`, `.boton`): fondo `accion`, texto blanco (7,9:1), hover `accion-hover`.
+- **Acción principal** (`.accion-principal`): ámbar con tinta (9,2:1), hover `ambar-hundido`. **Una sola por pantalla** (Registrar, Ingresar, Crear plan, Guardar…); se marca en T20 a T22. Decidido por Ulises el 24/11/2026.
+- **Secundario** (`.secundario`): contorno `accion` sobre transparente, hover `exito-fondo`.
+- **Peligro** (`.peligro`): fondo `error`, texto blanco (6,5:1); acciones que borran o invalidan.
+- **Enlace** (`button.enlace`): se lee como texto subrayado, en `enlace`, 24 px mínimos.
+- **Icono** (`.boton-icono`): cuadrado de 44 px con icono `--icono-medio`; el nombre accesible lo da `aria-label`.
+- **Deshabilitado**: `--opacidad-deshabilitado` y cursor bloqueado, sin hover.
 
 ### Campos
-Borde `borde-control` (3,3:1 sobre el fondo, 3,7:1 sobre blanco), caret en cancha, placeholder en `tinta-tenue` con opacidad 1.
+Texto, selección, fecha y número: ancho completo, 44 px de alto, borde `borde-control` (3,3:1 sobre el fondo, 3,7:1 sobre blanco), hover en `tinta-tenue`, foco con anillo y borde `accion`, deshabilitado sobre `superficie-hundida`. Error (`aria-invalid="true"`): borde `error` engrosado con sombra interior, sin mover el contenido; el mensaje va en `.error-campo`. Rótulos (`label`) en semibold y `tinta-secundaria`. Casillas y radios de `--icono-medio` con `accent-color`; una casilla con su texto va en una línea. Caret en cancha, placeholder en `tinta-tenue` con opacidad 1.
 
-### Avisos e insignias
-Éxito, advertencia, error, info y neutro con el trío fondo, tinta y sólido. Los errores del back se muestran por `codigo` en `role="alert"`; los éxitos en `role="status"`.
+### Tarjetas y superficies
+`.tarjeta`, `.formulario`, `.tarjeta-item`, `.bloque` (y `.tarjeta-rutina`): superficie blanca, borde fino, radio medio (6px), **sin sombra**. La leyenda de un `.bloque` va en Barlow Condensed. **Sin cajas anidadas:** dentro de un `.formulario`, el `.bloque` pierde borde, radio y fondo; lo separan su título y el espacio (decidido por Ulises el 24/11/2026). Un botón suelto de la página (`.pagina > button`, por ejemplo "Volver al listado") no se estira a todo el ancho.
+
+### Tablas
+Todavía no hay tablas en pantallas; el estilo queda listo. Encabezados en caps condensadas con línea inferior de cancha (2px), filas con borde fino, cifras tabulares y hover en `superficie-hundida`. Una tabla ancha va dentro de `.tabla-contenedor` para desplazarse en el celular.
+
+### Insignias
+Rectángulos de esquinas firmes (4px) en caps condensadas, como los rótulos de un marcador (decidido por Ulises el 24/11/2026). Clases: `.insignia` con `-exito`, `-advertencia`, `-error`, `-info` y `-neutro`; las existentes `.etiqueta` (neutra) y `.estado-plan-proximo/-vigente/-finalizado` comparten el mismo componente.
+
+### Avisos
+`.error` y `.exito` en su tinta con peso medio. Los errores del back se muestran por `codigo` en `role="alert"`; los éxitos en `role="status"`. El tratamiento unificado de avisos, carga y vacío es de T23.
+
+### Diálogos
+Velo `color-velo` sobre toda la pantalla; el diálogo es la **única capa que flota**: radio grande (10px), `--sombra-capa`, título de nivel 2 y acciones en `.acciones`. Hasta 90 % del alto visible, con desplazamiento interno.
 
 ### Foco
 Anillo de `--grosor-foco` 3px con offset de 2px usando `--anillo-foco-actual`. Sobre fondo claro es `--anillo-foco` (#1E5C44); dentro del marco de cancha, T19 sobrescribe `--anillo-foco-actual` con `--anillo-foco-sobre-cancha` (#F2B632) sin tocar `base.css`.
@@ -316,10 +335,11 @@ Lucide (`lucide-react` 1.78.0), todavía sin usos en pantallas. Tamaños `--icon
 
 ## Qué queda para las tareas siguientes (épica US24)
 
-- **T18 componentes base (CG-96):** decidir si la acción principal pasa a ámbar; usar `--toque-*`; revisar `.secundario`, que casi no se distingue del fondo (neutro-fondo #E4E9E5 sobre #EEF1EE); revisar los tamaños de miniaturas y GIF de componente (2.5rem, 3rem, 7.5rem, 14rem).
+- **T18 componentes base (CG-96):** ✅ hecho el 24/11/2026: acción principal en ámbar (una por pantalla), 44 px en botones y campos, `.secundario` con contorno, peligro, enlace, icono, campos con todos sus estados, tarjetas, tablas, insignias rectangulares y diálogos. Los tamaños de miniaturas (2.5rem y 3rem en listas) y de GIF (7.5rem en el editor, 14rem en el paso) quedan como medidas de componente; los revisa cada pantalla en T21 y T22.
+- **T20 a T22:** marcar con `.accion-principal` la acción principal de cada pantalla y con `.peligro` las destructivas (por ejemplo, "Regenerar código"); usar `.insignia-*` para gravedad y estados de entrenamiento. Mostrar en dd/mm/aaaa la "Fecha de fin" de crear plan (hoy en formato ISO).
 - **T19 estructura y navegación con color por sección (CG-97):** marco de cancha, `--anillo-foco-actual` sobre cancha, pestaña activa y franja de encabezado con los seis tonos de sección.
 - **T20 a T22 pantallas (CG-98 a CG-100):** aplicar la rampa de cifras. Deuda en T22: `.contador` usa `--cifra-3` y la rampa prevé `--cifra-1`.
 - **T21:** `.codigo` usa `--cifra-3` y la rampa prevé otro tamaño; `.dia-fuera-del-plan` usa desenfoque decorativo (`filter: blur(1px)`), que contradice la regla de profundidad.
 - **T23 estados (CG-101):** vacío, carga, error y éxito con las variantes de estado.
 - **T24 accesibilidad y cierre (CG-102):** auditoría WCAG 2.2 AA, contraste real, foco, teclado, movimiento reducido y objetivos táctiles.
-- Deudas generales: `--toque-*` y las sombras todavía no se usan en ningún componente; los iconos de Lucide todavía no están en pantallas.
+- Deudas generales: los iconos de Lucide todavía no están en pantallas; `--sombra-fija` todavía no se usa (T19, si el marco queda fijo).

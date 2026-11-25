@@ -8,6 +8,12 @@ Categorías: Agregado, Cambiado, Corregido, Eliminado, Seguridad. Cada entrada c
 
 ### Agregado
 
+- Componentes base del sistema de diseño (T18, CG-96, épica US24), en `src/compartido/presentacion/estilos/componentes.css`.
+  - **Botones:** en caps condensadas y de 44 px, con la variante `.accion-principal` en ámbar (una por pantalla), `.secundario` con contorno, `.peligro`, `.enlace` y `.boton-icono`.
+  - **Campos:** con hover, foco, error y deshabilitado.
+  - **Otros componentes:** tarjetas sin sombra, tablas, insignias rectangulares en caps condensadas y diálogos.
+  - No cambia ningún texto, rol ni comportamiento.
+
 - Sistema de diseño «Tanteador de club» (T17, CG-95, épica US24).
   - Tokens centralizados en `src/compartido/presentacion/estilos/tokens.css`: paleta con contrastes WCAG 2.2 AA, tipografía Barlow y Barlow Condensed, rampa de cifras, espaciado, radios, sombras, foco, objetivos táctiles y movimiento.
   - Estilos globales en `base.css`.
