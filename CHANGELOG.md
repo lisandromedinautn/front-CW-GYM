@@ -8,6 +8,12 @@ Categorías: Agregado, Cambiado, Corregido, Eliminado, Seguridad. Cada entrada c
 
 ### Agregado
 
+- Rediseño del ingreso y de las pantallas del Administrador (T20, CG-98, épica US24).
+  - **Ingreso:** la cancha con la marca "CW-GYM" ocupa la mitad izquierda en escritorio y una banda arriba en el celular. "Ingresar" va en ámbar.
+  - **Alta de profesor:** los campos van en dos grupos, "Datos personales" y "Cuenta", en dos columnas desde escritorio.
+  - **Inicio:** en los tres roles muestra una tarjeta de acceso por cada opción del menú, con su color de sección.
+  - **Sin cambios de comportamiento:** los textos, los campos y la validación no cambian.
+
 - Rediseño de las pantallas del Alumno (T22, CG-100, épica US24): vínculo, rutina del día, Mi plan, entrenamiento en curso, resumen y percepción.
   - **Entrenamiento en curso:** un tanteador fijo arriba con el tiempo, el paso y una barra de avance.
   - **Paso actual:** el GIF grande y los campos de la serie en fila, en números grandes, con "Registrar" a todo el ancho.
