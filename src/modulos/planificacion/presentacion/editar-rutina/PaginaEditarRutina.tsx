@@ -1,6 +1,8 @@
 import { useParams } from 'react-router';
 import { usarEditarRutina } from '../../aplicacion/editar-rutina/usarEditarRutina.ts';
 import { EditorRutina } from '../editor-rutina/EditorRutina.tsx';
+import { Aviso } from '../../../../compartido/presentacion/estados/Aviso.tsx';
+import { Cargando } from '../../../../compartido/presentacion/estados/Cargando.tsx';
 
 /** US06: detalle de una rutina propia en el editor, para cambiar su contenido (RN-PLAN-07). */
 export function PaginaEditarRutina() {
@@ -10,11 +12,9 @@ export function PaginaEditarRutina() {
     return (
       <section className="pagina">
         {edicion.error ? (
-          <p role="alert" className="error">
-            {edicion.error}
-          </p>
+          <Aviso tipo="error">{edicion.error}</Aviso>
         ) : (
-          <p className="tenue">Cargando rutina…</p>
+          <Cargando>Cargando rutina…</Cargando>
         )}
       </section>
     );

@@ -1,6 +1,9 @@
 import { usarMiPlan } from '../../aplicacion/consultar-plan-del-alumno/usarMiPlan.ts';
 import { etiquetaDeFecha } from '../../dominio/plan/plan.ts';
 import { DetalleRutina } from '../detalle-rutina/DetalleRutina.tsx';
+import { Aviso } from '../../../../compartido/presentacion/estados/Aviso.tsx';
+import { Cargando } from '../../../../compartido/presentacion/estados/Cargando.tsx';
+import { EstadoVacio } from '../../../../compartido/presentacion/estados/EstadoVacio.tsx';
 
 export function PaginaMiPlan() {
   const { resultado, error, cargando } = usarMiPlan();
@@ -8,17 +11,9 @@ export function PaginaMiPlan() {
   return (
     <section className="pagina">
       <h1>Mi plan de entrenamiento</h1>
-      {error && (
-        <p role="alert" className="error">
-          {error}
-        </p>
-      )}
-      {cargando && (
-        <p role="status" className="tenue">
-          Cargando tu plan…
-        </p>
-      )}
-      {resultado?.estado === 'sin-plan' && <p className="tenue">No tenés un plan vigente.</p>}
+      {error && <Aviso tipo="error">{error}</Aviso>}
+      {cargando && <Cargando>Cargando tu plan…</Cargando>}
+      {resultado?.estado === 'sin-plan' && <EstadoVacio titulo="No tenés un plan vigente." />}
       {resultado?.estado === 'plan' && (
         <>
           <p className="tenue">

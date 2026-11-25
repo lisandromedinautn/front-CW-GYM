@@ -1,5 +1,8 @@
 import { Link, useParams } from 'react-router';
 import { usarAlumnosDelPlan } from '../../aplicacion/alumnos-del-plan/usarAlumnosDelPlan.ts';
+import { Aviso } from '../../../../compartido/presentacion/estados/Aviso.tsx';
+import { Cargando } from '../../../../compartido/presentacion/estados/Cargando.tsx';
+import { EstadoVacio } from '../../../../compartido/presentacion/estados/EstadoVacio.tsx';
 
 export function PaginaAlumnosDelPlan() {
   const { id = '' } = useParams();
@@ -11,16 +14,12 @@ export function PaginaAlumnosDelPlan() {
         Volver a planes
       </Link>
       <h1>Alumnos del plan</h1>
-      {error && (
-        <p role="alert" className="error">
-          {error}
-        </p>
-      )}
-      {asignados === null && !error && <p role="status">Cargando alumnos…</p>}
+      {error && <Aviso tipo="error">{error}</Aviso>}
+      {asignados === null && !error && <Cargando>Cargando alumnos…</Cargando>}
       {asignados && (
         <>
-          {asignados.length === 0 && <p>Sin alumnos asignados.</p>}
-          {alumnos.length === 0 && <p>No tenés alumnos vinculados.</p>}
+          {asignados.length === 0 && <EstadoVacio titulo="Sin alumnos asignados." />}
+          {alumnos.length === 0 && <EstadoVacio titulo="No tenés alumnos vinculados." />}
           <ul className="lista-tarjetas" aria-label="Alumnos">
             {alumnos.map((alumno) => {
               const asignado = asignados.includes(alumno.id);
