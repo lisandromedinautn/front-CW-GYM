@@ -7,7 +7,7 @@ export function ListaSeries({ grupos }: { grupos: GrupoSeries[] }) {
       {grupos.map((grupo) => (
         <section key={grupo.orden}>
           <h3>{grupo.titulo}</h3>
-          <ul>
+          <ul className="series-alumno">
             {grupo.filas.map((fila) => (
               <li key={fila.clave} role="group" aria-label={`${fila.titulo} de ${fila.nombre}`}>
                 <strong>

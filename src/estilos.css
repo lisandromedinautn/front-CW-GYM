@@ -482,27 +482,234 @@ button.enlace.volver {
   justify-content: space-between;
 }
 
-/* Entrenamiento paso a paso (RN-UI-ENT-03): el contador queda fijo arriba y el GIF no empuja
-   los campos fuera de la pantalla. */
-.contador {
+/*
+ * Pantallas del Alumno (T22, CG-100). Pensadas para el celular, con el teléfono en la mano.
+ */
+
+/* Tanteador del entrenamiento (RN-UI-ENT-03): cancha fija arriba con el tiempo en ámbar, el paso
+   y la barra de avance. Es la única superficie oscura además del marco, y lo único vivo. */
+.tanteador {
   position: sticky;
   top: 0;
   z-index: var(--capa-fija);
-  margin: 0;
-  padding: var(--esp-2) 0;
-  background: var(--color-fondo);
-  font-size: var(--cifra-3);
-  font-variant-numeric: tabular-nums;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: var(--esp-2) var(--esp-4);
+  margin-inline: calc(-1 * var(--esp-4));
+  padding: var(--esp-3) var(--esp-4);
+  background: var(--color-cancha);
+  color: var(--color-sobre-cancha);
+  box-shadow: var(--sombra-fija);
 }
-.gif-paso {
+@media (min-width: 40rem) {
+  .tanteador {
+    margin-inline: 0;
+    border-radius: var(--radio-medio);
+  }
+}
+.contador {
+  margin: 0;
+  font-family: var(--fuente-rotulo);
+  font-size: var(--cifra-1);
+  font-weight: var(--peso-fuerte);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  color: var(--color-ambar);
+}
+.tanteador-paso {
+  grid-column: -2;
+  margin: 0;
+  font-family: var(--fuente-rotulo);
+  font-size: var(--texto-medio);
+  font-weight: var(--peso-semi);
+  letter-spacing: var(--tracking-rotulo);
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.tanteador-avance {
+  grid-column: 1 / -1;
+  height: 4px;
+  background: var(--color-cancha-linea);
+  border-radius: var(--radio-chico);
+  overflow: hidden;
+}
+.tanteador-avance span {
   display: block;
-  margin: 0 auto;
-  width: 100%;
-  max-width: 14rem;
-  height: auto;
-  border-radius: var(--radio-medio);
+  height: 100%;
+  background: var(--color-ambar);
+  transition: width var(--duracion-media) var(--curva-salida);
 }
 
+/* Paso actual: el GIF es el protagonista; los campos van en fila, en cifras grandes. */
+.paso {
+  display: grid;
+  gap: var(--esp-4);
+}
+.paso-titulo {
+  margin: 0;
+  font-size: var(--texto-titulo-3);
+}
+.paso-gif {
+  display: grid;
+  justify-items: center;
+  gap: var(--esp-1);
+  margin: 0;
+  padding: var(--esp-3);
+  background: var(--color-superficie);
+  border: var(--borde-fino) solid var(--color-borde);
+  border-radius: var(--radio-medio);
+}
+/* Protagonista, pero con tope de alto: en el celular, los campos y "Registrar" quedan cerca. */
+.gif-paso {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: min(20rem, 34svh);
+  aspect-ratio: 1;
+  object-fit: contain;
+}
+.paso-gif figcaption {
+  font-size: var(--texto-chico);
+  color: var(--color-tinta-tenue);
+}
+.paso-prescripto {
+  margin: 0;
+  font-family: var(--fuente-rotulo);
+  font-size: var(--texto-medio);
+  font-weight: var(--peso-semi);
+  letter-spacing: var(--tracking-rotulo);
+  font-variant-numeric: tabular-nums;
+}
+.paso-registrada {
+  margin: 0;
+  color: var(--color-exito-tinta);
+  font-weight: var(--peso-medio);
+}
+.formulario-serie {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+  gap: var(--esp-3);
+}
+.formulario-serie > button {
+  grid-column: 1 / -1;
+}
+.campo-serie {
+  display: grid;
+  gap: var(--esp-1);
+  align-content: start;
+}
+.campo-serie input {
+  min-height: 3.5rem;
+  font-family: var(--fuente-rotulo);
+  font-size: var(--cifra-3);
+  font-weight: var(--peso-fuerte);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+.paso-navegacion {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--esp-3);
+}
+.paso-finalizar {
+  width: 100%;
+}
+
+/* Resumen del entrenamiento: marcador final en la cancha, con los récords batidos. */
+.resumen {
+  display: grid;
+  gap: var(--esp-4);
+}
+.resumen h2,
+.resumen h3 {
+  margin: 0;
+}
+.marcador-final {
+  display: grid;
+  gap: var(--esp-4);
+  padding: var(--esp-5);
+  background: var(--color-cancha);
+  color: var(--color-sobre-cancha);
+  border-radius: var(--radio-medio);
+}
+.marcador-cifras {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: var(--esp-4);
+}
+.marcador-cifra {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: var(--esp-1);
+  margin: 0;
+}
+.marcador-rotulo {
+  font-family: var(--fuente-rotulo);
+  font-size: var(--texto-chico);
+  font-weight: var(--peso-semi);
+  letter-spacing: var(--tracking-rotulo);
+  text-transform: uppercase;
+  color: var(--color-sobre-cancha-tenue);
+}
+.marcador-valor {
+  font-family: var(--fuente-rotulo);
+  font-size: var(--cifra-2);
+  font-weight: var(--peso-fuerte);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  color: var(--color-ambar);
+}
+.marcador-records {
+  display: grid;
+  gap: var(--esp-2);
+  padding-top: var(--esp-4);
+  border-top: var(--borde-fino) solid var(--color-cancha-linea);
+}
+.marcador-records h3 {
+  font-family: var(--fuente-rotulo);
+  font-size: var(--texto-medio);
+  letter-spacing: var(--tracking-rotulo);
+  text-transform: uppercase;
+  color: var(--color-ambar);
+}
+.marcador-records ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--esp-2);
+  font-variant-numeric: tabular-nums;
+}
+.marcador-records strong {
+  text-transform: capitalize;
+}
+.grupos-musculares {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--esp-2);
+}
+.volver-inicio {
+  justify-self: start;
+}
+
+/* Percepción del entrenamiento (US17): los dos campos en fila, en cifras grandes. */
+.formulario-percepcion {
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  align-items: end;
+}
+.formulario-percepcion > button,
+.formulario-percepcion > [role='alert'] {
+  grid-column: 1 / -1;
+}
+.percepcion-cargada {
+  margin: 0;
+  font-weight: var(--peso-semi);
+}
 /*
  * Registros del seguimiento (T21): entrenamientos de un alumno (US18) y notificaciones (US21).
  * El estado se lee en el texto: la gravedad de una notificación va en la tinta de su estado y,
@@ -575,6 +782,9 @@ button.enlace.volver {
   padding: var(--esp-2) 0;
   border-bottom: var(--borde-fino) solid var(--color-borde);
   font-variant-numeric: tabular-nums;
+}
+.series-alumno p {
+  margin: 0;
 }
 .series-alumno li:last-child {
   border-bottom: 0;
