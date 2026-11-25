@@ -10,6 +10,9 @@ import {
   type FiltrosEjercicios,
 } from '../../dominio/ejercicio/clasificacion.ts';
 import type { Ejercicio } from '../../dominio/ejercicio/ejercicio.ts';
+import { Aviso } from '../../../../compartido/presentacion/estados/Aviso.tsx';
+import { Cargando } from '../../../../compartido/presentacion/estados/Cargando.tsx';
+import { EstadoVacio } from '../../../../compartido/presentacion/estados/EstadoVacio.tsx';
 
 const SELECTORES: {
   clave: keyof FiltrosEjercicios;
@@ -62,14 +65,10 @@ export function ListaEjercicios() {
           Registrar ejercicio
         </button>
       </div>
-      {error && (
-        <p role="alert" className="error">
-          {error}
-        </p>
-      )}
-      {resultado === null && !error && <p>Cargando…</p>}
+      {error && <Aviso tipo="error">{error}</Aviso>}
+      {resultado === null && !error && <Cargando>Cargando…</Cargando>}
       {resultado !== null && resultado.items.length === 0 && (
-        <p className="tenue">No hay ejercicios con esos filtros</p>
+        <EstadoVacio titulo="No hay ejercicios con esos filtros" />
       )}
       {resultado !== null && resultado.items.length > 0 && (
         <ul aria-label="Catálogo de ejercicios" className="lista-tarjetas">
