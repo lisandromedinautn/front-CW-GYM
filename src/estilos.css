@@ -1074,3 +1074,52 @@ input.campo-codigo {
     margin: var(--esp-6);
   }
 }
+
+/* Inicio: una tarjeta de acceso por opción del menú, con el color de su sección. */
+.accesos {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+  gap: var(--esp-3);
+}
+.acceso {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-3);
+  min-height: 4.5rem;
+  padding: var(--esp-4);
+  background: var(--color-superficie);
+  border: var(--borde-fino) solid var(--color-borde);
+  border-radius: var(--radio-medio);
+  color: var(--color-tinta);
+  font-family: var(--fuente-rotulo);
+  font-size: var(--texto-titulo-3);
+  font-weight: var(--peso-fuerte);
+  letter-spacing: var(--tracking-rotulo);
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: border-color var(--duracion-corta) var(--curva-salida);
+}
+/* El color de sección va en un cuadrado delante del nombre, como en Mi plan (T22). */
+.acceso::before {
+  content: '';
+  flex: none;
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: var(--radio-chico);
+  background: var(--color-seccion-opcion, var(--color-borde));
+}
+.acceso:hover {
+  border-color: var(--color-borde-control);
+}
+.acceso svg {
+  margin-left: auto;
+  width: var(--icono-medio);
+  height: var(--icono-medio);
+  transition: transform var(--duracion-corta) var(--curva-salida);
+}
+.acceso:hover svg {
+  transform: translateX(var(--esp-1));
+}
