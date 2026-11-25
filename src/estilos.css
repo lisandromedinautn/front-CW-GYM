@@ -178,24 +178,32 @@
   gap: var(--esp-3);
   grid-template-columns: 1fr;
 }
+/* Columna flexible: el pie de acciones queda abajo aunque las tarjetas de la fila tengan alturas distintas. */
 .tarjeta-rutina {
   background: var(--color-superficie);
   border-radius: var(--radio-medio);
   padding: var(--esp-4);
-  display: grid;
-  gap: var(--esp-2);
-  align-content: start;
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-3);
+  min-width: 0;
   border: var(--borde-fino) solid var(--color-borde);
 }
 .tarjeta-rutina-cabecera {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  gap: var(--esp-2);
+  align-items: start;
+  gap: var(--esp-2) var(--esp-3);
+}
+.tarjeta-rutina-cabecera > .etiqueta,
+.tarjeta-rutina-cabecera > .estado-plan {
+  flex: none;
 }
 .tarjeta-rutina h2 {
   margin: 0;
-  font-size: var(--texto-medio);
+  min-width: 0;
+  font-size: var(--texto-titulo-3);
+  overflow-wrap: anywhere;
 }
 .ejercicios-rutina {
   list-style: none;
@@ -211,27 +219,127 @@
   font-size: var(--texto-chico);
   text-transform: capitalize;
 }
+/* Pie de una tarjeta del listado (T21): sus acciones, separadas del contenido por una línea. */
+.tarjeta-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--esp-2);
+  margin-top: auto;
+  padding-top: var(--esp-3);
+  border-top: var(--borde-fino) solid var(--color-borde);
+}
+.tarjeta-acciones .boton,
+.tarjeta-acciones button {
+  padding: 0 var(--esp-4);
+}
+/* Un enlace de texto del pie (por ejemplo "Ver entrenamientos de …") también mide 44 px de alto. */
+.tarjeta-acciones a:not(.boton) {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--toque-comodo);
+}
+.tarjeta-acciones svg {
+  width: var(--icono-chico);
+  height: var(--icono-chico);
+  stroke-width: var(--icono-trazo);
+}
 .paginacion {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: var(--esp-4);
 }
+/*
+ * Editor de rutina (T21): los números de un bloque o circuito van en columnas (tres en la columna
+ * de lectura, dos en el celular); el ejercicio, los grupos anidados y las acciones ocupan la fila.
+ */
+.bloque-editor {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  column-gap: var(--esp-3);
+}
+@media (min-width: 30rem) {
+  .bloque-editor {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+/* Entre un bloque o circuito y el siguiente, aire: los separa el título, no una caja. */
+.bloque-editor + .bloque-editor {
+  margin-top: var(--esp-5);
+}
+.bloque-editor > legend {
+  font-family: var(--fuente-rotulo);
+  font-size: var(--texto-titulo-3);
+  letter-spacing: var(--tracking-rotulo);
+  text-transform: uppercase;
+}
+.bloque-editor > .campo:has(select),
+.bloque-editor > fieldset,
+.bloque-editor > button,
+.bloque-editor > .error-campo,
+.bloque-editor > .acciones-bloque {
+  grid-column: 1 / -1;
+}
+.bloque-editor > button {
+  justify-self: start;
+}
+/* Ejercicio de un circuito: sangría con una línea a la izquierda, para leer qué es de qué. */
+.formulario .ejercicio-circuito {
+  padding-left: var(--esp-4);
+  border-left: var(--borde-grueso) solid var(--color-borde);
+}
+.ejercicio-circuito > legend {
+  font-size: var(--texto-medio);
+}
+.acciones-bloque {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--esp-2);
+}
+/* El ejercicio con su GIF al costado, no debajo. */
+.campo:has(> .gif-vista-previa) {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  column-gap: var(--esp-3);
+}
+.campo:has(> .gif-vista-previa) > .error-campo {
+  grid-column: 1;
+}
 /* Vista previa del ejercicio elegido en el editor: chica para no tapar el formulario. */
 .gif-vista-previa {
   display: block;
-  margin: var(--esp-1) auto 0;
-  width: 7.5rem;
-  height: 7.5rem;
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  margin: 0;
+  width: 5rem;
+  height: 5rem;
   object-fit: cover;
   border-radius: var(--radio-medio);
   border: var(--borde-fino) solid var(--color-borde);
   background: var(--color-superficie);
 }
-.volver {
+/* "Volver a …": enlace chico sobre el título de una subpágina (link o botón .enlace). */
+.volver,
+button.enlace.volver {
+  justify-self: start;
+  /* El texto es chico, pero el blanco de toque sigue siendo de 44 px. */
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--toque-comodo);
+  margin-block: calc(-1 * var(--esp-2));
+  padding: 0;
   color: var(--color-enlace);
-  text-decoration: none;
+  font-family: var(--fuente-texto);
   font-size: var(--texto-chico);
+  font-weight: var(--peso-normal);
+  letter-spacing: normal;
+  text-transform: none;
+  text-decoration: none;
+}
+.volver:hover {
+  text-decoration: underline;
 }
 @media (min-width: 40rem) {
   .grilla-rutinas {
@@ -261,16 +369,6 @@
 .tarjeta-item .miniatura {
   width: 3rem;
   height: 3rem;
-}
-.nombre-rutina {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--esp-2) var(--esp-3);
-  min-width: 0;
-}
-.nombre-rutina h2 {
-  overflow-wrap: anywhere;
 }
 
 /* Listado de planes (RN-PLAN-22): badge de estado y alumnos de cada tarjeta */
