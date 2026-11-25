@@ -788,3 +788,29 @@ Registro de cada sesión relevante en la que un desarrollador trabajó con IA. D
   - Decidir si "Registrar" tiene que entrar sin desplazar al abrir el entrenamiento.
   - Mover CG-95 a CG-97, CG-99 y CG-100 en Jira.
   - Siguen T23, T20 y T24.
+
+## 2026-11-25 — Estados de interfaz: carga, vacío, error y avisos [T23]
+- Desarrollador: Alexander
+- Herramienta / modelo / esfuerzo: Claude Code · Opus 5.5 (sin subagentes: casi todos los cambios caían en los mismos archivos).
+- Objetivo: T23 (CG-101) de la épica US24. Unificar cómo se ven la carga, el vacío, los errores y los avisos, que cada pantalla resolvía a su manera, sin cambiar los textos.
+- Qué hizo la IA:
+  - **Relevamiento:** encontró 15 indicadores de carga con tres formas distintas (`role="status"`, `.tenue` o un `p` sin nada), vacíos con caja (solo Rutinas), texto tenue o texto plano, y errores en `p.error`, salvo `RutaProtegida` y el entrenamiento en curso, que tenían `role="alert"` sin estilo.
+  - **Componentes:** `Cargando`, `EstadoVacio` y `Aviso` (error, éxito, advertencia e info) en `compartido/presentacion/estados/`, con estilos solo con tokens en `componentes.css`. `.vacio` pasó de `estilos.css` a `componentes.css`, y `.error` y `.exito` se quitaron porque quedaron sin uso.
+  - **Pantallas:** reemplazó los avisos de 20 archivos con un script por patrón exacto y los estados de carga y vacío uno por uno. Además, "Elegí un alumno…" pasó a `Aviso` info, "No tenés alumnos vinculados todavía." de crear plan a `Aviso` advertencia, "No se pudo recuperar el resumen." a `Aviso` error y "Todavía no generaste tu código" a `EstadoVacio` con "Generar código" como acción.
+  - **Accesibilidad:** el texto de cada estado va como hijo directo del `p`, junto al icono decorativo (`aria-hidden`), para que lo encuentren las mismas consultas de los tests. Los cargando que no tenían rol ahora se anuncian como `status`. El icono del aviso va posicionado, así un contenido con varios nodos no se parte en columnas.
+  - **Verificación visual:** capturas con Playwright y la API simulada en el navegador: Rutinas vacío, Planes cargando, Planes con error y crear plan sin alumnos.
+  - **Documentación:** actualizó `compartido/CLAUDE.md`, `ATLAS.md`, `DESIGN.md` y el `CHANGELOG`.
+- Decisiones del desarrollador:
+  - No agregar reglas RN-UI-EST ni tests nuevos: la suite existente es la red de seguridad.
+- Ideas descartadas:
+  - Reglas RN-UI-EST-01 a 03, con 5 tests unitarios de los componentes (propuestas por la IA y rechazadas por el desarrollador).
+  - Tokens provisorios para T21: T17, T18 y T21 ya estaban en `develop` (Ulises).
+  - Convertir en vacío los textos internos de una tarjeta ("Sin alumnos", "Sin series registradas"): son contenido de la tarjeta, no el estado de una pantalla.
+- Reglas afectadas: ninguna. Los textos, los roles de los avisos y los tests no cambian.
+- Verificación:
+  - Lint y tipos OK, build OK.
+  - Vitest 210/210, sin tocar ningún test.
+  - Los e2e de navegador no se corrieron (necesitan el back de test levantado): quedan para T24.
+- Pendientes:
+  - Revisión visual del equipo.
+  - T24: e2e, contraste de los avisos y foco.
