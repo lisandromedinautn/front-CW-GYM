@@ -788,3 +788,41 @@ Registro de cada sesión relevante en la que un desarrollador trabajó con IA. D
   - Decidir si "Registrar" tiene que entrar sin desplazar al abrir el entrenamiento.
   - Mover CG-95 a CG-97, CG-99 y CG-100 en Jira.
   - Siguen T23, T20 y T24.
+
+## 2026-11-25 — Rediseño del ingreso y de las pantallas del Administrador [T20]
+- Desarrollador: Ulises
+- Herramienta / modelo / esfuerzo: Claude Code · Opus 5.5 (orquestador y diseño, skill Impeccable) + Sonnet 5.5 medium (1 subagente revisor).
+- Objetivo: T20 (CG-98) de la épica US24. Aplicar el sistema "Tanteador de club" al ingreso y a las pantallas del Administrador (US00, US02), sin cambiar textos, campos ni validación. Se hizo después de T22 porque otro desarrollador toma T23 y T24; la rama de T23 se había creado sin commits y se borró.
+- Qué hizo la IA:
+  - **Relevamiento:** leyó la tarjeta, las pantallas y lo que buscan los tests y los e2e. Para capturar el estado previo abrió Docker Desktop, levantó las bases y sembró la de test.
+  - **Decisiones:** preguntó las tres decisiones estéticas.
+  - **Ingreso:** la cancha hace de marco porque la pantalla no tiene menú. Va en la mitad izquierda en escritorio y en una banda arriba en el celular, con la marca, el lema y una franja con los seis colores de sección. Es decorativa (`aria-hidden`). "Ingresar" pasa a ámbar.
+  - **Alta de profesor:** dos `fieldset`, "Datos personales" y "Cuenta", en dos columnas desde 48rem. "Dar de alta" en ámbar.
+  - **Inicio (los tres roles):** una tarjeta de acceso por opción del menú, sacada de `opcionesMenu.ts`. El nombre accesible es "Ir a …" porque dos tests de integración buscan "Mi plan" y "Mi rutina del día" por nombre exacto y fallarían con un enlace repetido.
+  - **Detector:** marcó la franja de color arriba de la tarjeta de acceso, primero como borde y después como pseudoelemento. Se cambió por el cuadrado de color que ya usa Mi plan.
+  - **Revisión:** aplicó el único hallazgo importante del revisor: el ingreso dejaba 4 px de margen lateral a 360 px y ahora deja 16 px, medido a 360 y 375 px.
+  - **Commits:** cuatro microcommits (ingreso, inicio, alta y documentación), cada uno con su parte de `estilos.css`.
+  - **Documentación:** actualizó `DESIGN.md`, el atlas, el `CHANGELOG` y los `CLAUDE.md` de compartido e identidad.
+- Decisiones del desarrollador:
+  - Ingreso con la cancha partida.
+  - Alta de profesor en dos grupos.
+  - Accesos en el inicio de los tres roles, no solo del Administrador.
+  - Pidió la revisión antes de commitear.
+- Ideas descartadas:
+  - Tarjeta de ingreso con la marca arriba, o el ingreso entero sobre la cancha (más superficie oscura).
+  - Alta de profesor en una sola columna.
+  - Accesos solo para el Administrador, o dejar el inicio vacío.
+  - Franja de color arriba de las tarjetas de acceso (el detector la marca).
+  - Del revisor, sin aplicar: "Contraseña inicial" a todo el ancho, otra grilla para las seis tarjetas del Profesor y cambiar el `nav` "Accesos del inicio" por un `div`.
+- Reglas afectadas: ninguna. RN-IDE-01 y RN-IDE-04 se cumplen igual. Los textos, roles y nombres accesibles existentes no cambian, y los tests tampoco.
+- Verificación:
+  - Lint y `tsc` OK.
+  - Vitest 210/210.
+  - e2e de navegador 14/14.
+  - Detector de la skill sin hallazgos.
+  - Sin desborde horizontal de 360 a 1440 px.
+  - Revisor: sin bloqueantes; el único hallazgo importante se corrigió.
+- Pendientes:
+  - Rama `feat/T20-ingreso-administrador` sin pushear ni PR.
+  - Mover CG-95 a CG-100 en Jira.
+  - Del lado de esta sesión, la épica queda cerrada; T23 y T24 los toma otro desarrollador.
