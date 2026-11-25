@@ -555,3 +555,56 @@ Registro de cada sesión relevante en la que un desarrollador trabajó con IA. D
   - `finalizaciones_alumno` arranca vacía: los entrenamientos previos a US23 no cuentan para la racha.
   - Mutaciones del back de US22 no hechas (fecha pasada, entrenamiento iniciado, propietario).
   - Suite completa sin correr después de integrar; un e2e de ingreso falló una vez en corrida completa por la base de test compartida entre agentes y pasa solo.
+
+## 2026-11-24 — Sistema de diseño «Tanteador de club» [T17]
+- Desarrollador: Ulises
+- Herramienta / modelo / esfuerzo: Claude Code · Opus 5.5 (orquestador y diseño, con la skill Impeccable) + Sonnet 5.5 medium (2 subagentes: revisión final y documentación).
+- Objetivo: T17 (CG-95), primera tarea de la épica US24 (CG-94, "Embellecer todo el front-end"). Definir el sistema de diseño como tokens centralizados sin cambiar funcionalidad, y armar el plan secuencial de la épica.
+- Qué hizo la IA:
+  - **Plan de la épica:** T17 → T18 → T19 → T23 → T20, T21 y T22 → T24. T23 va antes de las pantallas para no rehacerlas.
+  - **`PRODUCT.md`:** lo escribió después de tres preguntas de producto (marca, dispositivo por rol, accesibilidad).
+  - **Dirección visual:** hizo las preguntas de experiencia de uso y corrió el sorteo de direcciones de la skill. Armó una página de decisión con:
+    - cinco bocetos HTML de la pantalla del alumno en el celular;
+    - la dirección asignada, su favorita, dos alternativas competitivas, cuatro descartadas y el estándar de la categoría.
+  - **Contrato:** registró la dirección elegida en `.impeccable/surfaces/`.
+  - **Dependencias:** las instaló con la regla de 24 h. `lucide-react` 1.79.0 tenía menos de 24 h y se usó 1.78.0.
+  - **Código:**
+    - `tokens.css`, con los contrastes verificados por cálculo;
+    - `base.css`;
+    - reemplazo de los valores sueltos de `estilos.css` por tokens, sin cambiar la forma de ningún componente.
+  - **Verificación:**
+    - lint, build, Vitest 210/210 y e2e de navegador 14/14;
+    - capturas del ingreso en escritorio y móvil;
+    - el detector de la skill, sin hallazgos.
+  - **Revisión final:** delegó la revisión y aplicó sus ocho correcciones. Las más relevantes:
+    - tokens de acción separados de los de enlace;
+    - foco "actual" para la cancha;
+    - iconos, estados de info y advertencia, `color-scheme`, `placeholder` y `theme-color`.
+  - **Ajuste posterior:** al documentar oscureció el borde de los campos a #748A7E. Antes daba 2,85:1 sobre el fondo.
+  - **`DESIGN.md`:** lo delegó; queda con las deudas anotadas para T18 a T24.
+- Decisiones del desarrollador:
+  - **Producto:** sin identidad previa; alumno en el celular y profesor y admin en escritorio; WCAG 2.2 AA.
+  - **Objetivo:** el éxito es que se vea profesional y propio; lo que no puede pasar es que parezca un sistema administrativo genérico.
+  - **Restricción:** los textos y los nombres accesibles no se tocan.
+  - **Dirección:** eligió la del sorteo, «Tanteador de club».
+  - **Dependencias:** fuentes con `@fontsource` e iconos Lucide.
+  - **Confirmaciones:** el reparto de los dos subagentes y los microcommits.
+- Ideas descartadas:
+  - las direcciones "La planilla del profe", "App de consumo cálida", "Cuponera de viaje" y el estándar de la categoría;
+  - las cuatro direcciones del catálogo que se descartaron en la tirada (de cada una quedó una idea en el tanteador: numeración de dos dígitos, una rampa fija de cifras, color por sección y jerarquía por escala);
+  - Google Fonts por CDN o la fuente del sistema;
+  - SVG propios o ningún icono;
+  - el ámbar como color de una sección (queda solo para lo vivo).
+- Reglas afectadas: ninguna regla de negocio. Rige la restricción de la épica: la estética no cambia textos, roles ni comportamiento.
+- Verificación:
+  - lint y build OK;
+  - Vitest 210/210 y e2e de navegador 14/14 con la base recién sembrada;
+  - el detector de la skill, sin hallazgos.
+  - La revisión final puntuó siete correcciones resueltas y una parcial, que se corrigió después.
+  - Solo se capturó el ingreso: la toma de un token de la semilla por terminal la bloqueó el clasificador de permisos.
+- Pendientes:
+  - rama `feat/T17-sistema-de-diseno` sin pushear ni PR;
+  - mover CG-95 en Jira;
+  - T18 a T24, con las deudas anotadas en `DESIGN.md`;
+  - revisar las pantallas con sesión en T19 a T22;
+  - actualizar Impeccable a v4.10.0 y correr `/impeccable doctor`, si el desarrollador quiere.
