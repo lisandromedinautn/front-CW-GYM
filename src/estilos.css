@@ -9,6 +9,7 @@
 @import './compartido/presentacion/estilos/tokens.css';
 @import './compartido/presentacion/estilos/base.css';
 @import './compartido/presentacion/estilos/componentes.css';
+@import './compartido/presentacion/estilos/estructura.css';
 
 .ingreso {
   min-height: 100vh;
@@ -16,40 +17,6 @@
   display: grid;
   place-items: center;
   padding: var(--esp-4);
-}
-.menu {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--esp-3);
-  align-items: center;
-  padding: var(--esp-3) var(--esp-4);
-  background: var(--color-superficie);
-  border-bottom: var(--borde-fino) solid var(--color-borde);
-}
-.menu a {
-  color: var(--color-enlace);
-  text-decoration: none;
-  padding: var(--esp-2) var(--esp-1);
-}
-.menu button {
-  margin-left: auto;
-}
-.contenido {
-  padding: var(--esp-4);
-}
-.pagina {
-  display: grid;
-  gap: var(--esp-4);
-  max-width: var(--ancho-pagina);
-  margin: 0 auto;
-}
-/* Un botón suelto de la página (por ejemplo "Volver al listado") no se estira a todo el ancho. */
-.pagina > button,
-.pagina > .boton {
-  justify-self: start;
-}
-.pagina h1 {
-  margin: 0;
 }
 .barra {
   display: flex;
@@ -176,10 +143,6 @@
   }
 }
 
-/* Rutinas: consulta paginada (Profesor, responsive) */
-.pagina-ancha {
-  max-width: var(--ancho-pagina-ancha);
-}
 .encabezado {
   display: flex;
   align-items: center;
