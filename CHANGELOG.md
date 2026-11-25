@@ -8,6 +8,11 @@ Categorías: Agregado, Cambiado, Corregido, Eliminado, Seguridad. Cada entrada c
 
 ### Agregado
 
+- Mi plan en calendario y estado del día en el inicio del Alumno (T25, CG-103).
+  - **Mi plan:** los 28 días van en un calendario de lunes a domingo, con un punto del color de cada rutina y una leyenda al costado. Hoy va marcado y elegido al entrar, y los días del mes siguiente van en segundo plano. Al tocar un día, su rutina aparece debajo del calendario.
+  - **Inicio del Alumno:** una tarjeta "Hoy" con la fecha muestra si el entrenamiento del día está pendiente, en curso o hecho, o si es día de descanso o no hay plan; a la derecha, en verde de cancha, el acceso con el nombre de la rutina (RN-UI-ENT-06). Las tarjetas de acceso tienen el mismo alto.
+  - **Sin cambios en la API:** usa las consultas que ya existían.
+
 - Rediseño del ingreso y de las pantallas del Administrador (T20, CG-98, épica US24).
   - **Ingreso:** la cancha con la marca "CW-GYM" ocupa la mitad izquierda en escritorio y una banda arriba en el celular. "Ingresar" va en ámbar.
   - **Alta de profesor:** los campos van en dos grupos, "Datos personales" y "Cuenta", en dos columnas desde escritorio.
