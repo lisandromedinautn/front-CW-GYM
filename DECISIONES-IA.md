@@ -738,3 +738,53 @@ Registro de cada sesión relevante en la que un desarrollador trabajó con IA. D
   - Mover CG-95 a CG-97 y CG-99 en Jira.
   - Siguen T23 (estados de carga, vacío y error), T20, T22 y T24.
   - La franja lila queda en 2,4:1, aceptada porque el texto del día dice lo mismo; se revisa en T24.
+
+## 2026-11-25 — Rediseño de las pantallas del Alumno [T22]
+- Desarrollador: Ulises
+- Herramienta / modelo / esfuerzo: Claude Code · Opus 5.5 (orquestador y diseño, skill Impeccable) + Sonnet 5.5 medium (1 subagente revisor).
+- Objetivo: T22 (CG-100) de la épica US24. Aplicar el sistema "Tanteador de club" a las pantallas del Alumno (vínculo, rutina del día, Mi plan, entrenamiento en curso, resumen, récords y percepción), priorizando el celular, sin cambiar el registro de series ni el resumen. Se hizo antes que T23 y T20 por pedido del desarrollador.
+- Qué hizo la IA:
+  - **Relevamiento:** leyó las pantallas y los textos que buscan los tests y los e2e. Capturó el estado previo con datos en la base de test: un entrenamiento en curso, uno finalizado y un alumno sin vínculo.
+  - **Decisiones:** preguntó las cuatro decisiones estéticas.
+  - **Entrenamiento en curso:**
+    - **Tanteador:** fijo arriba en la cancha, con el tiempo en ámbar a `--cifra-1` (cierra la deuda del contador), "Paso N de M" y una barra de avance. `PasoActual` recibe el cronómetro como propiedad.
+    - **Paso:** el GIF protagonista, con un tope de alto; los campos en fila, en cifras grandes; "Registrar" en ámbar a todo el ancho.
+  - **Resumen:** marcador final en la cancha con el peso total, la duración y los récords; los grupos como insignias. "Volver al inicio" pasó al final de la pantalla, después de la percepción. Los textos del DOM no cambian.
+  - **Rutina del día y Mi plan:** la rutina del día tiene la acción del día en una barra fija abajo y los ejercicios en filas. Mi plan pasa a una fila por día: el descanso hundido y un cuadrado lila en la rutina en lugar de una franja lateral.
+  - **Vínculo:** el código se escribe en cifras grandes.
+  - **Errores encontrados:**
+    - Al mover el cronómetro al tanteador, desaparecía cuando el entrenamiento no tenía pasos. Lo detectó un test y se restituyó.
+    - Al cambiar de paso, quedaba a la vista el GIF del ejercicio anterior mientras cargaba el nuevo. Ya pasaba antes de T22. Midió que el `src` era correcto y lo resolvió con `key={urlGif}`.
+  - **Revisión:** aplicó las correcciones del revisor: las insignias en una fila, el nombre repetido en Mi plan y la confirmación del margen del tanteador. Sobre "Registrar" bajo el pliegue, puso un tope de alto al GIF sin achicarlo tanto como para contradecir la decisión del desarrollador. Midió que, del tanteador a "Registrar", hay 620 a 669 px: entra en 375×667, 360×740 y 375×812 después de un solo desplazamiento.
+  - **Récords:** los capturó con la respuesta de finalización simulada solo en el navegador de la captura, sin cargar datos en la base.
+  - **Commits:** el hook rechazó un primer `fix` del GIF hecho por separado, porque corre los tests con los demás archivos de la carpeta de trabajo. Se rearmó en cinco microcommits en lugar de seis: el tanteador, el paso y el resumen van juntos y el `fix` va después.
+  - **Documentación:** actualizó `DESIGN.md`, el atlas, el `CHANGELOG` y los `CLAUDE.md` de entrenamiento, planificación e identidad.
+- Decisiones del desarrollador:
+  - Tanteador fijo arriba en el entrenamiento en curso.
+  - GIF protagonista en el paso actual, en lugar de campos grandes con el GIF chico.
+  - Resumen como marcador final, con el ámbar para los récords.
+  - Mi plan en filas compactas, sin marcar el día de hoy.
+  - Pidió la revisión antes de commitear.
+- Ideas descartadas:
+  - Tanteador sin fijar, o solo cifras grandes sin panel.
+  - Campos grandes con el GIF chico al costado.
+  - Resumen como lista sobria.
+  - Mi plan con el día de hoy marcado (suma una comparación de fechas en el front), o tarjetas como antes.
+  - Franja lateral lila en Mi plan.
+  - Botones de más y menos en los campos de la serie (no tienen regla).
+  - Un título nuevo en el formulario de percepción (no se inventan textos).
+- Reglas afectadas: ninguna. RN-UI-ENT-03 (contador siempre visible) y RN-UI-ENT-05 ("Volver al inicio" en el resumen) se cumplen igual. Los textos, roles y nombres accesibles no cambian, y los tests tampoco.
+- Verificación:
+  - Lint OK.
+  - Vitest 210/210.
+  - e2e de navegador 14/14.
+  - Detector de la skill sin hallazgos.
+  - Sin desborde horizontal a 375 y 1280 px.
+  - Revisor: primero pidió correcciones; se aplicaron todas menos achicar el GIF hasta que "Registrar" entre sin desplazar, que queda a decisión del desarrollador.
+  - Quedan sin capturar el hover, el foco por teclado, los errores de series y de percepción, y un entrenamiento abandonado.
+- Pendientes:
+  - Rama `feat/T22-pantallas-alumno` sin pushear ni PR.
+  - La "Fecha" de la rutina del día sigue en AAAA-MM-DD porque la lee un test de US08; pasarla a dd/mm/aaaa cambia una aserción.
+  - Decidir si "Registrar" tiene que entrar sin desplazar al abrir el entrenamiento.
+  - Mover CG-95 a CG-97, CG-99 y CG-100 en Jira.
+  - Siguen T23, T20 y T24.
