@@ -8,6 +8,7 @@
 @import '@fontsource/barlow-condensed/700.css';
 @import './compartido/presentacion/estilos/tokens.css';
 @import './compartido/presentacion/estilos/base.css';
+@import './compartido/presentacion/estilos/componentes.css';
 
 .ingreso {
   min-height: 100vh;
@@ -15,42 +16,6 @@
   display: grid;
   place-items: center;
   padding: var(--esp-4);
-}
-.tarjeta {
-  background: var(--color-superficie);
-  padding: var(--esp-6);
-  border-radius: var(--radio-medio);
-  width: 100%;
-  max-width: var(--ancho-tarjeta-ingreso);
-  display: grid;
-  gap: var(--esp-4);
-  border: var(--borde-fino) solid var(--color-borde);
-}
-label {
-  display: grid;
-  gap: var(--esp-1);
-  font-size: var(--texto-chico);
-}
-input {
-  padding: var(--esp-3);
-  font-size: var(--texto-base);
-  border: var(--borde-fino) solid var(--color-borde-control);
-  border-radius: var(--radio-chico);
-}
-button {
-  padding: var(--esp-3) var(--esp-4);
-  font-size: var(--texto-base);
-  border-radius: var(--radio-chico);
-  background: var(--color-accion);
-  color: var(--color-sobre-accion);
-  cursor: pointer;
-}
-button:disabled {
-  opacity: var(--opacidad-deshabilitado);
-}
-.error {
-  margin: 0;
-  color: var(--color-error);
 }
 .menu {
   display: flex;
@@ -78,16 +43,13 @@ button:disabled {
   max-width: var(--ancho-pagina);
   margin: 0 auto;
 }
+/* Un botón suelto de la página (por ejemplo "Volver al listado") no se estira a todo el ancho. */
+.pagina > button,
+.pagina > .boton {
+  justify-self: start;
+}
 .pagina h1 {
   margin: 0;
-}
-.formulario {
-  background: var(--color-superficie);
-  padding: var(--esp-5);
-  border-radius: var(--radio-medio);
-  display: grid;
-  gap: var(--esp-4);
-  border: var(--borde-fino) solid var(--color-borde);
 }
 .barra {
   display: flex;
@@ -95,20 +57,18 @@ button:disabled {
   gap: var(--esp-3);
   align-items: end;
 }
-.barra label {
+/* La etiqueta que envuelve su control crece; una etiqueta suelta queda pegada a su campo. */
+.barra label:has(input, select) {
   flex: 1 1 12rem;
 }
-select {
-  max-width: 100%;
-  min-width: 0;
-  padding: var(--esp-3);
-  font-size: var(--texto-base);
-  border: var(--borde-fino) solid var(--color-borde-control);
-  border-radius: var(--radio-chico);
-  background: var(--color-superficie);
+.barra > label:not(:has(input, select)) {
+  flex: 0 0 auto;
+  align-self: center;
 }
-input[aria-invalid='true'] {
-  border-color: var(--color-error);
+/* La fecha de inicio de crear plan no ocupa todo el ancho: va en línea con su rótulo. */
+.barra > input {
+  width: auto;
+  flex: 0 1 auto;
 }
 .lista-tarjetas {
   list-style: none;
@@ -117,70 +77,10 @@ input[aria-invalid='true'] {
   display: grid;
   gap: var(--esp-2);
 }
-.tarjeta-item {
-  background: var(--color-superficie);
-  padding: var(--esp-3);
-  border-radius: var(--radio-medio);
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--esp-1) var(--esp-3);
-  align-items: center;
-  border: var(--borde-fino) solid var(--color-borde);
-}
-.enlace {
-  background: none;
-  color: var(--color-enlace);
-  padding: var(--esp-1) 0;
-  font-weight: var(--peso-semi);
-  text-align: left;
-}
-.etiqueta {
-  background: var(--color-neutro-fondo);
-  border-radius: var(--radio-pildora);
-  padding: var(--esp-1) var(--esp-3);
-  font-size: var(--texto-chico);
-}
-.fondo-dialog {
-  position: fixed;
-  inset: 0;
-  background: var(--color-velo);
-  display: grid;
-  place-items: center;
-  padding: var(--esp-4);
-  z-index: var(--capa-dialogo);
-}
-.dialog {
-  background: var(--color-superficie);
-  border-radius: var(--radio-medio);
-  padding: var(--esp-5);
-  width: 100%;
-  max-width: var(--ancho-dialogo);
-  max-height: 90vh;
-  overflow: auto;
-  display: grid;
-  gap: var(--esp-3);
-}
-.dialog h2 {
-  margin: 0;
-  font-size: var(--texto-titulo-3);
-}
 .gif {
   width: 100%;
   height: auto;
   border-radius: var(--radio-chico);
-}
-.acciones {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--esp-3);
-}
-.secundario {
-  background: var(--color-neutro-fondo);
-  color: var(--color-tinta);
-}
-.exito {
-  margin: 0;
-  color: var(--color-exito-tinta);
 }
 .codigo {
   font-family: var(--fuente-rotulo);
@@ -189,28 +89,6 @@ input[aria-invalid='true'] {
   font-weight: var(--peso-fuerte);
   letter-spacing: var(--tracking-rotulo-ancho);
   margin: 0;
-}
-.error-campo {
-  color: var(--color-error);
-  font-size: var(--texto-chico);
-}
-.campo {
-  display: grid;
-  gap: var(--esp-1);
-}
-.bloque {
-  /* Un fieldset tiene min-width: min-content: sin esto, un nombre largo desborda en mobile. */
-  min-width: 0;
-  display: grid;
-  gap: var(--esp-3);
-  border: var(--borde-fino) solid var(--color-borde);
-  border-radius: var(--radio-medio);
-  padding: var(--esp-4);
-  background: var(--color-superficie);
-}
-.bloque legend {
-  font-weight: var(--peso-semi);
-  padding: 0 var(--esp-1);
 }
 
 /* Días del plan (US07): tarjetas del mismo ancho y alto, en columnas parejas. */
@@ -309,20 +187,6 @@ input[aria-invalid='true'] {
   gap: var(--esp-3);
   flex-wrap: wrap;
 }
-.boton {
-  display: inline-block;
-  padding: var(--esp-3) var(--esp-4);
-  border-radius: var(--radio-chico);
-  background: var(--color-accion);
-  color: var(--color-sobre-accion);
-  text-decoration: none;
-  font-weight: var(--peso-semi);
-  white-space: nowrap;
-}
-.boton:hover,
-button:not(.secundario, .enlace):hover {
-  background: var(--color-accion-hover);
-}
 .tenue {
   margin: 0;
   color: var(--color-tinta-tenue);
@@ -353,7 +217,7 @@ button:not(.secundario, .enlace):hover {
 }
 .tarjeta-rutina {
   background: var(--color-superficie);
-  border-radius: var(--radio-grande);
+  border-radius: var(--radio-medio);
   padding: var(--esp-4);
   display: grid;
   gap: var(--esp-2);
@@ -383,14 +247,6 @@ button:not(.secundario, .enlace):hover {
   gap: var(--esp-3);
   font-size: var(--texto-chico);
   text-transform: capitalize;
-}
-.miniatura {
-  width: 2.5rem;
-  height: 2.5rem;
-  flex: none;
-  object-fit: cover;
-  border-radius: var(--radio-medio);
-  background: var(--color-neutro-fondo);
 }
 .paginacion {
   display: flex;
@@ -434,6 +290,7 @@ button:not(.secundario, .enlace):hover {
   flex-wrap: wrap;
 }
 .por-pagina {
+  white-space: nowrap;
   display: flex;
   align-items: center;
   gap: var(--esp-2);
@@ -452,40 +309,8 @@ button:not(.secundario, .enlace):hover {
 .nombre-rutina h2 {
   overflow-wrap: anywhere;
 }
-.nombre-rutina .boton-icono {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.25rem;
-  height: 2.25rem;
-  padding: 0;
-  flex: none;
-}
-.boton-icono svg {
-  width: var(--icono-medio);
-  height: var(--icono-medio);
-}
 
 /* Listado de planes (RN-PLAN-22): badge de estado y alumnos de cada tarjeta */
-.estado-plan {
-  border-radius: var(--radio-pildora);
-  padding: var(--esp-1) var(--esp-3);
-  font-size: var(--texto-chico);
-  font-weight: var(--peso-semi);
-  white-space: nowrap;
-}
-.estado-plan-proximo {
-  background: var(--color-advertencia-fondo);
-  color: var(--color-advertencia-tinta);
-}
-.estado-plan-vigente {
-  background: var(--color-exito-fondo);
-  color: var(--color-exito-tinta);
-}
-.estado-plan-finalizado {
-  background: var(--color-neutro-fondo);
-  color: var(--color-neutro-tinta);
-}
 .alumnos-plan {
   list-style: none;
   margin: 0;

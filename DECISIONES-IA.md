@@ -608,3 +608,49 @@ Registro de cada sesión relevante en la que un desarrollador trabajó con IA. D
   - T18 a T24, con las deudas anotadas en `DESIGN.md`;
   - revisar las pantallas con sesión en T19 a T22;
   - actualizar Impeccable a v4.10.0 y correr `/impeccable doctor`, si el desarrollador quiere.
+
+## 2026-11-24 — Componentes base del sistema de diseño [T18]
+- Desarrollador: Ulises
+- Herramienta / modelo / esfuerzo: Claude Code · Opus 5.5 (orquestador y diseño, skill Impeccable) + Sonnet 5.5 medium (1 subagente revisor, tres vueltas).
+- Objetivo: T18 (CG-96) de la épica US24. Rediseñar los componentes compartidos con los tokens de T17 (botones, campos, tarjetas, tablas, insignias y modales), con todos sus estados y sin cambiar propiedades ni eventos.
+- Qué hizo la IA:
+  - **Relevamiento:** revisó las clases que usan las pantallas. No hay tablas ni botones de peligro, y hay dos diálogos.
+  - **Decisiones:** preguntó las dos decisiones estéticas.
+  - **`componentes.css`:** lo escribió aplicando los estilos por elemento o por las clases existentes, sin tocar JSX. `estilos.css` quedó solo con lo propio de cada pantalla.
+  - **Muestrario:** armó uno con todos los estados en `.impeccable/mocks/`, que no se commitea.
+  - **Capturas:** las tomó con un script de Playwright: páginas completas a 1280 y 375 px, foco por teclado en cada control y en el diálogo, error con el cursor encima, y cinco pantallas reales con la sesión de profesor01 contra el back de test.
+  - **Revisión:** aplicó las correcciones del revisor en dos tandas:
+    - hover que pisaba el error y el foco;
+    - fecha de crear plan a todo el ancho y su etiqueta lejos del campo;
+    - casilla de alumnos desalineada;
+    - `.boton:active`;
+    - `p.etiqueta` que no se partía;
+    - "Volver al listado" estirado;
+    - cajas anidadas;
+    - "Por página" en dos líneas.
+  - **Documentación:** actualizó `DESIGN.md`, el atlas, el `CHANGELOG` y `compartido`.
+- Decisiones del desarrollador:
+  - El ámbar va solo en la acción principal de cada pantalla (`.accion-principal`, que se marca en T20 a T22); el resto de los botones son verdes.
+  - Las insignias son rectangulares, en caps condensadas.
+  - Dentro de un formulario, los grupos van sin borde, separados solo por título y espacio.
+  - Pidió la revisión antes de commitear.
+- Ideas descartadas:
+  - Todos los botones en verde, o todos en ámbar.
+  - Insignias en píldora.
+  - Grupos con fondo hundido, o dejar los tres niveles de borde.
+- Reglas afectadas: ninguna regla de negocio. Los textos, roles y nombres accesibles no cambian: las mayúsculas son de CSS.
+- Verificación:
+  - Lint OK.
+  - Vitest 210/210.
+  - e2e de navegador 14/14 (antes y después de las correcciones).
+  - Detector de la skill sin hallazgos.
+  - Revisor: primero pidió volver a capturar, después marcó correcciones y al final aprobó las cinco correcciones de la última vuelta.
+  - Hover y presionado no se capturaron: quedan como riesgo aceptado.
+- Pendientes:
+  - Rama `feat/T18-componentes-base` sin pushear ni PR.
+  - Mover CG-96 en Jira.
+  - En T20 a T22:
+    - marcar `.accion-principal` y `.peligro` en cada pantalla;
+    - mostrar la "Fecha de fin" de crear plan en dd/mm/aaaa;
+    - decidir si "Fecha de inicio" va encima del campo en el celular.
+  - Al detener el front del 5180 y el back de test, sus procesos (`vite` y `dist/main`) quedan vivos y hay que cerrarlos a mano.
