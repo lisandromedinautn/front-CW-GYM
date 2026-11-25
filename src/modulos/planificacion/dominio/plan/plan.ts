@@ -119,3 +119,15 @@ export interface PlanConDias {
 export function diaEsEditable(fecha: string, hoy: string = hoyIso()): boolean {
   return fecha >= hoy;
 }
+
+/** Columna de la fecha en un calendario de lunes a domingo: 1 es lunes y 7 es domingo (T25). */
+export function columnaDeLaSemana(fecha: string): number {
+  const { anio, mes, dia } = partes(fecha);
+  const diaDeLaSemana = new Date(Date.UTC(anio, mes - 1, dia)).getUTCDay();
+  return diaDeLaSemana === 0 ? 7 : diaDeLaSemana;
+}
+
+/** Número del día del mes de una fecha AAAA-MM-DD (T25). */
+export function diaDelMes(fecha: string): number {
+  return partes(fecha).dia;
+}

@@ -672,22 +672,8 @@ button.enlace.volver {
   margin: 0;
 }
 /* "Día N de 28" y "Tipo": rótulos de su ancho, no de la columna. */
-.pagina > .etiqueta,
-.dia-alumno-detalle > .etiqueta {
+.pagina > .etiqueta {
   justify-self: start;
-}
-/* Dentro de Mi plan, el nombre ya está en la fila: el título del detalle queda solo para lectores
-   de pantalla (mismo recorte que .solo-lectores). */
-.dia-alumno-detalle .encabezado-rutina h2 {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  padding: 0;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  white-space: nowrap;
-  border: 0;
 }
 .lista-ejercicios {
   list-style: none;
@@ -725,82 +711,202 @@ button.enlace.volver {
   margin: 0;
 }
 
-/* Mi plan: una fila por día. La rutina se despliega en la misma fila; el descanso va hundido. */
-.dias-alumno {
+/* Mi plan (T25): calendario de lunes a domingo. El día con rutina va en blanco con un cuadrado lila
+   (el color de Planes); el de descanso, hundido y tenue. Hoy lleva el número en ámbar (lo vivo) y el
+   día elegido, un contorno de acción. Su rutina se muestra en el panel de debajo. */
+.calendario-alumno {
+  display: grid;
+  gap: var(--esp-1);
+}
+.calendario-semana,
+.dias-calendario {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: var(--esp-1);
+}
+.calendario-semana span {
+  text-align: center;
+  font-family: var(--fuente-rotulo);
+  font-size: var(--texto-chico);
+  font-weight: var(--peso-semi);
+  letter-spacing: var(--tracking-rotulo);
+  color: var(--color-tinta-tenue);
+}
+/* En el celular, 2 px entre casillas para que cada una llegue a 44 px de ancho desde 360 px. */
+@media (max-width: 39.99rem) {
+  .calendario-semana,
+  .dias-calendario {
+    gap: 2px;
+  }
+}
+.dias-calendario {
   list-style: none;
   margin: 0;
   padding: 0;
-  overflow: hidden;
+}
+.dia-calendario {
+  min-width: 0;
+}
+.dia-calendario:first-child {
+  grid-column-start: var(--columna-inicio, 1);
+}
+button.dia-calendario-boton {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: start;
+  justify-items: start;
+  gap: var(--esp-1);
+  width: 100%;
+  height: 100%;
+  min-height: 3.25rem;
+  padding: var(--esp-1) var(--esp-2);
+  background: var(--color-superficie-hundida);
+  border-color: var(--color-borde);
+  color: var(--color-tinta-tenue);
+  font-family: var(--fuente-texto);
+  font-weight: var(--peso-normal);
+  letter-spacing: normal;
+  text-transform: none;
+  text-align: start;
+}
+button.dia-calendario-boton:hover:not(:disabled) {
+  background: var(--color-superficie);
+  border-color: var(--color-borde-control);
+}
+.con-rutina button.dia-calendario-boton {
+  background: var(--color-superficie);
+  color: var(--color-tinta);
+}
+/* El foco no invade las casillas vecinas y se distingue del contorno de la elegida. */
+button.dia-calendario-boton:focus-visible {
+  outline-offset: 0;
+}
+.dia-calendario.elegido button.dia-calendario-boton {
+  border-color: var(--color-accion);
+  box-shadow: inset 0 0 0 1px var(--color-accion);
+}
+.dia-calendario-numero {
+  min-width: 1.75rem;
+  font-family: var(--fuente-rotulo);
+  font-size: var(--cifra-4);
+  font-weight: var(--peso-fuerte);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.4;
+  text-align: center;
+  border-radius: var(--radio-chico);
+}
+.es-hoy .dia-calendario-numero {
+  background: var(--color-ambar);
+  color: var(--color-sobre-ambar);
+}
+/* Cada día con rutina lleva un punto del color de su rutina (con contorno fino: el color solo no
+   llega a 3:1); qué rutina es cada color lo dice la leyenda. El nombre y "Descanso" quedan para
+   lectores de pantalla. */
+.dia-calendario-marca {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+  background: var(--color-rutina, var(--color-seccion-lila));
+  box-shadow: 0 0 0 1px var(--color-tinta-secundaria);
+}
+/* Días del mes siguiente al de hoy: en segundo plano, para leer primero el mes en curso. Se pueden
+   elegir igual. */
+.otro-mes button.dia-calendario-boton {
+  background: var(--color-superficie-hundida);
+  border-style: dashed;
+}
+.otro-mes .dia-calendario-numero {
+  color: var(--color-tinta-tenue);
+  font-weight: var(--peso-semi);
+}
+.otro-mes .dia-calendario-marca {
+  filter: saturate(0.35);
+}
+@media (min-width: 40rem) {
+  button.dia-calendario-boton {
+    min-height: 4rem;
+    padding: var(--esp-2);
+  }
+  /* En escritorio, el punto va centrado en la casilla (el número sigue arriba a la izquierda). */
+  .dia-calendario-marca {
+    justify-self: center;
+  }
+}
+/* En escritorio, el título de Mi plan va centrado en la pantalla. */
+@media (min-width: 48rem) {
+  .pagina-mi-plan > h1 {
+    text-align: center;
+  }
+}
+/* Calendario y leyenda: en escritorio, la leyenda al costado derecho; en el celular no se muestra
+   (la rutina se ve al tocar el día). */
+.leyenda-rutinas {
+  display: none;
+}
+@media (min-width: 48rem) {
+  .calendario-con-leyenda {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(10rem, 16rem);
+    gap: var(--esp-6);
+    align-items: start;
+  }
+  .leyenda-rutinas {
+    display: grid;
+    gap: var(--esp-2);
+    margin: 0;
+    /* Alineada con la primera fila de días, debajo de las iniciales de la semana. */
+    padding: var(--esp-6) 0 0;
+    list-style: none;
+    font-size: var(--texto-chico);
+    font-weight: var(--peso-semi);
+  }
+  .leyenda-rutinas li {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: baseline;
+    gap: var(--esp-2);
+  }
+  .leyenda-rutinas li::before {
+    content: '';
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 50%;
+    background: var(--color-rutina);
+    box-shadow: 0 0 0 1px var(--color-tinta-secundaria);
+    transform: translateY(1px);
+  }
+}
+/* Panel del día elegido, debajo del calendario. */
+.detalle-dia {
+  display: grid;
+  gap: var(--esp-3);
+  padding: var(--esp-4);
   background: var(--color-superficie);
   border: var(--borde-fino) solid var(--color-borde);
   border-radius: var(--radio-medio);
 }
-.dia-alumno {
-  display: grid;
-  gap: var(--esp-1);
-  padding: var(--esp-2) var(--esp-4);
-  border-bottom: var(--borde-fino) solid var(--color-borde);
-}
-.dia-alumno:last-child {
-  border-bottom: 0;
-}
-.dia-alumno:not(.con-rutina) {
-  background: var(--color-superficie-hundida);
-}
-.dia-alumno-titulo {
+.detalle-dia-titulo {
   margin: 0;
   font-family: var(--fuente-rotulo);
-  font-size: var(--texto-base);
-  font-weight: var(--peso-fuerte);
-  letter-spacing: var(--tracking-rotulo);
-}
-.dia-alumno:not(.con-rutina) .dia-alumno-titulo,
-.dia-alumno-descanso {
-  color: var(--color-tinta-tenue);
-}
-.dia-alumno-descanso {
-  margin: 0;
-  font-size: var(--texto-chico);
-}
-/* La rutina del día: un cuadrado lila (el color de Planes) y una flecha que gira al abrir. */
-.dia-alumno-detalle > summary {
-  display: flex;
-  align-items: center;
-  gap: var(--esp-2);
-  min-height: var(--toque-comodo);
-  cursor: pointer;
-  list-style: none;
+  font-size: var(--texto-medio);
   font-weight: var(--peso-semi);
+  letter-spacing: var(--tracking-rotulo);
+  text-transform: uppercase;
+  color: var(--color-tinta-secundaria);
 }
-.dia-alumno-detalle > summary::-webkit-details-marker {
-  display: none;
+/* Sin cajas anidadas: dentro del panel, los ejercicios son filas separadas por una línea. */
+.detalle-dia .lista-ejercicios {
+  background: none;
+  border: 0;
+  border-radius: 0;
+  border-top: var(--borde-fino) solid var(--color-borde);
 }
-.dia-alumno-detalle > summary::before {
-  content: '';
-  flex: none;
-  width: 0.75rem;
-  height: 0.75rem;
-  border-radius: var(--radio-chico);
-  background: var(--color-seccion-lila);
+.detalle-dia .ejercicio-fila {
+  padding-inline: 0;
 }
-.dia-alumno-detalle > summary::after {
-  content: '';
-  flex: none;
-  width: 0.5rem;
-  height: 0.5rem;
-  margin-left: auto;
-  border-right: 2px solid currentColor;
-  border-bottom: 2px solid currentColor;
-  transform: rotate(-45deg);
-  transition: transform var(--duracion-corta) var(--curva-salida);
-}
-.dia-alumno-detalle[open] > summary::after {
-  transform: rotate(45deg);
-}
-.dia-alumno-detalle[open] {
-  display: grid;
-  gap: var(--esp-3);
-  padding-bottom: var(--esp-3);
+.detalle-dia-descanso {
+  margin: 0;
+  color: var(--color-tinta-tenue);
 }
 
 /* Resumen del entrenamiento: marcador final en la cancha, con los récords batidos. */
