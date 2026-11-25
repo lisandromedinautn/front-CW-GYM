@@ -199,21 +199,6 @@
   color: var(--color-tinta-tenue);
   font-size: var(--texto-chico);
 }
-.vacio {
-  background: var(--color-superficie);
-  border: var(--borde-grueso) dashed var(--color-borde-control);
-  border-radius: var(--radio-grande);
-  padding: var(--esp-8) var(--esp-6);
-  display: grid;
-  justify-items: center;
-  gap: var(--esp-3);
-  text-align: center;
-}
-.vacio-titulo {
-  margin: 0;
-  font-size: var(--texto-medio);
-  font-weight: var(--peso-fuerte);
-}
 .grilla-rutinas {
   list-style: none;
   margin: 0;

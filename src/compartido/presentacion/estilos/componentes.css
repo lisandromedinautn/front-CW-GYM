@@ -400,3 +400,86 @@ p.etiqueta {
   border-radius: var(--radio-chico);
   background: var(--color-neutro-fondo);
 }
+
+/* ---------- Estados de interfaz (T23, CG-101) ---------- */
+
+/* Carga: texto tenue con un aro que gira. Con menos movimiento, base.css lo deja quieto. */
+.estado-carga {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-2);
+  margin: 0;
+  color: var(--color-tinta-tenue);
+  font-size: var(--texto-chico);
+}
+.estado-carga-icono {
+  width: var(--icono-medio);
+  height: var(--icono-medio);
+  flex: none;
+  stroke-width: var(--icono-trazo);
+  animation: girar 0.9s linear infinite;
+}
+@keyframes girar {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+/* Vacío: caja punteada con icono, título, ayuda y acción opcionales. */
+.vacio {
+  display: grid;
+  justify-items: center;
+  gap: var(--esp-3);
+  padding: var(--esp-8) var(--esp-6);
+  background: var(--color-superficie);
+  border: var(--borde-grueso) dashed var(--color-borde-control);
+  border-radius: var(--radio-grande);
+  text-align: center;
+}
+.vacio-icono {
+  width: var(--icono-grande);
+  height: var(--icono-grande);
+  color: var(--color-tinta-tenue);
+  stroke-width: var(--icono-trazo);
+}
+.vacio-titulo {
+  margin: 0;
+  font-size: var(--texto-medio);
+  font-weight: var(--peso-fuerte);
+}
+
+/* Avisos: franja con borde izquierdo de color, icono y texto. Uno por tipo.
+   El icono va posicionado para que el texto fluya igual aunque traiga varios nodos. */
+.aviso-estado {
+  position: relative;
+  margin: 0;
+  padding: var(--esp-3) var(--esp-4) var(--esp-3)
+    calc(var(--esp-4) + var(--icono-medio) + var(--esp-2));
+  border-left: var(--borde-grueso) solid currentColor;
+  border-radius: var(--radio-chico);
+  font-weight: var(--peso-medio);
+}
+.aviso-estado-icono {
+  position: absolute;
+  top: var(--esp-3);
+  left: var(--esp-4);
+  width: var(--icono-medio);
+  height: var(--icono-medio);
+  stroke-width: var(--icono-trazo);
+}
+.aviso-estado-error {
+  background: var(--color-error-fondo);
+  color: var(--color-error-tinta);
+}
+.aviso-estado-exito {
+  background: var(--color-exito-fondo);
+  color: var(--color-exito-tinta);
+}
+.aviso-estado-advertencia {
+  background: var(--color-advertencia-fondo);
+  color: var(--color-advertencia-tinta);
+}
+.aviso-estado-info {
+  background: var(--color-info-fondo);
+  color: var(--color-info-tinta);
+}
