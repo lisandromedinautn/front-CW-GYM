@@ -1,4 +1,4 @@
-import type { CSSProperties } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import { Link } from 'react-router';
 import { ArrowRight } from 'lucide-react';
 import { OPCIONES_MENU } from '../../dominio/menu/opcionesMenu.ts';
@@ -7,8 +7,9 @@ import type { Rol } from '../../dominio/sesion/sesion.ts';
 /**
  * Inicio de cada rol (T20): una tarjeta de acceso por opción del menú, con su color de sección.
  * El nombre accesible empieza con "Ir a" para no repetir el de la pestaña del menú.
+ * Debajo va lo que la raíz de composición sume para el rol (el estado del día del Alumno, T25).
  */
-export function PaginaInicio({ rol }: { rol: Rol }) {
+export function PaginaInicio({ rol, children }: { rol: Rol; children?: ReactNode }) {
   return (
     <section className="pagina pagina-ancha">
       <h1>Panel del {rol}</h1>
@@ -33,6 +34,7 @@ export function PaginaInicio({ rol }: { rol: Rol }) {
           ))}
         </ul>
       </nav>
+      {children}
     </section>
   );
 }

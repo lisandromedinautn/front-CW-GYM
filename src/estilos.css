@@ -1183,6 +1183,8 @@ input.campo-codigo {
 
 /* Inicio: una tarjeta de acceso por opción del menú, con el color de su sección. */
 .accesos {
+  /* Todas las tarjetas del mismo alto, aunque una ocupe dos líneas (T25). */
+  grid-auto-rows: 1fr;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -1190,7 +1192,11 @@ input.campo-codigo {
   grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
   gap: var(--esp-3);
 }
+.accesos > li {
+  display: flex;
+}
 .acceso {
+  flex: 1;
   display: flex;
   align-items: center;
   gap: var(--esp-3);
@@ -1242,5 +1248,145 @@ input.campo-codigo {
   .formulario:has(.grupo-alta) > button {
     justify-self: end;
     min-width: 12rem;
+  }
+}
+/*
+ * Inicio del Alumno (T25, CG-103).
+ */
+
+/* Tarjeta "Hoy" (RN-UI-ENT-06): dos columnas de igual ancho. A la izquierda, "Hoy" con la fecha y,
+   centrado debajo, el estado; a la derecha, en la cancha, el acceso con el nombre de la rutina y
+   una flecha ámbar (decidido por Ulises el 25/11/2026). Sin acceso (sin plan, error), una columna. */
+.estado-del-dia {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: var(--esp-3);
+  margin-top: var(--esp-4);
+  padding: var(--esp-5);
+  overflow: hidden;
+  background: var(--color-superficie);
+  border: var(--borde-fino) solid var(--color-borde);
+  border-radius: var(--radio-medio);
+}
+.estado-del-dia:has(.estado-del-dia-acceso) {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  column-gap: 0;
+  padding: 0;
+}
+.estado-del-dia:has(.estado-del-dia-acceso) > :not(.estado-del-dia-acceso) {
+  grid-column: 1;
+  padding-inline: var(--esp-5);
+}
+.estado-del-dia:has(.estado-del-dia-acceso) > .estado-del-dia-cabecera {
+  padding-top: var(--esp-5);
+}
+.estado-del-dia:has(.estado-del-dia-acceso) > .estado-del-dia-texto {
+  padding-bottom: var(--esp-5);
+}
+.estado-del-dia-cabecera {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--esp-1) var(--esp-3);
+}
+/* "Hoy" y la fecha: el mismo rótulo; la fecha va a la derecha, junto a la columna verde. */
+.estado-del-dia-titulo,
+.estado-del-dia-fecha {
+  margin: 0;
+  font-family: var(--fuente-rotulo);
+  font-size: var(--texto-medio);
+  font-weight: var(--peso-semi);
+  letter-spacing: var(--tracking-rotulo);
+  text-transform: uppercase;
+  color: var(--color-tinta-secundaria);
+}
+.estado-del-dia-fecha {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+/* El mismo interlineado en "Hoy", la fecha y la etiqueta de la cancha, para que queden a la misma altura. */
+.estado-del-dia-titulo,
+.estado-del-dia-fecha,
+.estado-del-dia-ir {
+  line-height: 1.3;
+}
+.estado-del-dia-texto {
+  align-self: center;
+  margin: 0;
+  text-align: center;
+  font-size: var(--texto-titulo-3);
+  font-weight: var(--peso-semi);
+}
+/* Columna de la cancha: la etiqueta a la altura de "Hoy" y, debajo, el título y la flecha. El
+   enlace se estira sobre toda la columna, así que cualquier parte lleva al destino. */
+.estado-del-dia-acceso {
+  position: relative;
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: var(--esp-3);
+  min-height: 8rem;
+  padding: var(--esp-5) var(--esp-4) var(--esp-4);
+  background: var(--color-cancha);
+  color: var(--color-sobre-cancha);
+}
+.estado-del-dia-ir {
+  margin: 0;
+  font-family: var(--fuente-rotulo);
+  font-size: var(--texto-medio);
+  font-weight: var(--peso-semi);
+  letter-spacing: var(--tracking-rotulo);
+  text-transform: uppercase;
+  color: var(--color-sobre-cancha-tenue);
+}
+.estado-del-dia-enlace {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--esp-3);
+  color: inherit;
+  text-decoration: none;
+}
+.estado-del-dia-enlace::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+/* El foco se dibuja en toda la columna, en ámbar y por dentro: afuera lo recortaría el borde
+   redondeado de la tarjeta. */
+.estado-del-dia-enlace:focus-visible {
+  outline: none;
+}
+.estado-del-dia-acceso:has(.estado-del-dia-enlace:focus-visible) {
+  outline: var(--grosor-foco) solid var(--anillo-foco-sobre-cancha);
+  outline-offset: calc(-1 * var(--esp-1) - var(--grosor-foco));
+}
+.estado-del-dia-rutina {
+  font-family: var(--fuente-rotulo);
+  font-size: var(--texto-titulo-3);
+  font-weight: var(--peso-fuerte);
+  line-height: 1.15;
+  /* Corta por sílabas antes que en cualquier letra ("principian-tes", no "principiante s"). */
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+.estado-del-dia-enlace svg {
+  flex: none;
+  width: var(--icono-grande);
+  height: var(--icono-grande);
+  color: var(--color-ambar);
+  transition: transform var(--duracion-corta) var(--curva-salida);
+}
+.estado-del-dia-acceso:hover svg {
+  transform: translateX(var(--esp-1));
+}
+@media (min-width: 40rem) {
+  .estado-del-dia-acceso {
+    padding: var(--esp-5);
+  }
+  .estado-del-dia-rutina {
+    font-size: var(--texto-titulo-1);
   }
 }
