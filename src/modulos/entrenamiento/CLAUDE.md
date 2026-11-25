@@ -113,3 +113,12 @@ Implementado el 24/11/2026.
 ## Decisiones de implementación (T21, épica US24)
 
 * En `/profesor/entrenamientos`, cada entrenamiento es una `article.tarjeta-registro`. El título "fecha · rutina · estado" no cambia (lo lee el test de US18). Las series van en filas con prescripto y realizado en columnas desde 48rem. Decidido por Ulises el 25/11/2026; solo cambia lo visual.
+
+## Decisiones de implementación (T22, épica US24)
+
+Decidido por Ulises el 25/11/2026. El cambio es visual: el registro de series, el resumen, los textos y los nombres accesibles funcionan igual que antes (los tests no cambiaron).
+
+* **Tanteador** (RN-UI-ENT-03, contador siempre visible): `PasoActual` recibe el cronómetro por la propiedad `cronometro` y lo muestra en `.tanteador` (fijo arriba) junto a "Paso N de M" y una barra de avance decorativa. Sin pasos, el tanteador muestra solo el cronómetro. Un entrenamiento abandonado sigue sin contador y muestra la insignia "Abandonado".
+* **Paso**: el GIF lleva `key={urlGif}` y se vuelve a montar en cada paso, para que no quede a la vista el del ejercicio anterior mientras carga. "Registrar" es la acción principal; "Anterior" y "Siguiente" son secundarios. Los campos de la serie y de la percepción se envuelven en `.campo-serie`.
+* **Resumen** (RN-ENT-17, RN-UI-ENT-05): el peso total y la duración van en `.marcador-final`, con el rótulo y el valor en el mismo párrafo ("Peso total levantado: 600 kg" sigue siendo su texto). Los récords van en el mismo panel. "Volver al inicio" pasó de `ResumenEntrenamiento` a `PaginaEntrenamientoEnCurso`, al final, después de la percepción.
+* **Acciones del día**: "Iniciar entrenamiento" y "Retomar entrenamiento" son la acción principal; "Ver resumen del entrenamiento" es secundaria. Van en la barra fija de la rutina del día.

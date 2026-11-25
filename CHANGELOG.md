@@ -8,6 +8,14 @@ Categorías: Agregado, Cambiado, Corregido, Eliminado, Seguridad. Cada entrada c
 
 ### Agregado
 
+- Rediseño de las pantallas del Alumno (T22, CG-100, épica US24): vínculo, rutina del día, Mi plan, entrenamiento en curso, resumen y percepción.
+  - **Entrenamiento en curso:** un tanteador fijo arriba con el tiempo, el paso y una barra de avance.
+  - **Paso actual:** el GIF grande y los campos de la serie en fila, en números grandes, con "Registrar" a todo el ancho.
+  - **Rutina del día:** la acción del día queda fija abajo y los ejercicios van en filas.
+  - **Mi plan:** pasa a filas compactas, una por día.
+  - **Resumen:** es un marcador final con el peso total, la duración y los récords batidos.
+  - **Sin cambios de comportamiento:** el registro de series y el resumen funcionan igual que antes.
+
 - Rediseño de las pantallas del Profesor (T21, CG-99, épica US24): código, rutinas, editor de rutinas, planes, alumnos del plan, editar días, entrenamientos de alumnos, notificaciones y ejercicios.
   - **Tarjetas de rutina y de plan:** título a todo el ancho y las acciones al pie, con icono y texto.
   - **Planes:** las fechas y los días se leen como un tanteador.
@@ -74,6 +82,7 @@ Categorías: Agregado, Cambiado, Corregido, Eliminado, Seguridad. Cada entrada c
 
 ### Corregido
 
+- En el entrenamiento en curso, al pasar de paso quedaba a la vista el GIF del ejercicio anterior mientras cargaba el nuevo (T22, CG-100).
 - En el celular, la pestaña activa del menú quedaba cortada contra el borde cuando el contador de no leídas llegaba después de cargar la página. Ahora la tira vuelve a llevarla a la vista, sin mover la página (T21, CG-99).
 
 ## [1.3.0] — 2026-11-21

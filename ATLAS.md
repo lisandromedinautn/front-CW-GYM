@@ -33,7 +33,7 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | `eslint/reglas-de-hooks.js` | Regla local de lint: reglas de los hooks también para `usar<Accion>` ✅ |
 | `.husky/`, `scripts/` | Hooks, validador de mensajes y verificación de antigüedad de paquetes ✅ |
 | `index.html`, `src/main.tsx`, `src/Aplicacion.tsx` | Arranque y raíz de composición (rutas por rol, US00) ✅ |
-| `src/estilos.css` | Hoja de estilos de la app: importa las fuentes (`@fontsource`), los tokens, la base y los componentes, y conserva solo lo propio de cada pantalla, con variables del sistema de diseño (T17, T18). Desde T21 incluye las pantallas del Profesor: `.tarjeta-acciones`, fechas de tanteador, `.con-rutina`, `.bloque-editor`, `.tarjeta-registro` y `.volver` ✅ |
+| `src/estilos.css` | Hoja de estilos de la app: importa las fuentes (`@fontsource`), los tokens, la base y los componentes, y conserva solo lo propio de cada pantalla, con variables del sistema de diseño (T17, T18). Desde T21 incluye las pantallas del Profesor: `.tarjeta-acciones`, fechas de tanteador, `.con-rutina`, `.bloque-editor`, `.tarjeta-registro` y `.volver`. Desde T22, las del Alumno: `.tanteador`, `.paso-*`, `.barra-del-dia`, `.lista-ejercicios`, `.dias-alumno` y `.marcador-final` ✅ |
 | `src/vite-env.d.ts` | Tipos de Vite para `import.meta.env` ✅ |
 | `.env.example` | `VITE_URL_API` ✅ |
 | `CHANGELOG.md` | Cambios por versión (decisión 38) ✅ |

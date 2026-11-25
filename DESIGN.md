@@ -273,7 +273,7 @@ Esquinas firmes de marcador: `chico` 4px (botones), `medio` 6px (tarjetas), `gra
 Los componentes base viven en `src/compartido/presentacion/estilos/componentes.css` (T18, CG-96). Se aplican por elemento (`button`, `input`, `select`, `table`, `label`) o por las clases que ya usan las pantallas; no cambian textos, roles ni propiedades de React. Lo propio de cada pantalla queda en `src/estilos.css`.
 
 ### Marco y tanteador
-El tanteador (cifras en ámbar con la rampa de cifras) es de T22.
+El tanteador (cifras en ámbar sobre la cancha) es de T22 y tiene dos formas: el del entrenamiento en curso y el marcador final del resumen. Ver "Pantallas del Alumno (T22)".
 
 ### Marco y navegación (T19)
 `src/compartido/presentacion/estilos/estructura.css` y `MenuPrincipal.tsx` (CG-97, decidido por Ulises el 25/11/2026).
@@ -293,6 +293,15 @@ Lo propio de cada pantalla, en `src/estilos.css` (CG-99, decidido por Ulises el 
 - **Código del profesor**: el código en `--cifra-2`. "Copiar" o "Generar código" son la acción principal y el "Regenerar" del diálogo va en `.peligro`.
 - **"Volver a …"** (`.volver`): enlace chico arriba del título de cada subpágina, con 44 px de blanco de toque.
 - **Acción principal en ámbar**: Nueva rutina, Guardar rutina o Guardar cambios, Nuevo plan, Crear plan, Copiar o Generar código.
+
+### Pantallas del Alumno (T22)
+Lo propio de cada pantalla, en `src/estilos.css` (CG-100, decidido por Ulises el 25/11/2026). Pensadas para el celular, con el teléfono en la mano.
+- **Tanteador del entrenamiento** (`.tanteador`): cancha fija arriba (`position: sticky`, `--sombra-fija`), de borde a borde en el celular. Lleva el tiempo en ámbar a `--cifra-1` (8,4:1), "Paso N de M" en caps y una barra de avance ámbar sobre `cancha-linea` (decorativa: el paso ya está en texto). Si el entrenamiento no tiene pasos, muestra solo el tiempo.
+- **Paso actual**: el GIF es protagonista, en un cuadro blanco cuadrado, con un tope de alto de `min(20rem, 34svh)`. Debajo van lo prescripto como rótulo y los campos en fila, con números grandes y centrados (`--cifra-3`, 56 px de alto). "Registrar" es la acción principal y ocupa todo el ancho; "Anterior" y "Siguiente" son secundarios, en dos columnas. Con el tanteador fijo arriba, del tanteador a "Registrar" hay 620 a 669 px: entra en 375×667, 360×740 y 375×812 después de un solo desplazamiento. La imagen se vuelve a montar en cada paso para que no quede el GIF anterior mientras carga.
+- **Rutina del día**: la acción del día (Iniciar, Retomar o Ver resumen) queda en una barra fija abajo (`.barra-del-dia`). Los ejercicios van en filas dentro de una sola superficie (`.lista-ejercicios`), no en tarjetas. El tipo y "Día N de 28" van en una fila debajo del nombre.
+- **Mi plan**: una fila por día (`.dias-alumno`). El descanso va en `superficie-hundida` y tenue. La rutina se despliega en la misma fila; el `summary` lleva un cuadrado lila (el color de Planes) y una flecha que gira al abrir. No hay franja lateral: el detector la marca como patrón genérico. El nombre repetido del detalle queda solo para lectores de pantalla.
+- **Marcador final** (`.marcador-final`): el resumen en la cancha, con el peso total y la duración en ámbar a `--cifra-2` y los rótulos en caps. Los récords batidos van en el mismo panel, bajo un título ámbar. Los grupos musculares van como insignias. "Volver al inicio" queda al final de la pantalla, después de la percepción.
+- **Percepción y vínculo**: los campos usan números grandes; "Guardar percepción" y "Vincularme" son la acción principal.
 
 ### Botones
 Todos en caps condensadas (Barlow Condensed 600, `--tracking-rotulo`), 44 px de alto mínimo, radio chico (4px), con transición corta de color.
@@ -355,9 +364,10 @@ Lucide (`lucide-react` 1.78.0). En uso desde T21: `Pencil`, `Copy`, `Users`, `Ca
 ## Qué queda para las tareas siguientes (épica US24)
 
 - **T18 componentes base (CG-96):** ✅ hecho el 24/11/2026: acción principal en ámbar (una por pantalla), 44 px en botones y campos, `.secundario` con contorno, peligro, enlace, icono, campos con todos sus estados, tarjetas, tablas, insignias rectangulares y diálogos. Los tamaños de miniaturas (2.5rem y 3rem en listas) y de GIF (7.5rem en el editor, 14rem en el paso) quedan como medidas de componente; los revisa cada pantalla en T21 y T22.
-- **T20 y T22:** marcar con `.accion-principal` la acción principal de cada pantalla y con `.peligro` las destructivas. En T21 la gravedad de las notificaciones va como texto en la tinta de su estado, no como insignia. La "Fecha de fin" de crear plan se muestra en dd/mm/aaaa desde T21 (decidido por Ulises el 25/11/2026).
+- **T20:** marcar con `.accion-principal` la acción principal de cada pantalla y con `.peligro` las destructivas. En T21 la gravedad de las notificaciones va como texto en la tinta de su estado, no como insignia. La "Fecha de fin" de crear plan se muestra en dd/mm/aaaa desde T21 (decidido por Ulises el 25/11/2026).
 - **T19 estructura y navegación con color por sección (CG-97):** ✅ hecho el 25/11/2026: marco de cancha con marca, pestañas con color de sección, franja, foco ámbar sobre la cancha, tira deslizable en celular y tableta, y distribución de las páginas. El ingreso (sin menú) se rediseña en T20.
-- **T20 a T22 pantallas (CG-98 a CG-100):** aplicar la rampa de cifras. Deuda en T22: `.contador` usa `--cifra-3` y la rampa prevé `--cifra-1`.
+- **T20 pantallas (CG-98):** aplicar la rampa de cifras.
+- **T22 pantallas del Alumno (CG-100):** ✅ hecho el 25/11/2026: tanteador fijo del entrenamiento (`.contador` a `--cifra-1`), GIF protagonista con tope de alto, campos en fila, barra fija de la acción del día, Mi plan en filas y marcador final con los récords. La "Fecha" de la rutina del día sigue en AAAA-MM-DD porque la lee un test.
 - **T21 pantallas del Profesor (CG-99):** ✅ hecho el 25/11/2026: tarjetas con pie de acciones, fechas de tanteador, calendario con días de rutina marcados, editor en columnas, tarjetas de seguimiento y una acción principal por pantalla. `.codigo` pasó a `--cifra-2` y `.dia-fuera-del-plan` perdió el desenfoque. "Registrar ejercicio" sigue deshabilitado a propósito en el catálogo.
 - **T23 estados (CG-101):** vacío, carga, error y éxito con las variantes de estado.
 - **T24 accesibilidad y cierre (CG-102):** auditoría WCAG 2.2 AA, contraste real, foco, teclado, movimiento reducido y objetivos táctiles.

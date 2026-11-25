@@ -162,3 +162,11 @@ Decidido por Ulises el 25/11/2026. Solo cambia lo visual: textos del DOM, roles,
 * Solo el profesor propietario puede consultar y modificar los alumnos de un plan vigente. El back valida el vínculo, la ausencia de otro plan vigente y permite quitar al último alumno.
 * La pantalla se abre desde «Alumnos» en el listado de planes vigentes. El alta o la baja actualiza las asignaciones sin recrear los días del plan.
 * La asignación y la creación serializan por alumno en PostgreSQL y vuelven a comprobar la vigencia dentro de la transacción (RN-PLAN-14).
+
+## Decisiones de implementación (T22, épica US24)
+
+Decidido por Ulises el 25/11/2026. Solo cambia lo visual; los textos y los tests no cambiaron.
+
+* **Rutina del día**: la acción del día va en `.barra-del-dia`, fija abajo. Se oculta si está vacía. La "Fecha" sigue en AAAA-MM-DD porque la lee el test de US08.
+* **`DetalleRutina`**: los ejercicios van en filas (`.lista-ejercicios`, `.ejercicio-fila`), no en tarjetas. "Día N de 28" pasó al `header`, junto al tipo.
+* **Mi plan**: una fila por día (`.dias-alumno`, `.dia-alumno`, con `con-rutina` si tiene rutina). El `details` lleva `.dia-alumno-detalle`, y el `h2` del detalle queda solo para lectores de pantalla porque repite el nombre del `summary`.
