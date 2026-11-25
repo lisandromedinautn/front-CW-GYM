@@ -18,27 +18,27 @@ export function PaginaMiPlan() {
           Cargando tu plan…
         </p>
       )}
-      {resultado?.estado === 'sin-plan' && <p>No tenés un plan vigente.</p>}
+      {resultado?.estado === 'sin-plan' && <p className="tenue">No tenés un plan vigente.</p>}
       {resultado?.estado === 'plan' && (
         <>
           <p className="tenue">
             Del <time dateTime={resultado.plan.fechaInicio}>{resultado.plan.fechaInicio}</time> al{' '}
             <time dateTime={resultado.plan.fechaFin}>{resultado.plan.fechaFin}</time>
           </p>
-          <ol className="lista-tarjetas" aria-label="Días del plan">
+          <ol className="dias-alumno" aria-label="Días del plan">
             {resultado.plan.dias.map((dia) => (
               <li
                 key={dia.numero}
-                className="tarjeta-rutina"
+                className={`dia-alumno${dia.rutina === null ? '' : ' con-rutina'}`}
                 aria-labelledby={`dia-del-plan-${dia.numero}`}
               >
-                <h2 id={`dia-del-plan-${dia.numero}`}>
+                <h2 id={`dia-del-plan-${dia.numero}`} className="dia-alumno-titulo">
                   Día {dia.numero} — <time dateTime={dia.fecha}>{etiquetaDeFecha(dia.fecha)}</time>
                 </h2>
                 {dia.rutina === null ? (
-                  <p>Descanso</p>
+                  <p className="dia-alumno-descanso">Descanso</p>
                 ) : (
-                  <details>
+                  <details className="dia-alumno-detalle">
                     <summary aria-label={`Ver rutina del día ${dia.numero}: ${dia.rutina.nombre}`}>
                       {dia.rutina.nombre} · {dia.rutina.tipo}
                     </summary>

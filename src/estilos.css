@@ -617,6 +617,186 @@ button.enlace.volver {
   width: 100%;
 }
 
+/* Rutina del día: la acción del día (iniciar, retomar o ver el resumen) queda fija abajo. */
+.barra-del-dia {
+  position: sticky;
+  bottom: 0;
+  z-index: var(--capa-fija);
+  margin-inline: calc(-1 * var(--esp-4));
+  padding: var(--esp-3) var(--esp-4);
+  background: var(--color-fondo);
+  border-top: var(--borde-fino) solid var(--color-borde);
+}
+.barra-del-dia:empty {
+  display: none;
+}
+@media (min-width: 40rem) {
+  .barra-del-dia {
+    margin-inline: 0;
+    padding-inline: 0;
+  }
+}
+.acciones-del-dia {
+  display: grid;
+  gap: var(--esp-2);
+}
+.acciones-del-dia p {
+  margin: 0;
+}
+.accion-del-dia {
+  width: 100%;
+}
+.dia-descanso {
+  margin: 0;
+  font-size: var(--texto-medio);
+  font-weight: var(--peso-semi);
+}
+
+/* Detalle de una rutina (rutina del día y Mi plan): ejercicios en filas, no en tarjetas. */
+/* Nombre a todo el ancho; debajo, el tipo y "Día N de 28" en una fila. */
+.encabezado-rutina {
+  justify-content: flex-start;
+  gap: var(--esp-2);
+}
+.encabezado-rutina h2 {
+  flex-basis: 100%;
+  margin: 0;
+}
+.encabezado-rutina .etiqueta {
+  margin: 0;
+}
+/* "Día N de 28" y "Tipo": rótulos de su ancho, no de la columna. */
+.pagina > .etiqueta,
+.dia-alumno-detalle > .etiqueta {
+  justify-self: start;
+}
+/* Dentro de Mi plan, el nombre ya está en la fila: el título del detalle queda solo para lectores
+   de pantalla (mismo recorte que .solo-lectores). */
+.dia-alumno-detalle .encabezado-rutina h2 {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+.lista-ejercicios {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: var(--color-superficie);
+  border: var(--borde-fino) solid var(--color-borde);
+  border-radius: var(--radio-medio);
+}
+.ejercicio-fila {
+  display: grid;
+  gap: var(--esp-1);
+  padding: var(--esp-3) var(--esp-4);
+  border-bottom: var(--borde-fino) solid var(--color-borde);
+}
+.ejercicio-fila:last-child {
+  border-bottom: 0;
+}
+.ejercicio-fila p {
+  margin: 0;
+}
+.ejercicio-nombre {
+  font-weight: var(--peso-semi);
+  text-transform: capitalize;
+}
+.circuito-detalle {
+  display: grid;
+  gap: var(--esp-2);
+  justify-items: start;
+}
+.circuito-detalle > .lista-ejercicios {
+  justify-self: stretch;
+}
+.circuito-detalle > p {
+  margin: 0;
+}
+
+/* Mi plan: una fila por día. La rutina se despliega en la misma fila; el descanso va hundido. */
+.dias-alumno {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: var(--color-superficie);
+  border: var(--borde-fino) solid var(--color-borde);
+  border-radius: var(--radio-medio);
+}
+.dia-alumno {
+  display: grid;
+  gap: var(--esp-1);
+  padding: var(--esp-2) var(--esp-4);
+  border-bottom: var(--borde-fino) solid var(--color-borde);
+}
+.dia-alumno:last-child {
+  border-bottom: 0;
+}
+.dia-alumno:not(.con-rutina) {
+  background: var(--color-superficie-hundida);
+}
+.dia-alumno-titulo {
+  margin: 0;
+  font-family: var(--fuente-rotulo);
+  font-size: var(--texto-base);
+  font-weight: var(--peso-fuerte);
+  letter-spacing: var(--tracking-rotulo);
+}
+.dia-alumno:not(.con-rutina) .dia-alumno-titulo,
+.dia-alumno-descanso {
+  color: var(--color-tinta-tenue);
+}
+.dia-alumno-descanso {
+  margin: 0;
+  font-size: var(--texto-chico);
+}
+/* La rutina del día: un cuadrado lila (el color de Planes) y una flecha que gira al abrir. */
+.dia-alumno-detalle > summary {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-2);
+  min-height: var(--toque-comodo);
+  cursor: pointer;
+  list-style: none;
+  font-weight: var(--peso-semi);
+}
+.dia-alumno-detalle > summary::-webkit-details-marker {
+  display: none;
+}
+.dia-alumno-detalle > summary::before {
+  content: '';
+  flex: none;
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: var(--radio-chico);
+  background: var(--color-seccion-lila);
+}
+.dia-alumno-detalle > summary::after {
+  content: '';
+  flex: none;
+  width: 0.5rem;
+  height: 0.5rem;
+  margin-left: auto;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(-45deg);
+  transition: transform var(--duracion-corta) var(--curva-salida);
+}
+.dia-alumno-detalle[open] > summary::after {
+  transform: rotate(45deg);
+}
+.dia-alumno-detalle[open] {
+  display: grid;
+  gap: var(--esp-3);
+  padding-bottom: var(--esp-3);
+}
+
 /* Resumen del entrenamiento: marcador final en la cancha, con los récords batidos. */
 .resumen {
   display: grid;
