@@ -2,13 +2,14 @@ import { Link, useNavigate } from 'react-router';
 import { usarEntrenamientoEnCurso } from '../../aplicacion/consultar-entrenamiento-en-curso/usarEntrenamientoEnCurso.ts';
 import { usarIniciarEntrenamiento } from '../../aplicacion/iniciar-entrenamiento/usarIniciarEntrenamiento.ts';
 import { RUTA_ENTRENAMIENTO } from './rutas.ts';
+import { Aviso } from '../../../../compartido/presentacion/estados/Aviso.tsx';
 
 export function AccionesEntrenamiento({ hayRutina }: { hayRutina: boolean }) {
   const { resultado, error: errorConsulta } = usarEntrenamientoEnCurso();
   const { iniciar, iniciando, error: errorInicio } = usarIniciarEntrenamiento();
   const navegar = useNavigate();
 
-  if (errorConsulta) return <p role="alert">{errorConsulta}</p>;
+  if (errorConsulta) return <Aviso tipo="error">{errorConsulta}</Aviso>;
   if (!resultado) return null;
   if (
     resultado.estado === 'finalizado' &&
@@ -34,11 +35,7 @@ export function AccionesEntrenamiento({ hayRutina }: { hayRutina: boolean }) {
 
   return (
     <div className="acciones-del-dia">
-      {errorInicio && (
-        <p role="alert" className="error">
-          {errorInicio}
-        </p>
-      )}
+      {errorInicio && <Aviso tipo="error">{errorInicio}</Aviso>}
       {hayRutina && (
         <button
           type="button"
