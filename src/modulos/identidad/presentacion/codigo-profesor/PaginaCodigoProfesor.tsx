@@ -22,7 +22,7 @@ export function PaginaCodigoProfesor() {
         <div className="formulario">
           <p>Todavía no generaste tu código</p>
           <div className="acciones">
-            <button type="button" onClick={() => void generar()}>
+            <button type="button" className="accion-principal" onClick={() => void generar()}>
               Generar código
             </button>
           </div>
@@ -32,7 +32,7 @@ export function PaginaCodigoProfesor() {
         <div className="formulario">
           <p className="codigo">{codigo}</p>
           <div className="acciones">
-            <button type="button" onClick={() => void copiar()}>
+            <button type="button" className="accion-principal" onClick={() => void copiar()}>
               Copiar
             </button>
             <button type="button" className="secundario" onClick={() => setConfirmando(true)}>
@@ -57,7 +57,7 @@ export function PaginaCodigoProfesor() {
             <h2 id="titulo-regenerar">Regenerar código</h2>
             <p>El código anterior deja de funcionar</p>
             <div className="acciones">
-              <button type="button" onClick={() => void regenerar()}>
+              <button type="button" className="peligro" onClick={() => void regenerar()}>
                 Regenerar
               </button>
               <button type="button" className="secundario" onClick={() => setConfirmando(false)}>

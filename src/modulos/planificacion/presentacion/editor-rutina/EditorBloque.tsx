@@ -17,7 +17,7 @@ export function EditorBloque(props: {
   const { bloque, errores, alCambiar } = props;
   const id = String(bloque.clave);
   return (
-    <fieldset className="bloque">
+    <fieldset className="bloque bloque-editor">
       <legend>Bloque {props.numero}</legend>
       <CamposObjetivo
         objetivo={bloque}
@@ -49,10 +49,12 @@ export function EditorBloque(props: {
         error={errores.macropausa}
         alCambiar={(v) => alCambiar('macropausa', v)}
       />
-      <BotonesOrden reordenar={props.reordenar} />
-      <button type="button" className="secundario" onClick={props.alQuitar}>
-        Quitar bloque
-      </button>
+      <div className="acciones-bloque">
+        <BotonesOrden reordenar={props.reordenar} />
+        <button type="button" className="secundario" onClick={props.alQuitar}>
+          Quitar bloque
+        </button>
+      </div>
     </fieldset>
   );
 }

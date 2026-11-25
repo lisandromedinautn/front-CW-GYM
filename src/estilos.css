@@ -49,10 +49,12 @@
   height: auto;
   border-radius: var(--radio-chico);
 }
+/* Código del profesor (US04): la cifra protagonista de la pantalla, como un tanteador. */
 .codigo {
   font-family: var(--fuente-rotulo);
   font-variant-numeric: tabular-nums;
-  font-size: var(--cifra-3);
+  font-size: var(--cifra-2);
+  line-height: var(--interlineado-ajustado);
   font-weight: var(--peso-fuerte);
   letter-spacing: var(--tracking-rotulo-ancho);
   margin: 0;
@@ -89,6 +91,20 @@
   padding: var(--esp-2);
   min-width: 0;
 }
+/* Día con rutina: franja lila (color de Planes). Día de descanso: fondo hundido, texto tenue. */
+.dia-del-plan {
+  border-top-width: 4px;
+  border-top-color: var(--color-borde);
+  background: var(--color-superficie-hundida);
+}
+.dia-del-plan.con-rutina {
+  border-top-color: var(--color-seccion-lila);
+  background: var(--color-superficie);
+}
+.dia-del-plan:not(.con-rutina) .dia-del-plan-numero,
+.dia-del-plan:not(.con-rutina) .dia-del-plan-rutina {
+  color: var(--color-tinta-tenue);
+}
 .dia-del-plan-encabezado {
   display: flex;
   align-items: baseline;
@@ -97,10 +113,39 @@
   margin: 0;
 }
 .dia-del-plan-numero {
-  font-weight: var(--peso-semi);
+  margin: 0;
+  font-family: var(--fuente-rotulo);
+  font-weight: var(--peso-fuerte);
+  font-size: var(--texto-base);
+  letter-spacing: var(--tracking-rotulo);
+  text-transform: uppercase;
+}
+.dia-del-plan-rutina {
+  margin: 0;
   font-size: var(--texto-chico);
+  font-weight: var(--peso-semi);
+  overflow-wrap: anywhere;
+}
+/* Editar días (US22): sin días de la semana, en columnas que se ajustan al ancho. */
+.dias-del-plan.dias-editables {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+}
+.dias-editables .dia-del-plan {
+  grid-template-rows: none;
+  align-content: start;
+  padding: var(--esp-3);
+}
+.dias-editables .dia-del-plan-encabezado {
+  flex-wrap: wrap;
+}
+.dias-editables .dia-del-plan-numero {
+  font-size: var(--texto-medio);
 }
 .dia-del-plan-fecha {
+  margin: 0;
   font-size: var(--texto-chico);
   color: var(--color-tinta-tenue);
 }
@@ -137,7 +182,6 @@
     background: var(--color-superficie-hundida);
     color: var(--color-borde-control);
     font-size: var(--texto-chico);
-    filter: blur(1px);
     opacity: var(--opacidad-deshabilitado);
     user-select: none;
   }
@@ -178,24 +222,32 @@
   gap: var(--esp-3);
   grid-template-columns: 1fr;
 }
+/* Columna flexible: el pie de acciones queda abajo aunque las tarjetas de la fila tengan alturas distintas. */
 .tarjeta-rutina {
   background: var(--color-superficie);
   border-radius: var(--radio-medio);
   padding: var(--esp-4);
-  display: grid;
-  gap: var(--esp-2);
-  align-content: start;
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-3);
+  min-width: 0;
   border: var(--borde-fino) solid var(--color-borde);
 }
 .tarjeta-rutina-cabecera {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  gap: var(--esp-2);
+  align-items: start;
+  gap: var(--esp-2) var(--esp-3);
+}
+.tarjeta-rutina-cabecera > .etiqueta,
+.tarjeta-rutina-cabecera > .estado-plan {
+  flex: none;
 }
 .tarjeta-rutina h2 {
   margin: 0;
-  font-size: var(--texto-medio);
+  min-width: 0;
+  font-size: var(--texto-titulo-3);
+  overflow-wrap: anywhere;
 }
 .ejercicios-rutina {
   list-style: none;
@@ -211,27 +263,127 @@
   font-size: var(--texto-chico);
   text-transform: capitalize;
 }
+/* Pie de una tarjeta del listado (T21): sus acciones, separadas del contenido por una línea. */
+.tarjeta-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--esp-2);
+  margin-top: auto;
+  padding-top: var(--esp-3);
+  border-top: var(--borde-fino) solid var(--color-borde);
+}
+.tarjeta-acciones .boton,
+.tarjeta-acciones button {
+  padding: 0 var(--esp-4);
+}
+/* Un enlace de texto del pie (por ejemplo "Ver entrenamientos de …") también mide 44 px de alto. */
+.tarjeta-acciones a:not(.boton) {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--toque-comodo);
+}
+.tarjeta-acciones svg {
+  width: var(--icono-chico);
+  height: var(--icono-chico);
+  stroke-width: var(--icono-trazo);
+}
 .paginacion {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: var(--esp-4);
 }
+/*
+ * Editor de rutina (T21): los números de un bloque o circuito van en columnas (tres en la columna
+ * de lectura, dos en el celular); el ejercicio, los grupos anidados y las acciones ocupan la fila.
+ */
+.bloque-editor {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  column-gap: var(--esp-3);
+}
+@media (min-width: 30rem) {
+  .bloque-editor {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+/* Entre un bloque o circuito y el siguiente, aire: los separa el título, no una caja. */
+.bloque-editor + .bloque-editor {
+  margin-top: var(--esp-5);
+}
+.bloque-editor > legend {
+  font-family: var(--fuente-rotulo);
+  font-size: var(--texto-titulo-3);
+  letter-spacing: var(--tracking-rotulo);
+  text-transform: uppercase;
+}
+.bloque-editor > .campo:has(select),
+.bloque-editor > fieldset,
+.bloque-editor > button,
+.bloque-editor > .error-campo,
+.bloque-editor > .acciones-bloque {
+  grid-column: 1 / -1;
+}
+.bloque-editor > button {
+  justify-self: start;
+}
+/* Ejercicio de un circuito: sangría con una línea a la izquierda, para leer qué es de qué. */
+.formulario .ejercicio-circuito {
+  padding-left: var(--esp-4);
+  border-left: var(--borde-grueso) solid var(--color-borde);
+}
+.ejercicio-circuito > legend {
+  font-size: var(--texto-medio);
+}
+.acciones-bloque {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--esp-2);
+}
+/* El ejercicio con su GIF al costado, no debajo. */
+.campo:has(> .gif-vista-previa) {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  column-gap: var(--esp-3);
+}
+.campo:has(> .gif-vista-previa) > .error-campo {
+  grid-column: 1;
+}
 /* Vista previa del ejercicio elegido en el editor: chica para no tapar el formulario. */
 .gif-vista-previa {
   display: block;
-  margin: var(--esp-1) auto 0;
-  width: 7.5rem;
-  height: 7.5rem;
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  margin: 0;
+  width: 5rem;
+  height: 5rem;
   object-fit: cover;
   border-radius: var(--radio-medio);
   border: var(--borde-fino) solid var(--color-borde);
   background: var(--color-superficie);
 }
-.volver {
+/* "Volver a …": enlace chico sobre el título de una subpágina (link o botón .enlace). */
+.volver,
+button.enlace.volver {
+  justify-self: start;
+  /* El texto es chico, pero el blanco de toque sigue siendo de 44 px. */
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--toque-comodo);
+  margin-block: calc(-1 * var(--esp-2));
+  padding: 0;
   color: var(--color-enlace);
-  text-decoration: none;
+  font-family: var(--fuente-texto);
   font-size: var(--texto-chico);
+  font-weight: var(--peso-normal);
+  letter-spacing: normal;
+  text-transform: none;
+  text-decoration: none;
+}
+.volver:hover {
+  text-decoration: underline;
 }
 @media (min-width: 40rem) {
   .grilla-rutinas {
@@ -262,22 +414,72 @@
   width: 3rem;
   height: 3rem;
 }
-.nombre-rutina {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--esp-2) var(--esp-3);
-  min-width: 0;
-}
-.nombre-rutina h2 {
-  overflow-wrap: anywhere;
-}
 
 /* Listado de planes (RN-PLAN-22): badge de estado y alumnos de cada tarjeta */
 .alumnos-plan {
   list-style: none;
   margin: 0;
   padding: 0;
+}
+
+/* Fechas del plan como tanteador (T21): día y mes en cifra grande, el año chico debajo. */
+.fechas-plan {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-2);
+  margin: 0;
+}
+.fecha-tanteador {
+  display: grid;
+  line-height: var(--interlineado-ajustado);
+}
+.fecha-tanteador-dia {
+  font-family: var(--fuente-rotulo);
+  font-size: var(--cifra-3);
+  font-weight: var(--peso-fuerte);
+  font-variant-numeric: tabular-nums;
+}
+.fecha-tanteador-anio {
+  font-size: var(--texto-chico);
+  color: var(--color-tinta-tenue);
+  font-variant-numeric: tabular-nums;
+}
+.fechas-plan-flecha {
+  width: var(--icono-medio);
+  height: var(--icono-medio);
+  color: var(--color-tinta-tenue);
+  stroke-width: var(--icono-trazo);
+}
+/* Días con rutina y de descanso: cifra y rótulo, en fila. */
+.dias-plan-cifras {
+  display: flex;
+  gap: var(--esp-5);
+  margin: 0;
+}
+.dias-plan-cifras div {
+  display: flex;
+  flex-direction: column-reverse;
+}
+.dias-plan-cifras dt {
+  font-family: var(--fuente-rotulo);
+  font-size: var(--texto-chico);
+  font-weight: var(--peso-semi);
+  letter-spacing: var(--tracking-rotulo);
+  text-transform: uppercase;
+  color: var(--color-tinta-tenue);
+}
+.dias-plan-cifras dd {
+  margin: 0;
+  font-family: var(--fuente-rotulo);
+  font-size: var(--cifra-4);
+  font-weight: var(--peso-fuerte);
+  font-variant-numeric: tabular-nums;
+  line-height: var(--interlineado-ajustado);
+}
+
+/* Alumnos del plan (US12): una fila por alumno con su acción a la derecha. */
+.fila-alumno {
+  justify-content: space-between;
 }
 
 /* Entrenamiento paso a paso (RN-UI-ENT-03): el contador queda fijo arriba y el GIF no empuja
@@ -301,14 +503,84 @@
   border-radius: var(--radio-medio);
 }
 
-/* US18: cada serie del alumno en una fila, con lo prescripto y lo realizado separados. */
-.series-alumno {
+/*
+ * Registros del seguimiento (T21): entrenamientos de un alumno (US18) y notificaciones (US21).
+ * El estado se lee en el texto: la gravedad de una notificación va en la tinta de su estado y,
+ * una vez leída, en tenue.
+ */
+.tarjeta-registro {
   display: grid;
   gap: var(--esp-2);
-  padding-left: var(--esp-5);
+  padding: var(--esp-4) var(--esp-5);
+  background: var(--color-superficie);
+  border: var(--borde-fino) solid var(--color-borde);
+  border-radius: var(--radio-medio);
+  min-width: 0;
 }
-.series-alumno li {
+.tarjeta-registro p {
+  margin: 0;
+}
+.tarjeta-registro-cabecera {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--esp-1) var(--esp-4);
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--esp-1) var(--esp-3);
+}
+.tarjeta-registro-titulo {
+  margin: 0;
+  font-family: var(--fuente-rotulo);
+  font-size: var(--texto-titulo-3);
+  font-weight: var(--peso-fuerte);
+  overflow-wrap: anywhere;
+}
+/* Gravedad: rótulo en caps con la tinta de su estado (texto, nunca el sólido). */
+.gravedad {
+  margin: 0;
+  font-family: var(--fuente-rotulo);
+  font-size: var(--texto-medio);
+  font-weight: var(--peso-fuerte);
+  letter-spacing: var(--tracking-rotulo-ancho);
+  text-transform: uppercase;
+}
+.aviso-grave .gravedad {
+  color: var(--color-error-tinta);
+}
+.aviso-leve .gravedad {
+  color: var(--color-advertencia-tinta);
+}
+.leida .gravedad {
+  color: var(--color-tinta-tenue);
+}
+.resumen-bandeja {
+  justify-self: start;
+}
+.tarjeta-registro .tarjeta-acciones {
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* US18 y US21: cada serie en una fila, con lo prescripto y lo realizado en columnas. */
+.series-alumno {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  border-top: var(--borde-fino) solid var(--color-borde);
+  font-size: var(--texto-chico);
+}
+.series-alumno li {
+  display: grid;
+  gap: 0 var(--esp-4);
+  padding: var(--esp-2) 0;
+  border-bottom: var(--borde-fino) solid var(--color-borde);
+  font-variant-numeric: tabular-nums;
+}
+.series-alumno li:last-child {
+  border-bottom: 0;
+}
+@media (min-width: 48rem) {
+  .series-alumno li {
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) minmax(0, 1fr);
+  }
 }

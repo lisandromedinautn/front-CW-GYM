@@ -110,3 +110,6 @@ Implementado el 24/11/2026.
   * Al recargar, se ve el texto si la percepción vino cargada, o el formulario si vino en `null`.
 * **US18:** la tarjeta de un entrenamiento con percepción muestra "RPE: N · Sensación de fuerza: N".
 * **e2e:** el alumno llega al resumen por "Mi rutina del día" y el enlace "Ver resumen del entrenamiento".
+## Decisiones de implementación (T21, épica US24)
+
+* En `/profesor/entrenamientos`, cada entrenamiento es una `article.tarjeta-registro`. El título "fecha · rutina · estado" no cambia (lo lee el test de US18). Las series van en filas con prescripto y realizado en columnas desde 48rem. Decidido por Ulises el 25/11/2026; solo cambia lo visual.

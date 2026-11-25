@@ -19,10 +19,11 @@ interface Props {
 export function TarjetaNotificacion({ notificacion, alMarcarLeida }: Props) {
   const { alumno, entrenamiento, seriesPorDebajo } = notificacion;
   const nombre = `${alumno.apellido}, ${alumno.nombre}`;
+  const clase = `tarjeta-registro aviso-${notificacion.gravedad}${notificacion.leida ? ' leida' : ''}`;
   if (notificacion.tipo === 'alerta-incumplimiento') {
     return (
-      <article className="tarjeta-plan">
-        <h2>{etiquetaDeGravedad(notificacion.gravedad)}</h2>
+      <article className={clase}>
+        <h2 className="gravedad">{etiquetaDeGravedad(notificacion.gravedad)}</h2>
         <p>{nombre}: 3 entrenamientos seguidos por debajo de lo prescripto</p>
         <ul className="series-alumno">
           {(notificacion.entrenamientos ?? []).map((e) => (
@@ -31,21 +32,25 @@ export function TarjetaNotificacion({ notificacion, alMarcarLeida }: Props) {
             </li>
           ))}
         </ul>
-        <Link to={`/profesor/entrenamientos?alumno=${alumno.id}`}>Ver entrenamientos</Link>
-        {!notificacion.leida && (
-          <button type="button" onClick={() => alMarcarLeida(notificacion.id)}>
-            Marcar como leída
-          </button>
-        )}
+        <div className="tarjeta-acciones">
+          <Link to={`/profesor/entrenamientos?alumno=${alumno.id}`}>Ver entrenamientos</Link>
+          {!notificacion.leida && (
+            <button type="button" onClick={() => alMarcarLeida(notificacion.id)}>
+              Marcar como leída
+            </button>
+          )}
+        </div>
       </article>
     );
   }
   return (
-    <article className="tarjeta-plan">
-      <h2>{etiquetaDeGravedad(notificacion.gravedad)}</h2>
-      <p>{nombre}</p>
-      <p>{entrenamiento.rutina}</p>
-      <p>{fechaHora(entrenamiento.inicio)}</p>
+    <article className={clase}>
+      <div className="tarjeta-registro-cabecera">
+        <h2 className="gravedad">{etiquetaDeGravedad(notificacion.gravedad)}</h2>
+        <p className="tenue">{fechaHora(entrenamiento.inicio)}</p>
+      </div>
+      <p className="tarjeta-registro-titulo">{nombre}</p>
+      <p className="tenue">{entrenamiento.rutina}</p>
       {notificacion.percepcion !== null && <p>{describirPercepcion(notificacion.percepcion)}</p>}
       {seriesPorDebajo.length === 0 ? (
         <p>Percepción mala</p>
@@ -65,14 +70,16 @@ export function TarjetaNotificacion({ notificacion, alMarcarLeida }: Props) {
           </ul>
         </>
       )}
-      <Link to={`/profesor/entrenamientos?alumno=${alumno.id}`}>
-        Ver entrenamientos de {nombre}
-      </Link>
-      {!notificacion.leida && (
-        <button type="button" onClick={() => alMarcarLeida(notificacion.id)}>
-          Marcar como leída
-        </button>
-      )}
+      <div className="tarjeta-acciones">
+        <Link to={`/profesor/entrenamientos?alumno=${alumno.id}`}>
+          Ver entrenamientos de {nombre}
+        </Link>
+        {!notificacion.leida && (
+          <button type="button" onClick={() => alMarcarLeida(notificacion.id)}>
+            Marcar como leída
+          </button>
+        )}
+      </div>
     </article>
   );
 }

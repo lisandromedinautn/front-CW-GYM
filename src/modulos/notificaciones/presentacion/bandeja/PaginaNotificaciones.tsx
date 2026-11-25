@@ -13,11 +13,15 @@ export function PaginaNotificaciones() {
   return (
     <section className="pagina pagina-ancha">
       <h1>Notificaciones</h1>
-      {error && <p role="alert">{error}</p>}
+      {error && (
+        <p role="alert" className="error">
+          {error}
+        </p>
+      )}
       {bandeja === null && !error && <p>Cargando tus notificaciones…</p>}
       {bandeja && (
         <>
-          <p>No leídas: {bandeja.noLeidas}</p>
+          <p className="etiqueta resumen-bandeja">No leídas: {bandeja.noLeidas}</p>
           {bandeja.items.length === 0 && <p>Todavía no tenés notificaciones.</p>}
           {bandeja.items.map((notificacion) => (
             <TarjetaNotificacion

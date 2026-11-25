@@ -1,3 +1,4 @@
+import { Copy, Pencil } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'react-router';
 import { Paginador } from '../../../../compartido/presentacion/paginador/Paginador.tsx';
@@ -37,7 +38,7 @@ export function PaginaRutinas() {
       <header className="encabezado">
         <h1>Rutinas</h1>
         {!vacia && (
-          <Link to={RUTA_NUEVA} className="boton">
+          <Link to={RUTA_NUEVA} className="boton accion-principal">
             Nueva rutina
           </Link>
         )}
@@ -66,7 +67,7 @@ export function PaginaRutinas() {
           <p className="tenue">
             Armala por bloques o por circuitos con los ejercicios del catálogo.
           </p>
-          <Link to={RUTA_NUEVA} className="boton">
+          <Link to={RUTA_NUEVA} className="boton accion-principal">
             Nueva rutina
           </Link>
         </div>
@@ -110,11 +111,7 @@ function TarjetaRutina(props: {
   return (
     <li className="tarjeta-rutina">
       <div className="tarjeta-rutina-cabecera">
-        <NombreRutina
-          rutina={props.rutina}
-          alImportar={props.alImportar}
-          importando={props.importando}
-        />
+        <h2>{props.rutina.nombre}</h2>
         <span className="etiqueta">{props.rutina.tipo}</span>
       </div>
       <p className="tenue">{resumenRutina(props.rutina)}</p>
@@ -134,58 +131,43 @@ function TarjetaRutina(props: {
         })}
       </ul>
       {restantes > 0 && <p className="tenue">+{restantes} más</p>}
+      <AccionesRutina
+        rutina={props.rutina}
+        alImportar={props.alImportar}
+        importando={props.importando}
+      />
     </li>
   );
 }
 
-/** Nombre de la rutina como título; el lápiz abre la rutina en el editor (US06, RN-PLAN-07). */
-function NombreRutina(props: {
+/**
+ * Pie de la tarjeta (T21): "Editar" abre la rutina en el editor (US06, RN-PLAN-07) e "Importar"
+ * crea una copia (US20). El nombre accesible completo contiene el texto visible.
+ */
+function AccionesRutina(props: {
   rutina: RutinaCreada;
   alImportar: () => void;
   importando: boolean;
 }) {
   return (
-    <div className="nombre-rutina">
-      <h2>{props.rutina.nombre}</h2>
+    <div className="tarjeta-acciones">
       <Link
         to={`/profesor/rutinas/${props.rutina.id}`}
-        className="boton secundario boton-icono"
+        className="boton secundario"
         aria-label="Editar rutina"
-        title="Editar rutina"
       >
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          aria-hidden="true"
-        >
-          <path d="M12 20h9" />
-          <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L9 17l-4 1 1-4Z" />
-        </svg>
+        <Pencil aria-hidden="true" />
+        Editar
       </Link>
       <button
         type="button"
-        className="secundario boton-icono"
+        className="secundario"
         onClick={props.alImportar}
         disabled={props.importando}
         aria-label="Importar como copia"
-        title="Importar como copia"
       >
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          aria-hidden="true"
-        >
-          <rect x="8" y="8" width="12" height="12" rx="2" />
-          <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" />
-        </svg>
+        <Copy aria-hidden="true" />
+        Importar
       </button>
     </div>
   );

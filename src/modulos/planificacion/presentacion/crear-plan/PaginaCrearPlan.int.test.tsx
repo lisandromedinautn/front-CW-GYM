@@ -97,7 +97,7 @@ describe('RN-PLAN-09 · al elegir la fecha de inicio se muestra la fecha de fin 
 
     elegirFecha('2026-11-13');
 
-    expect(await screen.findByText('Fecha de fin: 2026-12-10')).toBeInTheDocument();
+    expect(await screen.findByText('Fecha de fin: 10/12/2026')).toBeInTheDocument();
     expect(screen.getAllByRole('combobox')).toHaveLength(28);
     expect(screen.getByText('Día 1 — viernes 13/11')).toBeInTheDocument();
     expect(screen.getByText('Día 28 — jueves 10/12')).toBeInTheDocument();

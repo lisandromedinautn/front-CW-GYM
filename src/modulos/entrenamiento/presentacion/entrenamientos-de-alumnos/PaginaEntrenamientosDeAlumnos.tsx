@@ -23,7 +23,11 @@ export function PaginaEntrenamientosDeAlumnos() {
   return (
     <section className="pagina pagina-ancha">
       <h1>Entrenamientos de mis alumnos</h1>
-      {error && <p role="alert">{error}</p>}
+      {error && (
+        <p role="alert" className="error">
+          {error}
+        </p>
+      )}
       {alumnos === null && !error && <p>Cargando tus alumnos…</p>}
       {alumnos?.length === 0 && <p>Todavía no tenés alumnos vinculados.</p>}
       {alumnos && alumnos.length > 0 && (
@@ -68,8 +72,8 @@ export function PaginaEntrenamientosDeAlumnos() {
 function TarjetaEntrenamiento({ entrenamiento }: { entrenamiento: EntrenamientoDeAlumno }) {
   const series = seriesEnOrden(entrenamiento.series ?? []);
   return (
-    <article className="tarjeta-plan">
-      <h2>
+    <article className="tarjeta-registro">
+      <h2 className="tarjeta-registro-titulo">
         {fechaHora(entrenamiento.inicio)} · {entrenamiento.rutina.nombre} ·{' '}
         {etiquetaDeEstado(entrenamiento.estado)}
       </h2>

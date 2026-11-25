@@ -33,7 +33,7 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | `eslint/reglas-de-hooks.js` | Regla local de lint: reglas de los hooks también para `usar<Accion>` ✅ |
 | `.husky/`, `scripts/` | Hooks, validador de mensajes y verificación de antigüedad de paquetes ✅ |
 | `index.html`, `src/main.tsx`, `src/Aplicacion.tsx` | Arranque y raíz de composición (rutas por rol, US00) ✅ |
-| `src/estilos.css` | Hoja de estilos de la app: importa las fuentes (`@fontsource`), los tokens, la base y los componentes, y conserva solo lo propio de cada pantalla, con variables del sistema de diseño (T17, T18) ✅ |
+| `src/estilos.css` | Hoja de estilos de la app: importa las fuentes (`@fontsource`), los tokens, la base y los componentes, y conserva solo lo propio de cada pantalla, con variables del sistema de diseño (T17, T18). Desde T21 incluye las pantallas del Profesor: `.tarjeta-acciones`, fechas de tanteador, `.con-rutina`, `.bloque-editor`, `.tarjeta-registro` y `.volver` ✅ |
 | `src/vite-env.d.ts` | Tipos de Vite para `import.meta.env` ✅ |
 | `.env.example` | `VITE_URL_API` ✅ |
 | `CHANGELOG.md` | Cambios por versión (decisión 38) ✅ |
@@ -61,7 +61,7 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | identidad | `PaginaVincularProfesor.tsx` | `usarVincularAlumno.ts` | `POST /identidad/alumnos/vinculo` | US05 | ✅ |
 | catalogo | ~~`PaginaRegistrarEjercicio.tsx`~~ solo botón deshabilitado en ListaEjercicios (DT-06) | ~~`usarRegistrarEjercicio.ts`~~ | ~~`POST /catalogo/ejercicios`~~ | US01 (DT-06) | — |
 | catalogo | `ListaEjercicios.tsx` | `usarConsultarEjercicios.ts` | `GET /catalogo/ejercicios/consulta` | T01, T06, T07 | ✅ |
-| planificacion | `PaginaRutinas.tsx` (ruta `/profesor/rutinas`) | `usarConsultarRutinas.ts` | `GET /planificacion/rutinas` | T06, T08, T09 | ✅ (el lápiz abre el editor de la rutina) |
+| planificacion | `PaginaRutinas.tsx` (ruta `/profesor/rutinas`) | `usarConsultarRutinas.ts` | `GET /planificacion/rutinas` | T06, T08, T09 | ✅ (el botón "Editar" del pie de la tarjeta abre el editor de la rutina) |
 | planificacion | `EditorRutina.tsx` (ruta `/profesor/rutinas`, menú "Rutinas") | `usarCrearRutina.ts`, `usarEjerciciosParaRutina.ts` | `GET /catalogo/ejercicios`, `POST /planificacion/rutinas` | US06, US09, US10 | ✅ crear con bloques (US06), con circuitos (US09) y mixta (US10) |
 | planificacion | `editar-rutina/PaginaEditarRutina.tsx` (ruta `/profesor/rutinas/:id`, desde el lápiz "Editar rutina" de la tarjeta; muestra `EditorRutina` precargado) | `editar-rutina/usarEditarRutina.ts` | `GET /planificacion/rutinas/:id`, `PUT /planificacion/rutinas/:id` | US06 | ✅ |
 | planificacion | `PaginaRutinas.tsx` (acción "Importar como copia") | `usarImportarRutina.ts` | `POST /planificacion/rutinas/:id/importacion` | US20 | ✅ |

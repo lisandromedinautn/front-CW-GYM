@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { usarCrearPlan } from '../../aplicacion/crear-plan/usarCrearPlan.ts';
 import { usarDatosParaPlan } from '../../aplicacion/crear-plan/usarDatosParaPlan.ts';
+import { fechaConBarras } from '../../dominio/plan/listadoPlanes.ts';
 import {
   DIAS_DEL_PLAN,
   type DiaDelPlan,
@@ -58,7 +59,8 @@ export function PaginaCrearPlan(props: { alVolver?: () => void } = {}) {
 
   const fechaValida = esFechaValida(fechaInicio);
   const fechas = fechaValida ? fechasDeLosDias(fechaInicio) : [];
-  const fechaFin = fechaValida ? fechaFinDelPlan(fechaInicio) : null;
+  // RN-PLAN-09: la fecha de fin se muestra en dd/mm/aaaa (T21, decidido por Ulises el 25/11/2026).
+  const fechaFin = fechaValida ? fechaConBarras(fechaFinDelPlan(fechaInicio)) : null;
 
   function alternarAlumno(alumnoId: string) {
     setSeleccionados((anteriores) =>
@@ -89,12 +91,12 @@ export function PaginaCrearPlan(props: { alVolver?: () => void } = {}) {
 
   return (
     <section className="pagina pagina-ancha">
-      <h1>Nuevo plan</h1>
       {props.alVolver && (
-        <button type="button" className="secundario" onClick={props.alVolver}>
+        <button type="button" className="enlace volver" onClick={props.alVolver}>
           Volver al listado
         </button>
       )}
+      <h1>Nuevo plan</h1>
       {errorDatos && (
         <p role="alert" className="error">
           {errorDatos}
@@ -155,7 +157,10 @@ export function PaginaCrearPlan(props: { alVolver?: () => void } = {}) {
             {fechas.map((fecha, indice) => {
               const numero = indice + 1;
               return (
-                <div key={numero} className="dia-del-plan">
+                <div
+                  key={numero}
+                  className={`dia-del-plan${rutinaPorDia[numero] ? ' con-rutina' : ''}`}
+                >
                   {/* Texto completo para lectores de pantalla; el visible es compacto. */}
                   <p className="dia-del-plan-titulo solo-lectores">
                     Día {numero} — {etiquetaDeFecha(fecha)}
@@ -205,7 +210,7 @@ export function PaginaCrearPlan(props: { alVolver?: () => void } = {}) {
             Plan creado del {plan.fechaInicio} al {plan.fechaFin}
           </p>
         )}
-        <button type="submit" disabled={enviando}>
+        <button type="submit" className="accion-principal" disabled={enviando}>
           Crear plan
         </button>
       </form>

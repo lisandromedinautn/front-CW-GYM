@@ -251,7 +251,7 @@ export function EditorRutina(props: {
             {exito}
           </p>
         )}
-        <button type="submit" disabled={enviando}>
+        <button type="submit" className="accion-principal" disabled={enviando}>
           {props.edicion ? 'Guardar cambios' : 'Guardar rutina'}
         </button>
       </form>
