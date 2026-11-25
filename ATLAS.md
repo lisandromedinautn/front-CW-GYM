@@ -15,7 +15,10 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | `docs/METRICAS-SPRINT-2.md` | Corte del 14/11: métricas del sprint 2, residual V2, fuentes y pronósticos condicionales |
 | `docs/MODELOS-IA.md` | Modelos, delegación y plantillas (idéntica a la del back) |
 | `.claude/settings.json` | Permisos: confirmación al editar tests e instalar paquetes |
-| `.claude/skills/tdd`, `.claude/skills/coverage` | Skills de TDD y cobertura |
+| `.claude/skills/tdd`, `.claude/skills/coverage`, `.claude/skills/impeccable` | Skills de TDD, cobertura y diseño (Impeccable, épica US24) |
+| `PRODUCT.md` | Verdad del producto para el diseño: usuarios, contexto de uso, restricciones y accesibilidad (WCAG 2.2 AA). T17 |
+| `DESIGN.md` | Sistema de diseño «Tanteador de club»: tokens, tipografía, componentes y reglas (T17) |
+| `.impeccable/surfaces/` | Brief de superficie con el contrato de la dirección visual elegida (T17). El resto de `.impeccable/` es estado local que no se commitea |
 | `e2e/<modulo>/` | Tests e2e de Playwright. ✅ `e2e/planificacion/crear-rutina.e2e.ts` (US06), `crear-rutina-circuitos.e2e.ts` (US09), `crear-rutina-mixta.e2e.ts` (US10), `importar-rutina.e2e.ts` (US20) y `crear-plan.e2e.ts` (T15); `e2e/identidad/ingreso-y-vinculo.e2e.ts`, `e2e/entrenamiento/entrenar.e2e.ts` y `seguimiento.e2e.ts` (T15); soporte en `e2e/soporte/` (`api.ts` prepara datos por la API, `sesion.ts` ingresa y navega el menú) |
 
 ## Configuración y arranque
@@ -30,7 +33,7 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | `eslint/reglas-de-hooks.js` | Regla local de lint: reglas de los hooks también para `usar<Accion>` ✅ |
 | `.husky/`, `scripts/` | Hooks, validador de mensajes y verificación de antigüedad de paquetes ✅ |
 | `index.html`, `src/main.tsx`, `src/Aplicacion.tsx` | Arranque y raíz de composición (rutas por rol, US00) ✅ |
-| `src/estilos.css` | Estilos globales de la app ✅ |
+| `src/estilos.css` | Hoja de estilos de la app: importa las fuentes (`@fontsource`), los tokens y la base, y usa solo variables del sistema de diseño (T17) ✅ |
 | `src/vite-env.d.ts` | Tipos de Vite para `import.meta.env` ✅ |
 | `.env.example` | `VITE_URL_API` ✅ |
 | `CHANGELOG.md` | Cambios por versión (decisión 38) ✅ |
@@ -104,6 +107,8 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | `presentacion/menu/DisenioConMenu.tsx` | Layout con el menú para las rutas por rol | ✅ |
 | `presentacion/inicio/PaginaInicio.tsx` | Inicio de cada rol (placeholder "Panel del {rol}") | ✅ |
 | `presentacion/proximamente/Proximamente.tsx` | Texto para las rutas que todavía no tienen página | ✅ |
+| `presentacion/estilos/tokens.css` | Tokens del sistema de diseño (colores, tipografía, rampa de cifras, espaciado, radios, sombras, foco, toque y movimiento), con los contrastes anotados (T17) | ✅ |
+| `presentacion/estilos/base.css` | Estilos globales: reset, fondo, tinta, títulos, enlaces, cifras tabulares, foco, selección y movimiento reducido (T17) | ✅ |
 
 ## Tests de integración (front)
 

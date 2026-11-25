@@ -8,6 +8,13 @@ Categorías: Agregado, Cambiado, Corregido, Eliminado, Seguridad. Cada entrada c
 
 ### Agregado
 
+- Sistema de diseño «Tanteador de club» (T17, CG-95, épica US24).
+  - Tokens centralizados en `src/compartido/presentacion/estilos/tokens.css`: paleta con contrastes WCAG 2.2 AA, tipografía Barlow y Barlow Condensed, rampa de cifras, espaciado, radios, sombras, foco, objetivos táctiles y movimiento.
+  - Estilos globales en `base.css`.
+  - `src/estilos.css` pasa a usar solo tokens.
+  - Dependencias nuevas con versión exacta: `@fontsource/barlow` y `@fontsource/barlow-condensed` 5.3.0, y `lucide-react` 1.78.0.
+  - No cambia ninguna funcionalidad.
+
 - Ver y editar una rutina (US06): el lápiz de cada tarjeta de `/profesor/rutinas` ("Editar rutina") abre la rutina en el editor precargado (`/profesor/rutinas/:id`), donde se cambian nombre, ejercicios, series, objetivos, peso, pausas y orden con "Guardar cambios" (RN-PLAN-07, 08, 21).
 
 - US15: finalización del entrenamiento y resumen de volumen, grupos musculares trabajados y duración, con recuperación del resumen al recargar la página.
