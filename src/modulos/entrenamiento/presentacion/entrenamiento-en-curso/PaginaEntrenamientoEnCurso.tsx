@@ -1,3 +1,4 @@
+import { Link } from 'react-router';
 import { usarFinalizarEntrenamiento } from '../../aplicacion/finalizar-entrenamiento/usarFinalizarEntrenamiento.ts';
 import { ResumenEntrenamiento } from '../finalizar-entrenamiento/ResumenEntrenamiento.tsx';
 import { PercepcionDelResumen } from '../finalizar-entrenamiento/PercepcionDelResumen.tsx';
@@ -19,7 +20,11 @@ export function PaginaEntrenamientoEnCurso() {
   return (
     <section className="pagina">
       <h1>Mi entrenamiento</h1>
-      {error && <p role="alert">{error}</p>}
+      {error && (
+        <p role="alert" className="error">
+          {error}
+        </p>
+      )}
       {!resultado && !error && <p>Cargando tu entrenamiento…</p>}
       {resultado?.estado === 'sin-entrenamiento' && <p>No tenés un entrenamiento en curso.</p>}
       {resultado && resultado.estado !== 'sin-entrenamiento' && (
@@ -35,6 +40,10 @@ export function PaginaEntrenamientoEnCurso() {
                 entrenamientoId={resultado.entrenamiento.id}
                 percepcion={resultado.entrenamiento.percepcion}
               />
+              {/* RN-UI-ENT-05: al final del resumen, después de la percepción (T22). */}
+              <Link to="/alumno/rutina-del-dia" className="boton secundario volver-inicio">
+                Volver al inicio
+              </Link>
             </>
           ) : resultado.estado === 'abandonado' ? (
             <DetalleEntrenamiento
@@ -72,7 +81,7 @@ function DetalleEntrenamiento(props: {
 
   return (
     <>
-      {soloLectura ? <p>Abandonado</p> : <Contador inicio={entrenamiento.inicio} />}
+      {soloLectura && <p className="etiqueta">Abandonado</p>}
       {error && <p role="alert">{error}</p>}
       {soloLectura ? (
         <ListaSeries grupos={grupos} />
@@ -84,6 +93,7 @@ function DetalleEntrenamiento(props: {
             registrar={registrar}
             finalizar={() => void finalizacion.finalizar(entrenamiento.id)}
             finalizando={finalizacion.finalizando}
+            cronometro={<Contador inicio={entrenamiento.inicio} />}
           />
         </>
       )}

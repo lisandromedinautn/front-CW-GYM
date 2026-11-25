@@ -21,6 +21,7 @@ Ejecución del entrenamiento (iniciar, registrar series y finalizar), resumen co
 | RN-UI-ENT-03 | Durante el entrenamiento en curso se muestra un paso por vez (una serie de bloque o un ejercicio en una vuelta de circuito), con el GIF del ejercicio y su atribución si lo tiene. Registrar avanza al paso siguiente; "Anterior" y "Siguiente" mueven sin registrar. El contador está siempre visible | Vigente |
 | RN-ENT-18 | El profesor solo elige entre sus alumnos vinculados; si el back responde `RN-ENT-18`, se muestra su mensaje | Vigente |
 | RN-UI-ENT-04 | El profesor elige uno de sus alumnos vinculados y ve sus entrenamientos del más nuevo al más viejo, paginados, cada uno con fecha y hora de inicio (hora de Argentina), rutina, estado, peso del día, cuántas series registró sobre el total y cada serie realizada junto a lo prescripto. En un entrenamiento finalizado con percepción, también "RPE: N · Sensación de fuerza: N" (US17) | Vigente |
+| RN-UI-ENT-06 | En el inicio del Alumno, debajo de los accesos, la tarjeta "Hoy" muestra la fecha que informa el back y el estado del día; con acceso, en dos columnas (estado a la izquierda; a la derecha, el nombre de la rutina y una flecha). La columna derecha lleva arriba la etiqueta "Ir al entrenamiento" ("Ir a mi plan" en descanso), fuera del nombre del enlace. Rutina pendiente (sin entrenamiento hoy, o con uno abandonado): "Tenés un entrenamiento pendiente hoy" y acceso "Ver mi rutina del día: <rutina>"; en curso: "Tenés un entrenamiento en curso" y "Retomar entrenamiento: <rutina>"; finalizado hoy: "Ya entrenaste hoy" y "Ver resumen del entrenamiento: <rutina>"; descanso: "Hoy es día de descanso." y "Ver mi plan completo" (visible "Mi plan"); sin plan: "No tenés un plan vigente.", sin accesos | Vigente ✅ (T25) |
 | RN-UI-ENT-05 | Al finalizar, el resumen ofrece "Volver al inicio", que lleva a Mi rutina del día | Vigente |
 
 ## Pantallas y hooks
@@ -33,6 +34,7 @@ Ejecución del entrenamiento (iniciar, registrar series y finalizar), resumen co
 | `finalizar-entrenamiento/ResumenEntrenamiento.tsx`, `PaginaEntrenamientoEnCurso.tsx` ✅ | Sin hook adicional: los récords llegan en la respuesta de finalización | US16 |
 | `PaginaEntrenamientoEnCurso.tsx`, `finalizar-entrenamiento/PercepcionDelResumen.tsx` ✅ | `registrar-percepcion/usarRegistrarPercepcion.ts` ✅ | US17 |
 | `PaginaEntrenamientosDeAlumnos.tsx` ✅ | `usarEntrenamientosDeAlumnos.ts` ✅ | US18 |
+| `estado-del-dia/EntrenamientoDelDia.tsx` ✅ (sección "Hoy" del inicio) | `usarEntrenamientoEnCurso.ts` ✅ | T25 |
 
 ## Historial de cambios de reglas de UI
 
@@ -45,6 +47,8 @@ Ejecución del entrenamiento (iniciar, registrar series y finalizar), resumen co
 | 24/11/2026 | RN-ENT-13 y RN-ENT-17 | Visualización de récords personales en el resumen de finalización (US16) | Ramiro |
 | 24/11/2026 | RN-ENT-16 (UI) y RN-UI-ENT-04 | La percepción se carga una sola vez, con los dos campos obligatorios, desde el resumen; el profesor la ve en los entrenamientos de alumnos (US17, decisión 46) | Ulises |
 | 24/11/2026 | Nueva RN-UI-ENT-05 | Al finalizar, el resumen ofrece "Volver al inicio" hacia Mi rutina del día (T16) | Lisandro |
+| 25/11/2026 | Nueva RN-UI-ENT-06 | Estado del entrenamiento de hoy en el inicio del Alumno (T25) | Ulises |
+| 25/11/2026 | RN-UI-ENT-06 | Tras la revisión manual: tarjeta en dos columnas con la fecha, el acceso en la cancha con el nombre de la rutina, "Tenés un entrenamiento en curso" y acceso a Mi plan en descanso; se ajustaron los nombres de los enlaces en sus tests, con aprobación | Ulises |
 
 ## Decisiones de implementación (CG-46, US13)
 
@@ -110,3 +114,15 @@ Implementado el 24/11/2026.
   * Al recargar, se ve el texto si la percepción vino cargada, o el formulario si vino en `null`.
 * **US18:** la tarjeta de un entrenamiento con percepción muestra "RPE: N · Sensación de fuerza: N".
 * **e2e:** el alumno llega al resumen por "Mi rutina del día" y el enlace "Ver resumen del entrenamiento".
+## Decisiones de implementación (T21, épica US24)
+
+* En `/profesor/entrenamientos`, cada entrenamiento es una `article.tarjeta-registro`. El título "fecha · rutina · estado" no cambia (lo lee el test de US18). Las series van en filas con prescripto y realizado en columnas desde 48rem. Decidido por Ulises el 25/11/2026; solo cambia lo visual.
+
+## Decisiones de implementación (T22, épica US24)
+
+Decidido por Ulises el 25/11/2026. El cambio es visual: el registro de series, el resumen, los textos y los nombres accesibles funcionan igual que antes (los tests no cambiaron).
+
+* **Tanteador** (RN-UI-ENT-03, contador siempre visible): `PasoActual` recibe el cronómetro por la propiedad `cronometro` y lo muestra en `.tanteador` (fijo arriba) junto a "Paso N de M" y una barra de avance decorativa. Sin pasos, el tanteador muestra solo el cronómetro. Un entrenamiento abandonado sigue sin contador y muestra la insignia "Abandonado".
+* **Paso**: el GIF lleva `key={urlGif}` y se vuelve a montar en cada paso, para que no quede a la vista el del ejercicio anterior mientras carga. "Registrar" es la acción principal; "Anterior" y "Siguiente" son secundarios. Los campos de la serie y de la percepción se envuelven en `.campo-serie`.
+* **Resumen** (RN-ENT-17, RN-UI-ENT-05): el peso total y la duración van en `.marcador-final`, con el rótulo y el valor en el mismo párrafo ("Peso total levantado: 600 kg" sigue siendo su texto). Los récords van en el mismo panel. "Volver al inicio" pasó de `ResumenEntrenamiento` a `PaginaEntrenamientoEnCurso`, al final, después de la percepción.
+* **Acciones del día**: "Iniciar entrenamiento" y "Retomar entrenamiento" son la acción principal; "Ver resumen del entrenamiento" es secundaria. Van en la barra fija de la rutina del día.

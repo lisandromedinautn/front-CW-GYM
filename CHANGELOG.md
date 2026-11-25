@@ -8,6 +8,54 @@ Categorías: Agregado, Cambiado, Corregido, Eliminado, Seguridad. Cada entrada c
 
 ### Agregado
 
+- Mi plan en calendario y estado del día en el inicio del Alumno (T25, CG-103).
+  - **Mi plan:** los 28 días van en un calendario de lunes a domingo, con un punto del color de cada rutina y una leyenda al costado. Hoy va marcado y elegido al entrar, y los días del mes siguiente van en segundo plano. Al tocar un día, su rutina aparece debajo del calendario.
+  - **Inicio del Alumno:** una tarjeta "Hoy" con la fecha muestra si el entrenamiento del día está pendiente, en curso o hecho, o si es día de descanso o no hay plan; a la derecha, en verde de cancha, el acceso con el nombre de la rutina (RN-UI-ENT-06). Las tarjetas de acceso tienen el mismo alto.
+  - **Sin cambios en la API:** usa las consultas que ya existían.
+
+- Rediseño del ingreso y de las pantallas del Administrador (T20, CG-98, épica US24).
+  - **Ingreso:** la cancha con la marca "CW-GYM" ocupa la mitad izquierda en escritorio y una banda arriba en el celular. "Ingresar" va en ámbar.
+  - **Alta de profesor:** los campos van en dos grupos, "Datos personales" y "Cuenta", en dos columnas desde escritorio.
+  - **Inicio:** en los tres roles muestra una tarjeta de acceso por cada opción del menú, con su color de sección.
+  - **Sin cambios de comportamiento:** los textos, los campos y la validación no cambian.
+
+- Rediseño de las pantallas del Alumno (T22, CG-100, épica US24): vínculo, rutina del día, Mi plan, entrenamiento en curso, resumen y percepción.
+  - **Entrenamiento en curso:** un tanteador fijo arriba con el tiempo, el paso y una barra de avance.
+  - **Paso actual:** el GIF grande y los campos de la serie en fila, en números grandes, con "Registrar" a todo el ancho.
+  - **Rutina del día:** la acción del día queda fija abajo y los ejercicios van en filas.
+  - **Mi plan:** pasa a filas compactas, una por día.
+  - **Resumen:** es un marcador final con el peso total, la duración y los récords batidos.
+  - **Sin cambios de comportamiento:** el registro de series y el resumen funcionan igual que antes.
+
+- Rediseño de las pantallas del Profesor (T21, CG-99, épica US24): código, rutinas, editor de rutinas, planes, alumnos del plan, editar días, entrenamientos de alumnos, notificaciones y ejercicios.
+  - **Tarjetas de rutina y de plan:** título a todo el ancho y las acciones al pie, con icono y texto.
+  - **Planes:** las fechas y los días se leen como un tanteador.
+  - **Calendario del plan:** marca los días con rutina y atenúa los de descanso.
+  - **Editor de rutinas:** campos numéricos en columnas, GIF al costado y acciones en una fila.
+  - **Seguimiento:** los entrenamientos y las notificaciones son tarjetas, con las series en columnas.
+  - **Acción principal:** en ámbar, una por pantalla.
+  - **Sin cambios de comportamiento:** los textos, filtros, orden y paginación no cambian. La única excepción es la "Fecha de fin" de crear plan, que se muestra en dd/mm/aaaa.
+
+- Estructura general con el marco de cancha (T19, CG-97, épica US24).
+  - **Encabezado:** verde, con la marca "CW-GYM", el menú por rol y "Salir".
+  - **Pestaña activa:** marcada con `aria-current="page"` y con el color de su sección, que también pinta la franja del marco.
+  - **Celular y tableta:** el menú es una tira de pestañas que se desliza.
+  - **Páginas:** centradas, con una columna de lectura o una ancha.
+  - **Sin cambios de navegación:** las mismas opciones y rutas que antes, sin desbordes desde 360 px.
+
+- Componentes base del sistema de diseño (T18, CG-96, épica US24), en `src/compartido/presentacion/estilos/componentes.css`.
+  - **Botones:** en caps condensadas y de 44 px, con la variante `.accion-principal` en ámbar (una por pantalla), `.secundario` con contorno, `.peligro`, `.enlace` y `.boton-icono`.
+  - **Campos:** con hover, foco, error y deshabilitado.
+  - **Otros componentes:** tarjetas sin sombra, tablas, insignias rectangulares en caps condensadas y diálogos.
+  - No cambia ningún texto, rol ni comportamiento.
+
+- Sistema de diseño «Tanteador de club» (T17, CG-95, épica US24).
+  - Tokens centralizados en `src/compartido/presentacion/estilos/tokens.css`: paleta con contrastes WCAG 2.2 AA, tipografía Barlow y Barlow Condensed, rampa de cifras, espaciado, radios, sombras, foco, objetivos táctiles y movimiento.
+  - Estilos globales en `base.css`.
+  - `src/estilos.css` pasa a usar solo tokens.
+  - Dependencias nuevas con versión exacta: `@fontsource/barlow` y `@fontsource/barlow-condensed` 5.3.0, y `lucide-react` 1.78.0.
+  - No cambia ninguna funcionalidad.
+
 - Ver y editar una rutina (US06): el lápiz de cada tarjeta de `/profesor/rutinas` ("Editar rutina") abre la rutina en el editor precargado (`/profesor/rutinas/:id`), donde se cambian nombre, ejercicios, series, objetivos, peso, pausas y orden con "Guardar cambios" (RN-PLAN-07, 08, 21).
 
 - US15: finalización del entrenamiento y resumen de volumen, grupos musculares trabajados y duración, con recuperación del resumen al recargar la página.
@@ -42,6 +90,11 @@ Categorías: Agregado, Cambiado, Corregido, Eliminado, Seguridad. Cada entrada c
 
 - La creación del plan pasa a `/profesor/planes/nuevo` y se abre con "Nuevo plan" desde el listado; tiene "Volver al listado" (T13).
 - Crear plan muestra los 28 días como calendario de 5 semanas, de lunes a domingo; los días fuera del plan aparecen en gris y con blur. En pantallas chicas sigue como lista (T12).
+
+### Corregido
+
+- En el entrenamiento en curso, al pasar de paso quedaba a la vista el GIF del ejercicio anterior mientras cargaba el nuevo (T22, CG-100).
+- En el celular, la pestaña activa del menú quedaba cortada contra el borde cuando el contador de no leídas llegaba después de cargar la página. Ahora la tira vuelve a llevarla a la vista, sin mover la página (T21, CG-99).
 
 ## [1.3.0] — 2026-11-21
 

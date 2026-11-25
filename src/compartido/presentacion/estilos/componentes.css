@@ -1,0 +1,402 @@
+/*
+ * Componentes base (T18, CG-96): botones, campos, tarjetas, tablas, insignias y diálogos.
+ * Un único estilo por componente, con todos sus estados, sobre los tokens de tokens.css.
+ * Se aplican por elemento o por las clases que ya usan las pantallas: no cambia ningún texto,
+ * rol ni propiedad de los componentes de React.
+ */
+
+/* ---------- Botones ---------- */
+
+/* Base: verde de acción. Rótulo en caps condensadas, como un tanteador. 44 px de alto mínimo. */
+button,
+.boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--esp-2);
+  min-height: var(--toque-comodo);
+  padding: 0 var(--esp-5);
+  border: var(--borde-fino) solid transparent;
+  border-radius: var(--radio-chico);
+  background: var(--color-accion);
+  color: var(--color-sobre-accion);
+  font-family: var(--fuente-rotulo);
+  font-size: var(--texto-medio);
+  font-weight: var(--peso-semi);
+  letter-spacing: var(--tracking-rotulo);
+  line-height: var(--interlineado-ajustado);
+  text-decoration: none;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color var(--duracion-corta) var(--curva-salida),
+    border-color var(--duracion-corta) var(--curva-salida),
+    color var(--duracion-corta) var(--curva-salida);
+}
+button:hover:not(:disabled),
+.boton:hover {
+  background: var(--color-accion-hover);
+}
+button:active:not(:disabled),
+.boton:active {
+  transform: translateY(1px);
+}
+button:disabled {
+  opacity: var(--opacidad-deshabilitado);
+  cursor: not-allowed;
+}
+
+/* Acción principal de la pantalla: una sola por pantalla, en ámbar de marcador (lo que importa ahora). */
+.accion-principal {
+  background: var(--color-ambar);
+  color: var(--color-sobre-ambar);
+}
+.accion-principal:hover:not(:disabled) {
+  background: var(--color-ambar-hundido);
+}
+
+/* Secundario: contorno verde sobre transparente. */
+button.secundario,
+.boton.secundario {
+  background: transparent;
+  border-color: var(--color-accion);
+  color: var(--color-accion);
+}
+button.secundario:hover:not(:disabled),
+.boton.secundario:hover {
+  background: var(--color-exito-fondo);
+}
+
+/* Peligro: acciones que borran o invalidan (por ejemplo, regenerar el código). */
+button.peligro {
+  background: var(--color-error);
+  color: var(--color-sobre-accion);
+}
+button.peligro:hover:not(:disabled) {
+  background: var(--color-error-tinta);
+}
+
+/* Enlace: botón que se lee como texto (abrir un detalle, volver). */
+button.enlace {
+  min-height: var(--toque-minimo);
+  padding: 0;
+  background: none;
+  border: 0;
+  color: var(--color-enlace);
+  font-family: var(--fuente-texto);
+  font-size: inherit;
+  font-weight: var(--peso-semi);
+  letter-spacing: normal;
+  text-align: left;
+  text-transform: none;
+  white-space: normal;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+button.enlace:hover:not(:disabled) {
+  background: none;
+  text-decoration-thickness: 2px;
+}
+
+/* Botón de icono: cuadrado de 44 px, el nombre accesible lo da aria-label. */
+.boton-icono {
+  width: var(--toque-comodo);
+  padding: 0;
+  flex: none;
+}
+.boton-icono svg {
+  width: var(--icono-medio);
+  height: var(--icono-medio);
+  stroke-width: var(--icono-trazo);
+}
+
+/* ---------- Campos de formulario ---------- */
+
+label {
+  display: grid;
+  gap: var(--esp-1);
+  font-size: var(--texto-chico);
+  font-weight: var(--peso-semi);
+  color: var(--color-tinta-secundaria);
+}
+
+input:not([type='checkbox'], [type='radio']),
+select,
+textarea {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  min-height: var(--toque-comodo);
+  padding: 0 var(--esp-3);
+  border: var(--borde-fino) solid var(--color-borde-control);
+  border-radius: var(--radio-chico);
+  background: var(--color-superficie);
+  color: var(--color-tinta);
+  font-size: var(--texto-base);
+  font-weight: var(--peso-normal);
+  transition: border-color var(--duracion-corta) var(--curva-salida);
+}
+textarea {
+  padding: var(--esp-3);
+}
+/* El hover no pisa el borde de error ni el de foco. */
+input:not([type='checkbox'], [type='radio']):hover:not(
+    :disabled,
+    :focus-visible,
+    [aria-invalid='true']
+  ),
+select:hover:not(:disabled, :focus-visible, [aria-invalid='true']),
+textarea:hover:not(:disabled, :focus-visible, [aria-invalid='true']) {
+  border-color: var(--color-tinta-tenue);
+}
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  border-color: var(--color-accion);
+}
+input:disabled,
+select:disabled,
+textarea:disabled {
+  background: var(--color-superficie-hundida);
+  opacity: var(--opacidad-deshabilitado);
+  cursor: not-allowed;
+}
+
+/* Error de validación: borde rojo más grueso sin mover el contenido. */
+input[aria-invalid='true'],
+select[aria-invalid='true'],
+textarea[aria-invalid='true'] {
+  border-color: var(--color-error);
+  box-shadow: inset 0 0 0 var(--borde-fino) var(--color-error);
+}
+
+input[type='checkbox'],
+input[type='radio'] {
+  width: var(--icono-medio);
+  height: var(--icono-medio);
+  margin: 0;
+  flex: none;
+  cursor: pointer;
+}
+/* Una casilla con su texto va en una sola línea, también si la casilla va dentro de un span. */
+label:has(input[type='checkbox']),
+label:has(input[type='radio']),
+label > span:has(> input[type='checkbox']),
+label > span:has(> input[type='radio']) {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-2);
+  min-height: var(--toque-minimo);
+  color: var(--color-tinta);
+  font-weight: var(--peso-normal);
+}
+
+.campo {
+  display: grid;
+  gap: var(--esp-1);
+}
+.error-campo {
+  color: var(--color-error);
+  font-size: var(--texto-chico);
+  font-weight: var(--peso-medio);
+}
+.error {
+  margin: 0;
+  color: var(--color-error);
+  font-weight: var(--peso-medio);
+}
+.exito {
+  margin: 0;
+  color: var(--color-exito-tinta);
+  font-weight: var(--peso-medio);
+}
+
+/* ---------- Tarjetas y superficies ---------- */
+
+/* Superficie blanca, borde fino y esquinas firmes: sin sombra (la jerarquía es por escala). */
+.tarjeta,
+.formulario,
+.tarjeta-item,
+.bloque {
+  background: var(--color-superficie);
+  border: var(--borde-fino) solid var(--color-borde);
+  border-radius: var(--radio-medio);
+}
+.tarjeta {
+  width: 100%;
+  max-width: var(--ancho-tarjeta-ingreso);
+  display: grid;
+  gap: var(--esp-4);
+  padding: var(--esp-6);
+}
+.formulario {
+  display: grid;
+  gap: var(--esp-4);
+  padding: var(--esp-5);
+}
+.tarjeta-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--esp-1) var(--esp-3);
+  padding: var(--esp-3) var(--esp-4);
+}
+.bloque {
+  /* Un fieldset tiene min-width: min-content: sin esto, un nombre largo desborda en el celular. */
+  min-width: 0;
+  display: grid;
+  gap: var(--esp-3);
+  padding: var(--esp-4);
+}
+/* Dentro de un formulario, el grupo no es otra caja: lo separan su título y el espacio. */
+.formulario .bloque {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+}
+.formulario .bloque legend {
+  padding: 0 0 var(--esp-2);
+}
+.bloque legend {
+  padding: 0 var(--esp-1);
+  font-family: var(--fuente-rotulo);
+  font-weight: var(--peso-fuerte);
+  font-size: var(--texto-medio);
+  letter-spacing: var(--tracking-titulo);
+}
+
+/* ---------- Tablas ---------- */
+
+/* Encabezados en caps condensadas y cifras tabulares, como un parte de resultados. */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--color-superficie);
+  font-size: var(--texto-base);
+}
+th {
+  padding: var(--esp-2) var(--esp-3);
+  border-bottom: var(--borde-grueso) solid var(--color-cancha);
+  color: var(--color-tinta-secundaria);
+  font-family: var(--fuente-rotulo);
+  font-size: var(--texto-chico);
+  font-weight: var(--peso-semi);
+  letter-spacing: var(--tracking-rotulo);
+  text-align: left;
+  text-transform: uppercase;
+}
+td {
+  padding: var(--esp-3);
+  border-bottom: var(--borde-fino) solid var(--color-borde);
+  vertical-align: top;
+}
+tbody tr:hover {
+  background: var(--color-superficie-hundida);
+}
+/* Contenedor para que una tabla ancha se desplace en el celular sin desbordar la página. */
+.tabla-contenedor {
+  overflow-x: auto;
+  border: var(--borde-fino) solid var(--color-borde);
+  border-radius: var(--radio-medio);
+}
+.tabla-contenedor table {
+  border: 0;
+}
+
+/* ---------- Insignias de estado ---------- */
+
+/* Rótulos de marcador: rectángulo de esquinas firmes, caps condensadas. */
+.insignia,
+.etiqueta,
+.estado-plan {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--esp-1);
+  padding: 0.125rem var(--esp-2);
+  border-radius: var(--radio-chico);
+  background: var(--color-neutro-fondo);
+  color: var(--color-neutro-tinta);
+  font-family: var(--fuente-rotulo);
+  font-size: var(--texto-chico);
+  font-weight: var(--peso-semi);
+  letter-spacing: var(--tracking-rotulo);
+  line-height: 1.4;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+/* Un párrafo con forma de insignia (por ejemplo, "Fecha de fin: …") puede partirse en el celular. */
+p.etiqueta {
+  white-space: normal;
+}
+.insignia-exito,
+.estado-plan-vigente {
+  background: var(--color-exito-fondo);
+  color: var(--color-exito-tinta);
+}
+.insignia-advertencia,
+.estado-plan-proximo {
+  background: var(--color-advertencia-fondo);
+  color: var(--color-advertencia-tinta);
+}
+.insignia-error {
+  background: var(--color-error-fondo);
+  color: var(--color-error-tinta);
+}
+.insignia-info {
+  background: var(--color-info-fondo);
+  color: var(--color-info-tinta);
+}
+.insignia-neutro,
+.estado-plan-finalizado {
+  background: var(--color-neutro-fondo);
+  color: var(--color-neutro-tinta);
+}
+
+/* ---------- Diálogos ---------- */
+
+.fondo-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: var(--capa-dialogo);
+  display: grid;
+  place-items: center;
+  padding: var(--esp-4);
+  background: var(--color-velo);
+}
+/* El diálogo es la única capa que flota: lleva sombra y esquinas grandes. */
+.dialog {
+  width: 100%;
+  max-width: var(--ancho-dialogo);
+  max-height: 90vh;
+  max-height: 90dvh;
+  overflow: auto;
+  display: grid;
+  gap: var(--esp-4);
+  padding: var(--esp-6);
+  background: var(--color-superficie);
+  border-radius: var(--radio-grande);
+  box-shadow: var(--sombra-capa);
+}
+.dialog h2 {
+  margin: 0;
+  font-size: var(--texto-titulo-2);
+}
+.acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--esp-3);
+}
+
+/* ---------- Imágenes de ejercicio ---------- */
+
+.miniatura {
+  width: 2.5rem;
+  height: 2.5rem;
+  flex: none;
+  object-fit: cover;
+  border-radius: var(--radio-chico);
+  background: var(--color-neutro-fondo);
+}

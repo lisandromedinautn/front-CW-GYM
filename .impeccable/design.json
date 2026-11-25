@@ -1,0 +1,203 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-24T00:00:00Z",
+  "title": "Design System: CW-GYM",
+  "extensions": {
+    "colorMeta": {
+      "cancha": {
+        "role": "primary",
+        "displayName": "Cancha",
+        "canonical": "#0e2a20",
+        "tonalRamp": [
+          "#04100b",
+          "#0a1d15",
+          "#0e2a20",
+          "#163a2c",
+          "#1e4434",
+          "#4a6b5c",
+          "#a9c2b5",
+          "#e9efea"
+        ]
+      },
+      "ambar": {
+        "role": "secondary",
+        "displayName": "Ámbar de marcador",
+        "canonical": "#f2b632",
+        "tonalRamp": [
+          "#3a2a04",
+          "#6b4c06",
+          "#a87608",
+          "#d99a12",
+          "#f2b632",
+          "#f6c95f",
+          "#fadf9b",
+          "#fdf1d4"
+        ]
+      },
+      "accion": {
+        "role": "primary",
+        "displayName": "Acción verde",
+        "canonical": "#1e5c44",
+        "tonalRamp": [
+          "#0a2219",
+          "#10382a",
+          "#163a2c",
+          "#1e5c44",
+          "#2f7b5f",
+          "#5a9d83",
+          "#a3c8b7",
+          "#dcebe4"
+        ]
+      },
+      "fondo": {
+        "role": "neutral",
+        "displayName": "Fondo frío",
+        "canonical": "#eef1ee",
+        "tonalRamp": [
+          "#14201a",
+          "#3d4a43",
+          "#5f6e66",
+          "#748a7e",
+          "#d3dbd5",
+          "#e4e9e5",
+          "#eef1ee",
+          "#ffffff"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "titulo-1": {
+        "displayName": "Título 1",
+        "purpose": "Un h1 por pantalla, Barlow Condensed 700."
+      },
+      "cifra-1": { "displayName": "Cifra 1", "purpose": "Contador del Entrenamiento." },
+      "cifra-2": { "displayName": "Cifra 2", "purpose": "Tanteador prescripto | hecho." },
+      "cifra-3": { "displayName": "Cifra 3", "purpose": "Cifras destacadas de un listado." },
+      "cifra-4": { "displayName": "Cifra 4", "purpose": "Cifras dentro de una fila." },
+      "rotulo": { "displayName": "Rótulo", "purpose": "Etiquetas cortas en caps condensadas." }
+    },
+    "shadows": [
+      {
+        "name": "sombra-capa",
+        "value": "0 12px 32px rgb(14 42 32 / 22%), 0 2px 6px rgb(14 42 32 / 12%)",
+        "purpose": "Diálogos y menús desplegables. Solo capas flotantes."
+      },
+      {
+        "name": "sombra-fija",
+        "value": "0 2px 8px rgb(14 42 32 / 14%)",
+        "purpose": "Elementos fijos que se despegan al desplazarse."
+      }
+    ],
+    "motion": [
+      {
+        "name": "duracion-corta",
+        "value": "120ms",
+        "purpose": "Cambios de estado de controles; 0ms con movimiento reducido."
+      },
+      {
+        "name": "duracion-media",
+        "value": "200ms",
+        "purpose": "Entradas de paneles; 0ms con movimiento reducido."
+      },
+      {
+        "name": "curva-salida",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Salida exponencial para todo movimiento."
+      }
+    ],
+    "breakpoints": [
+      { "name": "chico", "value": "40rem" },
+      { "name": "medio", "value": "48rem" },
+      { "name": "ancho", "value": "64rem" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Botón de acción",
+      "kind": "button",
+      "refersTo": "boton-accion",
+      "description": "Acción principal; hoy verde, T18 decide si pasa a ámbar.",
+      "html": "<button class=\"ds-boton\">Registrar</button>",
+      "css": ".ds-boton { background: var(--color-accion); color: var(--color-sobre-accion); border: 1px solid transparent; border-radius: var(--radio-chico); padding: var(--esp-3) var(--esp-4); font: inherit; cursor: pointer; } .ds-boton:hover { background: var(--color-accion-hover); } .ds-boton:focus-visible { outline: 3px solid var(--anillo-foco); outline-offset: 2px; }"
+    },
+    {
+      "name": "Tarjeta de ítem",
+      "kind": "card",
+      "refersTo": "tarjeta",
+      "description": "Superficie blanca con borde fino y radio medio, sin sombra.",
+      "html": "<div class=\"ds-tarjeta\">Press de banca</div>",
+      "css": ".ds-tarjeta { background: var(--color-superficie); border: 1px solid var(--color-borde); border-radius: var(--radio-medio); padding: var(--esp-3); color: var(--color-tinta); }"
+    },
+    {
+      "name": "Tanteador",
+      "kind": "custom",
+      "refersTo": "tanteador-cifra",
+      "description": "Cifra ámbar sobre cancha: el único uso oscuro del sistema.",
+      "html": "<div class=\"ds-tanteador\"><span>90</span></div>",
+      "css": ".ds-tanteador { background: var(--color-cancha); color: var(--color-ambar); padding: var(--esp-4); font-family: var(--fuente-rotulo); font-weight: 700; font-size: var(--cifra-2); font-variant-numeric: tabular-nums; line-height: 1.1; }"
+    },
+    {
+      "name": "Aviso de error",
+      "kind": "custom",
+      "refersTo": "aviso-error",
+      "description": "Texto en tinta de error sobre su fondo.",
+      "html": "<p class=\"ds-error\" role=\"alert\">No se pudo guardar.</p>",
+      "css": ".ds-error { background: var(--color-error-fondo); color: var(--color-error-tinta); border-left: 3px solid var(--color-error); border-radius: var(--radio-medio); padding: var(--esp-3); margin: 0; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Tanteador de club",
+    "overview": "Marco verde de cancha, cifras tabulares en una rampa fija y un único color vivo, el ámbar. Área de trabajo clara, jerarquía por escala, sin adornos ni sombras decorativas.",
+    "keyCharacteristics": [
+      "Una sola superficie oscura (cancha).",
+      "Ámbar solo para lo vivo.",
+      "Cifras tabulares en cuatro tamaños fijos.",
+      "Esquinas firmes; sombras solo en capas flotantes.",
+      "Textos, roles y nombres accesibles no cambian por motivos estéticos."
+    ],
+    "rules": [
+      {
+        "name": "The Una Sola Cancha Rule",
+        "body": "La cancha es la única superficie oscura.",
+        "section": "colors"
+      },
+      {
+        "name": "The Ámbar Vivo Rule",
+        "body": "El ámbar aparece solo donde algo está pasando o ya pasó.",
+        "section": "colors"
+      },
+      {
+        "name": "The Tinta Por Estado Rule",
+        "body": "Texto de estado = tinta; borde o icono = sólido; relleno = fondo.",
+        "section": "colors"
+      },
+      {
+        "name": "The Cifra Grande Rule",
+        "body": "La cifra más importante de la pantalla usa el tamaño más alto de la rampa que le corresponde.",
+        "section": "typography"
+      },
+      {
+        "name": "The Rótulo En Caps Rule",
+        "body": "Mayúsculas condensadas solo para rótulos y códigos cortos.",
+        "section": "typography"
+      },
+      {
+        "name": "The Plano Salvo Que Flote Rule",
+        "body": "La sombra solo dice que algo flota sobre lo demás.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do definir todo valor visual en tokens.css y usarlo por variable.",
+      "Do usar el ámbar solo para lo vivo y la cancha solo como marco y tanteador.",
+      "Do garantizar 44 px de objetivo táctil en lo que el alumno toca entrenando.",
+      "Do mantener textos, roles y nombres accesibles intactos."
+    ],
+    "donts": [
+      "Don't agregar una segunda superficie oscura ni un modo oscuro.",
+      "Don't usar el color sólido de advertencia como texto.",
+      "Don't poner sombras decorativas, desenfoques ni opacidades sueltas.",
+      "Don't inventar tamaños de cifra fuera de la rampa de cuatro."
+    ]
+  }
+}

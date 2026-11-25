@@ -76,3 +76,11 @@ Implementado el 24/11/2026.
 
 * **Percepción en la tarjeta:** la tarjeta muestra "RPE: N · Sensación de fuerza: N" con `describirPercepcion`. El tipo `Percepcion` del front tiene los dos valores siempre numéricos, porque US17 los carga juntos; la notificación trae `percepcion: null` si no hay.
 * **Notificación solo por percepción:** con `seriesPorDebajo` vacío, la tarjeta muestra "Percepción mala" y no muestra la sección de series.
+
+## Decisiones de implementación (T21, épica US24)
+
+Decidido por Ulises el 25/11/2026; solo cambia lo visual (los textos y los tests no cambiaron).
+
+* Cada notificación es una `article.tarjeta-registro` con la clase `aviso-leve` o `aviso-grave` y, si ya se leyó, `leida`. La gravedad va en un `h2.gravedad`, en caps con la tinta de su estado, y en tenue una vez leída. La fecha va a la derecha, y después el alumno y la rutina.
+* Las series por debajo van en filas (`.series-alumno`). Desde 48rem, en tres columnas: serie, prescripto y realizado.
+* "Ver entrenamientos de …" y "Marcar como leída" van en el pie (`.tarjeta-acciones`). "No leídas: N" se muestra como `.etiqueta`.

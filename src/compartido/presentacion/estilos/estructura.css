@@ -1,0 +1,158 @@
+/*
+ * Estructura general (T19, CG-97): marco de cancha con la marca, el menú por rol y "Salir";
+ * distribución de las páginas. En el celular el menú es una tira de pestañas que se desliza.
+ * La pestaña activa y la franja del marco toman el color de sección de la opción actual.
+ */
+
+/* ---------- Marco de cancha ---------- */
+
+.marco {
+  /* Dentro de la cancha, el foco es ámbar (8,4:1 sobre la cancha). */
+  --anillo-foco-actual: var(--anillo-foco-sobre-cancha);
+  background: var(--color-cancha);
+  color: var(--color-sobre-cancha);
+  border-bottom: 4px solid var(--color-seccion-actual, var(--color-cancha-linea));
+}
+.marco-interior {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-areas: 'marca menu salir';
+  align-items: center;
+  gap: var(--esp-2) var(--esp-6);
+  /* El ancho incluye el margen lateral: la marca queda alineada con el borde de las páginas anchas. */
+  max-width: calc(var(--ancho-pagina-ancha) + 2 * var(--esp-4));
+  margin: 0 auto;
+  padding: 0 var(--esp-4);
+}
+
+.marca {
+  grid-area: marca;
+  font-family: var(--fuente-rotulo);
+  font-size: var(--texto-titulo-3);
+  font-weight: var(--peso-fuerte);
+  letter-spacing: var(--tracking-rotulo-ancho);
+  /* Blanco de cancha: el ámbar queda solo para lo vivo (decidido por Ulises el 25/11/2026). */
+  color: var(--color-sobre-cancha);
+  white-space: nowrap;
+}
+
+/* Pestañas del menú: rótulos en caps condensadas; la activa en blanco con su color de sección. */
+.menu {
+  grid-area: menu;
+  display: flex;
+  align-items: stretch;
+  gap: var(--esp-1);
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+}
+.menu::-webkit-scrollbar {
+  display: none;
+}
+.menu a {
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  min-height: 3.5rem;
+  padding: 0 var(--esp-3);
+  border-bottom: 4px solid transparent;
+  color: var(--color-sobre-cancha-tenue);
+  font-family: var(--fuente-rotulo);
+  font-size: var(--texto-medio);
+  font-weight: var(--peso-semi);
+  letter-spacing: var(--tracking-rotulo);
+  text-decoration: none;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition:
+    color var(--duracion-corta) var(--curva-salida),
+    border-color var(--duracion-corta) var(--curva-salida);
+}
+.menu a:hover {
+  color: var(--color-sobre-cancha);
+  border-bottom-color: var(--color-cancha-linea);
+}
+.menu a[aria-current='page'] {
+  color: var(--color-sobre-cancha);
+  border-bottom-color: var(--color-seccion-opcion, var(--color-sobre-cancha));
+}
+/* El foco de una pestaña queda dentro de la tira (que recorta lo que sobresale). */
+.menu a:focus-visible {
+  outline-offset: -4px;
+}
+
+/* "Salir": contorno claro sobre la cancha. */
+.marco-salir {
+  grid-area: salir;
+  background: transparent;
+  border-color: var(--color-sobre-cancha-tenue);
+  color: var(--color-sobre-cancha);
+}
+.marco-salir:hover:not(:disabled) {
+  background: var(--color-cancha-alto);
+}
+
+/*
+ * Celular y tableta: marca y "Salir" arriba, la tira de pestañas debajo a todo el ancho. Las siete
+ * opciones del Profesor no entran en una fila con la marca por debajo de 64rem.
+ */
+@media (max-width: 63.99rem) {
+  .marco-interior {
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      'marca salir'
+      'menu menu';
+    padding-top: var(--esp-2);
+  }
+  .menu {
+    margin: 0 calc(-1 * var(--esp-4));
+    /* El margen interno es igual al desvanecido: en reposo y al final del deslizamiento, ninguna
+       pestaña ni su foco quedan atenuados. */
+    padding: 0 var(--esp-4);
+    scroll-padding-inline: var(--esp-4);
+    border-top: var(--borde-fino) solid var(--color-cancha-linea);
+    /* Los bordes se desvanecen: avisa que la tira sigue y se puede deslizar. */
+    mask-image: linear-gradient(
+      to right,
+      transparent 0,
+      #000 var(--esp-4),
+      #000 calc(100% - var(--esp-4)),
+      transparent 100%
+    );
+  }
+  .menu a {
+    min-height: var(--toque-comodo);
+  }
+}
+
+/* ---------- Distribución de las páginas ---------- */
+
+.contenido {
+  padding: var(--esp-6) var(--esp-4) var(--esp-8);
+}
+@media (min-width: 48rem) {
+  .contenido {
+    padding-top: var(--esp-7);
+  }
+}
+
+/* Una columna de lectura (40rem) o ancha (64rem) para los listados; siempre centrada. */
+.pagina {
+  display: grid;
+  gap: var(--esp-4);
+  max-width: var(--ancho-pagina);
+  margin: 0 auto;
+  min-width: 0;
+}
+.pagina-ancha {
+  max-width: var(--ancho-pagina-ancha);
+}
+.pagina h1 {
+  margin: 0;
+}
+/* Un botón suelto de la página (por ejemplo "Volver al listado") no se estira a todo el ancho. */
+.pagina > button,
+.pagina > .boton {
+  justify-self: start;
+}

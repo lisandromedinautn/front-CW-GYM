@@ -555,3 +555,330 @@ Registro de cada sesión relevante en la que un desarrollador trabajó con IA. D
   - `finalizaciones_alumno` arranca vacía: los entrenamientos previos a US23 no cuentan para la racha.
   - Mutaciones del back de US22 no hechas (fecha pasada, entrenamiento iniciado, propietario).
   - Suite completa sin correr después de integrar; un e2e de ingreso falló una vez en corrida completa por la base de test compartida entre agentes y pasa solo.
+
+## 2026-11-24 — Sistema de diseño «Tanteador de club» [T17]
+- Desarrollador: Ulises
+- Herramienta / modelo / esfuerzo: Claude Code · Opus 5.5 (orquestador y diseño, con la skill Impeccable) + Sonnet 5.5 medium (2 subagentes: revisión final y documentación).
+- Objetivo: T17 (CG-95), primera tarea de la épica US24 (CG-94, "Embellecer todo el front-end"). Definir el sistema de diseño como tokens centralizados sin cambiar funcionalidad, y armar el plan secuencial de la épica.
+- Qué hizo la IA:
+  - **Plan de la épica:** T17 → T18 → T19 → T23 → T20, T21 y T22 → T24. T23 va antes de las pantallas para no rehacerlas.
+  - **`PRODUCT.md`:** lo escribió después de tres preguntas de producto (marca, dispositivo por rol, accesibilidad).
+  - **Dirección visual:** hizo las preguntas de experiencia de uso y corrió el sorteo de direcciones de la skill. Armó una página de decisión con:
+    - cinco bocetos HTML de la pantalla del alumno en el celular;
+    - la dirección asignada, su favorita, dos alternativas competitivas, cuatro descartadas y el estándar de la categoría.
+  - **Contrato:** registró la dirección elegida en `.impeccable/surfaces/`.
+  - **Dependencias:** las instaló con la regla de 24 h. `lucide-react` 1.79.0 tenía menos de 24 h y se usó 1.78.0.
+  - **Código:**
+    - `tokens.css`, con los contrastes verificados por cálculo;
+    - `base.css`;
+    - reemplazo de los valores sueltos de `estilos.css` por tokens, sin cambiar la forma de ningún componente.
+  - **Verificación:**
+    - lint, build, Vitest 210/210 y e2e de navegador 14/14;
+    - capturas del ingreso en escritorio y móvil;
+    - el detector de la skill, sin hallazgos.
+  - **Revisión final:** delegó la revisión y aplicó sus ocho correcciones. Las más relevantes:
+    - tokens de acción separados de los de enlace;
+    - foco "actual" para la cancha;
+    - iconos, estados de info y advertencia, `color-scheme`, `placeholder` y `theme-color`.
+  - **Ajuste posterior:** al documentar oscureció el borde de los campos a #748A7E. Antes daba 2,85:1 sobre el fondo.
+  - **`DESIGN.md`:** lo delegó; queda con las deudas anotadas para T18 a T24.
+- Decisiones del desarrollador:
+  - **Producto:** sin identidad previa; alumno en el celular y profesor y admin en escritorio; WCAG 2.2 AA.
+  - **Objetivo:** el éxito es que se vea profesional y propio; lo que no puede pasar es que parezca un sistema administrativo genérico.
+  - **Restricción:** los textos y los nombres accesibles no se tocan.
+  - **Dirección:** eligió la del sorteo, «Tanteador de club».
+  - **Dependencias:** fuentes con `@fontsource` e iconos Lucide.
+  - **Confirmaciones:** el reparto de los dos subagentes y los microcommits.
+- Ideas descartadas:
+  - las direcciones "La planilla del profe", "App de consumo cálida", "Cuponera de viaje" y el estándar de la categoría;
+  - las cuatro direcciones del catálogo que se descartaron en la tirada (de cada una quedó una idea en el tanteador: numeración de dos dígitos, una rampa fija de cifras, color por sección y jerarquía por escala);
+  - Google Fonts por CDN o la fuente del sistema;
+  - SVG propios o ningún icono;
+  - el ámbar como color de una sección (queda solo para lo vivo).
+- Reglas afectadas: ninguna regla de negocio. Rige la restricción de la épica: la estética no cambia textos, roles ni comportamiento.
+- Verificación:
+  - lint y build OK;
+  - Vitest 210/210 y e2e de navegador 14/14 con la base recién sembrada;
+  - el detector de la skill, sin hallazgos.
+  - La revisión final puntuó siete correcciones resueltas y una parcial, que se corrigió después.
+  - Solo se capturó el ingreso: la toma de un token de la semilla por terminal la bloqueó el clasificador de permisos.
+- Pendientes:
+  - rama `feat/T17-sistema-de-diseno` sin pushear ni PR;
+  - mover CG-95 en Jira;
+  - T18 a T24, con las deudas anotadas en `DESIGN.md`;
+  - revisar las pantallas con sesión en T19 a T22;
+  - actualizar Impeccable a v4.10.0 y correr `/impeccable doctor`, si el desarrollador quiere.
+
+## 2026-11-24 — Componentes base del sistema de diseño [T18]
+- Desarrollador: Ulises
+- Herramienta / modelo / esfuerzo: Claude Code · Opus 5.5 (orquestador y diseño, skill Impeccable) + Sonnet 5.5 medium (1 subagente revisor, tres vueltas).
+- Objetivo: T18 (CG-96) de la épica US24. Rediseñar los componentes compartidos con los tokens de T17 (botones, campos, tarjetas, tablas, insignias y modales), con todos sus estados y sin cambiar propiedades ni eventos.
+- Qué hizo la IA:
+  - **Relevamiento:** revisó las clases que usan las pantallas. No hay tablas ni botones de peligro, y hay dos diálogos.
+  - **Decisiones:** preguntó las dos decisiones estéticas.
+  - **`componentes.css`:** lo escribió aplicando los estilos por elemento o por las clases existentes, sin tocar JSX. `estilos.css` quedó solo con lo propio de cada pantalla.
+  - **Muestrario:** armó uno con todos los estados en `.impeccable/mocks/`, que no se commitea.
+  - **Capturas:** las tomó con un script de Playwright: páginas completas a 1280 y 375 px, foco por teclado en cada control y en el diálogo, error con el cursor encima, y cinco pantallas reales con la sesión de profesor01 contra el back de test.
+  - **Revisión:** aplicó las correcciones del revisor en dos tandas:
+    - hover que pisaba el error y el foco;
+    - fecha de crear plan a todo el ancho y su etiqueta lejos del campo;
+    - casilla de alumnos desalineada;
+    - `.boton:active`;
+    - `p.etiqueta` que no se partía;
+    - "Volver al listado" estirado;
+    - cajas anidadas;
+    - "Por página" en dos líneas.
+  - **Documentación:** actualizó `DESIGN.md`, el atlas, el `CHANGELOG` y `compartido`.
+- Decisiones del desarrollador:
+  - El ámbar va solo en la acción principal de cada pantalla (`.accion-principal`, que se marca en T20 a T22); el resto de los botones son verdes.
+  - Las insignias son rectangulares, en caps condensadas.
+  - Dentro de un formulario, los grupos van sin borde, separados solo por título y espacio.
+  - Pidió la revisión antes de commitear.
+- Ideas descartadas:
+  - Todos los botones en verde, o todos en ámbar.
+  - Insignias en píldora.
+  - Grupos con fondo hundido, o dejar los tres niveles de borde.
+- Reglas afectadas: ninguna regla de negocio. Los textos, roles y nombres accesibles no cambian: las mayúsculas son de CSS.
+- Verificación:
+  - Lint OK.
+  - Vitest 210/210.
+  - e2e de navegador 14/14 (antes y después de las correcciones).
+  - Detector de la skill sin hallazgos.
+  - Revisor: primero pidió volver a capturar, después marcó correcciones y al final aprobó las cinco correcciones de la última vuelta.
+  - Hover y presionado no se capturaron: quedan como riesgo aceptado.
+- Pendientes:
+  - Rama `feat/T18-componentes-base` sin pushear ni PR.
+  - Mover CG-96 en Jira.
+  - En T20 a T22:
+    - marcar `.accion-principal` y `.peligro` en cada pantalla;
+    - mostrar la "Fecha de fin" de crear plan en dd/mm/aaaa;
+    - decidir si "Fecha de inicio" va encima del campo en el celular.
+  - Al detener el front del 5180 y el back de test, sus procesos (`vite` y `dist/main`) quedan vivos y hay que cerrarlos a mano.
+
+## 2026-11-25 — Estructura general: marco de cancha y navegación [T19]
+- Desarrollador: Ulises
+- Herramienta / modelo / esfuerzo: Claude Code · Opus 5.5 (orquestador y diseño, skill Impeccable) + Sonnet 5.5 medium (1 subagente revisor, dos vueltas).
+- Objetivo: T19 (CG-97) de la épica US24. Rediseñar la estructura general, es decir el marco con la marca, el menú por rol y "Salir", y la distribución de las páginas, con los tokens de T17 y sin cambiar opciones ni rutas.
+- Qué hizo la IA:
+  - **Decisiones:** preguntó las decisiones estéticas.
+  - **`MenuPrincipal`:** lo reescribió como marco de cancha (`header.marco`) con la marca decorativa (`aria-hidden`), la navegación "Menú principal" con `NavLink` (la activa con `aria-current="page"`) y "Salir" fuera de la navegación.
+  - **Color de sección:** sumó un color por opción en `opcionesMenu.ts`, agrupado por concepto, y `opcionActual(rol, ruta)`, que pinta la pestaña activa y la franja del marco.
+  - **`estructura.css`:** lo creó con el marco, la tira de pestañas deslizable por debajo de 64rem (bordes desvanecidos y la pestaña activa llevada a la vista) y la distribución de las páginas. Sacó de `estilos.css` las reglas viejas del menú y de las páginas.
+  - **Capturas:** las tomó con Playwright a 360, 375, 900, 1024, 1100 y 1280 px con profesor01 y alumno01 contra el back de test. Incluyen el foco por teclado, el control de desborde horizontal y el contador de no leídas simulado en 12.
+  - **Revisión:** aplicó las correcciones del revisor:
+    - el desvanecido atenuaba las pestañas de los bordes y su foco (se resolvió con `padding` y `scroll-padding-inline` iguales al desvanecido);
+    - la marca no quedaba alineada con el título de las páginas anchas en escritorio;
+    - la marca estaba en ámbar;
+    - faltaban capturas con el contador mayor que cero y a 1024 y 1100 px.
+  - **Documentación:** actualizó `DESIGN.md`, el atlas, el `CHANGELOG` y `compartido`.
+- Decisiones del desarrollador:
+  - En el celular, el menú es una tira de pestañas deslizable (no un menú hamburguesa).
+  - La marca "CW-GYM" va en caps, en blanco de cancha: el ámbar queda solo para lo vivo y la acción principal.
+  - Pidió la revisión antes de commitear.
+- Ideas descartadas:
+  - Menú hamburguesa o cajón lateral en el celular.
+  - Barra de pestañas inferior.
+  - Marca en ámbar.
+- Reglas afectadas: ninguna regla de negocio. RN-UI-IDE-01 (menú por rol) se mantiene: las opciones, rutas y nombres accesibles no cambian.
+- Verificación:
+  - Lint OK.
+  - Vitest 210/210.
+  - e2e de navegador 14/14.
+  - Sin desborde horizontal en ningún ancho.
+  - Revisor: la primera vuelta pidió seis correcciones y la segunda aprobó las seis sin regresiones.
+  - Queda sin captura el foco en la última pestaña con la tira deslizada hasta el final; el revisor no lo consideró bloqueante.
+- Pendientes:
+  - Rama `feat/T19-estructura-general` sin pushear ni PR.
+  - Mover CG-95 a CG-97 en Jira.
+  - Sigue T23 (CG-101) y después T20 a T22 y T24.
+
+## 2026-11-25 — Rediseño de las pantallas del Profesor [T21]
+- Desarrollador: Ulises
+- Herramienta / modelo / esfuerzo: Claude Code · Opus 5.5 (orquestador y diseño, skill Impeccable) + Sonnet 5.5 medium (1 subagente revisor).
+- Objetivo: T21 (CG-99) de la épica US24. Aplicar el sistema "Tanteador de club" a las pantallas del Profesor sin cambiar textos, filtros, orden ni paginación (RN-UI-LIS). La tarea se hizo antes que T23 por pedido del desarrollador.
+- Qué hizo la IA:
+  - **Relevamiento:** leyó la tarjeta en Jira y las de T20, T22 a T24, y vio que Ejercicios y Notificaciones del profesor no estaban en ninguna. Capturó el estado previo y armó datos de muestra en la base de test (alumnos vinculados, un plan y un entrenamiento) para ver las pantallas con contenido.
+  - **Decisiones:** preguntó las cuatro decisiones estéticas.
+  - **Rutinas:** tarjeta con el nombre a todo el ancho y un pie de acciones con icono de Lucide y texto ("Editar", "Importar"), con los nombres accesibles de siempre. Es el primer uso de Lucide en pantallas.
+  - **Editor de rutina:** números en tres columnas (dos en el celular), GIF al costado del ejercicio, "Subir", "Bajar" y "Quitar" en una fila, y sangría para los ejercicios de un circuito.
+  - **Planes:** fechas de tanteador y días en cifras. El título y el resumen completos siguen en el DOM para lectores de pantalla y para los tests.
+  - **Calendario:** en crear plan y en editar días, el día con rutina lleva una franja lila y el de descanso va hundido; los días fuera del plan perdieron el desenfoque.
+  - **Seguimiento:** notificaciones y entrenamientos de alumnos como tarjetas, con la gravedad en la tinta de su estado y las series en columnas.
+  - **Otras pantallas:** el código del profesor en cifra grande y "Regenerar" en `.peligro`; "Volver a …" como enlace chico arriba del título; una acción principal en ámbar por pantalla.
+  - **Arreglo de T19:** encontró que la pestaña activa del menú quedaba cortada en el celular cuando llegaba el contador de no leídas. Primero probó esperar a las fuentes, midió que no era eso y lo resolvió con un `ResizeObserver`. Después, a pedido del revisor, cambió `scrollIntoView` por un desplazamiento solo horizontal, para no mover la página.
+  - **Revisión:** aplicó las correcciones del revisor: 44 px en "Volver a …" y en el enlace del pie de las notificaciones, el desplazamiento del menú y la nota de contraste de la franja lila en `DESIGN.md`. Quitó la franja lateral de las tarjetas de seguimiento porque el detector de la skill la marcó como patrón genérico.
+  - **Fecha de fin:** la pasó a dd/mm/aaaa en un commit aparte y ajustó la aserción del test de US07, con aprobación del desarrollador. Antes comprobó que el test fallaba por la aserción.
+  - **Commits:** separó `estilos.css` por partes para que cada microcommit lleve solo los estilos de sus pantallas.
+  - **Documentación:** actualizó `DESIGN.md`, el atlas, el `CHANGELOG` y los `CLAUDE.md` de compartido, planificación, notificaciones, entrenamiento e identidad.
+- Decisiones del desarrollador:
+  - Ejercicios y Notificaciones entran en T21.
+  - En la tarjeta de rutina, las acciones van al pie con icono y texto.
+  - Las fechas de los planes se muestran como tanteador.
+  - El calendario marca los días con rutina con una franja lila y atenúa los de descanso.
+  - La "Fecha de fin" de crear plan pasa a dd/mm/aaaa, con el ajuste de la aserción en otro microcommit.
+  - Pidió la revisión antes de commitear.
+- Ideas descartadas:
+  - Iconos solos arriba a la derecha de la tarjeta de rutina, o dejarla como estaba.
+  - Fechas del plan como texto corrido.
+  - Calendario sin diferenciar los días.
+  - Franja lateral de color en las tarjetas de seguimiento.
+  - Esperar a las fuentes para llevar la pestaña activa a la vista.
+- Reglas afectadas: RN-PLAN-09, solo en la presentación: la fecha de fin se muestra en dd/mm/aaaa. Se cambió el literal de una aserción, con aprobación. El resto no cambia reglas: textos, roles, nombres accesibles, filtros, orden y paginación quedan iguales.
+- Verificación:
+  - Lint OK.
+  - Vitest 210/210.
+  - e2e de navegador 14/14.
+  - Detector de la skill sin hallazgos.
+  - Sin desborde horizontal a 375 y 1280 px.
+  - Medido: 44 px en "Volver a …" y en el enlace del pie de las notificaciones, y la pestaña activa queda 16 px dentro del borde.
+  - Revisor: pidió cinco correcciones; se aplicaron cuatro y la quinta ("Registrar ejercicio" deshabilitado) es intencional.
+  - Quedan sin capturar el hover, el foco por teclado en las pantallas nuevas y las notificaciones leve y leída.
+- Pendientes:
+  - Rama `feat/T21-pantallas-profesor` sin pushear ni PR.
+  - Mover CG-95 a CG-97 y CG-99 en Jira.
+  - Siguen T23 (estados de carga, vacío y error), T20, T22 y T24.
+  - La franja lila queda en 2,4:1, aceptada porque el texto del día dice lo mismo; se revisa en T24.
+
+## 2026-11-25 — Rediseño de las pantallas del Alumno [T22]
+- Desarrollador: Ulises
+- Herramienta / modelo / esfuerzo: Claude Code · Opus 5.5 (orquestador y diseño, skill Impeccable) + Sonnet 5.5 medium (1 subagente revisor).
+- Objetivo: T22 (CG-100) de la épica US24. Aplicar el sistema "Tanteador de club" a las pantallas del Alumno (vínculo, rutina del día, Mi plan, entrenamiento en curso, resumen, récords y percepción), priorizando el celular, sin cambiar el registro de series ni el resumen. Se hizo antes que T23 y T20 por pedido del desarrollador.
+- Qué hizo la IA:
+  - **Relevamiento:** leyó las pantallas y los textos que buscan los tests y los e2e. Capturó el estado previo con datos en la base de test: un entrenamiento en curso, uno finalizado y un alumno sin vínculo.
+  - **Decisiones:** preguntó las cuatro decisiones estéticas.
+  - **Entrenamiento en curso:**
+    - **Tanteador:** fijo arriba en la cancha, con el tiempo en ámbar a `--cifra-1` (cierra la deuda del contador), "Paso N de M" y una barra de avance. `PasoActual` recibe el cronómetro como propiedad.
+    - **Paso:** el GIF protagonista, con un tope de alto; los campos en fila, en cifras grandes; "Registrar" en ámbar a todo el ancho.
+  - **Resumen:** marcador final en la cancha con el peso total, la duración y los récords; los grupos como insignias. "Volver al inicio" pasó al final de la pantalla, después de la percepción. Los textos del DOM no cambian.
+  - **Rutina del día y Mi plan:** la rutina del día tiene la acción del día en una barra fija abajo y los ejercicios en filas. Mi plan pasa a una fila por día: el descanso hundido y un cuadrado lila en la rutina en lugar de una franja lateral.
+  - **Vínculo:** el código se escribe en cifras grandes.
+  - **Errores encontrados:**
+    - Al mover el cronómetro al tanteador, desaparecía cuando el entrenamiento no tenía pasos. Lo detectó un test y se restituyó.
+    - Al cambiar de paso, quedaba a la vista el GIF del ejercicio anterior mientras cargaba el nuevo. Ya pasaba antes de T22. Midió que el `src` era correcto y lo resolvió con `key={urlGif}`.
+  - **Revisión:** aplicó las correcciones del revisor: las insignias en una fila, el nombre repetido en Mi plan y la confirmación del margen del tanteador. Sobre "Registrar" bajo el pliegue, puso un tope de alto al GIF sin achicarlo tanto como para contradecir la decisión del desarrollador. Midió que, del tanteador a "Registrar", hay 620 a 669 px: entra en 375×667, 360×740 y 375×812 después de un solo desplazamiento.
+  - **Récords:** los capturó con la respuesta de finalización simulada solo en el navegador de la captura, sin cargar datos en la base.
+  - **Commits:** el hook rechazó un primer `fix` del GIF hecho por separado, porque corre los tests con los demás archivos de la carpeta de trabajo. Se rearmó en cinco microcommits en lugar de seis: el tanteador, el paso y el resumen van juntos y el `fix` va después.
+  - **Documentación:** actualizó `DESIGN.md`, el atlas, el `CHANGELOG` y los `CLAUDE.md` de entrenamiento, planificación e identidad.
+- Decisiones del desarrollador:
+  - Tanteador fijo arriba en el entrenamiento en curso.
+  - GIF protagonista en el paso actual, en lugar de campos grandes con el GIF chico.
+  - Resumen como marcador final, con el ámbar para los récords.
+  - Mi plan en filas compactas, sin marcar el día de hoy.
+  - Pidió la revisión antes de commitear.
+- Ideas descartadas:
+  - Tanteador sin fijar, o solo cifras grandes sin panel.
+  - Campos grandes con el GIF chico al costado.
+  - Resumen como lista sobria.
+  - Mi plan con el día de hoy marcado (suma una comparación de fechas en el front), o tarjetas como antes.
+  - Franja lateral lila en Mi plan.
+  - Botones de más y menos en los campos de la serie (no tienen regla).
+  - Un título nuevo en el formulario de percepción (no se inventan textos).
+- Reglas afectadas: ninguna. RN-UI-ENT-03 (contador siempre visible) y RN-UI-ENT-05 ("Volver al inicio" en el resumen) se cumplen igual. Los textos, roles y nombres accesibles no cambian, y los tests tampoco.
+- Verificación:
+  - Lint OK.
+  - Vitest 210/210.
+  - e2e de navegador 14/14.
+  - Detector de la skill sin hallazgos.
+  - Sin desborde horizontal a 375 y 1280 px.
+  - Revisor: primero pidió correcciones; se aplicaron todas menos achicar el GIF hasta que "Registrar" entre sin desplazar, que queda a decisión del desarrollador.
+  - Quedan sin capturar el hover, el foco por teclado, los errores de series y de percepción, y un entrenamiento abandonado.
+- Pendientes:
+  - Rama `feat/T22-pantallas-alumno` sin pushear ni PR.
+  - La "Fecha" de la rutina del día sigue en AAAA-MM-DD porque la lee un test de US08; pasarla a dd/mm/aaaa cambia una aserción.
+  - Decidir si "Registrar" tiene que entrar sin desplazar al abrir el entrenamiento.
+  - Mover CG-95 a CG-97, CG-99 y CG-100 en Jira.
+  - Siguen T23, T20 y T24.
+
+## 2026-11-25 — Rediseño del ingreso y de las pantallas del Administrador [T20]
+- Desarrollador: Ulises
+- Herramienta / modelo / esfuerzo: Claude Code · Opus 5.5 (orquestador y diseño, skill Impeccable) + Sonnet 5.5 medium (1 subagente revisor).
+- Objetivo: T20 (CG-98) de la épica US24. Aplicar el sistema "Tanteador de club" al ingreso y a las pantallas del Administrador (US00, US02), sin cambiar textos, campos ni validación. Se hizo después de T22 porque otro desarrollador toma T23 y T24; la rama de T23 se había creado sin commits y se borró.
+- Qué hizo la IA:
+  - **Relevamiento:** leyó la tarjeta, las pantallas y lo que buscan los tests y los e2e. Para capturar el estado previo abrió Docker Desktop, levantó las bases y sembró la de test.
+  - **Decisiones:** preguntó las tres decisiones estéticas.
+  - **Ingreso:** la cancha hace de marco porque la pantalla no tiene menú. Va en la mitad izquierda en escritorio y en una banda arriba en el celular, con la marca, el lema y una franja con los seis colores de sección. Es decorativa (`aria-hidden`). "Ingresar" pasa a ámbar.
+  - **Alta de profesor:** dos `fieldset`, "Datos personales" y "Cuenta", en dos columnas desde 48rem. "Dar de alta" en ámbar.
+  - **Inicio (los tres roles):** una tarjeta de acceso por opción del menú, sacada de `opcionesMenu.ts`. El nombre accesible es "Ir a …" porque dos tests de integración buscan "Mi plan" y "Mi rutina del día" por nombre exacto y fallarían con un enlace repetido.
+  - **Detector:** marcó la franja de color arriba de la tarjeta de acceso, primero como borde y después como pseudoelemento. Se cambió por el cuadrado de color que ya usa Mi plan.
+  - **Revisión:** aplicó el único hallazgo importante del revisor: el ingreso dejaba 4 px de margen lateral a 360 px y ahora deja 16 px, medido a 360 y 375 px.
+  - **Commits:** cuatro microcommits (ingreso, inicio, alta y documentación), cada uno con su parte de `estilos.css`.
+  - **Documentación:** actualizó `DESIGN.md`, el atlas, el `CHANGELOG` y los `CLAUDE.md` de compartido e identidad.
+- Decisiones del desarrollador:
+  - Ingreso con la cancha partida.
+  - Alta de profesor en dos grupos.
+  - Accesos en el inicio de los tres roles, no solo del Administrador.
+  - Pidió la revisión antes de commitear.
+- Ideas descartadas:
+  - Tarjeta de ingreso con la marca arriba, o el ingreso entero sobre la cancha (más superficie oscura).
+  - Alta de profesor en una sola columna.
+  - Accesos solo para el Administrador, o dejar el inicio vacío.
+  - Franja de color arriba de las tarjetas de acceso (el detector la marca).
+  - Del revisor, sin aplicar: "Contraseña inicial" a todo el ancho, otra grilla para las seis tarjetas del Profesor y cambiar el `nav` "Accesos del inicio" por un `div`.
+- Reglas afectadas: ninguna. RN-IDE-01 y RN-IDE-04 se cumplen igual. Los textos, roles y nombres accesibles existentes no cambian, y los tests tampoco.
+- Verificación:
+  - Lint y `tsc` OK.
+  - Vitest 210/210.
+  - e2e de navegador 14/14.
+  - Detector de la skill sin hallazgos.
+  - Sin desborde horizontal de 360 a 1440 px.
+  - Revisor: sin bloqueantes; el único hallazgo importante se corrigió.
+- Pendientes:
+  - Rama `feat/T20-ingreso-administrador` sin pushear ni PR.
+  - Mover CG-95 a CG-100 en Jira.
+  - Del lado de esta sesión, la épica queda cerrada; T23 y T24 los toma otro desarrollador.
+
+## 2026-11-25 — Mi plan en calendario y estado del día en el inicio del Alumno [T25]
+- Desarrollador: Ulises
+- Herramienta / modelo / esfuerzo: Claude Code · Opus 5.5 (orquestador y diseño, skill Impeccable) + Sonnet 5.5 medium (1 subagente revisor).
+- Objetivo: T25 (CG-103). Mostrar Mi plan como calendario en lugar de una lista de días y sumar al inicio del Alumno el estado de su entrenamiento de hoy con un acceso directo. Sin cambios en la API. Toca los dos repos: el front y la copia de `docs/TRAZABILIDAD.md` del back.
+- Qué hizo la IA:
+  - **Tarjeta de Jira:** redactó la descripción de CG-103 con el formato de las demás (alcance y criterios de aceptación), después de preguntar las cuatro decisiones de diseño, y la cargó.
+  - **Relevamiento:** el back ya informa la fecha de hoy en `GET /planificacion/mi-plan`, así que el día marcado no usa el reloj del navegador. El texto de RN-PLAN-19 en el back nunca mencionó el desplegable, por lo que no cambió; solo cambió la tabla de UI del front.
+  - **Reglas y tests:** propuso el texto de RN-PLAN-19 (UI) y de la nueva RN-UI-ENT-06, la adaptación del test del detalle y las fichas nuevas, y esperó la aprobación. Los tests arrancaron en rojo por aserción y se comprobó que muerden rompiendo la producción.
+  - **Calendario de Mi plan:** lunes a domingo con el día 1 en su columna, hoy en ámbar y elegido al entrar, el día elegido con su detalle en un panel debajo.
+  - **Tarjeta "Hoy":** planificación resuelve el día (rutina, descanso o sin plan) y entrenamiento el estado (pendiente, en curso o hecho); la raíz de composición (`Aplicacion.tsx`) los junta, sin que un módulo importe el interior del otro. La columna del acceso es `AccesoDelDia`, en `compartido`.
+  - **Revisión de terminación:** aplicó lo que no tocaba tests:
+    - desplazar hasta el panel al tocar un día y anunciarlo;
+    - casillas de 45 px a 360 px;
+    - contorno en el punto de color;
+    - foco pegado a la casilla.
+  - **Nombre accesible de los días:** con la aprobación del desarrollador, cada día pasó a nombrarse por lo que muestra más el día del plan y la fecha (WCAG 2.5.3). Se unió con `aria-labelledby` porque el cálculo del nombre recortaba los espacios.
+  - **Revisión manual del desarrollador (dos rondas):**
+    - Mi plan: el nombre de la rutina sale de las casillas, queda un punto de color por rutina con una leyenda al costado (sin leyenda en el celular), los días del mes siguiente van en segundo plano, y en escritorio el punto y el título van centrados.
+    - Inicio: la tarjeta "Hoy" pasa a dos columnas, con la fecha en el mismo rótulo que "Hoy" a la derecha, "Ir al entrenamiento" arriba de la columna en la cancha y las tarjetas de acceso del mismo alto.
+  - **Errores encontrados:**
+    - Editó tests por shell una vez; el permiso lo frenó y los rehízo con Edit.
+    - Bash rompió las comillas invertidas al escribir un componente y las fichas de entrenamiento; los rehízo con Write.
+    - Un reemplazo de CSS empezó en la primera aparición del selector y se llevó dos reglas de relleno; lo vio en la captura y las repuso.
+    - El test de la leyenda no mordía porque los datos no repetían rutinas; se le agregó una repetición, como pide su ficha.
+  - **Commits:** tres en el front (calendario, tarjeta "Hoy" y documentación) y uno en el back (trazabilidad). Los dos `feat` superan las ~150 líneas porque el CSS, el componente y los tests de cada pieza no se separan sin romper la compilación o los tests.
+- Decisiones del desarrollador:
+  - Detalle del día en un panel debajo del calendario, calendario de lunes a domingo, la tarjeta "Hoy" siempre con el estado del día y acceso según el estado.
+  - Nombre accesible de cada día por lo que se ve.
+  - Un color por rutina con leyenda al costado, sin leyenda en el celular, y el mes siguiente en segundo plano.
+  - Columna del acceso en el verde de cancha: amplía la regla de DESIGN.md (la cancha ya no es solo marco y tanteador).
+  - Texto "Tenés un entrenamiento en curso"; aprobó los cambios en los tests de RN-PLAN-19 y RN-UI-ENT-06.
+- Ideas descartadas:
+  - Detalle flotante dentro de cada día (conservaba los tests, pero se superponía).
+  - Semanas del plan sin días de la semana.
+  - Sección "Hoy" solo con entrenamiento pendiente, o acceso que inicia directamente.
+  - Todas las rutinas en lila, o leyenda debajo del calendario en el celular.
+  - Columna del acceso en el verde de acción.
+  - Nombre de la rutina dentro de la casilla, primero en una línea y después en dos (lo sacó la revisión manual).
+  - "Ir al entrenamiento" dentro del enlace (habría roto WCAG 2.5.3 y los tests).
+- Reglas afectadas:
+  - RN-PLAN-19 (UI del front): calendario, hoy marcado, leyenda y detalle del día elegido.
+  - Nueva RN-UI-ENT-06: estado del día en el inicio del Alumno.
+  - Las dos con su historial en los `CLAUDE.md` de planificación y entrenamiento.
+- Verificación:
+  - Lint y `tsc` OK.
+  - Vitest 220/220.
+  - e2e de navegador 14/14.
+  - Detector de la skill sin hallazgos.
+  - Sin desborde horizontal de 320 a 1280 px.
+  - Medidas en el navegador: casillas de 45×54 px a 360 px, el punto centrado en escritorio, "Hoy" e "Ir al entrenamiento" a la misma altura y el panel a la vista al tocar un día.
+- Pendientes:
+  - Ramas `feat/T25-calendario-inicio-alumno` (front) y `docs/T25-trazabilidad` (back) sin pushear ni PR.
+  - Sin revisión de terminación después de la revisión manual.
+  - Mover CG-103 en Jira.
+  - Tres tests existentes que abren `/alumno` ahora piden la rutina del día sin respuesta declarada (MSW solo lo advierte).

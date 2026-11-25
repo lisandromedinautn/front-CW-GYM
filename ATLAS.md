@@ -15,7 +15,10 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | `docs/METRICAS-SPRINT-2.md` | Corte del 14/11: métricas del sprint 2, residual V2, fuentes y pronósticos condicionales |
 | `docs/MODELOS-IA.md` | Modelos, delegación y plantillas (idéntica a la del back) |
 | `.claude/settings.json` | Permisos: confirmación al editar tests e instalar paquetes |
-| `.claude/skills/tdd`, `.claude/skills/coverage` | Skills de TDD y cobertura |
+| `.claude/skills/tdd`, `.claude/skills/coverage`, `.claude/skills/impeccable` | Skills de TDD, cobertura y diseño (Impeccable, épica US24) |
+| `PRODUCT.md` | Verdad del producto para el diseño: usuarios, contexto de uso, restricciones y accesibilidad (WCAG 2.2 AA). T17 |
+| `DESIGN.md` | Sistema de diseño «Tanteador de club»: tokens, tipografía, componentes y reglas (T17) |
+| `.impeccable/surfaces/` | Brief de superficie con el contrato de la dirección visual elegida (T17). El resto de `.impeccable/` es estado local que no se commitea |
 | `e2e/<modulo>/` | Tests e2e de Playwright. ✅ `e2e/planificacion/crear-rutina.e2e.ts` (US06), `crear-rutina-circuitos.e2e.ts` (US09), `crear-rutina-mixta.e2e.ts` (US10), `importar-rutina.e2e.ts` (US20) y `crear-plan.e2e.ts` (T15); `e2e/identidad/ingreso-y-vinculo.e2e.ts`, `e2e/entrenamiento/entrenar.e2e.ts` y `seguimiento.e2e.ts` (T15); soporte en `e2e/soporte/` (`api.ts` prepara datos por la API, `sesion.ts` ingresa y navega el menú) |
 
 ## Configuración y arranque
@@ -30,7 +33,7 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | `eslint/reglas-de-hooks.js` | Regla local de lint: reglas de los hooks también para `usar<Accion>` ✅ |
 | `.husky/`, `scripts/` | Hooks, validador de mensajes y verificación de antigüedad de paquetes ✅ |
 | `index.html`, `src/main.tsx`, `src/Aplicacion.tsx` | Arranque y raíz de composición (rutas por rol, US00) ✅ |
-| `src/estilos.css` | Estilos globales de la app ✅ |
+| `src/estilos.css` | Hoja de estilos de la app: importa las fuentes (`@fontsource`), los tokens, la base y los componentes, y conserva solo lo propio de cada pantalla, con variables del sistema de diseño (T17, T18). Desde T21 incluye las pantallas del Profesor: `.tarjeta-acciones`, fechas de tanteador, `.con-rutina`, `.bloque-editor`, `.tarjeta-registro` y `.volver`. Desde T22, las del Alumno: `.tanteador`, `.paso-*`, `.barra-del-dia`, `.lista-ejercicios`, `.dias-alumno` y `.marcador-final`. Desde T20, el ingreso y el Administrador: `.ingreso-cancha`, `.formulario-ingreso`, `.accesos` y `.grupo-alta`. Desde T25, el calendario de Mi plan (`.dias-calendario`, `.dia-calendario`, `.detalle-dia`) y la sección "Hoy" del inicio del Alumno (`.estado-del-dia`) ✅ |
 | `src/vite-env.d.ts` | Tipos de Vite para `import.meta.env` ✅ |
 | `.env.example` | `VITE_URL_API` ✅ |
 | `CHANGELOG.md` | Cambios por versión (decisión 38) ✅ |
@@ -58,7 +61,7 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | identidad | `PaginaVincularProfesor.tsx` | `usarVincularAlumno.ts` | `POST /identidad/alumnos/vinculo` | US05 | ✅ |
 | catalogo | ~~`PaginaRegistrarEjercicio.tsx`~~ solo botón deshabilitado en ListaEjercicios (DT-06) | ~~`usarRegistrarEjercicio.ts`~~ | ~~`POST /catalogo/ejercicios`~~ | US01 (DT-06) | — |
 | catalogo | `ListaEjercicios.tsx` | `usarConsultarEjercicios.ts` | `GET /catalogo/ejercicios/consulta` | T01, T06, T07 | ✅ |
-| planificacion | `PaginaRutinas.tsx` (ruta `/profesor/rutinas`) | `usarConsultarRutinas.ts` | `GET /planificacion/rutinas` | T06, T08, T09 | ✅ (el lápiz abre el editor de la rutina) |
+| planificacion | `PaginaRutinas.tsx` (ruta `/profesor/rutinas`) | `usarConsultarRutinas.ts` | `GET /planificacion/rutinas` | T06, T08, T09 | ✅ (el botón "Editar" del pie de la tarjeta abre el editor de la rutina) |
 | planificacion | `EditorRutina.tsx` (ruta `/profesor/rutinas`, menú "Rutinas") | `usarCrearRutina.ts`, `usarEjerciciosParaRutina.ts` | `GET /catalogo/ejercicios`, `POST /planificacion/rutinas` | US06, US09, US10 | ✅ crear con bloques (US06), con circuitos (US09) y mixta (US10) |
 | planificacion | `editar-rutina/PaginaEditarRutina.tsx` (ruta `/profesor/rutinas/:id`, desde el lápiz "Editar rutina" de la tarjeta; muestra `EditorRutina` precargado) | `editar-rutina/usarEditarRutina.ts` | `GET /planificacion/rutinas/:id`, `PUT /planificacion/rutinas/:id` | US06 | ✅ |
 | planificacion | `PaginaRutinas.tsx` (acción "Importar como copia") | `usarImportarRutina.ts` | `POST /planificacion/rutinas/:id/importacion` | US20 | ✅ |
@@ -67,7 +70,8 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | planificacion | `PaginaAlumnosDelPlan.tsx` | `usarAlumnosDelPlan.ts` | `GET/POST/DELETE /planificacion/planes/:id/alumnos` | US12 | ✅ |
 | planificacion | `PaginaEditarDiasPlan.tsx` (`editar-dias-plan/`, ruta `/profesor/planes/:id/dias`, enlace "Editar días" en `PaginaPlanes`) | `usarEditarDiasPlan.ts` (`aplicacion/editar-dias-plan/`) | `GET /planificacion/planes/:id`, `PUT /planificacion/planes/:id/dias/:numero`, `GET /planificacion/rutinas` | US22 | ✅ `PaginaEditarDiasPlan.int.test.tsx` (3 casos) y 2 casos en `PaginaPlanes.int.test.tsx` |
 | planificacion | `PaginaRutinaDelDia.tsx` (`presentacion/rutina-del-dia/`, ruta `/alumno/rutina-del-dia`) | `usarRutinaDelDia.ts` (`aplicacion/consultar-rutina-del-dia/`) | `GET /planificacion/mi-rutina-del-dia` | US08 | ✅ |
-| planificacion | `mi-plan/PaginaMiPlan.tsx` | `consultar-plan-del-alumno/usarMiPlan.ts` | `GET /planificacion/mi-plan` | US11 | ✅ `PaginaMiPlan.int.test.tsx` (9 casos) |
+| planificacion | `mi-plan/PaginaMiPlan.tsx` (calendario de lunes a domingo con un punto por rutina, leyenda y el detalle del día elegido debajo, T25) | `consultar-plan-del-alumno/usarMiPlan.ts` | `GET /planificacion/mi-plan` | US11, T25 | ✅ `PaginaMiPlan.int.test.tsx` (11 casos) |
+| planificacion · entrenamiento | `estado-del-dia/EstadoDelDia.tsx` (planificación: rutina, descanso o sin plan) y `estado-del-dia/EntrenamientoDelDia.tsx` (entrenamiento: pendiente, en curso o ya hecho), compuestas en `Aplicacion.tsx` debajo de los accesos del inicio del Alumno (`/alumno`) | `usarRutinaDelDia.ts`, `usarEntrenamientoEnCurso.ts` | `GET /planificacion/mi-rutina-del-dia`, `GET /entrenamiento/mi-entrenamiento-en-curso` | T25 | ✅ `EstadoDelDia.int.test.tsx` (8 casos) |
 | entrenamiento | `AccionesEntrenamiento.tsx`, `PaginaEntrenamientoEnCurso.tsx` (`/alumno/entrenamiento`) | `usarIniciarEntrenamiento.ts`, `usarEntrenamientoEnCurso.ts` | `POST /entrenamiento/entrenamientos`, `GET /entrenamiento/mi-entrenamiento-en-curso` | US13 | ✅ `entrenamiento.int.test.tsx` |
 | entrenamiento | `PaginaEntrenamientoEnCurso.tsx`, `PasoActual.tsx` (paso a paso), `FormularioSerie.tsx` y `ListaSeries.tsx` (solo lectura si está abandonado), en `/alumno/entrenamiento` | `usarRegistrarSerie.ts` (`aplicacion/registrar-serie/`) | `POST /entrenamiento/entrenamientos/:id/series` | US14 | ✅ `RegistrarSerie.int.test.tsx`; dominio `serie/serie.ts` (validación, `serie.test.ts`) y `serie/filasSeries.ts` (pasos por bloque y vuelta, con el GIF de cada ejercicio, T14) |
 | entrenamiento | `ResumenEntrenamiento.tsx`, `PaginaEntrenamientoEnCurso.tsx` | `usarFinalizarEntrenamiento.ts` | `POST .../:id/finalizacion` | US15 | ✅ 4 pruebas de integración |
@@ -95,15 +99,20 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | `aplicacion/paginacion/usarTamanioPagina.ts` | Tamaño de página recordado por listado en `localStorage` | ✅ |
 | `presentacion/paginador/Paginador.tsx` | Anterior, Siguiente, "Página X de Y" y "Por página" (T06) | ✅ |
 | `dominio/error-api/errorApi.ts` | Contrato de error del back (`{ codigo, mensaje }`) y `esErrorApi` | ✅ |
-| `dominio/menu/opcionesMenu.ts` | Opciones del menú por rol (RN-UI-IDE-01) | ✅ |
+| `dominio/menu/opcionesMenu.ts` | Opciones del menú por rol (RN-UI-IDE-01), con su color de sección y `opcionActual` (T19) | ✅ |
 | `infraestructura/sesion/almacenSesion.ts` | Sesión en `localStorage` (`cwgym.sesion`) con suscripción | ✅ |
 | `infraestructura/cliente-http/clienteHttp.ts` | `pedir()`: URL base, JWT, traducción a `ErrorApi` y cierre de sesión ante 401 (RN-UI-IDE-02) | ✅ |
 | `aplicacion/sesion/usarSesion.ts` | Hook de sesión sobre `useSyncExternalStore` | ✅ |
 | `presentacion/ruta-protegida/RutaProtegida.tsx` | Guard por rol: sin sesión lleva al ingreso, con otro rol muestra "sin acceso" (RN-IDE-03) | ✅ |
-| `presentacion/menu/MenuPrincipal.tsx` | Menú por rol y "Salir" (RN-UI-IDE-01). Recibe contenido extra por ruta (`extras`), que compone `Aplicacion.tsx` (contador de notificaciones, US21) | ✅ |
+| `presentacion/menu/MenuPrincipal.tsx` | Marco de cancha (T19): marca, menú por rol con `NavLink` y color de sección (RN-UI-IDE-01), "Salir" y la franja de la sección actual. Recibe contenido extra por ruta (`extras`), que compone `Aplicacion.tsx` (contador de notificaciones, US21) | ✅ |
 | `presentacion/menu/DisenioConMenu.tsx` | Layout con el menú para las rutas por rol | ✅ |
-| `presentacion/inicio/PaginaInicio.tsx` | Inicio de cada rol (placeholder "Panel del {rol}") | ✅ |
+| `presentacion/acceso-del-dia/AccesoDelDia.tsx` | Columna derecha de la tarjeta "Hoy" del Alumno: en la cancha, el título y una flecha ámbar; el nombre accesible es la acción con el título (T25) | ✅ |
+| `presentacion/inicio/PaginaInicio.tsx` | Inicio de cada rol: "Panel del {rol}" con una tarjeta de acceso por opción del menú (T20) y, debajo, lo que la raíz de composición sume para el rol (la sección "Hoy" del Alumno, T25) | ✅ |
 | `presentacion/proximamente/Proximamente.tsx` | Texto para las rutas que todavía no tienen página | ✅ |
+| `presentacion/estilos/tokens.css` | Tokens del sistema de diseño (colores, tipografía, rampa de cifras, espaciado, radios, sombras, foco, toque y movimiento), con los contrastes anotados (T17) | ✅ |
+| `presentacion/estilos/base.css` | Estilos globales: reset, fondo, tinta, títulos, enlaces, cifras tabulares, foco, selección y movimiento reducido (T17) | ✅ |
+| `presentacion/estilos/componentes.css` | Componentes base: botones (base, `.accion-principal` en ámbar, `.secundario`, `.peligro`, `.enlace`, `.boton-icono`), campos con sus estados, tarjetas, tablas, insignias (`.insignia-*`, `.etiqueta`, `.estado-plan-*`) y diálogos (T18) | ✅ |
+| `presentacion/estilos/estructura.css` | Estructura general (T19): marco de cancha, pestañas del menú con color de sección, tira deslizable por debajo de 64rem y distribución de las páginas (`.contenido`, `.pagina`, `.pagina-ancha`) | ✅ |
 
 ## Tests de integración (front)
 
@@ -147,13 +156,13 @@ Decidido por Lisandro el 08/11/2026 (igual que en el back): en todas las capas d
 | catalogo | aplicacion · presentacion | consultar-ejercicios · lista-ejercicios |
 | catalogo | infraestructura | api (`apiCatalogo.ts`) |
 | planificacion | dominio | bloque (`reglasBloque.ts` y su test), circuito (`reglasCircuito.ts` y su test), rutina (tipos del contrato y `nombreRutina.ts` con su test), plan (fechas del plan y tipos del contrato, con su test) |
-| planificacion | aplicacion · presentacion | editor-rutina · editor-rutina; consultar-rutinas · consultar-rutinas; editar-rutina · editar-rutina; crear-plan · crear-plan; consultar-planes · consultar-planes; consultar-rutina-del-dia · rutina-del-dia; consultar-plan-del-alumno · mi-plan; detalle-rutina (componente compartido del módulo) |
+| planificacion | aplicacion · presentacion | editor-rutina · editor-rutina; consultar-rutinas · consultar-rutinas; editar-rutina · editar-rutina; crear-plan · crear-plan; consultar-planes · consultar-planes; consultar-rutina-del-dia · rutina-del-dia; consultar-plan-del-alumno · mi-plan; consultar-rutina-del-dia · estado-del-dia (T25); detalle-rutina (componente compartido del módulo) |
 | planificacion | infraestructura | api (`apiPlanificacion.ts`) |
 | compartido | dominio | error-api, menu, paginacion, sesion |
 | compartido | aplicacion · infraestructura | paginacion, sesion · sesion, cliente-http |
 | compartido | presentacion | menu, inicio, paginador, proximamente, ruta-protegida |
 | entrenamiento | dominio | entrenamiento, record-batido, serie |
-| entrenamiento | aplicacion · presentacion | iniciar-entrenamiento · entrenamiento-en-curso; registrar-serie · entrenamiento-en-curso; finalizar-entrenamiento · finalizar-entrenamiento |
+| entrenamiento | aplicacion · presentacion | iniciar-entrenamiento · entrenamiento-en-curso; registrar-serie · entrenamiento-en-curso; finalizar-entrenamiento · finalizar-entrenamiento; consultar-entrenamiento-en-curso · estado-del-dia (T25) |
 | entrenamiento | infraestructura | api (`apiEntrenamiento.ts`) |
 
 ## Nombres de archivo

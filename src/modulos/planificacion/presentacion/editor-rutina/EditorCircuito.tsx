@@ -24,10 +24,10 @@ export function EditorCircuito(props: {
   const errores = props.errores[circuito.clave] ?? {};
   const id = String(circuito.clave);
   return (
-    <fieldset className="bloque">
+    <fieldset className="bloque bloque-editor">
       <legend>Circuito {props.numero}</legend>
       {circuito.ejercicios.map((ejercicio, indice) => (
-        <fieldset key={ejercicio.clave} className="bloque">
+        <fieldset key={ejercicio.clave} className="bloque bloque-editor ejercicio-circuito">
           <legend>Ejercicio {indice + 1}</legend>
           <CamposObjetivo
             objetivo={ejercicio}
@@ -64,10 +64,12 @@ export function EditorCircuito(props: {
         error={errores.macropausa}
         alCambiar={(v) => props.alCambiar('macropausa', v)}
       />
-      <BotonesOrden reordenar={props.reordenar} />
-      <button type="button" className="secundario" onClick={props.alQuitar}>
-        Quitar circuito
-      </button>
+      <div className="acciones-bloque">
+        <BotonesOrden reordenar={props.reordenar} />
+        <button type="button" className="secundario" onClick={props.alQuitar}>
+          Quitar circuito
+        </button>
+      </div>
     </fieldset>
   );
 }

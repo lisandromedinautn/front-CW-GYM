@@ -13,9 +13,9 @@ Editor de rutinas, importación, creación de planes, gestión de alumnos del pl
 | RN-PLAN-05 | El campo peso solo aparece si el tipo de carga incluye Peso Extra, y es opcional | Vigente |
 | RN-PLAN-21 | La tarjeta muestra el nombre. Desde el 24/11/2026 se cambia en el campo "Nombre" del editor de la rutina (antes, con el lápiz de la tarjeta y edición en el lugar). Antes de enviar valida de 1 a 60 caracteres sin contar los extremos ("Completá el nombre", "Máximo 60 caracteres") y los errores del back (409 por nombre repetido) van en un `alert` | Vigente ✅ |
 | RN-PLAN-20 | Antes de enviar, avisa si un circuito repite un ejercicio ("No repitas ejercicios en el circuito") | Vigente |
-| RN-PLAN-07 | El lápiz de cada tarjeta de `/profesor/rutinas` ("Editar rutina") abre la rutina en el editor precargado (`/profesor/rutinas/:id`): se cambian nombre, ejercicios, series, objetivos, peso, pausas y orden, y "Guardar cambios" la reemplaza | Vigente ✅ (US06) |
+| RN-PLAN-07 | El botón "Editar" (con lápiz) del pie de cada tarjeta de `/profesor/rutinas` (nombre accesible "Editar rutina") abre la rutina en el editor precargado (`/profesor/rutinas/:id`): se cambian nombre, ejercicios, series, objetivos, peso, pausas y orden, y "Guardar cambios" la reemplaza | Vigente ✅ (US06) |
 | RN-PLAN-08 | Solo se listan para importar las rutinas del propio profesor; la importación crea una copia independiente | Vigente |
-| RN-PLAN-09 | Al elegir la fecha de inicio, muestra la fecha de fin calculada (inicio + 27) sin permitir editarla | Vigente |
+| RN-PLAN-09 | Al elegir la fecha de inicio, muestra la fecha de fin calculada (inicio + 27), en dd/mm/aaaa, sin permitir editarla | Vigente |
 | RN-PLAN-10 | Cada uno de los 28 días se puede marcar como descanso o asignarle una rutina | Vigente |
 | RN-PLAN-11 | Cada día muestra su fecha concreta | Vigente |
 | RN-PLAN-13, 14 | Solo ofrece alumnos vinculados al profesor; si el back rechaza por plan vigente, muestra el error | Vigente |
@@ -24,7 +24,7 @@ Editor de rutinas, importación, creación de planes, gestión de alumnos del pl
 | RN-PLAN-18 | La rutina del día muestra la rutina con sus ejercicios y objetivos, "Hoy es día de descanso." o "No tenés un plan vigente." | Vigente ✅ |
 | RN-PLAN-22 | `/profesor/planes` lista solo los planes del profesor, paginados, con su estado (Próximo, Vigente, Finalizado) y filtros por estado, alumno y rango de fecha de inicio (RN-UI-LIS-01 a 04) | Vigente (T13) |
 | RN-PLAN-23 | `/profesor/planes/:id/dias` muestra los 28 días con fecha y rutina o "Descanso". Los días con fecha anterior a hoy (UTC) no tienen selector; el resto tiene selector (rutinas + "Descanso") y "Guardar". Los rechazos del back (409/404) van en un `alert` | Vigente ✅ (US22) |
-| RN-PLAN-19 | Mi plan muestra los 28 días ordenados con sus fechas, rutina o descanso y detalle desplegable de ejercicios, objetivos y pausas | Vigente ✅ |
+| RN-PLAN-19 | Mi plan muestra los 28 días en un calendario de lunes a domingo, con sus fechas y un punto del color de su rutina (o descanso), y una leyenda de las rutinas del plan al costado (no en el celular). Hoy (la fecha que informa el back) va marcado y elegido al entrar; los días del mes siguiente van en segundo plano; el día elegido muestra debajo su detalle de ejercicios, objetivos y pausas (desde T25; antes, un desplegable por día) | Vigente ✅ |
 
 ## Pantallas y hooks planificados
 
@@ -39,7 +39,8 @@ Editor de rutinas, importación, creación de planes, gestión de alumnos del pl
 | `alumnos-del-plan/PaginaAlumnosDelPlan.tsx` ✅ | `alumnos-del-plan/usarAlumnosDelPlan.ts` ✅ | US12 |
 | `editar-dias-plan/PaginaEditarDiasPlan.tsx` ✅ | `editar-dias-plan/usarEditarDiasPlan.ts` ✅ | US22 |
 | `rutina-del-dia/PaginaRutinaDelDia.tsx` ✅ | `consultar-rutina-del-dia/usarRutinaDelDia.ts` ✅ | US08 |
-| `mi-plan/PaginaMiPlan.tsx` ✅ | `consultar-plan-del-alumno/usarMiPlan.ts` ✅ | US11 |
+| `mi-plan/PaginaMiPlan.tsx` ✅ | `consultar-plan-del-alumno/usarMiPlan.ts` ✅ | US11, T25 |
+| `estado-del-dia/EstadoDelDia.tsx` ✅ (sección "Hoy" del inicio del Alumno) | `consultar-rutina-del-dia/usarRutinaDelDia.ts` ✅ | T25 |
 
 ## Historial de cambios de reglas de UI
 
@@ -55,6 +56,9 @@ Editor de rutinas, importación, creación de planes, gestión de alumnos del pl
 | 21/11/2026 | RN-PLAN-22 | Se refleja la regla nueva del back: listado de planes del profesor con estado y filtros (T13) | Lisandro |
 | 24/11/2026 | RN-PLAN-07 | Se implementa la edición del contenido de la rutina (US06), que faltaba | Martina |
 | 24/11/2026 | RN-PLAN-21 | El lápiz de la tarjeta abre el editor de la rutina; el nombre se cambia ahí y no en la tarjeta | Martina |
+| 25/11/2026 | RN-PLAN-19 | Tras la revisión manual: el nombre de la rutina sale de las casillas (queda un punto de color por rutina y una leyenda al costado, sin leyenda en el celular) y los días del mes siguiente van en segundo plano; se sumó el test de la leyenda | Ulises |
+| 25/11/2026 | RN-PLAN-19 | Mi plan pasa a un calendario de lunes a domingo con el detalle del día elegido debajo y hoy marcado (T25); se adaptó el test del detalle y se sumó el de hoy, con aprobación | Ulises |
+| 25/11/2026 | RN-PLAN-09 | La fecha de fin de crear plan se muestra en dd/mm/aaaa en lugar de AAAA-MM-DD (T21); se ajustó la aserción del test de US07 | Ulises |
 
 ## Nota para US12 (Martina): qué cambió con T12 y T13 (21/11/2026)
 
@@ -67,6 +71,17 @@ T12 y T13 (CG-84) ya están en `develop` y cambian la pantalla de planes. Antes 
 * **Tests**: el test de US07 ahora entra por `/profesor/planes/nuevo`. Si tu test entra al listado, mockeá `GET /planificacion/planes` como en `PaginaPlanes.int.test.tsx`.
 * **Doc compartida**: `docs/TRAZABILIDAD.md`, `CHANGELOG.md`, `DECISIONES-IA.md`, `ATLAS.md`, `FICHAS-TEST.md` y este archivo tienen entradas nuevas: al mergear, conservá las dos.
 
+## Decisiones de implementación (T21, épica US24)
+
+Decidido por Ulises el 25/11/2026. Solo cambia lo visual: textos del DOM, roles, nombres accesibles, filtros, orden y paginación quedan iguales (los tests no cambiaron).
+
+* **Tarjeta de rutina**: el nombre va a todo el ancho con el tipo al lado. "Editar" e "Importar" pasan a un pie de acciones con icono de Lucide y texto; los nombres accesibles siguen siendo "Editar rutina" e "Importar como copia".
+* **Tarjeta de plan**: las fechas se muestran como tanteador ("25/11 → 22/12" con el año chico) y los días con rutina y de descanso en cifras. El `h2` "Del dd/mm/aaaa al dd/mm/aaaa" y el resumen "N días con rutina · M de descanso" siguen en el DOM, visualmente ocultos (`solo-lectores`). La versión visual es `aria-hidden`. "Alumnos" y "Editar días" son botones secundarios del pie.
+* **Calendario**: en crear plan y en editar días, el día con rutina lleva la clase `con-rutina` (franja lila) y el de descanso va hundido y tenue.
+* **Editor**: los bloques y circuitos llevan `bloque-editor`, los ejercicios de un circuito `ejercicio-circuito`, y "Subir", "Bajar" y "Quitar" van juntos en `acciones-bloque`. "Guardar rutina" o "Guardar cambios" es la acción principal.
+* **Subpáginas**: "Volver a planes", "Volver a rutinas" y "Volver al listado" van arriba del título, como enlace chico. La lista de alumnos del plan usa `lista-tarjetas` (`aria-label="Alumnos"`).
+* La "Fecha de fin" de crear plan se muestra en dd/mm/aaaa ("Fecha de fin: 10/12/2026") con `fechaConBarras`. Ulises lo decidió y aprobó cambiar la aserción del test de US07 el 25/11/2026.
+
 ## Decisiones de implementación (T13)
 
 * `/profesor/planes` muestra `PaginaPlanes`: tarjetas con el mismo estilo que Rutinas ("Del dd/mm/aaaa al dd/mm/aaaa", badge de estado Próximo/Vigente/Finalizado, alumnos por "Apellido, Nombre" o "Sin alumnos", "N días con rutina · M de descanso"). El `<ul aria-label="Planes">` se renderiza siempre que hay respuesta, aunque venga vacío.
@@ -75,7 +90,7 @@ T12 y T13 (CG-84) ya están en `develop` y cambian la pantalla de planes. Antes 
 
 ## Decisiones de implementación (US20)
 
-* Cada tarjeta de `/profesor/rutinas` ofrece "Importar como copia" mediante un botón de hojas superpuestas junto al nombre, con etiqueta accesible y ayuda al pasar el cursor. Después de importar, se vuelve a la primera página y se recarga el listado.
+* Cada tarjeta de `/profesor/rutinas` ofrece "Importar como copia". Desde T21 (25/11/2026) es el botón "Importar" del pie de la tarjeta, con el icono de hojas superpuestas y el nombre accesible "Importar como copia". Después de importar, se vuelve a la primera página y se recarga el listado.
 * La importación se deshabilita mientras hay una solicitud en curso; se informa el resultado o el error. Crear un plan permite seleccionar la copia como cualquier rutina propia.
 
 ## Decisiones de implementación (US07)
@@ -143,10 +158,25 @@ T12 y T13 (CG-84) ya están en `develop` y cambian la pantalla de planes. Antes 
 * Confirmado por Lisandro el 24/11/2026. Enlace "Editar días" en la tarjeta de `PaginaPlanes` (planes Próximo o Vigente) hacia `/profesor/planes/:id/dias`, subpágina en `SUBPAGINAS`.
 * `usarEditarDiasPlan` pide `GET /planificacion/planes/:id` y las rutinas (`listarTodasLasRutinas`); `PUT .../dias/:numero` con `{ rutinaId }` (`null` = descanso) y reemplaza solo ese día con la respuesta.
 * `diaEsEditable(fecha, hoy)` (`dominio/plan/plan.ts`) compara fechas `AAAA-MM-DD` en UTC: hoy sigue siendo editable. La regla real la aplica el back; la UI solo evita ofrecer el selector.
-* Grilla responsive reutilizando `grilla-rutinas` y `tarjeta-rutina`.
+* Desde T21 (25/11/2026) los días usan la tarjeta de día del calendario de crear plan (`dias-del-plan dias-editables`, `dia-del-plan`), en columnas que se ajustan al ancho y sin días de la semana. El día con rutina guardada lleva la clase `con-rutina`.
 
 ## Implementación US12
 
 * Solo el profesor propietario puede consultar y modificar los alumnos de un plan vigente. El back valida el vínculo, la ausencia de otro plan vigente y permite quitar al último alumno.
 * La pantalla se abre desde «Alumnos» en el listado de planes vigentes. El alta o la baja actualiza las asignaciones sin recrear los días del plan.
 * La asignación y la creación serializan por alumno en PostgreSQL y vuelven a comprobar la vigencia dentro de la transacción (RN-PLAN-14).
+
+## Decisiones de implementación (T22, épica US24)
+
+Decidido por Ulises el 25/11/2026. Solo cambia lo visual; los textos y los tests no cambiaron.
+
+* **Rutina del día**: la acción del día va en `.barra-del-dia`, fija abajo. Se oculta si está vacía. La "Fecha" sigue en AAAA-MM-DD porque la lee el test de US08.
+* **`DetalleRutina`**: los ejercicios van en filas (`.lista-ejercicios`, `.ejercicio-fila`), no en tarjetas. "Día N de 28" pasó al `header`, junto al tipo.
+* **Mi plan**: una fila por día. Reemplazado por el calendario de T25.
+
+## Decisiones de implementación (T25)
+
+Decidido por Ulises el 25/11/2026.
+
+* **Mi plan en calendario** (RN-PLAN-19): `ol` "Días del plan" con los 28 días en una grilla de 7 columnas; el primero empieza en su columna (`columnaDeLaSemana`, lunes 1 a domingo 7, en `dominio/plan/plan.ts`). Cada día es un botón cuyo nombre es lo que se ve más el día del plan y su fecha ("25 · Día 1 — miércoles 25/11: Empuje", por `aria-labelledby` a sus tres partes; WCAG 2.5.3), con `aria-pressed` si está elegido y `aria-current="date"` si es hoy. Hoy es la `fecha` de `GET /planificacion/mi-plan`: no se usa el reloj del navegador. Al entrar está elegido hoy (o el día 1 si hoy no está en el plan). Cada rutina toma un color de sección (lila, celeste, coral, lima, rosa, turquesa) en el orden en que aparece; el punto del día lo usa y la leyenda `ul` "Rutinas del plan" lo explica (oculta por debajo de 48rem). Los días cuyo mes es posterior al de hoy llevan la clase `otro-mes` (fondo hundido, borde punteado, número tenue); se pueden elegir igual. La página usa `pagina-ancha` para que entre la leyenda. En escritorio el título va centrado (`.pagina-mi-plan`) y el punto, centrado en la casilla. El detalle va en `section.detalle-dia`, nombrada por su título; un descanso dice "Día de descanso".
+* **Sección "Hoy"** (RN-UI-ENT-06): `EstadoDelDia` resuelve el día con `usarRutinaDelDia` (rutina, descanso o sin plan, RN-PLAN-18) y, si hay rutina, muestra lo que le pasa la raíz de composición (`EntrenamientoDelDia` del módulo entrenamiento). Ningún módulo importa el interior del otro: la columna del acceso es `AccesoDelDia` de `compartido`. En descanso, el acceso lleva a Mi plan.

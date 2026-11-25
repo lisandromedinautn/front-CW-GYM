@@ -22,9 +22,11 @@ import { PaginaNuevoPlan } from './modulos/planificacion/presentacion/crear-plan
 import { PaginaRutinas } from './modulos/planificacion/presentacion/consultar-rutinas/PaginaRutinas.tsx';
 import { PaginaEditarRutina } from './modulos/planificacion/presentacion/editar-rutina/PaginaEditarRutina.tsx';
 import { EditorRutina } from './modulos/planificacion/presentacion/editor-rutina/EditorRutina.tsx';
+import { EstadoDelDia } from './modulos/planificacion/presentacion/estado-del-dia/EstadoDelDia.tsx';
 import { PaginaRutinaDelDia } from './modulos/planificacion/presentacion/rutina-del-dia/PaginaRutinaDelDia.tsx';
 import { PaginaMiPlan } from './modulos/planificacion/presentacion/mi-plan/PaginaMiPlan.tsx';
 import { AccionesEntrenamiento } from './modulos/entrenamiento/presentacion/entrenamiento-en-curso/AccionesEntrenamiento.tsx';
+import { EntrenamientoDelDia } from './modulos/entrenamiento/presentacion/estado-del-dia/EntrenamientoDelDia.tsx';
 import { PaginaEntrenamientoEnCurso } from './modulos/entrenamiento/presentacion/entrenamiento-en-curso/PaginaEntrenamientoEnCurso.tsx';
 import { RUTA_ENTRENAMIENTO } from './modulos/entrenamiento/presentacion/entrenamiento-en-curso/rutas.ts';
 import './estilos.css';
@@ -51,6 +53,13 @@ const PAGINAS: Record<string, ReactElement> = {
   '/alumno/rutina-del-dia': (
     <PaginaRutinaDelDia acciones={(hayRutina) => <AccionesEntrenamiento hayRutina={hayRutina} />} />
   ),
+};
+
+/** Lo que cada rol suma debajo de los accesos del inicio (RN-UI-ENT-06, T25). */
+const EXTRAS_INICIO: Record<Rol, ReactElement | null> = {
+  Admin: null,
+  Profesor: null,
+  Alumno: <EstadoDelDia entrenamiento={(rutina) => <EntrenamientoDelDia {...rutina} />} />,
 };
 
 /** Páginas que no son opción de menú (se llega desde otra pantalla). */
@@ -90,7 +99,7 @@ export function Aplicacion() {
             </RutaProtegida>
           }
         >
-          <Route index element={<PaginaInicio rol={rol} />} />
+          <Route index element={<PaginaInicio rol={rol}>{EXTRAS_INICIO[rol]}</PaginaInicio>} />
           {OPCIONES_MENU[rol].map((opcion) => (
             <Route
               key={opcion.ruta}

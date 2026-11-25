@@ -94,3 +94,18 @@ Ningún caso de la ficha usa la sensación de fuerza 6, así que su máximo no e
 | Test (archivo › caso) | Regla | Nivel | Entrada | Esperado | Obtenido (último run) | Fecha |
 | :-- | :-- | :-- | :-- | :-- | :-- | :-- |
 | `finalizar-entrenamiento/PaginaResumenEntrenamiento.int.test.tsx` › al finalizar muestra Volver al inicio y lleva a Mi rutina del día | RN-UI-ENT-05 | Integración | finalizar un entrenamiento de un bloque de una serie y tocar "Volver al inicio" | se ve el encabezado de "Mi rutina del día" | = esperado | 24/11/2026 |
+
+## T25 — Estado del día en el inicio del Alumno (confirmadas por Ulises el 25/11/2026)
+
+Se abre `/alumno` con la rutina del día y el entrenamiento en curso en la red falsa. Rutina del día: Fuerza, `fecha: 2026-11-21`. Tras la revisión manual del mismo día, Ulises aprobó cambiar los nombres de los enlaces (ahora llevan el nombre de la rutina) y sumar la fecha, "Tenés un entrenamiento en curso", el acceso a Mi plan en descanso y la ausencia de accesos sin plan.
+
+| Test (archivo › caso) | Regla | Nivel | Entrada | Esperado | Obtenido (último run) | Fecha |
+| :-- | :-- | :-- | :-- | :-- | :-- | :-- |
+| `estado-del-dia/EstadoDelDia.int.test.tsx` › rutina pendiente | RN-UI-ENT-06 | Integración | rutina hoy y `sin-entrenamiento` | en la sección "Hoy": "Tenés un entrenamiento pendiente hoy", "Fuerza" y el enlace "Ver mi rutina del día: Fuerza" a `/alumno/rutina-del-dia` | = esperado (Vitest, 25/11/2026) | 25/11/2026 |
+| `estado-del-dia/EstadoDelDia.int.test.tsx` › muestra la fecha de hoy que informa el back | RN-UI-ENT-06 | Integración | rutina hoy | "sábado 21/11" | = esperado (Vitest, 25/11/2026) | 25/11/2026 |
+| `estado-del-dia/EstadoDelDia.int.test.tsx` › un entrenamiento abandonado deja la rutina pendiente | RN-UI-ENT-06 | Integración | rutina hoy y `abandonado` | "Tenés un entrenamiento pendiente hoy" y el enlace "Ver mi rutina del día: Fuerza" | = esperado (Vitest, 25/11/2026) | 25/11/2026 |
+| `estado-del-dia/EstadoDelDia.int.test.tsx` › entrenamiento en curso | RN-UI-ENT-06 | Integración | rutina hoy y `en-curso` | el enlace "Retomar entrenamiento: Fuerza" a `/alumno/entrenamiento` y "Tenés un entrenamiento en curso", sin "Tenés un entrenamiento pendiente hoy" | = esperado (Vitest, 25/11/2026) | 25/11/2026 |
+| `estado-del-dia/EstadoDelDia.int.test.tsx` › ya entrenó hoy | RN-UI-ENT-06 | Integración | rutina hoy y `finalizado` con inicio 2026-11-21T13:00:00.000Z | "Ya entrenaste hoy" y el enlace "Ver resumen del entrenamiento: Fuerza" a `/alumno/entrenamiento` | = esperado (Vitest, 25/11/2026) | 25/11/2026 |
+| `estado-del-dia/EstadoDelDia.int.test.tsx` › día de descanso | RN-UI-ENT-06 | Integración | `descanso` | "Hoy es día de descanso." y el enlace "Ver mi plan completo" a `/alumno/mi-plan` | = esperado (Vitest, 25/11/2026) | 25/11/2026 |
+| `estado-del-dia/EstadoDelDia.int.test.tsx` › sin plan vigente | RN-UI-ENT-06 | Integración | `sin-plan` | "No tenés un plan vigente." y ningún enlace en la sección | = esperado (Vitest, 25/11/2026) | 25/11/2026 |
+| `estado-del-dia/EstadoDelDia.int.test.tsx` › error de la consulta | RN-UI-ENT-06 | Integración | la rutina del día responde 500 `{ codigo: 'ERROR-PRUEBA', mensaje: 'Falla del servidor' }` | `alert` con "Falla del servidor" | = esperado (Vitest, 25/11/2026) | 25/11/2026 |
