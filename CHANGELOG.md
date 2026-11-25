@@ -8,6 +8,13 @@ Categorías: Agregado, Cambiado, Corregido, Eliminado, Seguridad. Cada entrada c
 
 ### Agregado
 
+- Estructura general con el marco de cancha (T19, CG-97, épica US24).
+  - **Encabezado:** verde, con la marca "CW-GYM", el menú por rol y "Salir".
+  - **Pestaña activa:** marcada con `aria-current="page"` y con el color de su sección, que también pinta la franja del marco.
+  - **Celular y tableta:** el menú es una tira de pestañas que se desliza.
+  - **Páginas:** centradas, con una columna de lectura o una ancha.
+  - **Sin cambios de navegación:** las mismas opciones y rutas que antes, sin desbordes desde 360 px.
+
 - Componentes base del sistema de diseño (T18, CG-96, épica US24), en `src/compartido/presentacion/estilos/componentes.css`.
   - **Botones:** en caps condensadas y de 44 px, con la variante `.accion-principal` en ámbar (una por pantalla), `.secundario` con contorno, `.peligro`, `.enlace` y `.boton-icono`.
   - **Campos:** con hover, foco, error y deshabilitado.

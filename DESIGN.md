@@ -196,7 +196,7 @@ Cada estado tiene hasta tres variantes con su propio uso:
 Regla de composición: **texto sobre el fondo de su estado usa la tinta; los bordes y los iconos usan el sólido; nunca texto en el color sólido de advertencia.**
 
 ### Color por sección (T19)
-Seis tonos: turquesa #4FD1C5, coral #F07B5A, celeste #5DB7E8, lila #B49AF0, lima #9BD35A y rosa #F28DB2. Todos superan 5,6:1 sobre la cancha. Se usan solo en la pestaña activa del menú y en la franja del encabezado. El ámbar no es de ninguna sección.
+Seis tonos: turquesa #4FD1C5, coral #F07B5A, celeste #5DB7E8, lila #B49AF0, lima #9BD35A y rosa #F28DB2. Todos superan 5,6:1 sobre la cancha. Se usan solo en la pestaña activa del menú y en la franja del encabezado. El ámbar no es de ninguna sección. Se asignan por concepto, igual en todos los roles (`opcionesMenu.ts`): turquesa para el vínculo (Mi código, Profesores, Vincularme con mi profesor), lima para Ejercicios, celeste para Rutinas, lila para planes (Planes, Mi plan), coral para entrenar (Entrenamientos, Mi rutina del día) y rosa para Notificaciones. Inicio no tiene color: la franja queda en `cancha-linea`.
 
 ### Velo
 `velo` (rgba(14, 42, 32, 0.55)) tapa la pantalla detrás de un diálogo.
@@ -273,7 +273,14 @@ Esquinas firmes de marcador: `chico` 4px (botones), `medio` 6px (tarjetas), `gra
 Los componentes base viven en `src/compartido/presentacion/estilos/componentes.css` (T18, CG-96). Se aplican por elemento (`button`, `input`, `select`, `table`, `label`) o por las clases que ya usan las pantallas; no cambian textos, roles ni propiedades de React. Lo propio de cada pantalla queda en `src/estilos.css`.
 
 ### Marco y tanteador
-Sobre cancha, texto `sobre-cancha`; las cifras del tanteador en ámbar con la rampa de cifras (T19 y T22).
+El tanteador (cifras en ámbar con la rampa de cifras) es de T22.
+
+### Marco y navegación (T19)
+`src/compartido/presentacion/estilos/estructura.css` y `MenuPrincipal.tsx` (CG-97, decidido por Ulises el 25/11/2026).
+- **Marco de cancha** (`.marco`, un `header`): la única superficie oscura. Lleva la marca "CW-GYM" en Barlow Condensed y `sobre-cancha` (decorativa, `aria-hidden`; no es ámbar, que queda solo para lo vivo: decidido por Ulises el 25/11/2026), el menú por rol (`nav` "Menú principal", RN-UI-IDE-01) y "Salir" con contorno claro. Abajo tiene una franja de 4px con el color de sección de la opción actual. No queda fijo al desplazarse, para no competir con el contador fijo del entrenamiento.
+- **Pestañas**: rótulos en caps condensadas en `sobre-cancha-tenue` (8,1:1). La activa (`NavLink`, `aria-current="page"`) va en `sobre-cancha` con su color de sección abajo (4px); el hover marca la línea en `cancha-linea`. Dentro del marco el foco es ámbar (`--anillo-foco-actual`).
+- **Celular y tableta** (menos de 64rem): marca y "Salir" arriba; debajo, una **tira de pestañas que se desliza** con el dedo, con los bordes desvanecidos (16px, igual al margen interno, para que ninguna pestaña ni su foco queden atenuados) y la pestaña activa llevada a la vista al cambiar de página (`scroll-padding-inline`). Pestañas de 44px. En escritorio, una sola fila: marca, menú y "Salir".
+- **Páginas**: `.contenido` con aire arriba y abajo; columna de lectura `.pagina` (40rem) o ancha `.pagina-ancha` (64rem), centradas; la marca del marco queda alineada con el borde de las páginas anchas. Sin desbordes horizontales desde 360px (verificado en las pantallas del Profesor y del Alumno).
 
 ### Botones
 Todos en caps condensadas (Barlow Condensed 600, `--tracking-rotulo`), 44 px de alto mínimo, radio chico (4px), con transición corta de color.
@@ -337,7 +344,7 @@ Lucide (`lucide-react` 1.78.0), todavía sin usos en pantallas. Tamaños `--icon
 
 - **T18 componentes base (CG-96):** ✅ hecho el 24/11/2026: acción principal en ámbar (una por pantalla), 44 px en botones y campos, `.secundario` con contorno, peligro, enlace, icono, campos con todos sus estados, tarjetas, tablas, insignias rectangulares y diálogos. Los tamaños de miniaturas (2.5rem y 3rem en listas) y de GIF (7.5rem en el editor, 14rem en el paso) quedan como medidas de componente; los revisa cada pantalla en T21 y T22.
 - **T20 a T22:** marcar con `.accion-principal` la acción principal de cada pantalla y con `.peligro` las destructivas (por ejemplo, "Regenerar código"); usar `.insignia-*` para gravedad y estados de entrenamiento. Mostrar en dd/mm/aaaa la "Fecha de fin" de crear plan (hoy en formato ISO).
-- **T19 estructura y navegación con color por sección (CG-97):** marco de cancha, `--anillo-foco-actual` sobre cancha, pestaña activa y franja de encabezado con los seis tonos de sección.
+- **T19 estructura y navegación con color por sección (CG-97):** ✅ hecho el 25/11/2026: marco de cancha con marca, pestañas con color de sección, franja, foco ámbar sobre la cancha, tira deslizable en celular y tableta, y distribución de las páginas. El ingreso (sin menú) se rediseña en T20.
 - **T20 a T22 pantallas (CG-98 a CG-100):** aplicar la rampa de cifras. Deuda en T22: `.contador` usa `--cifra-3` y la rampa prevé `--cifra-1`.
 - **T21:** `.codigo` usa `--cifra-3` y la rampa prevé otro tamaño; `.dia-fuera-del-plan` usa desenfoque decorativo (`filter: blur(1px)`), que contradice la regla de profundidad.
 - **T23 estados (CG-101):** vacío, carga, error y éxito con las variantes de estado.

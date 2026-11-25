@@ -654,3 +654,40 @@ Registro de cada sesión relevante en la que un desarrollador trabajó con IA. D
     - mostrar la "Fecha de fin" de crear plan en dd/mm/aaaa;
     - decidir si "Fecha de inicio" va encima del campo en el celular.
   - Al detener el front del 5180 y el back de test, sus procesos (`vite` y `dist/main`) quedan vivos y hay que cerrarlos a mano.
+
+## 2026-11-25 — Estructura general: marco de cancha y navegación [T19]
+- Desarrollador: Ulises
+- Herramienta / modelo / esfuerzo: Claude Code · Opus 5.5 (orquestador y diseño, skill Impeccable) + Sonnet 5.5 medium (1 subagente revisor, dos vueltas).
+- Objetivo: T19 (CG-97) de la épica US24. Rediseñar la estructura general, es decir el marco con la marca, el menú por rol y "Salir", y la distribución de las páginas, con los tokens de T17 y sin cambiar opciones ni rutas.
+- Qué hizo la IA:
+  - **Decisiones:** preguntó las decisiones estéticas.
+  - **`MenuPrincipal`:** lo reescribió como marco de cancha (`header.marco`) con la marca decorativa (`aria-hidden`), la navegación "Menú principal" con `NavLink` (la activa con `aria-current="page"`) y "Salir" fuera de la navegación.
+  - **Color de sección:** sumó un color por opción en `opcionesMenu.ts`, agrupado por concepto, y `opcionActual(rol, ruta)`, que pinta la pestaña activa y la franja del marco.
+  - **`estructura.css`:** lo creó con el marco, la tira de pestañas deslizable por debajo de 64rem (bordes desvanecidos y la pestaña activa llevada a la vista) y la distribución de las páginas. Sacó de `estilos.css` las reglas viejas del menú y de las páginas.
+  - **Capturas:** las tomó con Playwright a 360, 375, 900, 1024, 1100 y 1280 px con profesor01 y alumno01 contra el back de test. Incluyen el foco por teclado, el control de desborde horizontal y el contador de no leídas simulado en 12.
+  - **Revisión:** aplicó las correcciones del revisor:
+    - el desvanecido atenuaba las pestañas de los bordes y su foco (se resolvió con `padding` y `scroll-padding-inline` iguales al desvanecido);
+    - la marca no quedaba alineada con el título de las páginas anchas en escritorio;
+    - la marca estaba en ámbar;
+    - faltaban capturas con el contador mayor que cero y a 1024 y 1100 px.
+  - **Documentación:** actualizó `DESIGN.md`, el atlas, el `CHANGELOG` y `compartido`.
+- Decisiones del desarrollador:
+  - En el celular, el menú es una tira de pestañas deslizable (no un menú hamburguesa).
+  - La marca "CW-GYM" va en caps, en blanco de cancha: el ámbar queda solo para lo vivo y la acción principal.
+  - Pidió la revisión antes de commitear.
+- Ideas descartadas:
+  - Menú hamburguesa o cajón lateral en el celular.
+  - Barra de pestañas inferior.
+  - Marca en ámbar.
+- Reglas afectadas: ninguna regla de negocio. RN-UI-IDE-01 (menú por rol) se mantiene: las opciones, rutas y nombres accesibles no cambian.
+- Verificación:
+  - Lint OK.
+  - Vitest 210/210.
+  - e2e de navegador 14/14.
+  - Sin desborde horizontal en ningún ancho.
+  - Revisor: la primera vuelta pidió seis correcciones y la segunda aprobó las seis sin regresiones.
+  - Queda sin captura el foco en la última pestaña con la tira deslizada hasta el final; el revisor no lo consideró bloqueante.
+- Pendientes:
+  - Rama `feat/T19-estructura-general` sin pushear ni PR.
+  - Mover CG-95 a CG-97 en Jira.
+  - Sigue T23 (CG-101) y después T20 a T22 y T24.

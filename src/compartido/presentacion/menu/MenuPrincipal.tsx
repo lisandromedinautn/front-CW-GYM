@@ -1,7 +1,7 @@
-import type { ReactNode } from 'react';
-import { Link, useNavigate } from 'react-router';
+import { useEffect, useRef, type CSSProperties, type ReactNode } from 'react';
+import { NavLink, useLocation, useNavigate } from 'react-router';
 import { usarSesion } from '../../aplicacion/sesion/usarSesion.ts';
-import { OPCIONES_MENU } from '../../dominio/menu/opcionesMenu.ts';
+import { OPCIONES_MENU, opcionActual } from '../../dominio/menu/opcionesMenu.ts';
 import { RUTA_INICIO } from '../../dominio/sesion/sesion.ts';
 
 interface Props {
@@ -9,9 +9,23 @@ interface Props {
   extras?: Record<string, ReactNode>;
 }
 
+/**
+ * Marco de cancha (T19): marca, menú por rol (RN-UI-IDE-01) y "Salir". La opción activa lleva
+ * `aria-current="page"` y su color de sección pinta la pestaña y la franja del marco.
+ */
 export function MenuPrincipal({ extras = {} }: Props) {
   const { sesion, cerrarSesion } = usarSesion();
   const navegar = useNavigate();
+  const { pathname } = useLocation();
+  const menu = useRef<HTMLElement>(null);
+
+  // En el celular la tira se desliza: la pestaña activa queda a la vista al cambiar de página.
+  useEffect(() => {
+    menu.current
+      ?.querySelector('[aria-current="page"]')
+      ?.scrollIntoView?.({ block: 'nearest', inline: 'nearest' });
+  }, [pathname]);
+
   if (!sesion) return null;
 
   function salir() {
@@ -19,18 +33,40 @@ export function MenuPrincipal({ extras = {} }: Props) {
     void navegar('/ingreso', { replace: true });
   }
 
+  const actual = opcionActual(sesion.rol, pathname);
+  const estiloMarco = actual
+    ? ({ '--color-seccion-actual': `var(--color-seccion-${actual.seccion})` } as CSSProperties)
+    : undefined;
+
   return (
-    <nav aria-label="Menú principal" className="menu">
-      <Link to={RUTA_INICIO[sesion.rol]}>Inicio</Link>
-      {OPCIONES_MENU[sesion.rol].map((opcion) => (
-        <Link key={opcion.ruta} to={opcion.ruta}>
-          {opcion.etiqueta}
-          {extras[opcion.ruta]}
-        </Link>
-      ))}
-      <button type="button" onClick={salir}>
-        Salir
-      </button>
-    </nav>
+    <header className="marco" style={estiloMarco}>
+      <div className="marco-interior">
+        <span className="marca" aria-hidden="true">
+          CW-GYM
+        </span>
+        <nav ref={menu} aria-label="Menú principal" className="menu">
+          <NavLink to={RUTA_INICIO[sesion.rol]} end>
+            Inicio
+          </NavLink>
+          {OPCIONES_MENU[sesion.rol].map((opcion) => (
+            <NavLink
+              key={opcion.ruta}
+              to={opcion.ruta}
+              style={
+                {
+                  '--color-seccion-opcion': `var(--color-seccion-${opcion.seccion})`,
+                } as CSSProperties
+              }
+            >
+              {opcion.etiqueta}
+              {extras[opcion.ruta]}
+            </NavLink>
+          ))}
+        </nav>
+        <button type="button" className="marco-salir" onClick={salir}>
+          Salir
+        </button>
+      </div>
+    </header>
   );
 }

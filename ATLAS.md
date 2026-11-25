@@ -98,18 +98,19 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | `aplicacion/paginacion/usarTamanioPagina.ts` | Tamaño de página recordado por listado en `localStorage` | ✅ |
 | `presentacion/paginador/Paginador.tsx` | Anterior, Siguiente, "Página X de Y" y "Por página" (T06) | ✅ |
 | `dominio/error-api/errorApi.ts` | Contrato de error del back (`{ codigo, mensaje }`) y `esErrorApi` | ✅ |
-| `dominio/menu/opcionesMenu.ts` | Opciones del menú por rol (RN-UI-IDE-01) | ✅ |
+| `dominio/menu/opcionesMenu.ts` | Opciones del menú por rol (RN-UI-IDE-01), con su color de sección y `opcionActual` (T19) | ✅ |
 | `infraestructura/sesion/almacenSesion.ts` | Sesión en `localStorage` (`cwgym.sesion`) con suscripción | ✅ |
 | `infraestructura/cliente-http/clienteHttp.ts` | `pedir()`: URL base, JWT, traducción a `ErrorApi` y cierre de sesión ante 401 (RN-UI-IDE-02) | ✅ |
 | `aplicacion/sesion/usarSesion.ts` | Hook de sesión sobre `useSyncExternalStore` | ✅ |
 | `presentacion/ruta-protegida/RutaProtegida.tsx` | Guard por rol: sin sesión lleva al ingreso, con otro rol muestra "sin acceso" (RN-IDE-03) | ✅ |
-| `presentacion/menu/MenuPrincipal.tsx` | Menú por rol y "Salir" (RN-UI-IDE-01). Recibe contenido extra por ruta (`extras`), que compone `Aplicacion.tsx` (contador de notificaciones, US21) | ✅ |
+| `presentacion/menu/MenuPrincipal.tsx` | Marco de cancha (T19): marca, menú por rol con `NavLink` y color de sección (RN-UI-IDE-01), "Salir" y la franja de la sección actual. Recibe contenido extra por ruta (`extras`), que compone `Aplicacion.tsx` (contador de notificaciones, US21) | ✅ |
 | `presentacion/menu/DisenioConMenu.tsx` | Layout con el menú para las rutas por rol | ✅ |
 | `presentacion/inicio/PaginaInicio.tsx` | Inicio de cada rol (placeholder "Panel del {rol}") | ✅ |
 | `presentacion/proximamente/Proximamente.tsx` | Texto para las rutas que todavía no tienen página | ✅ |
 | `presentacion/estilos/tokens.css` | Tokens del sistema de diseño (colores, tipografía, rampa de cifras, espaciado, radios, sombras, foco, toque y movimiento), con los contrastes anotados (T17) | ✅ |
 | `presentacion/estilos/base.css` | Estilos globales: reset, fondo, tinta, títulos, enlaces, cifras tabulares, foco, selección y movimiento reducido (T17) | ✅ |
 | `presentacion/estilos/componentes.css` | Componentes base: botones (base, `.accion-principal` en ámbar, `.secundario`, `.peligro`, `.enlace`, `.boton-icono`), campos con sus estados, tarjetas, tablas, insignias (`.insignia-*`, `.etiqueta`, `.estado-plan-*`) y diálogos (T18) | ✅ |
+| `presentacion/estilos/estructura.css` | Estructura general (T19): marco de cancha, pestañas del menú con color de sección, tira deslizable por debajo de 64rem y distribución de las páginas (`.contenido`, `.pagina`, `.pagina-ancha`) | ✅ |
 
 ## Tests de integración (front)
 
