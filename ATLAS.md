@@ -33,7 +33,7 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | `eslint/reglas-de-hooks.js` | Regla local de lint: reglas de los hooks también para `usar<Accion>` ✅ |
 | `.husky/`, `scripts/` | Hooks, validador de mensajes y verificación de antigüedad de paquetes ✅ |
 | `index.html`, `src/main.tsx`, `src/Aplicacion.tsx` | Arranque y raíz de composición (rutas por rol, US00) ✅ |
-| `src/estilos.css` | Hoja de estilos de la app: importa las fuentes (`@fontsource`), los tokens, la base y los componentes, y conserva solo lo propio de cada pantalla, con variables del sistema de diseño (T17, T18). Desde T21 incluye las pantallas del Profesor: `.tarjeta-acciones`, fechas de tanteador, `.con-rutina`, `.bloque-editor`, `.tarjeta-registro` y `.volver`. Desde T22, las del Alumno: `.tanteador`, `.paso-*`, `.barra-del-dia`, `.lista-ejercicios`, `.dias-alumno` y `.marcador-final`. Desde T20, el ingreso y el Administrador: `.ingreso-cancha`, `.formulario-ingreso`, `.accesos` y `.grupo-alta` ✅ |
+| `src/estilos.css` | Hoja de estilos de la app: importa las fuentes (`@fontsource`), los tokens, la base y los componentes, y conserva solo lo propio de cada pantalla, con variables del sistema de diseño (T17, T18). Desde T21 incluye las pantallas del Profesor: `.tarjeta-acciones`, fechas de tanteador, `.con-rutina`, `.bloque-editor`, `.tarjeta-registro` y `.volver`. Desde T22, las del Alumno: `.tanteador`, `.paso-*`, `.barra-del-dia`, `.lista-ejercicios`, `.dias-alumno` y `.marcador-final`. Desde T20, el ingreso y el Administrador: `.ingreso-cancha`, `.formulario-ingreso`, `.accesos` y `.grupo-alta`. Desde T25, el calendario de Mi plan (`.dias-calendario`, `.dia-calendario`, `.detalle-dia`) y la sección "Hoy" del inicio del Alumno (`.estado-del-dia`) ✅ |
 | `src/vite-env.d.ts` | Tipos de Vite para `import.meta.env` ✅ |
 | `.env.example` | `VITE_URL_API` ✅ |
 | `CHANGELOG.md` | Cambios por versión (decisión 38) ✅ |
@@ -70,7 +70,8 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | planificacion | `PaginaAlumnosDelPlan.tsx` | `usarAlumnosDelPlan.ts` | `GET/POST/DELETE /planificacion/planes/:id/alumnos` | US12 | ✅ |
 | planificacion | `PaginaEditarDiasPlan.tsx` (`editar-dias-plan/`, ruta `/profesor/planes/:id/dias`, enlace "Editar días" en `PaginaPlanes`) | `usarEditarDiasPlan.ts` (`aplicacion/editar-dias-plan/`) | `GET /planificacion/planes/:id`, `PUT /planificacion/planes/:id/dias/:numero`, `GET /planificacion/rutinas` | US22 | ✅ `PaginaEditarDiasPlan.int.test.tsx` (3 casos) y 2 casos en `PaginaPlanes.int.test.tsx` |
 | planificacion | `PaginaRutinaDelDia.tsx` (`presentacion/rutina-del-dia/`, ruta `/alumno/rutina-del-dia`) | `usarRutinaDelDia.ts` (`aplicacion/consultar-rutina-del-dia/`) | `GET /planificacion/mi-rutina-del-dia` | US08 | ✅ |
-| planificacion | `mi-plan/PaginaMiPlan.tsx` | `consultar-plan-del-alumno/usarMiPlan.ts` | `GET /planificacion/mi-plan` | US11 | ✅ `PaginaMiPlan.int.test.tsx` (9 casos) |
+| planificacion | `mi-plan/PaginaMiPlan.tsx` (calendario de lunes a domingo con un punto por rutina, leyenda y el detalle del día elegido debajo, T25) | `consultar-plan-del-alumno/usarMiPlan.ts` | `GET /planificacion/mi-plan` | US11, T25 | ✅ `PaginaMiPlan.int.test.tsx` (11 casos) |
+| planificacion · entrenamiento | `estado-del-dia/EstadoDelDia.tsx` (planificación: rutina, descanso o sin plan) y `estado-del-dia/EntrenamientoDelDia.tsx` (entrenamiento: pendiente, en curso o ya hecho), compuestas en `Aplicacion.tsx` debajo de los accesos del inicio del Alumno (`/alumno`) | `usarRutinaDelDia.ts`, `usarEntrenamientoEnCurso.ts` | `GET /planificacion/mi-rutina-del-dia`, `GET /entrenamiento/mi-entrenamiento-en-curso` | T25 | ✅ `EstadoDelDia.int.test.tsx` (8 casos) |
 | entrenamiento | `AccionesEntrenamiento.tsx`, `PaginaEntrenamientoEnCurso.tsx` (`/alumno/entrenamiento`) | `usarIniciarEntrenamiento.ts`, `usarEntrenamientoEnCurso.ts` | `POST /entrenamiento/entrenamientos`, `GET /entrenamiento/mi-entrenamiento-en-curso` | US13 | ✅ `entrenamiento.int.test.tsx` |
 | entrenamiento | `PaginaEntrenamientoEnCurso.tsx`, `PasoActual.tsx` (paso a paso), `FormularioSerie.tsx` y `ListaSeries.tsx` (solo lectura si está abandonado), en `/alumno/entrenamiento` | `usarRegistrarSerie.ts` (`aplicacion/registrar-serie/`) | `POST /entrenamiento/entrenamientos/:id/series` | US14 | ✅ `RegistrarSerie.int.test.tsx`; dominio `serie/serie.ts` (validación, `serie.test.ts`) y `serie/filasSeries.ts` (pasos por bloque y vuelta, con el GIF de cada ejercicio, T14) |
 | entrenamiento | `ResumenEntrenamiento.tsx`, `PaginaEntrenamientoEnCurso.tsx` | `usarFinalizarEntrenamiento.ts` | `POST .../:id/finalizacion` | US15 | ✅ 4 pruebas de integración |
@@ -105,7 +106,8 @@ Mapa del repo para navegar sin recorrer carpetas. **Se actualiza en el mismo com
 | `presentacion/ruta-protegida/RutaProtegida.tsx` | Guard por rol: sin sesión lleva al ingreso, con otro rol muestra "sin acceso" (RN-IDE-03) | ✅ |
 | `presentacion/menu/MenuPrincipal.tsx` | Marco de cancha (T19): marca, menú por rol con `NavLink` y color de sección (RN-UI-IDE-01), "Salir" y la franja de la sección actual. Recibe contenido extra por ruta (`extras`), que compone `Aplicacion.tsx` (contador de notificaciones, US21) | ✅ |
 | `presentacion/menu/DisenioConMenu.tsx` | Layout con el menú para las rutas por rol | ✅ |
-| `presentacion/inicio/PaginaInicio.tsx` | Inicio de cada rol: "Panel del {rol}" con una tarjeta de acceso por opción del menú (T20) | ✅ |
+| `presentacion/acceso-del-dia/AccesoDelDia.tsx` | Columna derecha de la tarjeta "Hoy" del Alumno: en la cancha, el título y una flecha ámbar; el nombre accesible es la acción con el título (T25) | ✅ |
+| `presentacion/inicio/PaginaInicio.tsx` | Inicio de cada rol: "Panel del {rol}" con una tarjeta de acceso por opción del menú (T20) y, debajo, lo que la raíz de composición sume para el rol (la sección "Hoy" del Alumno, T25) | ✅ |
 | `presentacion/proximamente/Proximamente.tsx` | Texto para las rutas que todavía no tienen página | ✅ |
 | `presentacion/estilos/tokens.css` | Tokens del sistema de diseño (colores, tipografía, rampa de cifras, espaciado, radios, sombras, foco, toque y movimiento), con los contrastes anotados (T17) | ✅ |
 | `presentacion/estilos/base.css` | Estilos globales: reset, fondo, tinta, títulos, enlaces, cifras tabulares, foco, selección y movimiento reducido (T17) | ✅ |
@@ -154,13 +156,13 @@ Decidido por Lisandro el 08/11/2026 (igual que en el back): en todas las capas d
 | catalogo | aplicacion · presentacion | consultar-ejercicios · lista-ejercicios |
 | catalogo | infraestructura | api (`apiCatalogo.ts`) |
 | planificacion | dominio | bloque (`reglasBloque.ts` y su test), circuito (`reglasCircuito.ts` y su test), rutina (tipos del contrato y `nombreRutina.ts` con su test), plan (fechas del plan y tipos del contrato, con su test) |
-| planificacion | aplicacion · presentacion | editor-rutina · editor-rutina; consultar-rutinas · consultar-rutinas; editar-rutina · editar-rutina; crear-plan · crear-plan; consultar-planes · consultar-planes; consultar-rutina-del-dia · rutina-del-dia; consultar-plan-del-alumno · mi-plan; detalle-rutina (componente compartido del módulo) |
+| planificacion | aplicacion · presentacion | editor-rutina · editor-rutina; consultar-rutinas · consultar-rutinas; editar-rutina · editar-rutina; crear-plan · crear-plan; consultar-planes · consultar-planes; consultar-rutina-del-dia · rutina-del-dia; consultar-plan-del-alumno · mi-plan; consultar-rutina-del-dia · estado-del-dia (T25); detalle-rutina (componente compartido del módulo) |
 | planificacion | infraestructura | api (`apiPlanificacion.ts`) |
 | compartido | dominio | error-api, menu, paginacion, sesion |
 | compartido | aplicacion · infraestructura | paginacion, sesion · sesion, cliente-http |
 | compartido | presentacion | menu, inicio, paginador, proximamente, ruta-protegida |
 | entrenamiento | dominio | entrenamiento, record-batido, serie |
-| entrenamiento | aplicacion · presentacion | iniciar-entrenamiento · entrenamiento-en-curso; registrar-serie · entrenamiento-en-curso; finalizar-entrenamiento · finalizar-entrenamiento |
+| entrenamiento | aplicacion · presentacion | iniciar-entrenamiento · entrenamiento-en-curso; registrar-serie · entrenamiento-en-curso; finalizar-entrenamiento · finalizar-entrenamiento; consultar-entrenamiento-en-curso · estado-del-dia (T25) |
 | entrenamiento | infraestructura | api (`apiEntrenamiento.ts`) |
 
 ## Nombres de archivo

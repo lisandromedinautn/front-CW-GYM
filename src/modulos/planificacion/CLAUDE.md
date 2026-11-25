@@ -24,7 +24,7 @@ Editor de rutinas, importación, creación de planes, gestión de alumnos del pl
 | RN-PLAN-18 | La rutina del día muestra la rutina con sus ejercicios y objetivos, "Hoy es día de descanso." o "No tenés un plan vigente." | Vigente ✅ |
 | RN-PLAN-22 | `/profesor/planes` lista solo los planes del profesor, paginados, con su estado (Próximo, Vigente, Finalizado) y filtros por estado, alumno y rango de fecha de inicio (RN-UI-LIS-01 a 04) | Vigente (T13) |
 | RN-PLAN-23 | `/profesor/planes/:id/dias` muestra los 28 días con fecha y rutina o "Descanso". Los días con fecha anterior a hoy (UTC) no tienen selector; el resto tiene selector (rutinas + "Descanso") y "Guardar". Los rechazos del back (409/404) van en un `alert` | Vigente ✅ (US22) |
-| RN-PLAN-19 | Mi plan muestra los 28 días ordenados con sus fechas, rutina o descanso y detalle desplegable de ejercicios, objetivos y pausas | Vigente ✅ |
+| RN-PLAN-19 | Mi plan muestra los 28 días en un calendario de lunes a domingo, con sus fechas y un punto del color de su rutina (o descanso), y una leyenda de las rutinas del plan al costado (no en el celular). Hoy (la fecha que informa el back) va marcado y elegido al entrar; los días del mes siguiente van en segundo plano; el día elegido muestra debajo su detalle de ejercicios, objetivos y pausas (desde T25; antes, un desplegable por día) | Vigente ✅ |
 
 ## Pantallas y hooks planificados
 
@@ -39,7 +39,8 @@ Editor de rutinas, importación, creación de planes, gestión de alumnos del pl
 | `alumnos-del-plan/PaginaAlumnosDelPlan.tsx` ✅ | `alumnos-del-plan/usarAlumnosDelPlan.ts` ✅ | US12 |
 | `editar-dias-plan/PaginaEditarDiasPlan.tsx` ✅ | `editar-dias-plan/usarEditarDiasPlan.ts` ✅ | US22 |
 | `rutina-del-dia/PaginaRutinaDelDia.tsx` ✅ | `consultar-rutina-del-dia/usarRutinaDelDia.ts` ✅ | US08 |
-| `mi-plan/PaginaMiPlan.tsx` ✅ | `consultar-plan-del-alumno/usarMiPlan.ts` ✅ | US11 |
+| `mi-plan/PaginaMiPlan.tsx` ✅ | `consultar-plan-del-alumno/usarMiPlan.ts` ✅ | US11, T25 |
+| `estado-del-dia/EstadoDelDia.tsx` ✅ (sección "Hoy" del inicio del Alumno) | `consultar-rutina-del-dia/usarRutinaDelDia.ts` ✅ | T25 |
 
 ## Historial de cambios de reglas de UI
 
@@ -55,6 +56,8 @@ Editor de rutinas, importación, creación de planes, gestión de alumnos del pl
 | 21/11/2026 | RN-PLAN-22 | Se refleja la regla nueva del back: listado de planes del profesor con estado y filtros (T13) | Lisandro |
 | 24/11/2026 | RN-PLAN-07 | Se implementa la edición del contenido de la rutina (US06), que faltaba | Martina |
 | 24/11/2026 | RN-PLAN-21 | El lápiz de la tarjeta abre el editor de la rutina; el nombre se cambia ahí y no en la tarjeta | Martina |
+| 25/11/2026 | RN-PLAN-19 | Tras la revisión manual: el nombre de la rutina sale de las casillas (queda un punto de color por rutina y una leyenda al costado, sin leyenda en el celular) y los días del mes siguiente van en segundo plano; se sumó el test de la leyenda | Ulises |
+| 25/11/2026 | RN-PLAN-19 | Mi plan pasa a un calendario de lunes a domingo con el detalle del día elegido debajo y hoy marcado (T25); se adaptó el test del detalle y se sumó el de hoy, con aprobación | Ulises |
 | 25/11/2026 | RN-PLAN-09 | La fecha de fin de crear plan se muestra en dd/mm/aaaa en lugar de AAAA-MM-DD (T21); se ajustó la aserción del test de US07 | Ulises |
 
 ## Nota para US12 (Martina): qué cambió con T12 y T13 (21/11/2026)
@@ -169,4 +172,11 @@ Decidido por Ulises el 25/11/2026. Solo cambia lo visual; los textos y los tests
 
 * **Rutina del día**: la acción del día va en `.barra-del-dia`, fija abajo. Se oculta si está vacía. La "Fecha" sigue en AAAA-MM-DD porque la lee el test de US08.
 * **`DetalleRutina`**: los ejercicios van en filas (`.lista-ejercicios`, `.ejercicio-fila`), no en tarjetas. "Día N de 28" pasó al `header`, junto al tipo.
-* **Mi plan**: una fila por día (`.dias-alumno`, `.dia-alumno`, con `con-rutina` si tiene rutina). El `details` lleva `.dia-alumno-detalle`, y el `h2` del detalle queda solo para lectores de pantalla porque repite el nombre del `summary`.
+* **Mi plan**: una fila por día. Reemplazado por el calendario de T25.
+
+## Decisiones de implementación (T25)
+
+Decidido por Ulises el 25/11/2026.
+
+* **Mi plan en calendario** (RN-PLAN-19): `ol` "Días del plan" con los 28 días en una grilla de 7 columnas; el primero empieza en su columna (`columnaDeLaSemana`, lunes 1 a domingo 7, en `dominio/plan/plan.ts`). Cada día es un botón cuyo nombre es lo que se ve más el día del plan y su fecha ("25 · Día 1 — miércoles 25/11: Empuje", por `aria-labelledby` a sus tres partes; WCAG 2.5.3), con `aria-pressed` si está elegido y `aria-current="date"` si es hoy. Hoy es la `fecha` de `GET /planificacion/mi-plan`: no se usa el reloj del navegador. Al entrar está elegido hoy (o el día 1 si hoy no está en el plan). Cada rutina toma un color de sección (lila, celeste, coral, lima, rosa, turquesa) en el orden en que aparece; el punto del día lo usa y la leyenda `ul` "Rutinas del plan" lo explica (oculta por debajo de 48rem). Los días cuyo mes es posterior al de hoy llevan la clase `otro-mes` (fondo hundido, borde punteado, número tenue); se pueden elegir igual. La página usa `pagina-ancha` para que entre la leyenda. En escritorio el título va centrado (`.pagina-mi-plan`) y el punto, centrado en la casilla. El detalle va en `section.detalle-dia`, nombrada por su título; un descanso dice "Día de descanso".
+* **Sección "Hoy"** (RN-UI-ENT-06): `EstadoDelDia` resuelve el día con `usarRutinaDelDia` (rutina, descanso o sin plan, RN-PLAN-18) y, si hay rutina, muestra lo que le pasa la raíz de composición (`EntrenamientoDelDia` del módulo entrenamiento). Ningún módulo importa el interior del otro: la columna del acceso es `AccesoDelDia` de `compartido`. En descanso, el acceso lleva a Mi plan.
