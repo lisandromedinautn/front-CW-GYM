@@ -36,3 +36,4 @@ El cliente de la API del módulo está en `infraestructura/api/apiIdentidad.ts` 
 ## Decisiones de implementación (T21, épica US24)
 
 * En "Mi código", el código se muestra en `--cifra-2`. "Generar código" o "Copiar" es la acción principal (ámbar), y el "Regenerar" del diálogo va en `.peligro` porque invalida el código anterior. Decidido por Ulises el 25/11/2026; solo cambia lo visual.
+* En "Vincularme con mi profesor" (T22), el código se escribe en números grandes (`input.campo-codigo`) y "Vincularme" es la acción principal. Decidido por Ulises el 25/11/2026; solo cambia lo visual.

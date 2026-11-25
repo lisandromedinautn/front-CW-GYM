@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import type { RegistroSerie } from '../../dominio/entrenamiento/entrenamiento.ts';
 import { describirMedida, pasoInicial, type FilaSerie } from '../../dominio/serie/filasSeries.ts';
 import { FormularioSerie } from './FormularioSerie.tsx';
@@ -10,52 +10,78 @@ export function PasoActual(props: {
   /** US15: el último paso ofrece finalizar el entrenamiento. */
   finalizar: () => void;
   finalizando: boolean;
+  /** T22: el cronómetro, que va en el tanteador junto con el paso. */
+  cronometro?: ReactNode;
 }) {
   const { pasos } = props;
   const [indice, setIndice] = useState(() => pasoInicial(pasos));
   const paso = pasos[indice];
-  if (!paso) return null;
+  // Sin pasos, el cronómetro se sigue mostrando en el tanteador.
+  if (!paso) return props.cronometro ? <div className="tanteador">{props.cronometro}</div> : null;
   const ultimo = pasos.length - 1;
   const ir = (destino: number) => setIndice(Math.min(Math.max(destino, 0), ultimo));
 
   return (
-    <section aria-label="Paso actual">
-      <p>
-        Paso {indice + 1} de {pasos.length}
-      </p>
-      <h3>
+    <section aria-label="Paso actual" className="paso">
+      {/* Tanteador (T22): lo único vivo de la pantalla; queda fijo arriba al desplazarse. */}
+      <div className="tanteador">
+        {props.cronometro}
+        <p className="tanteador-paso">
+          Paso {indice + 1} de {pasos.length}
+        </p>
+        <div className="tanteador-avance" aria-hidden="true">
+          <span style={{ width: `${((indice + 1) / pasos.length) * 100}%` }} />
+        </div>
+      </div>
+      <h3 className="paso-titulo">
         {paso.titulo} · {paso.nombre}
       </h3>
       {paso.urlGif && (
-        <figure>
-          <img src={paso.urlGif} alt={paso.nombre} className="gif-paso" />
+        <figure className="paso-gif">
+          {/* La clave vuelve a montar la imagen: mientras carga no queda el GIF del paso anterior. */}
+          <img key={paso.urlGif} src={paso.urlGif} alt={paso.nombre} className="gif-paso" />
           <figcaption>
             <small>GIF © Gym visual</small>
           </figcaption>
         </figure>
       )}
-      <p>Prescripto: {describirMedida(paso.prescripta)}</p>
-      {paso.registrada && <p>Registrada: {describirMedida(paso.registrada)}</p>}
+      <p className="paso-prescripto">Prescripto: {describirMedida(paso.prescripta)}</p>
+      {paso.registrada && (
+        <p className="paso-registrada">Registrada: {describirMedida(paso.registrada)}</p>
+      )}
       <FormularioSerie
         key={paso.clave}
         fila={paso}
         registrar={props.registrar}
         alRegistrar={() => ir(indice + 1)}
       />
-      <div>
-        <button type="button" disabled={indice === 0} onClick={() => ir(indice - 1)}>
+      <div className="paso-navegacion">
+        <button
+          type="button"
+          className="secundario"
+          disabled={indice === 0}
+          onClick={() => ir(indice - 1)}
+        >
           Anterior
         </button>
-        <button type="button" disabled={indice === ultimo} onClick={() => ir(indice + 1)}>
+        <button
+          type="button"
+          className="secundario"
+          disabled={indice === ultimo}
+          onClick={() => ir(indice + 1)}
+        >
           Siguiente
         </button>
       </div>
       {indice === ultimo && (
-        <p>
-          <button type="button" disabled={props.finalizando} onClick={props.finalizar}>
-            Finalizar entrenamiento
-          </button>
-        </p>
+        <button
+          type="button"
+          className="paso-finalizar"
+          disabled={props.finalizando}
+          onClick={props.finalizar}
+        >
+          Finalizar entrenamiento
+        </button>
       )}
     </section>
   );

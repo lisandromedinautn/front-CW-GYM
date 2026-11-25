@@ -31,19 +31,22 @@ export function PaginaRutinaDelDia({ acciones }: { acciones?: (hayRutina: boolea
         </p>
       )}
 
-      {resultado?.estado === 'sin-plan' && <p>No tenés un plan vigente.</p>}
+      {resultado?.estado === 'sin-plan' && <p className="tenue">No tenés un plan vigente.</p>}
 
       {resultado?.estado === 'descanso' && (
         <>
           <p className="etiqueta">{etiquetaDelDia(resultado.numeroDia)}</p>
-          <p>Hoy es día de descanso.</p>
+          <p className="dia-descanso">Hoy es día de descanso.</p>
         </>
       )}
 
       {resultado?.estado === 'rutina' && (
         <DetalleRutina rutina={resultado.rutina} numeroDia={resultado.numeroDia} />
       )}
-      {resultado && acciones?.(resultado.estado === 'rutina')}
+      {/* En el celular, la acción del día queda fija abajo, siempre a mano (T22). */}
+      {resultado && (
+        <div className="barra-del-dia">{acciones?.(resultado.estado === 'rutina')}</div>
+      )}
     </section>
   );
 }

@@ -9,19 +9,19 @@ export function DetalleRutina(props: { rutina: RutinaDelDiaDetalle; numeroDia: n
   const { rutina } = props;
   return (
     <>
-      <header className="encabezado">
+      <header className="encabezado encabezado-rutina">
         <h2>{rutina.nombre}</h2>
         <span className="etiqueta">{rutina.tipo}</span>
+        <p className="etiqueta">{etiquetaDelDia(props.numeroDia)}</p>
       </header>
-      <p className="etiqueta">{etiquetaDelDia(props.numeroDia)}</p>
 
       {rutina.bloques.length > 0 && (
         <section>
           <h3>Bloques</h3>
-          <ol className="lista-tarjetas" aria-label="Bloques">
+          <ol className="lista-ejercicios" aria-label="Bloques">
             {rutina.bloques.map((bloque, indice) => (
-              <li key={indice} className="tarjeta-rutina">
-                <p className="campo">{bloque.nombre}</p>
+              <li key={indice} className="ejercicio-fila">
+                <p className="ejercicio-nombre">{bloque.nombre}</p>
                 <p className="tenue">{resumenDeBloque(bloque)}</p>
                 <p className="tenue">
                   Micropausa entre series: {bloque.micropausaSegundos} s · Macropausa al terminar el
@@ -37,14 +37,14 @@ export function DetalleRutina(props: { rutina: RutinaDelDiaDetalle; numeroDia: n
         <section>
           <h3>Circuitos</h3>
           {rutina.circuitos.map((circuito, indice) => (
-            <div key={indice} className="tarjeta-rutina">
+            <div key={indice} className="circuito-detalle">
               <p className="etiqueta">
                 {circuito.vueltas} {circuito.vueltas === 1 ? 'vuelta' : 'vueltas'}
               </p>
-              <ol>
+              <ol className="lista-ejercicios">
                 {circuito.ejercicios.map((ejercicio) => (
-                  <li key={ejercicio.ejercicioId}>
-                    <p className="campo">{ejercicio.nombre}</p>
+                  <li key={ejercicio.ejercicioId} className="ejercicio-fila">
+                    <p className="ejercicio-nombre">{ejercicio.nombre}</p>
                     <p className="tenue">{objetivoDeEjercicio(ejercicio)}</p>
                   </li>
                 ))}

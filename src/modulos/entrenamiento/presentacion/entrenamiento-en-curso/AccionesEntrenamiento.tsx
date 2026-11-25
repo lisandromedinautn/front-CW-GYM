@@ -14,10 +14,18 @@ export function AccionesEntrenamiento({ hayRutina }: { hayRutina: boolean }) {
     resultado.estado === 'finalizado' &&
     resultado.entrenamiento.inicio.slice(0, 10) === new Date().toISOString().slice(0, 10)
   ) {
-    return <Link to={RUTA_ENTRENAMIENTO}>Ver resumen del entrenamiento</Link>;
+    return (
+      <Link to={RUTA_ENTRENAMIENTO} className="boton secundario accion-del-dia">
+        Ver resumen del entrenamiento
+      </Link>
+    );
   }
   if (resultado.estado === 'en-curso') {
-    return <Link to={RUTA_ENTRENAMIENTO}>Retomar entrenamiento</Link>;
+    return (
+      <Link to={RUTA_ENTRENAMIENTO} className="boton accion-principal accion-del-dia">
+        Retomar entrenamiento
+      </Link>
+    );
   }
 
   async function iniciarYMostrar() {
@@ -25,10 +33,19 @@ export function AccionesEntrenamiento({ hayRutina }: { hayRutina: boolean }) {
   }
 
   return (
-    <div>
-      {errorInicio && <p role="alert">{errorInicio}</p>}
+    <div className="acciones-del-dia">
+      {errorInicio && (
+        <p role="alert" className="error">
+          {errorInicio}
+        </p>
+      )}
       {hayRutina && (
-        <button type="button" disabled={iniciando} onClick={() => void iniciarYMostrar()}>
+        <button
+          type="button"
+          className="accion-principal accion-del-dia"
+          disabled={iniciando}
+          onClick={() => void iniciarYMostrar()}
+        >
           Iniciar entrenamiento
         </button>
       )}

@@ -42,7 +42,7 @@ export function FormularioSerie(props: {
   const errorDe = (campo: 'medida' | 'peso') => (error?.campo === campo ? error.mensaje : null);
 
   return (
-    <form noValidate onSubmit={(evento) => void enviar(evento)}>
+    <form noValidate onSubmit={(evento) => void enviar(evento)} className="formulario-serie">
       <Campo
         id={`${id}-medida`}
         etiqueta={medida === 'repeticiones' ? 'Repeticiones' : 'Segundos'}
@@ -59,7 +59,7 @@ export function FormularioSerie(props: {
           error={errorDe('peso')}
         />
       )}
-      <button type="submit" disabled={enviando}>
+      <button type="submit" className="accion-principal" disabled={enviando}>
         Registrar
       </button>
     </form>
@@ -74,7 +74,7 @@ function Campo(props: {
   error: string | null;
 }) {
   return (
-    <>
+    <div className="campo-serie">
       <label htmlFor={props.id}>{props.etiqueta}</label>
       <input
         id={props.id}
@@ -84,7 +84,11 @@ function Campo(props: {
         aria-invalid={props.error ? true : undefined}
         aria-describedby={props.error ? `${props.id}-error` : undefined}
       />
-      {props.error && <span id={`${props.id}-error`}>{props.error}</span>}
-    </>
+      {props.error && (
+        <span id={`${props.id}-error`} className="error-campo">
+          {props.error}
+        </span>
+      )}
+    </div>
   );
 }
