@@ -691,3 +691,50 @@ Registro de cada sesión relevante en la que un desarrollador trabajó con IA. D
   - Rama `feat/T19-estructura-general` sin pushear ni PR.
   - Mover CG-95 a CG-97 en Jira.
   - Sigue T23 (CG-101) y después T20 a T22 y T24.
+
+## 2026-11-25 — Rediseño de las pantallas del Profesor [T21]
+- Desarrollador: Ulises
+- Herramienta / modelo / esfuerzo: Claude Code · Opus 5.5 (orquestador y diseño, skill Impeccable) + Sonnet 5.5 medium (1 subagente revisor).
+- Objetivo: T21 (CG-99) de la épica US24. Aplicar el sistema "Tanteador de club" a las pantallas del Profesor sin cambiar textos, filtros, orden ni paginación (RN-UI-LIS). La tarea se hizo antes que T23 por pedido del desarrollador.
+- Qué hizo la IA:
+  - **Relevamiento:** leyó la tarjeta en Jira y las de T20, T22 a T24, y vio que Ejercicios y Notificaciones del profesor no estaban en ninguna. Capturó el estado previo y armó datos de muestra en la base de test (alumnos vinculados, un plan y un entrenamiento) para ver las pantallas con contenido.
+  - **Decisiones:** preguntó las cuatro decisiones estéticas.
+  - **Rutinas:** tarjeta con el nombre a todo el ancho y un pie de acciones con icono de Lucide y texto ("Editar", "Importar"), con los nombres accesibles de siempre. Es el primer uso de Lucide en pantallas.
+  - **Editor de rutina:** números en tres columnas (dos en el celular), GIF al costado del ejercicio, "Subir", "Bajar" y "Quitar" en una fila, y sangría para los ejercicios de un circuito.
+  - **Planes:** fechas de tanteador y días en cifras. El título y el resumen completos siguen en el DOM para lectores de pantalla y para los tests.
+  - **Calendario:** en crear plan y en editar días, el día con rutina lleva una franja lila y el de descanso va hundido; los días fuera del plan perdieron el desenfoque.
+  - **Seguimiento:** notificaciones y entrenamientos de alumnos como tarjetas, con la gravedad en la tinta de su estado y las series en columnas.
+  - **Otras pantallas:** el código del profesor en cifra grande y "Regenerar" en `.peligro`; "Volver a …" como enlace chico arriba del título; una acción principal en ámbar por pantalla.
+  - **Arreglo de T19:** encontró que la pestaña activa del menú quedaba cortada en el celular cuando llegaba el contador de no leídas. Primero probó esperar a las fuentes, midió que no era eso y lo resolvió con un `ResizeObserver`. Después, a pedido del revisor, cambió `scrollIntoView` por un desplazamiento solo horizontal, para no mover la página.
+  - **Revisión:** aplicó las correcciones del revisor: 44 px en "Volver a …" y en el enlace del pie de las notificaciones, el desplazamiento del menú y la nota de contraste de la franja lila en `DESIGN.md`. Quitó la franja lateral de las tarjetas de seguimiento porque el detector de la skill la marcó como patrón genérico.
+  - **Fecha de fin:** la pasó a dd/mm/aaaa en un commit aparte y ajustó la aserción del test de US07, con aprobación del desarrollador. Antes comprobó que el test fallaba por la aserción.
+  - **Commits:** separó `estilos.css` por partes para que cada microcommit lleve solo los estilos de sus pantallas.
+  - **Documentación:** actualizó `DESIGN.md`, el atlas, el `CHANGELOG` y los `CLAUDE.md` de compartido, planificación, notificaciones, entrenamiento e identidad.
+- Decisiones del desarrollador:
+  - Ejercicios y Notificaciones entran en T21.
+  - En la tarjeta de rutina, las acciones van al pie con icono y texto.
+  - Las fechas de los planes se muestran como tanteador.
+  - El calendario marca los días con rutina con una franja lila y atenúa los de descanso.
+  - La "Fecha de fin" de crear plan pasa a dd/mm/aaaa, con el ajuste de la aserción en otro microcommit.
+  - Pidió la revisión antes de commitear.
+- Ideas descartadas:
+  - Iconos solos arriba a la derecha de la tarjeta de rutina, o dejarla como estaba.
+  - Fechas del plan como texto corrido.
+  - Calendario sin diferenciar los días.
+  - Franja lateral de color en las tarjetas de seguimiento.
+  - Esperar a las fuentes para llevar la pestaña activa a la vista.
+- Reglas afectadas: RN-PLAN-09, solo en la presentación: la fecha de fin se muestra en dd/mm/aaaa. Se cambió el literal de una aserción, con aprobación. El resto no cambia reglas: textos, roles, nombres accesibles, filtros, orden y paginación quedan iguales.
+- Verificación:
+  - Lint OK.
+  - Vitest 210/210.
+  - e2e de navegador 14/14.
+  - Detector de la skill sin hallazgos.
+  - Sin desborde horizontal a 375 y 1280 px.
+  - Medido: 44 px en "Volver a …" y en el enlace del pie de las notificaciones, y la pestaña activa queda 16 px dentro del borde.
+  - Revisor: pidió cinco correcciones; se aplicaron cuatro y la quinta ("Registrar ejercicio" deshabilitado) es intencional.
+  - Quedan sin capturar el hover, el foco por teclado en las pantallas nuevas y las notificaciones leve y leída.
+- Pendientes:
+  - Rama `feat/T21-pantallas-profesor` sin pushear ni PR.
+  - Mover CG-95 a CG-97 y CG-99 en Jira.
+  - Siguen T23 (estados de carga, vacío y error), T20, T22 y T24.
+  - La franja lila queda en 2,4:1, aceptada porque el texto del día dice lo mismo; se revisa en T24.
