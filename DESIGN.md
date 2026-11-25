@@ -1,0 +1,325 @@
+---
+name: CW-GYM
+description: Tanteador de club. Marco verde de cancha, ámbar de marcador solo para lo vivo y área de trabajo clara, con cifras tabulares en una rampa fija.
+colors:
+  cancha: "#0e2a20"
+  cancha-alto: "#163a2c"
+  cancha-linea: "#1e4434"
+  sobre-cancha: "#e9efea"
+  sobre-cancha-tenue: "#a9c2b5"
+  ambar: "#f2b632"
+  ambar-hundido: "#d99a12"
+  sobre-ambar: "#14201a"
+  accion: "#1e5c44"
+  accion-hover: "#163a2c"
+  sobre-accion: "#ffffff"
+  fondo: "#eef1ee"
+  superficie: "#ffffff"
+  superficie-hundida: "#f6f8f6"
+  tinta: "#14201a"
+  tinta-secundaria: "#4b5b52"
+  tinta-tenue: "#5f6e66"
+  borde: "#d3dbd5"
+  borde-control: "#748a7e"
+  enlace: "#1e5c44"
+  exito: "#1f7a4d"
+  exito-fondo: "#e3f2e9"
+  exito-tinta: "#1a6b43"
+  advertencia: "#a86f00"
+  advertencia-fondo: "#fff1cc"
+  advertencia-tinta: "#7a4e00"
+  error: "#b3261e"
+  error-fondo: "#fbe9e7"
+  error-tinta: "#9c2119"
+  info-fondo: "#e6f0f7"
+  info-tinta: "#1d4e73"
+  neutro-fondo: "#e4e9e5"
+  neutro-tinta: "#3d4a43"
+  seccion-turquesa: "#4fd1c5"
+  seccion-coral: "#f07b5a"
+  seccion-celeste: "#5db7e8"
+  seccion-lila: "#b49af0"
+  seccion-lima: "#9bd35a"
+  seccion-rosa: "#f28db2"
+  velo: "rgba(14, 42, 32, 0.55)"
+typography:
+  titulo-1:
+    fontFamily: "Barlow Condensed, Barlow, system-ui, sans-serif"
+    fontSize: "2rem"
+    fontWeight: 700
+    lineHeight: 1.1
+    letterSpacing: "0.01em"
+  titulo-2:
+    fontFamily: "Barlow Condensed, Barlow, system-ui, sans-serif"
+    fontSize: "1.5rem"
+    fontWeight: 700
+    lineHeight: 1.1
+    letterSpacing: "0.01em"
+  titulo-3:
+    fontFamily: "Barlow Condensed, Barlow, system-ui, sans-serif"
+    fontSize: "1.25rem"
+    fontWeight: 700
+    lineHeight: 1.1
+    letterSpacing: "0.01em"
+  texto-medio:
+    fontFamily: "Barlow, system-ui, sans-serif"
+    fontSize: "1.125rem"
+    fontWeight: 400
+    lineHeight: 1.5
+  texto-base:
+    fontFamily: "Barlow, system-ui, sans-serif"
+    fontSize: "1rem"
+    fontWeight: 400
+    lineHeight: 1.5
+  texto-chico:
+    fontFamily: "Barlow, system-ui, sans-serif"
+    fontSize: "0.875rem"
+    fontWeight: 400
+    lineHeight: 1.5
+  rotulo:
+    fontFamily: "Barlow Condensed, Barlow, system-ui, sans-serif"
+    fontSize: "0.875rem"
+    fontWeight: 700
+    letterSpacing: "0.06em"
+  cifra-1:
+    fontFamily: "Barlow Condensed, Barlow, system-ui, sans-serif"
+    fontSize: "3.5rem"
+    fontWeight: 700
+    lineHeight: 1.1
+  cifra-2:
+    fontFamily: "Barlow Condensed, Barlow, system-ui, sans-serif"
+    fontSize: "2.75rem"
+    fontWeight: 700
+    lineHeight: 1.1
+  cifra-3:
+    fontFamily: "Barlow Condensed, Barlow, system-ui, sans-serif"
+    fontSize: "1.75rem"
+    fontWeight: 700
+    lineHeight: 1.1
+  cifra-4:
+    fontFamily: "Barlow Condensed, Barlow, system-ui, sans-serif"
+    fontSize: "1.25rem"
+    fontWeight: 700
+    lineHeight: 1.1
+rounded:
+  chico: "4px"
+  medio: "6px"
+  grande: "10px"
+  pildora: "999px"
+spacing:
+  esp-1: "0.25rem"
+  esp-2: "0.5rem"
+  esp-3: "0.75rem"
+  esp-4: "1rem"
+  esp-5: "1.25rem"
+  esp-6: "1.5rem"
+  esp-7: "2rem"
+  esp-8: "3rem"
+components:
+  marco-cancha:
+    backgroundColor: "{colors.cancha}"
+    textColor: "{colors.sobre-cancha}"
+  tanteador-cifra:
+    backgroundColor: "{colors.cancha}"
+    textColor: "{colors.ambar}"
+    typography: "{typography.cifra-2}"
+  boton-accion:
+    backgroundColor: "{colors.accion}"
+    textColor: "{colors.sobre-accion}"
+    rounded: "{rounded.chico}"
+    height: "44px"
+  boton-accion-hover:
+    backgroundColor: "{colors.accion-hover}"
+    textColor: "{colors.sobre-accion}"
+  boton-secundario:
+    backgroundColor: "{colors.neutro-fondo}"
+    textColor: "{colors.tinta}"
+    rounded: "{rounded.chico}"
+  tarjeta:
+    backgroundColor: "{colors.superficie}"
+    textColor: "{colors.tinta}"
+    rounded: "{rounded.medio}"
+    padding: "1rem"
+  aviso-error:
+    backgroundColor: "{colors.error-fondo}"
+    textColor: "{colors.error-tinta}"
+    rounded: "{rounded.medio}"
+---
+
+# Design System: CW-GYM
+
+Este archivo documenta lo construido en T17 (CG-95, épica US24). La fuente de verdad de los valores es `src/compartido/presentacion/estilos/tokens.css`; la base global está en `base.css` y `src/estilos.css` los importa junto con las fuentes `@fontsource`. El frontmatter es normativo: si un valor cambia, cambia primero en `tokens.css` y acá se actualiza.
+
+## Overview
+
+**Creative North Star: "Tanteador de club"**
+
+La interfaz se lee como el marcador de un club de barrio: un marco verde oscuro de cancha, cifras grandes y tabulares, rótulos en mayúsculas condensadas y un único color vivo, el ámbar. El área de trabajo es clara y fría, con superficies blancas y tinta verdosa, para que el profesor escanee listados y el alumno vea de un vistazo lo prescripto y lo hecho. La jerarquía se logra con escala (tamaño y peso), no con adornos.
+
+La regla de uso de la dirección: la cancha (#0E2A20) es la **única superficie oscura** (marco y tanteador); el ámbar (#F2B632) se reserva para **lo vivo** (el contador, lo hecho y, cuando T18 lo decida, la acción principal); el área de trabajo es clara; no hay sombras decorativas.
+
+El producto es de uso con el celular en la mano (alumno, durante el Entrenamiento) y de escritorio (profesor y admin). Cumple WCAG 2.2 AA: texto a 4,5:1, foco visible, navegación por teclado y objetivos táctiles de 24 px o más.
+
+**Key Characteristics:**
+- Una sola superficie oscura (cancha); todo lo demás es claro.
+- Ámbar solo para lo vivo; ninguna sección del menú lo usa.
+- Cifras tabulares en cuatro tamaños fijos; la cifra más importante de la pantalla es la más grande.
+- Esquinas firmes (4 a 10 px), sin redondeos blandos; sombras solo en capas flotantes.
+- Restricción del proyecto: textos, roles y nombres accesibles no cambian por motivos estéticos; los tests buscan por ellos.
+
+## Colors
+
+Paleta de estrategia restringida: un verde profundo como marco, un ámbar como acento raro, neutros verdosos y estados con tres variantes. Todos los contrastes están anotados en `tokens.css` y se verificaron contra WCAG 2.2 AA.
+
+### Primary
+- **Cancha** (`{colors.cancha}`): encabezado, navegación y tanteador. Sobre ella, `sobre-cancha` (#E9EFEA, 13,1:1) para texto y `sobre-cancha-tenue` (#A9C2B5, 8,1:1) para texto secundario. `cancha-alto` (#163A2C) y `cancha-linea` (#1E4434) son el relieve y los separadores dentro del marco.
+- **Ámbar de marcador** (`{colors.ambar}`): contador, lo hecho y la acción principal si T18 lo decide. 8,4:1 sobre cancha; con `sobre-ambar` (#14201A) encima, 9,2:1. `ambar-hundido` (#D99A12) es el estado presionado o hover del ámbar.
+- **Acción** (`{colors.accion}`, #1E5C44): hoy verde, con texto `sobre-accion` blanco (7,9:1) y hover `accion-hover` (#163A2C). Está separado del color de enlace a propósito, para que T18 pueda pasar la acción principal a ámbar sin mover los enlaces.
+
+### Neutral
+- **Fondo** (#EEF1EE) y **superficie** (#FFFFFF) y **superficie-hundida** (#F6F8F6): fondo de la app, tarjetas y zonas rehundidas.
+- **Tinta** (#14201A, 14,8:1), **tinta-secundaria** (#4B5B52, 6,3:1) y **tinta-tenue** (#5F6E66, 4,7:1 sobre el fondo y 5,4:1 sobre blanco; también el placeholder).
+- **Borde** (#D3DBD5): separadores sin función de control. **Borde-control** (#748A7E, 3,3:1 sobre el fondo y 3,7:1 sobre blanco): bordes de campos, que sí necesitan 3:1.
+- **Enlace** (#1E5C44, 6,9:1 sobre el fondo).
+
+### Estados
+Cada estado tiene hasta tres variantes con su propio uso:
+
+| Estado | Sólido | Tinta | Fondo | Cuándo |
+| :-- | :-- | :-- | :-- | :-- |
+| Éxito | #1F7A4D | #1A6B43 (5,6:1) | #E3F2E9 | Sólido para bordes e iconos; tinta para el texto; fondo para el aviso o la insignia |
+| Advertencia | #A86F00 (3,7:1, solo bordes e iconos) | #7A4E00 (6,4:1) | #FFF1CC | Igual; el sólido nunca es texto |
+| Error | #B3261E (5,7:1 sobre el fondo, 6,5:1 sobre blanco; sirve también de texto) | #9C2119 (6,8:1) | #FBE9E7 | Igual |
+| Info | (no tiene) | #1D4E73 (7,6:1) | #E6F0F7 | Solo tinta y fondo |
+| Neutro | (no tiene) | #3D4A43 (7,6:1) | #E4E9E5 | Estados sin gravedad (por ejemplo "finalizado") |
+
+Regla de composición: **texto sobre el fondo de su estado usa la tinta; los bordes y los iconos usan el sólido; nunca texto en el color sólido de advertencia.**
+
+### Color por sección (T19)
+Seis tonos: turquesa #4FD1C5, coral #F07B5A, celeste #5DB7E8, lila #B49AF0, lima #9BD35A y rosa #F28DB2. Todos superan 5,6:1 sobre la cancha. Se usan solo en la pestaña activa del menú y en la franja del encabezado. El ámbar no es de ninguna sección.
+
+### Velo
+`velo` (rgba(14, 42, 32, 0.55)) tapa la pantalla detrás de un diálogo.
+
+### Named Rules
+**The Una Sola Cancha Rule.** La cancha es la única superficie oscura. No hay tarjetas oscuras, ni modo oscuro, ni segundos verdes de fondo.
+
+**The Ámbar Vivo Rule.** El ámbar aparece solo donde algo está pasando o ya pasó (contador, lo hecho, acción principal). Un ámbar en un adorno o en un estado de advertencia es un error.
+
+**The Tinta Por Estado Rule.** Texto de estado = tinta; borde o icono = sólido; relleno = fondo. No se mezclan.
+
+## Typography
+
+**Texto:** Barlow (400, 500, 600, 700), con `system-ui, sans-serif` de reserva.
+**Rótulos, títulos y cifras:** Barlow Condensed (500, 600, 700), con Barlow de reserva.
+
+**Character:** Barlow da lectura amable en bloques; Barlow Condensed en mayúsculas y tabular da la voz de marcador. Los títulos h1 a h3 usan la condensada en peso 700 con interlineado 1,1 y `text-wrap: balance`; los párrafos usan `text-wrap: pretty`.
+
+### Hierarchy
+- **Título 1** (700, 2rem, 1,1): un h1 por pantalla.
+- **Título 2** (700, 1.5rem, 1,1): secciones; más margen arriba (1.5rem) que abajo (0.5rem) para pegarse a lo que encabeza.
+- **Título 3** (700, 1.25rem, 1,1).
+- **Texto medio / base / chico** (400, 1.125 / 1 / 0.875rem, 1,5): cuerpo, con 1rem por defecto y 0.875rem para ayudas y metadatos.
+- **Rótulo** (`.rotulo`: 700, mayúsculas, tracking 0.06em; ancho 0.12em para códigos): etiquetas cortas.
+- **Cifras** (`.cifra`: Barlow Condensed 700, tabulares, interlineado 1,1).
+
+### Rampa de cifras
+Rampa fija de cuatro tamaños: la cifra más importante de la pantalla es la más grande.
+
+| Token | Tamaño | Uso previsto |
+| :-- | :-- | :-- |
+| `--cifra-1` | 3.5rem | Contador del Entrenamiento |
+| `--cifra-2` | 2.75rem | Tanteador prescripto \| hecho (Serie Realizada) |
+| `--cifra-3` | 1.75rem | Cifras destacadas de un listado |
+| `--cifra-4` | 1.25rem | Cifras dentro de una fila |
+
+`input`, `table`, `time` y `output` llevan `font-variant-numeric: tabular-nums` por base.
+
+### Named Rules
+**The Cifra Grande Rule.** En una pantalla, la cifra más importante usa el tamaño más alto de la rampa que le corresponde; no se inventan tamaños intermedios.
+
+**The Rótulo En Caps Rule.** Mayúsculas condensadas solo para rótulos y códigos cortos; los textos de lectura nunca van en mayúsculas.
+
+## Layout
+
+Base de espaciado de 4 px: `esp-1` 0.25rem, `esp-2` 0.5, `esp-3` 0.75, `esp-4` 1, `esp-5` 1.25, `esp-6` 1.5, `esp-7` 2, `esp-8` 3.
+
+Anchos: `--ancho-pagina` 40rem (lectura y formularios), `--ancho-pagina-ancha` 64rem (listados y editores), `--ancho-tarjeta-ingreso` 22rem, `--ancho-dialogo` 28rem.
+
+Breakpoints (`min-width`, mobile primero), los que hoy usa `src/estilos.css`: **40rem**, **48rem** (calendario del plan en siete columnas) y **64rem**. El alumno usa sobre todo el celular; el profesor, escritorio.
+
+**Objetivos táctiles:** `--toque-minimo` 24px (WCAG 2.2) para todo control; `--toque-comodo` 44px para lo que el alumno toca entrenando (registrar una Serie Realizada, finalizar, avanzar). Hoy estos tokens todavía no se usan en componentes.
+
+## Elevation & Depth
+
+Plano por defecto. La jerarquía es por escala y por superficie (blanco sobre fondo claro, cancha para el marco), no por sombra. Solo las capas que flotan llevan sombra.
+
+### Shadow Vocabulary
+- **Capa** (`--sombra-capa`: `0 12px 32px rgb(14 42 32 / 22%), 0 2px 6px rgb(14 42 32 / 12%)`): diálogos y menús desplegables.
+- **Fija** (`--sombra-fija`: `0 2px 8px rgb(14 42 32 / 14%)`): elementos fijos que se despegan del contenido al desplazarse.
+- **Velo** (`--color-velo`): fondo de los diálogos.
+
+**Capas (z-index):** `--capa-fija` 1 (por ejemplo el contador pegajoso) y `--capa-dialogo` 10.
+
+### Named Rules
+**The Plano Salvo Que Flote Rule.** Una tarjeta o un botón en reposo no lleva sombra; la sombra solo dice "esto flota sobre lo demás". Hoy las sombras todavía no se usan.
+
+## Shapes
+
+Esquinas firmes de marcador: `chico` 4px (botones), `medio` 6px (tarjetas), `grande` 10px (reservado para diálogos; hoy las tarjetas usan `medio`), `pildora` 999px (insignias de estado). Bordes: `--borde-fino` 1px (separadores, bordes de control), `--borde-grueso` 2px (selección o énfasis). Todo `button` lleva un borde transparente de 1px para que el contorno siga visible en modo de alto contraste. Deshabilitado: `--opacidad-deshabilitado` 0.6.
+
+## Components
+
+Hoy las pantallas usan clases sueltas de `src/estilos.css`; los componentes base se definen en T18. Lo ya fijado por los tokens:
+
+### Marco y tanteador
+Sobre cancha, texto `sobre-cancha`; las cifras del tanteador en ámbar con la rampa de cifras.
+
+### Botones
+Acción: fondo `accion`, texto blanco, radio chico (4px), relleno esp-3 y esp-4, hover `accion-hover`. Secundario: fondo `neutro-fondo` con tinta. Mínimo 24 px de alto, 44 px en lo que el alumno toca entrenando.
+
+### Campos
+Borde `borde-control` (3,3:1 sobre el fondo, 3,7:1 sobre blanco), caret en cancha, placeholder en `tinta-tenue` con opacidad 1.
+
+### Avisos e insignias
+Éxito, advertencia, error, info y neutro con el trío fondo, tinta y sólido. Los errores del back se muestran por `codigo` en `role="alert"`; los éxitos en `role="status"`.
+
+### Foco
+Anillo de `--grosor-foco` 3px con offset de 2px usando `--anillo-foco-actual`. Sobre fondo claro es `--anillo-foco` (#1E5C44); dentro del marco de cancha, T19 sobrescribe `--anillo-foco-actual` con `--anillo-foco-sobre-cancha` (#F2B632) sin tocar `base.css`.
+
+### Movimiento
+`--duracion-corta` 120ms y `--duracion-media` 200ms con `--curva-salida` `cubic-bezier(0.16, 1, 0.3, 1)`. Con `prefers-reduced-motion: reduce` las duraciones pasan a 0ms y `base.css` fuerza animaciones y transiciones a 0,01ms.
+
+### Iconografía
+Lucide (`lucide-react` 1.78.0), todavía sin usos en pantallas. Tamaños `--icono-chico` 1rem, `--icono-medio` 1.25rem y `--icono-grande` 1.5rem; trazo único `--icono-trazo` 2; `svg.lucide` no se encoge (`flex: none`). Un icono nunca va solo: acompaña un texto o lleva nombre accesible.
+
+### Navegador
+`color-scheme: light`, `accent-color: var(--color-accion)`, selección en ámbar con tinta, barras de desplazamiento con `borde-control`.
+
+## Do's and Don'ts
+
+### Do:
+- **Do** definir todo valor visual en `tokens.css` y usarlo por variable; ningún color, tamaño o espaciado suelto en componentes.
+- **Do** usar el ámbar solo para lo vivo y la cancha solo como marco y tanteador.
+- **Do** ordenar la jerarquía por escala (rampa de cifras, títulos) y por superficie.
+- **Do** garantizar 44 px de objetivo táctil en lo que el alumno toca entrenando.
+- **Do** mantener textos, roles y nombres accesibles intactos al cambiar lo estético (los tests buscan por ellos).
+- **Do** usar los términos del glosario ("Entrenamiento", "ingresar al sistema", "Serie Realizada") en cualquier texto de pantalla.
+
+### Don't:
+- **Don't** agregar una segunda superficie oscura ni un modo oscuro.
+- **Don't** usar el color sólido de advertencia como texto.
+- **Don't** poner sombras decorativas, desenfoques ni opacidades sueltas (la deshabilitada es `--opacidad-deshabilitado`).
+- **Don't** inventar tamaños de cifra fuera de la rampa de cuatro.
+- **Don't** sacar el foco visible ni bajar de 3px el anillo.
+- **Don't** mezclar el color de enlace con el de acción: están separados a propósito.
+
+## Qué queda para las tareas siguientes (épica US24)
+
+- **T18 componentes base (CG-96):** decidir si la acción principal pasa a ámbar; usar `--toque-*`; revisar `.secundario`, que casi no se distingue del fondo (neutro-fondo #E4E9E5 sobre #EEF1EE); revisar los tamaños de miniaturas y GIF de componente (2.5rem, 3rem, 7.5rem, 14rem).
+- **T19 estructura y navegación con color por sección (CG-97):** marco de cancha, `--anillo-foco-actual` sobre cancha, pestaña activa y franja de encabezado con los seis tonos de sección.
+- **T20 a T22 pantallas (CG-98 a CG-100):** aplicar la rampa de cifras. Deuda en T22: `.contador` usa `--cifra-3` y la rampa prevé `--cifra-1`.
+- **T21:** `.codigo` usa `--cifra-3` y la rampa prevé otro tamaño; `.dia-fuera-del-plan` usa desenfoque decorativo (`filter: blur(1px)`), que contradice la regla de profundidad.
+- **T23 estados (CG-101):** vacío, carga, error y éxito con las variantes de estado.
+- **T24 accesibilidad y cierre (CG-102):** auditoría WCAG 2.2 AA, contraste real, foco, teclado, movimiento reducido y objetivos táctiles.
+- Deudas generales: `--toque-*` y las sombras todavía no se usan en ningún componente; los iconos de Lucide todavía no están en pantallas.

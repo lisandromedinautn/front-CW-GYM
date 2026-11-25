@@ -1,0 +1,135 @@
+/*
+ * Estilos globales (T17, CG-95): reset mínimo, fondo, tinta, tipografía, enlaces y las superficies
+ * del navegador (foco, selección, cursor, barras de desplazamiento). Solo usa tokens.css.
+ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  font-family: var(--fuente-texto);
+  font-size: 100%;
+  line-height: var(--interlineado-texto);
+  color: var(--color-tinta);
+  background: var(--color-fondo);
+  -webkit-font-smoothing: antialiased;
+  text-size-adjust: 100%;
+  scrollbar-color: var(--color-borde-control) transparent;
+  color-scheme: light;
+  accent-color: var(--color-accion);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--fuente-rotulo);
+  font-weight: var(--peso-fuerte);
+  line-height: var(--interlineado-ajustado);
+  letter-spacing: var(--tracking-titulo);
+  text-wrap: balance;
+}
+h1 {
+  font-size: var(--texto-titulo-1);
+  margin: 0 0 var(--esp-4);
+}
+/* Más espacio arriba que abajo: el título se pega a lo que encabeza. */
+h2 {
+  font-size: var(--texto-titulo-2);
+  margin: var(--esp-6) 0 var(--esp-2);
+}
+h3 {
+  font-size: var(--texto-titulo-3);
+  margin: var(--esp-5) 0 var(--esp-2);
+}
+
+/* Utilidades del tanteador: rótulos en caps condensadas y cifras tabulares. */
+.rotulo {
+  font-family: var(--fuente-rotulo);
+  font-weight: var(--peso-fuerte);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-rotulo);
+}
+.cifra {
+  font-family: var(--fuente-rotulo);
+  font-weight: var(--peso-fuerte);
+  font-variant-numeric: tabular-nums;
+  line-height: var(--interlineado-ajustado);
+}
+
+p {
+  text-wrap: pretty;
+}
+
+a {
+  color: var(--color-enlace);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+a:hover {
+  text-decoration-thickness: 2px;
+}
+
+img,
+svg {
+  max-width: 100%;
+}
+svg.lucide {
+  flex: none;
+}
+
+input,
+select,
+textarea,
+button {
+  font: inherit;
+  color: inherit;
+}
+/* Un borde transparente mantiene visible el contorno del botón en modo de alto contraste. */
+button {
+  border: var(--borde-fino) solid transparent;
+}
+::placeholder {
+  color: var(--color-tinta-tenue);
+  opacity: 1;
+}
+input,
+textarea {
+  caret-color: var(--color-cancha);
+}
+
+/* Las cifras se alinean como en un tanteador. */
+input,
+table,
+time,
+output {
+  font-variant-numeric: tabular-nums;
+}
+
+::selection {
+  background: var(--color-ambar);
+  color: var(--color-tinta);
+}
+
+:focus-visible {
+  outline: var(--grosor-foco) solid var(--anillo-foco-actual);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
