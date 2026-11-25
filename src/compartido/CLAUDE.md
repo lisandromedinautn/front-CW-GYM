@@ -7,7 +7,7 @@ Lo mínimo que usan todos los módulos. Acá no va lógica de un módulo en part
 | `dominio/` | `TAMANIOS_PAGINA`, `Pagina<T>` y `totalPaginas` (`paginacion/paginacion.ts`) ✅; `Rol`, `Sesion` y `RUTA_INICIO` (`sesion.ts`) ✅; `ErrorApi` (`{ codigo, mensaje }`) y `esErrorApi` (`errorApi.ts`) ✅; opciones del menú por rol (`opcionesMenu.ts`) ✅ |
 | `aplicacion/` | `usarSesion` (`usarSesion.ts`) ✅; `usarTamanioPagina` (`paginacion/usarTamanioPagina.ts`) ✅ |
 | `infraestructura/` | Cliente HTTP base `pedir()` (URL de la API por variable de entorno de Vite, adjunta el JWT, traduce errores a `ErrorApi`) ✅ (`clienteHttp.ts`); almacenamiento de la sesión (`almacenSesion.ts`) ✅ |
-| `presentacion/` | `Paginador` (`paginador/Paginador.tsx`) ✅; `RutaProtegida` por rol (RN-IDE-03) ✅; layout con menú por rol (`DisenioConMenu`, `MenuPrincipal`, RN-UI-IDE-01) ✅; `PaginaInicio` ✅; `Proximamente` ✅; sistema de diseño `estilos/tokens.css` y `estilos/base.css` (T17) ✅; componentes base `estilos/componentes.css` (T18) ✅; componentes genéricos de mensaje de error por `codigo`, carga y confirmación 📄 |
+| `presentacion/` | `Paginador` (`paginador/Paginador.tsx`) ✅; `RutaProtegida` por rol (RN-IDE-03) ✅; layout con menú por rol (`DisenioConMenu`, `MenuPrincipal`, RN-UI-IDE-01) ✅; `PaginaInicio` ✅; `Proximamente` ✅; sistema de diseño `estilos/tokens.css` y `estilos/base.css` (T17) ✅; componentes base `estilos/componentes.css` (T18) ✅; estructura general `estilos/estructura.css` y marco de cancha en `MenuPrincipal` (T19) ✅; componentes genéricos de mensaje de error por `codigo`, carga y confirmación 📄 |
 
 ## Decisiones de implementación
 
@@ -22,6 +22,11 @@ Lo mínimo que usan todos los módulos. Acá no va lógica de un módulo en part
   - Variantes `.secundario`, `.peligro`, `.enlace` y `.boton-icono`.
   - Insignias rectangulares en caps condensadas (`.insignia-*`, `.etiqueta`, `.estado-plan-*`).
   - Las mayúsculas son de CSS: el texto del DOM y los nombres accesibles no cambian.
+- **Estructura general** (T19, CG-97; decidido por Ulises el 25/11/2026):
+  - `MenuPrincipal` es el marco de cancha (`header.marco`): marca "CW-GYM" decorativa (`aria-hidden`), la navegación "Menú principal" con `NavLink` (la opción activa lleva `aria-current="page"`) y "Salir", que queda fuera de la navegación.
+  - Cada opción de `opcionesMenu.ts` tiene un color de sección, agrupado por concepto. `opcionActual(rol, ruta)` elige la opción de la ruta actual, que pinta su pestaña y la franja del marco.
+  - Por debajo de 64rem el menú es una tira de pestañas que se desliza, con la activa llevada a la vista.
+  - Las opciones y rutas no cambian (épica US24).
 
 - **Sesión en `localStorage`**: se guarda con la clave `cwgym.sesion` como `{ token, rol }`. El almacén (`infraestructura/sesion/almacenSesion.ts`) avisa a sus suscriptores cuando cambia, y `usarSesion` lo lee con `useSyncExternalStore`. Así el menú y las rutas reaccionan al ingreso y al cierre de sesión sin recargar la página. Si el navegador no permite `localStorage`, la sesión no se puede guardar y el usuario vuelve al ingreso.
 - **401 y sesión** (RN-UI-IDE-02): el cliente HTTP cierra la sesión solo si había una. Un 401 del ingreso (sin sesión) no borra nada y el mensaje llega a la pantalla.
