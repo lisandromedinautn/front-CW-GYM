@@ -1123,3 +1123,18 @@ input.campo-codigo {
 .acceso:hover svg {
   transform: translateX(var(--esp-1));
 }
+
+/* Alta de profesor: dos grupos; desde escritorio, los campos de cada uno en dos columnas. */
+.grupo-alta {
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  align-items: start;
+}
+.grupo-alta > legend {
+  grid-column: 1 / -1;
+}
+@media (min-width: 48rem) {
+  .formulario:has(.grupo-alta) > button {
+    justify-self: end;
+    min-width: 12rem;
+  }
+}
