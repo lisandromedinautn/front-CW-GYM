@@ -49,10 +49,12 @@
   height: auto;
   border-radius: var(--radio-chico);
 }
+/* Código del profesor (US04): la cifra protagonista de la pantalla, como un tanteador. */
 .codigo {
   font-family: var(--fuente-rotulo);
   font-variant-numeric: tabular-nums;
-  font-size: var(--cifra-3);
+  font-size: var(--cifra-2);
+  line-height: var(--interlineado-ajustado);
   font-weight: var(--peso-fuerte);
   letter-spacing: var(--tracking-rotulo-ancho);
   margin: 0;
