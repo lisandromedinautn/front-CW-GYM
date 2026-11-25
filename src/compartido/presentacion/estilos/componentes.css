@@ -202,16 +202,6 @@ label > span:has(> input[type='radio']) {
   font-size: var(--texto-chico);
   font-weight: var(--peso-medio);
 }
-.error {
-  margin: 0;
-  color: var(--color-error);
-  font-weight: var(--peso-medio);
-}
-.exito {
-  margin: 0;
-  color: var(--color-exito-tinta);
-  font-weight: var(--peso-medio);
-}
 
 /* ---------- Tarjetas y superficies ---------- */
 
