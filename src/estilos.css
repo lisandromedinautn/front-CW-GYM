@@ -501,14 +501,84 @@ button.enlace.volver {
   border-radius: var(--radio-medio);
 }
 
-/* US18: cada serie del alumno en una fila, con lo prescripto y lo realizado separados. */
-.series-alumno {
+/*
+ * Registros del seguimiento (T21): entrenamientos de un alumno (US18) y notificaciones (US21).
+ * El estado se lee en el texto: la gravedad de una notificación va en la tinta de su estado y,
+ * una vez leída, en tenue.
+ */
+.tarjeta-registro {
   display: grid;
   gap: var(--esp-2);
-  padding-left: var(--esp-5);
+  padding: var(--esp-4) var(--esp-5);
+  background: var(--color-superficie);
+  border: var(--borde-fino) solid var(--color-borde);
+  border-radius: var(--radio-medio);
+  min-width: 0;
 }
-.series-alumno li {
+.tarjeta-registro p {
+  margin: 0;
+}
+.tarjeta-registro-cabecera {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--esp-1) var(--esp-4);
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--esp-1) var(--esp-3);
+}
+.tarjeta-registro-titulo {
+  margin: 0;
+  font-family: var(--fuente-rotulo);
+  font-size: var(--texto-titulo-3);
+  font-weight: var(--peso-fuerte);
+  overflow-wrap: anywhere;
+}
+/* Gravedad: rótulo en caps con la tinta de su estado (texto, nunca el sólido). */
+.gravedad {
+  margin: 0;
+  font-family: var(--fuente-rotulo);
+  font-size: var(--texto-medio);
+  font-weight: var(--peso-fuerte);
+  letter-spacing: var(--tracking-rotulo-ancho);
+  text-transform: uppercase;
+}
+.aviso-grave .gravedad {
+  color: var(--color-error-tinta);
+}
+.aviso-leve .gravedad {
+  color: var(--color-advertencia-tinta);
+}
+.leida .gravedad {
+  color: var(--color-tinta-tenue);
+}
+.resumen-bandeja {
+  justify-self: start;
+}
+.tarjeta-registro .tarjeta-acciones {
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* US18 y US21: cada serie en una fila, con lo prescripto y lo realizado en columnas. */
+.series-alumno {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  border-top: var(--borde-fino) solid var(--color-borde);
+  font-size: var(--texto-chico);
+}
+.series-alumno li {
+  display: grid;
+  gap: 0 var(--esp-4);
+  padding: var(--esp-2) 0;
+  border-bottom: var(--borde-fino) solid var(--color-borde);
+  font-variant-numeric: tabular-nums;
+}
+.series-alumno li:last-child {
+  border-bottom: 0;
+}
+@media (min-width: 48rem) {
+  .series-alumno li {
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) minmax(0, 1fr);
+  }
 }
